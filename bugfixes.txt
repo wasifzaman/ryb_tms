@@ -1,0 +1,13 @@
+To fix
+
+1. if student barcode changes
+	and student barcode does not exist in database
+	save student
+
+2. renew, expiration date only if expired, else add
+3. if db file is deleted while program is running, it will crash
+
+
+
+UI Improvement ideas:
+1. for buttons have babyblue bg and dark blue border. White text.
