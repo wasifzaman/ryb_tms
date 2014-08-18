@@ -41,7 +41,7 @@ class StudentInfo:
             "cRemaining": 0,
             "findSchool": 'N/A',
             "notes": 'N/A',
-            "attinfo": [['Date', 'Check-In Time', 'Class Time'], []],
+            "attinfo": [['Date', 'Check-In Time', 'Class Time', 'Check-Out Time'], []],
             "portr": '',
             "ctime": 'N/A',
             "expire": 'N/A',
@@ -196,26 +196,49 @@ class StudentDB:
 
 
     def scanStudent(self, barcode, xtra=False):
-        try:
-            #scan the current student in
-            cdt = datetime.now()
+        #try:
+        #scan the current student in
+        cdt = datetime.now()
 
-            timeslot = self.findTimeSlot(cdt)
-            if not timeslot: return
-            time = '{:%I:%M %p}'.format(cdt)
-            date = '{:%m/%d/%Y}'.format(cdt)
+        timeslot = self.findTimeSlot(cdt)
+        if not timeslot: return
+        time = '{:%I:%M %p}'.format(cdt)
+        date = '{:%m/%d/%Y}'.format(cdt)
 
-            data = [date, time, timeslot]
-            if xtra: data.append(xtra)
+        data = [date, time, timeslot, '']
+        if xtra: data.append(xtra)
 
-            s = self.studentList[barcode].datapoints
-            s['attinfo'] = list(s['attinfo'])
-            s['attinfo'][0] = ['Date', 'Check-In Time', 'Class Time']
-            s['attinfo'][1].append(data)
-            s['cRemaining'] -= 1
-            if s['cRemaining'] < 0: s['cRemaining'] = 0
-        except:
-            return print("Student doesn't exist")
+        s = self.studentList[barcode].datapoints
+        s['attinfo'] = list(s['attinfo'])
+        s['attinfo'][0] = ['Date', 'Check-In Time', 'Class Time', 'Check-Out Time', 'Scan Type']
+        s['attinfo'][1].append(data)
+        s['cRemaining'] -= 1
+        if s['cRemaining'] < 0: s['cRemaining'] = 0
+        #except:
+        #    return print("Student doesn't exist")
+
+
+    def scanOutTeacher(self, barcode, xtra=False):
+        #try:
+        #scan the current student in
+        cdt = datetime.now()
+
+        timeslot = self.findTimeSlot(cdt)
+        if not timeslot: return
+        time = '{:%I:%M %p}'.format(cdt)
+        date = '{:%m/%d/%Y}'.format(cdt)
+
+        data = [date, time, timeslot, '']
+        if xtra: data.append(xtra)
+
+        s = self.studentList[barcode].datapoints
+        s['attinfo'] = list(s['attinfo'])
+        s['attinfo'][0] = ['Date', 'Check-In Time', 'Class Time', 'Check-Out Time', 'Scan Type']
+        s['attinfo'][1][-1][3] = time
+        s['cRemaining'] -= 1
+        if s['cRemaining'] < 0: s['cRemaining'] = 0
+        #except:
+        #    return print("Student doesn't exist")
 
 
     def checkCode(self, barcode):

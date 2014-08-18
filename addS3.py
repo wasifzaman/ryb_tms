@@ -49,11 +49,11 @@ def main(t, lang, d, sM):
 	sinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
 	w.frames["First Frame"].addWidget(firstName, (1, 0))
 	w.frames["First Frame"].addWidget(lastName, (2, 0))
-	w.frames["First Frame"].addWidget(chineseName, (3, 0))
+	#w.frames["First Frame"].addWidget(chineseName, (3, 0))
 	w.frames["First Frame"].addWidget(dob, (4, 0))
-	w.frames["First Frame"].addWidget(age, (5, 0))
-	w.frames["First Frame"].addWidget(parentName, (6, 0))
-	w.frames["First Frame"].addWidget(cp, (7, 0))
+	#w.frames["First Frame"].addWidget(age, (5, 0))
+	#w.frames["First Frame"].addWidget(parentName, (6, 0))
+	w.frames["First Frame"].addWidget(cp, (7, 0)) #card printed
 
 #address widgets
 	w.frames["Second Frame"].addWidget(ainfo, (0, 0))
@@ -66,6 +66,7 @@ def main(t, lang, d, sM):
 	w.frames["Second Frame"].addWidget(email, (7, 0))
 
 #contact widgets
+	'''
 	w.frames["Third Frame"].addWidget(cinfo, (0, 0))
 	cinfo.label.config(bg=w.sectioncolor, fg='white', font=('Jumbo', '11', 'bold'))
 	cinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
@@ -73,28 +74,33 @@ def main(t, lang, d, sM):
 	w.frames["Third Frame"].addWidget(hPhone, (2, 0))
 	w.frames["Third Frame"].addWidget(cPhone, (3, 0))
 	w.frames["Third Frame"].addWidget(cPhone2, (4, 0))
+	'''
 
 #database info widgets
 	w.frames["Fourth Frame"].addWidget(pinfo, (0, 0))
 	pinfo.label.config(bg=w.sectioncolor, fg='white', font=('Jumbo', '11', 'bold'))
 	pinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
 	w.frames["Fourth Frame"].addWidget(bCode, (1, 0))
-	w.frames["Fourth Frame"].addWidget(sid, (2, 0))
+	#w.frames["Fourth Frame"].addWidget(sid, (2, 0))
 
 	bCode.setData(d.formatCode())
 
 #payment widgets
+	'''
 	w.frames["Fourth Frame"].addWidget(tpd, (6, 0))
 	w.frames["Fourth Frame"].addWidget(tpa, (7, 0))
 	w.frames["Fourth Frame"].addWidget(tp, (8, 0))
 	w.frames["Fourth Frame"].addWidget(tpo, (9, 0))	
+	'''
 
 #class widget
+	'''
 	w.frames["Sixth Frame"].addWidget(sType, (4, 0))
 	w.frames["Sixth Frame"].addWidget(cAwarded, (5, 0))
 	w.frames["Sixth Frame"].addWidget(cRemaining, (6, 0))
 	w.frames["Sixth Frame"].widgets['cRemaining'].hide()
 	w.frames["Sixth Frame"].addWidget(ctime, (7, 0))
+	'''
 
 #notes widget
 	w.frames["Ninth Frame"].addWidget(ninfo, (0, 0))
@@ -107,7 +113,7 @@ def main(t, lang, d, sM):
 
 
 
-
+	'''
 	baclass = Buttonbox(text='awardclass', lang=w.lang, repr='aclass')
 	baoclass = Buttonbox(text='awardoneclass', lang=w.lang, repr='aoclass')
 	baac = Buttonbox(text='awardaddclass', lang=w.lang, repr='baaclasses')
@@ -131,7 +137,7 @@ def main(t, lang, d, sM):
 	#w.frames["Sixth Frame"].addWidget(baac, (2, 0))
 	#baclass.config(cmd=lambda: cpicker(w.lang))
 	#baac.config(cmd=cadd)
-
+	'''
 
 
 

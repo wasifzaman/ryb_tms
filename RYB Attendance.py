@@ -8,6 +8,7 @@ from preBuilts2 import ret, titlePic
 from tkinter import filedialog
 import addS3
 import scanS22
+import scanOut
 import sDb22
 import tools2
 
@@ -25,6 +26,8 @@ def main():
 
 
 	t = Window(top=False)
+	t.attributes('-fullscreen', False)
+	t.geometry('1280x720+200+200')
 
 #confirm closing of the add student window
 	t.con = False
@@ -111,7 +114,7 @@ def main():
 
 #main window and starting language
 	w = AppWindow(t.mainFrame)
-	w.lang = languages['chinese']
+	w.lang = languages['english']
 
 #title
 	t.wintitle.config(text=w.lang['RYB Student Management'])
@@ -134,6 +137,7 @@ def main():
 #buttons to call sub-windows
 	bsadd = Buttonbox(text='Add Students', lang=w.lang, repr='bsadd') #Add Student
 	bsscan = Buttonbox(text='Scan Students', lang=w.lang, repr='bsscan') #Scan Student
+	bsscan2 = Buttonbox(text='Scan Out Teacher', lang=w.lang, repr='bsscan') #Scan Student
 	bssdb = Buttonbox(text='Student Database', lang=w.lang, repr='bssdb') #Student Database
 	bstools = Buttonbox(text='Tools', lang=w.lang, repr='bstools') #Database Management
 	bsbmm = Buttonbox(text='Back to Main Menu', lang=w.lang, repr='bsbmm') #Return to Main Menu
@@ -147,8 +151,9 @@ def main():
 #place buttons and background image
 	w.frames["First Frame"].addWidget(bsadd, (0, 0))
 	w.frames["First Frame"].addWidget(bsscan, (1, 0))
-	w.frames["First Frame"].addWidget(bssdb, (2, 0))
-	w.frames["First Frame"].addWidget(bstools, (3, 0))
+	w.frames["First Frame"].addWidget(bsscan2, (2, 0))
+	w.frames["First Frame"].addWidget(bssdb, (3, 0))
+	w.frames["First Frame"].addWidget(bstools, (4, 0))
 	w.frames["Third Frame"].addWidget(bsbmm, (0, 0))
 	w.frames["First Frame"].addWidget(bprint, (5, 0))
 	w.frames["First Frame"].addWidget(bsexit, (6, 0))
@@ -159,6 +164,7 @@ def main():
 #set commands for each button
 	bsadd.config(cmd=lambda: showWindow(addS3.main))
 	bsscan.config(cmd=lambda: showWindow(scanS22.main))
+	bsscan2.config(cmd=lambda: showWindow(scanOut.main))
 	bssdb.config(cmd=lambda: showWindow(sDb22.main))
 	bstools.config(cmd=lambda: showWindow(tools2.main))
 	bsbmm.config(cmd=lambda: showMain(t.con))
@@ -188,6 +194,11 @@ def main():
 	bsscan.fg = w.mmbuttonfg
 	bsscan.hoverfg = 'white'
 	bsscan.button.config(bg=bsscan.idlebg, fg=bsscan.fg)
+
+	bsscan2.idlebg = w.mmbuttoncol
+	bsscan2.fg = w.mmbuttonfg
+	bsscan2.hoverfg = 'white'
+	bsscan2.button.config(bg=bsscan2.idlebg, fg=bsscan2.fg)
 
 	bssdb.idlebg = w.mmbuttoncol
 	bssdb.fg = w.mmbuttonfg

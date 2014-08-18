@@ -31,6 +31,7 @@ languages = \
 		"Classes Remaining": "Classes Remaining",
 		"Date": "Date",
 		"Check-In Time": "Check-In Time",
+		"Check-Out Time": "Check-Out Time",
 		"Class Time": "Class Time",
 		"How did you hear about the school?": "How did you hear\nabout this school?",
 		"Notes": "Notes",
@@ -64,9 +65,10 @@ languages = \
 		"awardoneclass": "Single (+1)",
 		"awardaddclass": "Award Additional Classes",
 		"addstudent": "Add Student to Database",
-		"Add Students": "Add Students", #students* for buttons
-		"Scan Students": "Scan Students",
-		"Student Database": "Student Database",
+		"Add Students": "Add Teachers", #students* for buttons
+		"Scan Students": "Check-in Teacher",
+		"Scan Out Teacher": "Check-out Teacher",
+		"Student Database": "Teacher Database",
 		"Tools": "Database Management",
 		"Back to Main Menu": "Back to Main Menu",
 		"Exit": "Exit",
@@ -104,7 +106,7 @@ languages = \
 		"Card Printed": "Card Printed",
 		"Already Paid": "Already Paid",
 		"Phone Number": "Phone Number",
-		"RYB Student Management" : "RYB Student Management",
+		"RYB Student Management" : "RYB Teacher Management",
 		"print report": "Print Report",
 		"sdate": "Search Date",
 		"Select Folder": "Select Folder"

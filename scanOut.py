@@ -278,7 +278,7 @@ def main(t, lang, d):
 
 #scan student
 	def ss(mode=False):
-		d.scanStudent(w.s, xtra=w.lang['Scan'] if sby.getData()[0] == 'bCode' and not mode else w.lang['Manual'])
+		d.scanOutTeacher(w.s, xtra=w.lang['Scan'] if sby.getData()[0] == 'bCode' and not mode else w.lang['Manual'])
 		d.saveData()
 		
 		#show alert if classes remaining is less than 2
@@ -375,7 +375,6 @@ def main(t, lang, d):
 #t2 window
 	t2 = Window(top=True)
 	t2.attributes('-fullscreen', False)
-	t2.attributes('-alpha', 0.0)
 	t2.geometry('1200x800')
 
 #remove close button function
