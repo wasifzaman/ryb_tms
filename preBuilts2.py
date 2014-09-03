@@ -296,6 +296,7 @@ bimpt = Buttonbox(text='imptxls', lang=language, repr='bimpt')
 bexp = Buttonbox(text='expxls', lang=language, repr='bexp')
 bsav = Buttonbox(text='Save', lang=language, repr='bsav')
 bcdb = Buttonbox(text='choosedb', lang=language, repr='bcdb')
+bsalrep = Buttonbox(text='salrep', lang=language, repr='bsrep')
 
 bk = Buttonbox(text='Back', lang=language, repr='bk')
 nxt = Buttonbox(text='Next', lang=language, repr='bimp')

@@ -109,7 +109,15 @@ languages = \
 		"RYB Student Management" : "RYB Teacher Management",
 		"print report": "Print Report",
 		"sdate": "Search Date",
-		"Select Folder": "Select Folder"
+		"Select Folder": "Select Folder",
+		"salrep": "Salary Report",
+		"print to file": "Print to File",
+		"today's date": "Today's date",
+		"last payment": "Last Payment",
+		"dollar per hour": "Dollars per hour",
+		"Hour": "Hour",
+		"Minute": "Minute",
+		"AM/PM": "AM/PM"
 		},
 
 	"chinese": {
@@ -219,6 +227,14 @@ languages = \
 		"sdate": "Search Date",
 		"Select Folder": "Select Folder",
 		"filepath": "File Path",
+		"salrep": "Salary Report",
+		"print to file": "Print to File",
+		"today's date": "Today's date",
+		"last payment": "Last Payment",
+		"dollar per hour": "Dollars per hour",
+		"Hour": "Hour",
+		"Minute": "Minute",
+		"AM/PM": "AM/PM"
 		}
 		
 }

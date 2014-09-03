@@ -45,7 +45,9 @@ class StudentInfo:
             "portr": '',
             "ctime": 'N/A',
             "expire": 'N/A',
-            "cp": "N"
+            "cp": "N",
+            "paid_entries": {},
+            "last_payment": False
             }
 
         self.dpalias = {
@@ -112,11 +114,7 @@ class StudentDB:
         self.fcell = {1: lambda y: str(y), 2: lambda y: int(y), 3: lambda y: (datetime.strptime('1/1/1900', "%m/%d/%Y") + timedelta(days=y-2)).strftime("%m/%d/%Y")}
         
         #time table
-        self.timeslot = {(time(9, 15, 0), time(10, 44, 0)): '09:30 AM',
-            (time(10, 44, 1), time(12, 14, 0)): '11:00 AM',
-            (time(12, 45, 0), time(14, 14, 0)): '01:00 PM',
-            (time(14, 14, 1), time(15, 44, 0)): '02:30 PM',
-            (time(15, 44, 1), time(17, 14, 0)): '04:00 PM',}
+        self.timeslot = {(time(8, 15, 0), time(8, 35, 0)): '08:30 AM'}
         
         #last barcode
         self.setLast()
@@ -167,6 +165,9 @@ class StudentDB:
                 return self.timeslot[timeslot]
 
         h, m, p = '{:%I}'.format(time), '{:%M}'.format(time), '{:%p}'.format(time)
+        return h + ':' + m + ' ' + p
+
+        #no time slot for teachers
         m = int(m)
 
         if m > 40:
@@ -205,40 +206,38 @@ class StudentDB:
         time = '{:%I:%M %p}'.format(cdt)
         date = '{:%m/%d/%Y}'.format(cdt)
 
+        #date = datetime.now().date()
+        #time = datetime.strptime(str(date) + ' ' + timeslot, '%Y-%m-%d %I:%M %p')
+
         data = [date, time, timeslot, '']
-        if xtra: data.append(xtra)
 
         s = self.studentList[barcode].datapoints
         s['attinfo'] = list(s['attinfo'])
-        s['attinfo'][0] = ['Date', 'Check-In Time', 'Class Time', 'Check-Out Time', 'Scan Type']
+        s['attinfo'][0] = ['Date', 'Check-In Time', 'Class Time', 'Check-Out Time']
         s['attinfo'][1].append(data)
-        s['cRemaining'] -= 1
-        if s['cRemaining'] < 0: s['cRemaining'] = 0
         #except:
-        #    return print("Student doesn't exist")
+        #    return print("scanStudent function error in datahandler.py")
 
 
-    def scanOutTeacher(self, barcode, xtra=False):
+    def scanOutTeacher(self, barcode, confirmed_time, xtra=False):
         #try:
         #scan the current student in
-        cdt = datetime.now()
+        #cdt = datetime.now()
 
-        timeslot = self.findTimeSlot(cdt)
-        if not timeslot: return
-        time = '{:%I:%M %p}'.format(cdt)
-        date = '{:%m/%d/%Y}'.format(cdt)
-
-        data = [date, time, timeslot, '']
-        if xtra: data.append(xtra)
+        #timeslot = self.findTimeSlot(cdt)
+        #if not timeslot: return
+        #time = '{:%I:%M %p}'.format(cdt)
+        #date = '{:%m/%d/%Y}'.format(cdt)
 
         s = self.studentList[barcode].datapoints
         s['attinfo'] = list(s['attinfo'])
-        s['attinfo'][0] = ['Date', 'Check-In Time', 'Class Time', 'Check-Out Time', 'Scan Type']
-        s['attinfo'][1][-1][3] = time
-        s['cRemaining'] -= 1
-        if s['cRemaining'] < 0: s['cRemaining'] = 0
+        s['attinfo'][0] = ['Date', 'Check-In Time', 'Class Time', 'Check-Out Time']
+        s['attinfo'][1][-1][3] = confirmed_time
         #except:
-        #    return print("Student doesn't exist")
+        #    return print("scanOutTeacher function error in datahandler.py")
+
+        
+        #print(checkout - checkin)
 
 
     def checkCode(self, barcode):
@@ -536,3 +535,81 @@ class StudentDB:
         worksheet.set_column(0, 2, 30)
         worksheet.set_column(0, 3, 30)
         workbook.close()
+
+
+    def stringtime_to_decimal(self, string_time):
+        (h, m, s) = string_time.split(':')
+        return (int(h) * 3600 + int(m) * 60 + int(s)) / 3600
+
+
+    def print_pay_entries(self, fpath, employee_id, pay_entries, pay_per_hour=1.00):
+        workbook = xlsxwriter.Workbook(fpath + '.xlsx')
+        worksheet = workbook.add_worksheet()
+
+        info_headerformat = workbook.add_format({'bold': True, 'bg_color': '#C2FFAD', 'border': 1})
+
+        timesheet_headerformat = workbook.add_format({'bold': True, 'bg_color': '#66FFCC', 'border': 1})
+
+        footer_format = workbook.add_format({'bold': True, 'bg_color': '#EBF5FF', 'border': 1})
+
+        paid_alias = self.studentList[employee_id].datapoints['paid_entries']
+        paid_alias = dict(list(paid_alias.items()) + list(pay_entries.items()))
+        self.studentList[employee_id].datapoints['paid_entries'] = paid_alias
+        self.studentList[employee_id].datapoints['last_payment'] = datetime.now().date()
+
+        worksheet.write(0, 0, self.studentList[employee_id].datapoints['firstName'], info_headerformat)
+        worksheet.write(0, 1, self.studentList[employee_id].datapoints['lastName'], info_headerformat)
+        worksheet.write(0, 2, self.studentList[employee_id].datapoints['bCode'], info_headerformat)
+        worksheet.write(0, 3, datetime.strftime(datetime.now().date(), '%m/%d/%Y'), info_headerformat)
+        worksheet.write(0, 4, '', info_headerformat)
+
+        worksheet.write(1, 0, 'Date', timesheet_headerformat)
+        worksheet.write(1, 1, 'Start Time', timesheet_headerformat)
+        worksheet.write(1, 2, 'Confirm Time', timesheet_headerformat)
+        worksheet.write(1, 3, 'Hours', timesheet_headerformat)
+        worksheet.write(1, 4, 'Dollar Pay', timesheet_headerformat)
+
+        #column width
+        worksheet.set_column(0, 0, 15)
+        worksheet.set_column(1, 4, 20)
+
+        r = 2
+        for entry in pay_entries.values():
+
+            date = entry[0]
+            checkin = datetime.strptime(date + ' ' + entry[2], '%m/%d/%Y %I:%M %p')
+            checkout = datetime.strptime(date + ' ' + entry[3], '%m/%d/%Y %I:%M %p')
+            total_time = checkout - checkin
+            decimal_time = self.stringtime_to_decimal(str(total_time))
+            #print()
+
+            worksheet.write(r, 0, entry[0])
+            worksheet.write(r, 1, entry[2])
+            worksheet.write(r, 2, entry[3])
+            worksheet.write(r, 3, str(total_time))
+            worksheet.write(r, 4, str("%.2f" % float(decimal_time * pay_per_hour)))
+            #worksheet.write(r, 4, )
+
+            r += 1
+
+
+        r += 2
+
+        
+        for row in range(r, r+4):
+            for cell in range(0, 5):
+                worksheet.write(row, cell, ' ', footer_format)
+
+        worksheet.write(r, 0, "Flushing Total:", footer_format)
+        r += 1
+        worksheet.write(r, 0, "Other School:", footer_format)
+        worksheet.write(r, 3, "Cash", footer_format)
+        r += 1
+        worksheet.write(r, 0, "Total Salary:", footer_format)
+        worksheet.write(r, 3, "Check", footer_format)
+        r += 1
+        worksheet.write(r, 2, "Invoice Number", footer_format)
+        worksheet.write(r, 3, "Check Number", footer_format)
+
+
+        self.saveData()

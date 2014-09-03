@@ -11,6 +11,7 @@ import scanS22
 import scanOut
 import sDb22
 import tools2
+import sdb_salrep
 
 def main():
 
@@ -27,7 +28,7 @@ def main():
 
 	t = Window(top=False)
 	t.attributes('-fullscreen', False)
-	t.geometry('1280x720+200+200')
+	t.geometry('1440x900+100+100')
 
 #confirm closing of the add student window
 	t.con = False

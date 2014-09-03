@@ -199,7 +199,7 @@ class MoneyTextbox(IntTextbox):
 		e = self.entry.get()
 		if e == '': return 0.00
 		try:
-			return float(e)
+			return float("%.2f" % float(e))
 		except:
 			return 0.00
 

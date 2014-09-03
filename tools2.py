@@ -4,6 +4,7 @@ from preBuilts2 import *
 from datetime import datetime
 import importwiz
 import os
+import sdb_salrep
 
 
 def main(t, lang, d):
@@ -57,6 +58,15 @@ def main(t, lang, d):
 			return
 
 
+	def salrep(f):
+		try:
+			for child in t.winfo_children():
+				child.destroy()
+			sdb_salrep.main(t, w.lang, d)
+		except:
+			return
+
+
 
 
 		
@@ -101,6 +111,9 @@ def main(t, lang, d):
 	#w.frames["Second Frame"].addWidget(sepr, (1, 0))
 	w.frames["Second Frame"].addWidget(bexp, (2, 0))
 
+	#salary report
+	w.frames["Second Frame"].addWidget(bsalrep, (3, 0))
+
 	curdb = Label(w.frames['Third Frame'], text=d.file, wraplength=200, bg='#DBDBDB')
 	w.frames["Third Frame"].addWidget(curfile, (0, 0))
 	curfile.label.config(bg='#DBDBDB')
@@ -116,6 +129,7 @@ def main(t, lang, d):
 	bcdb.config(cmd=cdb)
 	bimpt.config(cmd=ctdb)
 	bexp.config(cmd=expf)
+	bsalrep.config(cmd=salrep)
 	#curdb.config(text=s.config['dbFile'])
 	#exp.config(cmd=importwiz.main)
 
@@ -123,10 +137,3 @@ def main(t, lang, d):
 	for frame in w.frames.values():
 		for widget in frame.widgets.values():
 			widget.config(lang=w.lang)
-
-
-if __name__ == '__main__':
-	t = Window()
-	main(t, language)
-	
-	t.mainloop()

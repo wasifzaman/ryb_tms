@@ -16,6 +16,7 @@ class Cell(Widget):
 			print("error-16: widget could not be loaded")
 		
 		self.bgcolor = 'white'
+		self.altbgcolor = 'white'
 		self.bd = 1
 		self.relief = SOLID
 
@@ -35,7 +36,8 @@ class Cell(Widget):
 			#print("the widget could not be configured")
 
 		try:
-			self.label.config(bg=kwargs['bgcolor'])
+			self.bgcolor = kwargs['bgcolor']
+			self.label.config(bg=self.bgcolor)
 		except:
 			pass
 

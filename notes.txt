@@ -1,0 +1,17 @@
+
+
+no address on check-in or check-out
+add row for chinese name
+
+payment (change to data)
+remove address and phone
+
+no phone number and birthdate for search
+
+~framework :/
+1. make adding ui widgets easier
+2. serial add
+3. occupied row, occupied column, good idea?
+4. premade grid size
+5. test test
+6. make referencing frames easier

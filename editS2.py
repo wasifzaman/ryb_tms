@@ -49,8 +49,8 @@ def main(lang, d, top=False, i=0):
 	w.frames["First Frame"].addWidget(lastName, (2, 0))
 	w.frames["First Frame"].addWidget(chineseName, (3, 0))
 	w.frames["First Frame"].addWidget(dob, (4, 0))
-	w.frames["First Frame"].addWidget(age, (5, 0))
-	w.frames["First Frame"].addWidget(parentName, (6, 0))
+	#w.frames["First Frame"].addWidget(age, (5, 0))
+	#w.frames["First Frame"].addWidget(parentName, (6, 0))
 	w.frames["First Frame"].addWidget(cp, (7, 0))
 
 #address widgets
@@ -63,6 +63,7 @@ def main(lang, d, top=False, i=0):
 	w.frames["Second Frame"].addWidget(email, (7, 0))
 
 #contact widgets
+	'''
 	w.frames["Third Frame"].addWidget(cinfo, (0, 0))
 	cinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
 	cinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
@@ -70,25 +71,30 @@ def main(lang, d, top=False, i=0):
 	w.frames["Third Frame"].addWidget(hPhone, (2, 0))
 	w.frames["Third Frame"].addWidget(cPhone, (3, 0))
 	w.frames["Third Frame"].addWidget(cPhone2, (4, 0))
+	'''
 
 #database info widgets
 	w.frames["Fourth Frame"].addWidget(pinfo, (0, 0))
 	pinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
 	pinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
 	w.frames["Fourth Frame"].addWidget(bCode, (1, 0))
-	w.frames["Fourth Frame"].addWidget(sid, (2, 0))
+	#w.frames["Fourth Frame"].addWidget(sid, (2, 0))
 	
 #payment widgets
+	'''
 	w.frames["Fourth Frame"].addWidget(tpd, (6, 0))
 	w.frames["Fourth Frame"].addWidget(tpa, (7, 0))
 	w.frames["Fourth Frame"].addWidget(tp, (8, 0))
 	w.frames["Fourth Frame"].addWidget(tpo, (9, 0))
+	'''
 
 #class widget
+	'''
 	w.frames["Sixth Frame"].addWidget(sType, (4, 0))
 	w.frames["Sixth Frame"].addWidget(cAwarded, (5, 0))
 	w.frames["Sixth Frame"].addWidget(cRemaining, (6, 0))
 	w.frames["Sixth Frame"].addWidget(ctime, (7, 0))
+	'''
 
 #notes widget
 	w.frames["Ninth Frame"].addWidget(ninfo, (0, 0))
@@ -98,7 +104,7 @@ def main(lang, d, top=False, i=0):
 	notes.label.grid_forget()
 	notes.config(height=8, width=32)
 
-
+	'''
 	baclass = Buttonbox(text='awardclass', lang=w.lang, repr='aclass')
 	baoclass = Buttonbox(text='awardoneclass', lang=w.lang, repr='aoclass')
 	baac = Buttonbox(text='awardaddclass', lang=w.lang, repr='baaclasses')
@@ -122,6 +128,11 @@ def main(lang, d, top=False, i=0):
 	#w.frames["Sixth Frame"].addWidget(baac, (2, 0))
 	#baclass.config(cmd=lambda: cpicker(w.lang))
 	#baac.config(cmd=cadd)
+	'''
+
+
+
+
 
 	w.frames["Seventh Frame"].addWidget(portr, (0, 0))
 
@@ -130,6 +141,7 @@ def main(lang, d, top=False, i=0):
 	w.frames["Eleventh Frame"].grid(rowspan=100, sticky=W)
 
 #renew classes button
+	'''
 	def renC():
 		try:
 			d.studentList[w.s]
@@ -148,7 +160,8 @@ def main(lang, d, top=False, i=0):
 	w.frames["Twelfth Frame"].addWidget(w.ren, (1, 0))
 	w.ren.selfframe.grid(sticky=S)
 	w.ren.config(cmd=renC)
-
+	'''
+	
 	w.attinfo.editwidget=True
 	w.attinfo.canvas.config(width=500, height=500)
 
@@ -222,14 +235,3 @@ def main(lang, d, top=False, i=0):
 
 	
 	t.mainloop()
-
-
-
-	
-
-
-
-if __name__ == '__main__':
-	main(languages['chinese'], i='FLU-000-001')
-	
-
