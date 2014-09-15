@@ -38,8 +38,9 @@ def main(lang, d, top=False, i=0):
 	w.frames["Ninth Frame"].grid(rowspan=2, sticky=E)
 	w.frames["Tenth Frame"].grid(columnspan=5)
 	w.frames["Eleventh Frame"].grid(sticky=N)
-	w.frames["Eigth Frame"].grid(sticky=N)
+	w.frames["Eigth Frame"].grid(sticky=S, rowspan=2)
 	w.frames["Eleventh Frame"].columnconfigure(0, weight=5, minsize=520)
+	w.frames["Eigth Frame"].rowconfigure(0, weight=5, minsize=20)
 
 #student info widgets
 	w.frames["First Frame"].addWidget(sinfo, (0, 0))
@@ -54,13 +55,13 @@ def main(lang, d, top=False, i=0):
 	w.frames["First Frame"].addWidget(cp, (7, 0))
 
 #address widgets
-	w.frames["Second Frame"].addWidget(ainfo, (0, 0))
+	w.frames["First Frame"].addWidget(ainfo, (8, 0))
 	ainfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
 	ainfo.label.grid(columnspan=2, sticky=E+W, pady=3)
-	w.frames["Second Frame"].addWidget(city, (4, 0))
-	w.frames["Second Frame"].addWidget(state, (5, 0))
-	w.frames["Second Frame"].addWidget(zip, (6, 0))
-	w.frames["Second Frame"].addWidget(email, (7, 0))
+	w.frames["First Frame"].addWidget(city, (9, 0))
+	w.frames["First Frame"].addWidget(state, (10, 0))
+	w.frames["First Frame"].addWidget(zip, (11, 0))
+	w.frames["First Frame"].addWidget(email, (12, 0))
 
 #contact widgets
 	'''
@@ -74,10 +75,10 @@ def main(lang, d, top=False, i=0):
 	'''
 
 #database info widgets
-	w.frames["Fourth Frame"].addWidget(pinfo, (0, 0))
+	w.frames["First Frame"].addWidget(pinfo, (13, 0))
 	pinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
 	pinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
-	w.frames["Fourth Frame"].addWidget(bCode, (1, 0))
+	w.frames["First Frame"].addWidget(bCode, (14, 0))
 	#w.frames["Fourth Frame"].addWidget(sid, (2, 0))
 	
 #payment widgets
@@ -97,11 +98,12 @@ def main(lang, d, top=False, i=0):
 	'''
 
 #notes widget
-	w.frames["Ninth Frame"].addWidget(ninfo, (0, 0))
+	w.frames["First Frame"].addWidget(ninfo, (15, 0))
 	ninfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
 	ninfo.label.grid(columnspan=2, sticky=E+W, pady=3)
-	w.frames["Ninth Frame"].addWidget(notes, (1, 0))
+	w.frames["First Frame"].addWidget(notes, (16, 0))
 	notes.label.grid_forget()
+	notes.sentry.grid(column=0, columnspan=2)
 	notes.config(height=8, width=32)
 
 	'''
@@ -138,7 +140,7 @@ def main(lang, d, top=False, i=0):
 
 	w.attinfo = attinfo
 	w.frames["Eleventh Frame"].addWidget(w.attinfo, (0, 0))
-	w.frames["Eleventh Frame"].grid(rowspan=100, sticky=W)
+	w.frames["Eleventh Frame"].grid(rowspan=4, sticky=W)
 
 #renew classes button
 	'''
@@ -162,8 +164,8 @@ def main(lang, d, top=False, i=0):
 	w.ren.config(cmd=renC)
 	'''
 	
-	w.attinfo.editwidget=True
-	w.attinfo.canvas.config(width=500, height=500)
+	w.attinfo.editwidget=False
+	w.attinfo.canvas.config(width=700, height=400)
 
 	#reset portrait
 	portr.setData('monet_sm.jpg')

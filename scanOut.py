@@ -56,17 +56,17 @@ def main(t, lang, d):
 	w.frames["First Frame"].addWidget(dob, (4, 0))
 	#w.frames["First Frame"].addWidget(age, (5, 0))
 	#w.frames["Second Frame"].addWidget(parentName, (8, 0))
-	w.frames["First Frame"].addWidget(cp, (7, 0))
+	w.frames["First Frame"].addWidget(cp, (5, 0))
 
 #address widgets
-	w.frames["Second Frame"].addWidget(ainfo, (0, 0))
-	ainfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
-	ainfo.label.grid(columnspan=2, sticky=E+W, pady=3)
-	w.frames["Second Frame"].addWidget(addr, (3, 0))
-	w.frames["Second Frame"].addWidget(city, (4, 0))
-	w.frames["Second Frame"].addWidget(state, (5, 0))
-	w.frames["Second Frame"].addWidget(zip, (6, 0))
-	w.frames["Second Frame"].addWidget(email, (7, 0))
+	#w.frames["Second Frame"].addWidget(ainfo, (0, 0))
+	#ainfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
+	#ainfo.label.grid(columnspan=2, sticky=E+W, pady=3)
+	#w.frames["Second Frame"].addWidget(addr, (3, 0))
+	#w.frames["Second Frame"].addWidget(city, (4, 0))
+	#w.frames["Second Frame"].addWidget(state, (5, 0))
+	#w.frames["Second Frame"].addWidget(zip, (6, 0))
+	w.frames["First Frame"].addWidget(email, (6, 0))
 
 #contact widgets
 	'''
@@ -80,10 +80,10 @@ def main(t, lang, d):
 	'''
 
 #database info widgets
-	w.frames["Fourth Frame"].addWidget(pinfo, (0, 0))
-	pinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
-	pinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
-	w.frames["Fourth Frame"].addWidget(bCodeNE, (1, 0))
+	#w.frames["Fourth Frame"].addWidget(pinfo, (0, 0))
+	#pinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
+	#pinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
+	w.frames["First Frame"].addWidget(bCodeNE, (7, 0))
 
 #payment widgets
 	'''
@@ -102,10 +102,10 @@ def main(t, lang, d):
 	'''
 
 #notes widget
-	w.frames["Third Frame"].addWidget(ninfo, (5, 0))
+	w.frames["First Frame"].addWidget(ninfo, (8, 0))
 	ninfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
 	ninfo.label.grid(columnspan=2, sticky=E+W, pady=3)
-	w.frames["Third Frame"].addWidget(notes, (6, 0))
+	w.frames["First Frame"].addWidget(notes, (9, 0))
 	notes.label.grid_forget()
 	notes.sentry.grid(column=0, columnspan=2)
 	notes.config(height=6, width=32)
@@ -155,7 +155,7 @@ def main(t, lang, d):
 	'''
 
 	w.attinfo.editwidget=False
-	w.attinfo.canvas.config(width=500, height=400)
+	w.attinfo.canvas.config(width=700, height=400)
 
 	sby.rads=[('Barcode', 'bCode'), ('First Name', 'firstName'), \
 		('Last Name', 'lastName'), ('Chinese Name', 'chineseName'), \
@@ -221,7 +221,7 @@ def main(t, lang, d):
 		w.frames["Eleventh Frame"].grid(rowspan=4, sticky=W)
 
 		w.attinfo.editwidget=False
-		w.attinfo.canvas.config(width=500, height=400)
+		w.attinfo.canvas.config(width=700, height=400)
 
 
 		#temp workaround while table is fixed
@@ -233,7 +233,7 @@ def main(t, lang, d):
 		w2.frames["Third Frame"].grid(rowspan=100, sticky=W)
 
 		w2.attinfo.editwidget=False
-		w2.attinfo.canvas.config(width=500, height=500)
+		w2.attinfo.canvas.config(width=700, height=500)
 		#
 		dp = d.studentList[w.s].datapoints
 
@@ -278,7 +278,57 @@ def main(t, lang, d):
 
 #scan student
 	def ss(mode=False):
-		d.scanOutTeacher(w.s, xtra=w.lang['Scan'] if sby.getData()[0] == 'bCode' and not mode else w.lang['Manual'])
+		#print report prompt
+		last_entry = d.studentList[w.s].datapoints['attinfo'][1][-1]
+		last_entry_date = last_entry[0]
+		last_entry_checkout = False if last_entry[-1] == '' else True
+		print(last_entry_checkout)
+
+		if datetime.strptime(last_entry_date, '%m/%d/%Y').date() != datetime.now().today().date():
+			no_checkin_today(w.lang)
+			return
+		if last_entry_checkout and not confirm_overwrite_checkout('a', w.lang): return
+
+		def out():
+			time_input = str(hour_input.getData()) + ':' + str(minute_input.getData()) + ' ' + am_pm_input.getData()
+			w.time_input_confirmed = time_input
+			confirm_time.destroy()
+
+		confirm_time = Window(top=True)
+		confirm_time.attributes('-fullscreen', False)
+		confirm_time.resizable(0, 0)
+		confirm_time.geometry('400x200+200+200')
+		confirm_time.grab_set()
+		confirm_time.focus_set()
+
+		confirm_window = AppWindow(confirm_time.mainFrame)
+
+		hour_input = IntTextbox(text='Hour', lang=w.lang, repr='h_input')
+		minute_input = IntTextbox(text='Minute', lang=w.lang, repr='m_input')
+		am_pm_input = Textbox(text='AM/PM', lang=w.lang, repr='am_pm')
+		rbutton = Buttonbox(text='Select Folder', lang=w.lang, repr='rbutton')
+
+		confirm_window.newFrame("First Frame", (0, 0))
+
+		confirm_window.frames["First Frame"].addWidget(hour_input, (0, 0))
+		confirm_window.frames["First Frame"].addWidget(minute_input, (0, 2))
+		confirm_window.frames["First Frame"].addWidget(am_pm_input, (0, 4))
+		confirm_window.frames["First Frame"].addWidget(rbutton, (1, 0))
+
+		hour_input.label.config(width=4)
+		minute_input.label.config(width=6)
+		am_pm_input.label.config(width=6)
+		hour_input.entry.config(width=3)
+		minute_input.entry.config(width=3)
+		am_pm_input.entry.config(width=3)
+		rbutton.selfframe.grid(columnspan=6, pady=20)
+
+		rbutton.config(cmd=out)
+
+		confirm_time.wait_window()
+
+		d.scanOutTeacher(w.s, w.time_input_confirmed)#, xtra=w.lang['Scan'] if sby.getData()[0] == 'bCode' and not mode else w.lang['Manual'])
+		print('out', w.time_input_confirmed)
 		d.saveData()
 		
 		#show alert if classes remaining is less than 2
@@ -375,6 +425,7 @@ def main(t, lang, d):
 #t2 window
 	t2 = Window(top=True)
 	t2.attributes('-fullscreen', False)
+	t2.attributes('-alpha', 0.0)
 	t2.geometry('1200x800')
 
 #remove close button function
@@ -431,7 +482,7 @@ def main(t, lang, d):
 	w2.frames["Third Frame"].grid(rowspan=100, sticky=W)
 
 	w2.attinfo.editwidget=False
-	w.attinfo.canvas.config(width=500, height=500)
+	w.attinfo.canvas.config(width=700, height=500)
 
 #set starting lang
 	for frame in w.frames.values():

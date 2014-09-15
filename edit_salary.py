@@ -69,6 +69,7 @@ def main(lang, d, top=False, i=0): #i is the id of the student passed in
 	w.frames["Eleventh Frame"].grid(rowspan=3, sticky=W)
 	w.attinfo.canvas.config(width=720)
 	w.attinfo.editwidget = False
+	w.attinfo.clast = False
 
 
 	#reset portrait
@@ -129,6 +130,7 @@ def main(lang, d, top=False, i=0): #i is the id of the student passed in
 			#place a try here
 
 			first_cell = w.attinfo.cells[p]
+			if first_cell.bgcolor == 'tomato' or p[0] == 0: return
 			if first_cell.bgcolor == first_cell.altbgcolor:
 				pickRow(p)
 				w.picked[p[0]] = w.attinfo.data[p[0]-1]
@@ -171,9 +173,9 @@ def main(lang, d, top=False, i=0): #i is the id of the student passed in
 
 	#print to file
 	def print_to_file():
+		if not confirm_print('a', w.lang): return
 		file_name = filedialog.asksaveasfilename()
 		d.print_pay_entries(file_name, i, w.picked, dollar_per_hour.getData())
-		return
 
 	b_print_to_file = Buttonbox(text='print to file', lang=w.lang, repr='print_to_file')
 	w.frames["Fifth Frame"].addWidget(b_print_to_file, (0, 0))

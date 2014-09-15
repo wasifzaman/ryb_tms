@@ -41,7 +41,7 @@ class StudentInfo:
             "cRemaining": 0,
             "findSchool": 'N/A',
             "notes": 'N/A',
-            "attinfo": [['Date', 'Check-In Time', 'Class Time', 'Check-Out Time'], []],
+            "attinfo": [['Date', 'Check-In Time', 'Start Time', 'Check-Out Time'], []],
             "portr": '',
             "ctime": 'N/A',
             "expire": 'N/A',
@@ -209,11 +209,11 @@ class StudentDB:
         #date = datetime.now().date()
         #time = datetime.strptime(str(date) + ' ' + timeslot, '%Y-%m-%d %I:%M %p')
 
-        data = [date, time, timeslot, '']
+        data = [date, time, timeslot, '', '']
 
         s = self.studentList[barcode].datapoints
         s['attinfo'] = list(s['attinfo'])
-        s['attinfo'][0] = ['Date', 'Check-In Time', 'Class Time', 'Check-Out Time']
+        s['attinfo'][0] = ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time']
         s['attinfo'][1].append(data)
         #except:
         #    return print("scanStudent function error in datahandler.py")
@@ -222,17 +222,18 @@ class StudentDB:
     def scanOutTeacher(self, barcode, confirmed_time, xtra=False):
         #try:
         #scan the current student in
-        #cdt = datetime.now()
+        cdt = datetime.now()
 
-        #timeslot = self.findTimeSlot(cdt)
+        timeslot = self.findTimeSlot(datetime.strptime(confirmed_time, '%I:%M %p'))
         #if not timeslot: return
-        #time = '{:%I:%M %p}'.format(cdt)
+        time = '{:%I:%M %p}'.format(cdt)
         #date = '{:%m/%d/%Y}'.format(cdt)
 
         s = self.studentList[barcode].datapoints
         s['attinfo'] = list(s['attinfo'])
-        s['attinfo'][0] = ['Date', 'Check-In Time', 'Class Time', 'Check-Out Time']
-        s['attinfo'][1][-1][3] = confirmed_time
+        s['attinfo'][0] = ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time']
+        s['attinfo'][1][-1][3] = time
+        s['attinfo'][1][-1][4] = timeslot
         #except:
         #    return print("scanOutTeacher function error in datahandler.py")
 
@@ -439,7 +440,7 @@ class StudentDB:
             except:
                 dp['cRemaining'] = 0
             dp['attinfo'] = []
-            dp['attinfo'].append(['Date', 'Check-In Time', 'Class Time'])
+            dp['attinfo'].append(['Date', 'Check-In Time', 'Start Time'])
             dp['attinfo'].append(ftdata)
             try:
                 if len(ftdata) >= 0:
@@ -578,14 +579,14 @@ class StudentDB:
 
             date = entry[0]
             checkin = datetime.strptime(date + ' ' + entry[2], '%m/%d/%Y %I:%M %p')
-            checkout = datetime.strptime(date + ' ' + entry[3], '%m/%d/%Y %I:%M %p')
+            checkout = datetime.strptime(date + ' ' + entry[4], '%m/%d/%Y %I:%M %p')
             total_time = checkout - checkin
             decimal_time = self.stringtime_to_decimal(str(total_time))
             #print()
 
             worksheet.write(r, 0, entry[0])
             worksheet.write(r, 1, entry[2])
-            worksheet.write(r, 2, entry[3])
+            worksheet.write(r, 2, entry[4])
             worksheet.write(r, 3, str(total_time))
             worksheet.write(r, 4, str("%.2f" % float(decimal_time * pay_per_hour)))
             #worksheet.write(r, 4, )

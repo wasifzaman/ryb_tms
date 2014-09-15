@@ -475,6 +475,79 @@ def cs(s, lang):
 
 	return t.z
 
+def no_checkin_today(lang):
+
+	t = Mbox()
+	
+	t.newFrame("First Frame", (0, 0))
+	t.newFrame("Second Frame", (1, 0))
+
+	fimport = Labelbox(text='No Check-in today', lang=lang, repr='fimport')
+
+	t.frames["First Frame"].addWidget(ws, (0, 0))
+	t.frames["First Frame"].addWidget(fimport, (1, 0))
+	t.frames["Second Frame"].addWidget(bok, (2, 0))
+
+	bok.config(cmd=t.dw, lang=lang)
+
+	t.root.wait_window()
+
+def confirm_overwrite_checkout(s, lang):
+
+	def d(z):
+		t.z = z
+		t.dw()
+
+	t = Mbox()
+
+	t.newFrame("First Frame", (0, 0))
+	t.newFrame("Second Frame", (1, 0))
+
+	cstext = Labelbox(text='Overwrite Checkout', lang=lang, repr='cprint')
+
+	t.frames["First Frame"].addWidget(hs, (1, 0))
+	t.frames["First Frame"].addWidget(cstext, (2, 0))
+	t.frames["Second Frame"].addWidget(byes, (0, 0))
+	t.frames["Second Frame"].addWidget(bno, (0, 1))
+
+	byes.selfframe.grid(sticky=E+W, padx=5)
+	bno.selfframe.grid(sticky=E+W, padx=5)
+	byes.config(cmd=lambda: d(True), lang=lang)
+	bno.config(cmd=lambda: d(False), lang=lang)
+	byes.button.focus_set()
+
+	t.root.wait_window()
+
+	return t.z
+
+def confirm_print(s, lang):
+
+	def d(z):
+		t.z = z
+		t.dw()
+
+	t = Mbox()
+
+	t.newFrame("First Frame", (0, 0))
+	t.newFrame("Second Frame", (1, 0))
+
+	cstext = Labelbox(text='Con print', lang=lang, repr='cprint')
+
+	t.frames["First Frame"].addWidget(hs, (1, 0))
+	t.frames["First Frame"].addWidget(cstext, (2, 0))
+	t.frames["Second Frame"].addWidget(byes, (0, 0))
+	t.frames["Second Frame"].addWidget(bno, (0, 1))
+
+	byes.selfframe.grid(sticky=E+W, padx=5)
+	bno.selfframe.grid(sticky=E+W, padx=5)
+	byes.config(cmd=lambda: d(True), lang=lang)
+	bno.config(cmd=lambda: d(False), lang=lang)
+	byes.button.focus_set()
+
+	t.root.wait_window()
+
+	return t.z
+
 def ret(s, lang):
 
 	def d(z):

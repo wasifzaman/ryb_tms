@@ -15,3 +15,6 @@ no phone number and birthdate for search
 4. premade grid size
 5. test test
 6. make referencing frames easier
+
+fix the time output
+put in try statements
