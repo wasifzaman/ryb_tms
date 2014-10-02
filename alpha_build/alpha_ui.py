@@ -45,7 +45,7 @@ class AppFrame(Frame):
 			self.grid_items[is_empty] = widget.fill_tag
 		else:
 			self.grid_items[is_empty] = True
-		
+
 		widget.create_widget(parent_obj=self, grid_column=is_empty[1], grid_row=is_empty[0])
 
 	def grid_search(self, row=False, column=False):
@@ -198,9 +198,9 @@ class Window(Tk):
 
 		self.outer_frame.config(bg="#FFF5EE")
 
-		#center items?
-		self.update_idletasks()
-		self.after_idle(lambda: self.minsize(self.winfo_width(), self.winfo_height()))	
+
+	def center(self):
+		return
 
 		
 	

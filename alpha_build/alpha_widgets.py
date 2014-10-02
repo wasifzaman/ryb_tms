@@ -87,11 +87,19 @@ class Button:
 
 		self.language = apply_attribute('language')
 
-		self.label_attributes = {'text': self.language[apply_attribute('text')].strip(),
+		self.label_attributes = {} if not apply_attribute('settings') or not hasattr(apply_attribute('settings'), 'label_settings') else apply_attribute('settings').label_settings
+		for attrib, value in {'text': self.language[apply_attribute('text')].strip(),
 			'width': apply_attribute('width'),
 			'bg': apply_attribute('bg'),
 			'fg': apply_attribute('fg')
-			}
+			}.items():
+			if value: self.label_attributes.update({attrib: value})
+
+		self.hover_attributes = {} if not apply_attribute('settings') or not hasattr(apply_attribute('settings'), 'hover_settings') else apply_attribute('settings').hover_settings
+		for attrib, value in {'bg': apply_attribute('hover_bg'),
+			'fg': apply_attribute('hover_fg')
+			}.items():
+			if value: self.hover_attributes.update({attrib: value})
 
 	def config(self, **kwargs):
 		if 'language' in kwargs:
@@ -102,20 +110,23 @@ class Button:
 			self.command = kwargs['command']
 			self.args = inspect.getargspec(kwargs['command']).args
 			if len(self.args) > 0 and self.args[0] != 'self':
-				self.button.bind('<ButtonRelease-1>', self.command)
-				self.button.bind('<Button-1>', self.button.config(bg='#195CBF'))
-				self.button.bind('<space>', self.command)
+				self.label.bind('<ButtonRelease-1>', self.command)
+				self.label.bind('<Button-1>', self.label.config(bg='#195CBF'))
+				self.label.bind('<space>', self.command)
 			else:
-				self.button.bind('<ButtonRelease-1>', lambda event: self.command())
-				self.button.bind('<space>', lambda event: self.command())
+				self.label.bind('<ButtonRelease-1>', lambda event: self.command())
+				self.label.bind('<space>', lambda event: self.command())
 
 		return
 
-	def enter(self):
-		return
+	def enter(self, event):
+		for attrib, value in self.hover_attributes.items():
+			if value: self.label.__setitem__(attrib, value)
 
-	def leave(self):
-		return
+	def leave(self, event):
+		for attrib, value in self.label_attributes.items():
+			if value and (attrib == 'fg' or attrib == 'bg'):
+				self.label.__setitem__(attrib, value)
 
 	def create_widget(self, **kwargs):
 
