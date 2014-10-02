@@ -493,15 +493,12 @@ class Buttonbox(Textbox):
 		try:
 			self.cmd = kwargs['cmd']
 			self.args = inspect.getargspec(kwargs['cmd']).args
-			#print(inspect.getargspec(kwargs['cmd']).args)
 			if len(self.args) > 0 and self.args[0] != 'self':
 				self.button.bind('<ButtonRelease-1>', self.cmd)
 				self.button.bind('<Button-1>', self.button.config(bg='#195CBF'))
-				#self.button.bind('<Return>', self.cmd)
 				self.button.bind('<space>', self.cmd)
 			else:
 				self.button.bind('<ButtonRelease-1>', lambda e: self.cmd())
-				#self.button.bind('<Return>', lambda e: self.cmd())
 				self.button.bind('<space>', lambda e: self.cmd())
 		except:
 			pass

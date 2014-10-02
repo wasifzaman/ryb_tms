@@ -25,7 +25,6 @@ class AppFrame(Frame):
 			self.state = 'normal'
 
 	def addWidget(self, widget, row=False, column=False):
-		self.widgets[widget.fill_tag] = widget
 		is_empty = False
 
 		if type(row) != bool and type(column) != bool and (row, column) not in self.grid_items:
@@ -41,8 +40,13 @@ class AppFrame(Frame):
 			print("grid slot taken")
 			return
 
-		self.grid_items[is_empty] = widget.fill_tag
-		self.widgets[widget.fill_tag].create_widget(parent_obj=self, grid_column=is_empty[1], grid_row=is_empty[0])
+		if hasattr(widget, 'fill_tag'):
+			self.widgets[widget.fill_tag] = widget
+			self.grid_items[is_empty] = widget.fill_tag
+		else:
+			self.grid_items[is_empty] = True
+		
+		widget.create_widget(parent_obj=self, grid_column=is_empty[1], grid_row=is_empty[0])
 
 	def grid_search(self, row=False, column=False):
 		found = False

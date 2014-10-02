@@ -22,8 +22,11 @@ main_app_window.return_button_frame = main_app_window.newFrame("Return Button Fr
 first_name = Textbox(label_text='First Name', language=main_app_window.language, fill_tag=False)
 last_name = Textbox(label_text='Last Name', language=main_app_window.language, fill_tag=False)
 
+button_add_student = Button(text='Add Students', language=main_app_window.language)
+
 main_app_window.menu_frame.addWidget(first_name, column=0)
 main_app_window.menu_frame.addWidget(last_name, column=0)
+main_app_window.menu_frame.addWidget(button_add_student, column=0)
 
 
 
