@@ -64,6 +64,8 @@ def main(t, lang, d, sM):
 	w.frames["Second Frame"].addWidget(state, (5, 0))
 	w.frames["Second Frame"].addWidget(zip, (6, 0))
 	w.frames["Second Frame"].addWidget(email, (7, 0))
+	w.frames["Second Frame"].addWidget(cPhone, (8, 0))
+	w.frames["Second Frame"].addWidget(cPhone2, (9, 0))
 
 #contact widgets
 	'''

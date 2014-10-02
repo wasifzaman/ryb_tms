@@ -29,6 +29,7 @@ def main():
 	t = Window(top=False)
 	t.attributes('-fullscreen', False)
 	t.geometry('1440x900+100+100')
+	t.wm_title("RYB Teacher Attendance")
 
 #confirm closing of the add student window
 	t.con = False
@@ -138,7 +139,7 @@ def main():
 #buttons to call sub-windows
 	bsadd = Buttonbox(text='Add Students', lang=w.lang, repr='bsadd') #Add Student
 	bsscan = Buttonbox(text='Scan Students', lang=w.lang, repr='bsscan') #Scan Student
-	bsscan2 = Buttonbox(text='Scan Out Teacher', lang=w.lang, repr='bsscan') #Scan Student
+	bsscan2 = Buttonbox(text='Scan Out Teacher', lang=w.lang, repr='bsscan2') #Scan Student
 	bssdb = Buttonbox(text='Student Database', lang=w.lang, repr='bssdb') #Student Database
 	bstools = Buttonbox(text='Tools', lang=w.lang, repr='bstools') #Database Management
 	bsbmm = Buttonbox(text='Back to Main Menu', lang=w.lang, repr='bsbmm') #Return to Main Menu

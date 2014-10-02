@@ -25,4 +25,4 @@ setup(  name = "rybsms",
         version = "0.1",
         description = "RYB SMS",
         options = {"build_exe": build_exe_options},
-        executables = [Executable("RYB Attendance.py", base=base, icon = "RYB_Attendance.ico")])
+        executables = [Executable("RYB Attendance.py", targetName="RYB Teacher Attendance.exe", base=base, icon = "RYB_Attendance.ico")])

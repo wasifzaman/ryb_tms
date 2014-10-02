@@ -110,6 +110,22 @@ def main(t, lang, d):
 	notes.sentry.grid(column=0, columnspan=2)
 	notes.config(height=6, width=32)
 
+#early checkin
+	w.frames["Fourth Frame"].addWidget(checkin10, (0, 0))
+	w.frames["Fourth Frame"].addWidget(checkin20, (0, 2))
+	w.frames["Fourth Frame"].addWidget(checkin50, (0, 4))
+	w.frames["Fourth Frame"].addWidget(checkin100, (0, 6))
+
+	checkin10.label.config(width=4)
+	checkin20.label.config(width=4)
+	checkin50.label.config(width=4)
+	checkin100.label.config(width=4)
+
+	checkin10.entry.config(width=3)
+	checkin20.entry.config(width=3)
+	checkin50.entry.config(width=3)
+	checkin100.entry.config(width=3)
+
 #special
 	'''
 	spec = Labelbox(text='spec', lang=w.lang, repr='spec')
@@ -167,6 +183,11 @@ def main(t, lang, d):
 	def s():
 		#try:
 		w.s = sby.getData()[1]
+
+		if len(w.s) == 0: return
+		if w.s not in d.studentList:
+			nos(w.lang)
+			return
 
 		w.tdp = dict()
 
@@ -279,6 +300,13 @@ def main(t, lang, d):
 #scan student
 	def ss(mode=False):
 		d.scanStudent(w.s, xtra=w.lang['Scan'] if sby.getData()[0] == 'bCode' and not mode else w.lang['Manual'])
+		cdt = datetime.now()
+		earlytime = datetime(cdt.year, cdt.month, cdt.day, 9, 15)
+		last_checkin = datetime(cdt.year, cdt.month, cdt.day, 9, 30)
+		if cdt > earlytime and cdt < last_checkin:
+			if confirm_check_in(w.s, w.lang):
+				d.studentList[w.s].datapoints['attinfo'][1][-1][2] = "09:15 AM"
+
 		d.saveData()
 		
 		#show alert if classes remaining is less than 2
@@ -313,6 +341,11 @@ def main(t, lang, d):
 
 		w.frames['Eleventh Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
 		w2.frames['Third Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
+
+		checkin10.setData(d.studentList[w.s].datapoints['10s'])
+		checkin20.setData(d.studentList[w.s].datapoints['20s'])
+		checkin50.setData(d.studentList[w.s].datapoints['50s'])
+		checkin100.setData(d.studentList[w.s].datapoints['100s'])
 
 		#auto scroll to last position
 		w.attinfo.canvas.yview_moveto(1.0)

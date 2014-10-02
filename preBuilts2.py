@@ -105,6 +105,14 @@ pinfo = Labelbox(text='Payment information', lang=language, repr='pinfo')
 ninfo = Labelbox(text='Notes', lang=language, repr='ninfo')
 
 
+#early checkin
+checkin10 = TextboxNoEdit(text='10s', lang=language, repr='10s')
+checkin20 = TextboxNoEdit(text='20s', lang=language, repr='20s')
+checkin50 = TextboxNoEdit(text='50s', lang=language, repr='50s')
+checkin100 = TextboxNoEdit(text='100s', lang=language, repr='100s')
+
+
+
 #spicker
 def spicker(d):
 
@@ -475,6 +483,34 @@ def cs(s, lang):
 
 	return t.z
 
+def csout(s, lang):
+
+	def d(z):
+		t.z = z
+		t.dw()
+
+	t = Mbox()
+
+	t.newFrame("First Frame", (0, 0))
+	t.newFrame("Second Frame", (1, 0))
+
+	cstext = Labelbox(text='Check out prompt', lang=lang, repr='cstext')
+
+	t.frames["First Frame"].addWidget(hs, (1, 0))
+	t.frames["First Frame"].addWidget(cstext, (2, 0))
+	t.frames["Second Frame"].addWidget(byes, (0, 0))
+	t.frames["Second Frame"].addWidget(bno, (0, 1))
+
+	byes.selfframe.grid(sticky=E+W, padx=5)
+	bno.selfframe.grid(sticky=E+W, padx=5)
+	byes.config(cmd=lambda: d(True), lang=lang)
+	bno.config(cmd=lambda: d(False), lang=lang)
+	byes.button.focus_set()
+
+	t.root.wait_window()
+
+	return t.z
+
 def no_checkin_today(lang):
 
 	t = Mbox()
@@ -532,6 +568,34 @@ def confirm_print(s, lang):
 	t.newFrame("Second Frame", (1, 0))
 
 	cstext = Labelbox(text='Con print', lang=lang, repr='cprint')
+
+	t.frames["First Frame"].addWidget(hs, (1, 0))
+	t.frames["First Frame"].addWidget(cstext, (2, 0))
+	t.frames["Second Frame"].addWidget(byes, (0, 0))
+	t.frames["Second Frame"].addWidget(bno, (0, 1))
+
+	byes.selfframe.grid(sticky=E+W, padx=5)
+	bno.selfframe.grid(sticky=E+W, padx=5)
+	byes.config(cmd=lambda: d(True), lang=lang)
+	bno.config(cmd=lambda: d(False), lang=lang)
+	byes.button.focus_set()
+
+	t.root.wait_window()
+
+	return t.z
+
+def confirm_check_in(s, lang):
+
+	def d(z):
+		t.z = z
+		t.dw()
+
+	t = Mbox()
+
+	t.newFrame("First Frame", (0, 0))
+	t.newFrame("Second Frame", (1, 0))
+
+	cstext = Labelbox(text='Confirm late check-in', lang=lang, repr='cprint')
 
 	t.frames["First Frame"].addWidget(hs, (1, 0))
 	t.frames["First Frame"].addWidget(cstext, (2, 0))

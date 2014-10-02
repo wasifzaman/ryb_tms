@@ -1,6 +1,7 @@
 from uiHandler22 import *
 from dataHandler import *
 from preBuilts2 import *
+import reset_check_in_row
 
 
 def main(lang, d, top=False, i=0): #i is the id of the student passed in
@@ -49,8 +50,14 @@ def main(lang, d, top=False, i=0): #i is the id of the student passed in
 	w.frames["First Frame"].addWidget(sinfo, (3, 0))
 	sinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
 	sinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
-	w.frames["First Frame"].addWidget(firstName, (4, 0))
-	w.frames["First Frame"].addWidget(lastName, (5, 0))
+	firstName_noedit = TextboxNoEdit(text="First Name", lang=language, repr='firstName')
+	lastName_noedit = TextboxNoEdit(text="Last Name", lang=language, repr='lastName')
+	w.frames["First Frame"].addWidget(firstName_noedit, (4, 0))
+	w.frames["First Frame"].addWidget(lastName_noedit, (5, 0))
+
+#reset check in row
+	b_reset_checkin = Buttonbox(text='resetcheckin', lang=language, repr='bresetcheckin')
+	w.frames["Ninth Frame"].addWidget(b_reset_checkin, (2, 1))
 
 
 #notes widget
@@ -84,6 +91,9 @@ def main(lang, d, top=False, i=0): #i is the id of the student passed in
 
 	#if amount owed is larger than amount paid, color amount owed in red
 	if s.datapoints['tpa'] < s.datapoints['tpo']: tpo.entry.config(bg='red')
+
+	def reset_checkin():
+		reset_check_in_row.main(w.lang, d, w.s)
 
 	def collect():
 		if not changed():
@@ -185,6 +195,8 @@ def main(lang, d, top=False, i=0): #i is the id of the student passed in
 	bclose = Buttonbox(text='close', lang=w.lang, repr='bclose')
 	w.frames["Fifth Frame"].addWidget(bclose, (0, 1))
 	bclose.config(cmd=quit)
+
+	b_reset_checkin.config(cmd=reset_checkin)
 
 
 	#set starting lang

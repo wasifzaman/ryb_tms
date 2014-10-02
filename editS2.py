@@ -23,7 +23,7 @@ def main(lang, d, top=False, i=0):
 	w.newFrame("First Frame", (1, 1))
 	w.newFrame("Second Frame", (1, 2))
 	w.newFrame("Third Frame", (2, 1))
-	w.newFrame("Fourth Frame", (2, 2))
+	w.newFrame("Fourth Frame", (2, 1))
 	w.newFrame("Fifth Frame", (5, 0))
 	w.newFrame("Sixth Frame", (4, 2))
 	w.newFrame("Seventh Frame", (1, 0))
@@ -62,6 +62,8 @@ def main(lang, d, top=False, i=0):
 	w.frames["First Frame"].addWidget(state, (10, 0))
 	w.frames["First Frame"].addWidget(zip, (11, 0))
 	w.frames["First Frame"].addWidget(email, (12, 0))
+	w.frames["First Frame"].addWidget(cPhone, (13, 0))
+	w.frames["First Frame"].addWidget(cPhone2, (14, 0))
 
 #contact widgets
 	'''
@@ -75,10 +77,10 @@ def main(lang, d, top=False, i=0):
 	'''
 
 #database info widgets
-	w.frames["First Frame"].addWidget(pinfo, (13, 0))
+	w.frames["First Frame"].addWidget(pinfo, (15, 0))
 	pinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
 	pinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
-	w.frames["First Frame"].addWidget(bCode, (14, 0))
+	w.frames["First Frame"].addWidget(bCode, (16, 0))
 	#w.frames["Fourth Frame"].addWidget(sid, (2, 0))
 	
 #payment widgets
@@ -98,13 +100,33 @@ def main(lang, d, top=False, i=0):
 	'''
 
 #notes widget
-	w.frames["First Frame"].addWidget(ninfo, (15, 0))
+	w.frames["First Frame"].addWidget(ninfo, (17, 0))
 	ninfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
 	ninfo.label.grid(columnspan=2, sticky=E+W, pady=3)
-	w.frames["First Frame"].addWidget(notes, (16, 0))
+	w.frames["First Frame"].addWidget(notes, (18, 0))
 	notes.label.grid_forget()
 	notes.sentry.grid(column=0, columnspan=2)
 	notes.config(height=8, width=32)
+
+	w.frames["Fourth Frame"].addWidget(checkin10, (0, 0))
+	w.frames["Fourth Frame"].addWidget(checkin20, (0, 2))
+	w.frames["Fourth Frame"].addWidget(checkin50, (0, 4))
+	w.frames["Fourth Frame"].addWidget(checkin100, (0, 6))
+
+	checkin10.label.config(width=4)
+	checkin20.label.config(width=4)
+	checkin50.label.config(width=4)
+	checkin100.label.config(width=4)
+
+	checkin10.entry.config(width=3)
+	checkin20.entry.config(width=3)
+	checkin50.entry.config(width=3)
+	checkin100.entry.config(width=3)
+
+	checkin10.setData(d.studentList[w.s].datapoints['10s'])
+	checkin20.setData(d.studentList[w.s].datapoints['20s'])
+	checkin50.setData(d.studentList[w.s].datapoints['50s'])
+	checkin100.setData(d.studentList[w.s].datapoints['100s'])
 
 	'''
 	baclass = Buttonbox(text='awardclass', lang=w.lang, repr='aclass')
@@ -165,7 +187,7 @@ def main(lang, d, top=False, i=0):
 	'''
 	
 	w.attinfo.editwidget=False
-	w.attinfo.canvas.config(width=700, height=400)
+	w.attinfo.canvas.config(width=700, height=520)
 
 	#reset portrait
 	portr.setData('monet_sm.jpg')

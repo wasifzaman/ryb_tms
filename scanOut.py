@@ -110,6 +110,22 @@ def main(t, lang, d):
 	notes.sentry.grid(column=0, columnspan=2)
 	notes.config(height=6, width=32)
 
+#early checkin
+	w.frames["Fourth Frame"].addWidget(checkin10, (0, 0))
+	w.frames["Fourth Frame"].addWidget(checkin20, (0, 2))
+	w.frames["Fourth Frame"].addWidget(checkin50, (0, 4))
+	w.frames["Fourth Frame"].addWidget(checkin100, (0, 6))
+
+	checkin10.label.config(width=4)
+	checkin20.label.config(width=4)
+	checkin50.label.config(width=4)
+	checkin100.label.config(width=4)
+
+	checkin10.entry.config(width=3)
+	checkin20.entry.config(width=3)
+	checkin50.entry.config(width=3)
+	checkin100.entry.config(width=3)
+
 #special
 	'''
 	spec = Labelbox(text='spec', lang=w.lang, repr='spec')
@@ -167,6 +183,11 @@ def main(t, lang, d):
 	def s():
 		#try:
 		w.s = sby.getData()[1]
+
+		if len(w.s) == 0: return
+		if w.s not in d.studentList:
+			nos(w.lang)
+			return
 
 		w.tdp = dict()
 
@@ -270,7 +291,7 @@ def main(t, lang, d):
 			#	return
 		'''
 
-		if cs(d.studentList[w.s].datapoints['firstName'], w.lang): ss()
+		if csout(d.studentList[w.s].datapoints['firstName'], w.lang): ss()
 		#except:
 		#	nos(w.lang)
 		#	pass
@@ -306,7 +327,7 @@ def main(t, lang, d):
 		hour_input = IntTextbox(text='Hour', lang=w.lang, repr='h_input')
 		minute_input = IntTextbox(text='Minute', lang=w.lang, repr='m_input')
 		am_pm_input = Textbox(text='AM/PM', lang=w.lang, repr='am_pm')
-		rbutton = Buttonbox(text='Select Folder', lang=w.lang, repr='rbutton')
+		rbutton = Buttonbox(text='Confirm', lang=w.lang, repr='rbutton')
 
 		confirm_window.newFrame("First Frame", (0, 0))
 
@@ -374,7 +395,7 @@ def main(t, lang, d):
 
 	def z(mode=False):
 		try:
-			ss(mode) if cs(d.studentList[w.s].datapoints['firstName'], w.lang) else False
+			ss(mode) if csout(d.studentList[w.s].datapoints['firstName'], w.lang) else False
 		except:
 			print("error-105")
 
@@ -413,7 +434,7 @@ def main(t, lang, d):
 	sstudent.config(cmd=collect)
 	sstudent.selfframe.grid(padx=5)
 
-	bcheck = Buttonbox(text='cinstudent', lang=language, repr='bcheck')
+	bcheck = Buttonbox(text='Scan Out Teacher', lang=language, repr='bcheck')
 	w.frames["Fifth Frame"].addWidget(bcheck, (0, 1))
 	bcheck.config(cmd=lambda: z(True))
 

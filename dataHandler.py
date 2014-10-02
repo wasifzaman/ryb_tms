@@ -1,4 +1,5 @@
 from datetime import datetime, time, timedelta
+from timeclock import *
 import keeper
 import pickle
 import xlrd
@@ -47,7 +48,12 @@ class StudentInfo:
             "expire": 'N/A',
             "cp": "N",
             "paid_entries": {},
-            "last_payment": False
+            "last_payment": False,
+            "10s": 0,
+            "20s": 0,
+            "50s": 0,
+            "100s": 0,
+            "inrow": 0,
             }
 
         self.dpalias = {
@@ -95,6 +101,9 @@ class StudentInfo:
 
         self.ordereddpalias = [self.revdpalias[key] for key in self.ordereddp]
 
+        self.timesheet = timesheet()
+        self.timesheet.defineoutformat('%m/%d/%Y', '%I:%M %p')
+
 
 class StudentDB:
 
@@ -114,7 +123,7 @@ class StudentDB:
         self.fcell = {1: lambda y: str(y), 2: lambda y: int(y), 3: lambda y: (datetime.strptime('1/1/1900', "%m/%d/%Y") + timedelta(days=y-2)).strftime("%m/%d/%Y")}
         
         #time table
-        self.timeslot = {(time(8, 15, 0), time(8, 35, 0)): '08:30 AM'}
+        self.timeslot = {(time(6, 30, 0), time(9, 15, 0)): '09:15 AM'}
         
         #last barcode
         self.setLast()
@@ -196,6 +205,26 @@ class StudentDB:
         return start + timedelta(days=rem*14)
 
 
+    def calcInRow(self):
+        cdt = datetime.now()
+
+        todaysearly = datetime(cdt.year, cdt.month, cdt.day, 9, 15)
+        
+        if cdt < todaysearly:
+            s['inrow'] += 1
+            if s['inrow'] >= 100:
+                s['100s'] += 1
+            elif s['inrow'] >= 50:
+                s['50s'] += 1
+            elif s['inrow'] >= 20:
+                s['20s'] += 1
+            elif s['inrow'] >= 10:
+                s['10s'] += 1
+        else:
+            s['inrow'] = 0
+
+
+
     def scanStudent(self, barcode, xtra=False):
         #try:
         #scan the current student in
@@ -219,6 +248,9 @@ class StudentDB:
         #    return print("scanStudent function error in datahandler.py")
 
 
+        self.studentList[barcode].timesheet.clocktimein()
+
+
     def scanOutTeacher(self, barcode, confirmed_time, xtra=False):
         #try:
         #scan the current student in
@@ -239,6 +271,9 @@ class StudentDB:
 
         
         #print(checkout - checkin)
+
+        self.studentList[barcode].timesheet.clocktimeout()
+        #print(self.studentList[barcode].timesheet.printtimesheet())
 
 
     def checkCode(self, barcode):

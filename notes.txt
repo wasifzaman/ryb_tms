@@ -18,3 +18,7 @@ no phone number and birthdate for search
 
 fix the time output
 put in try statements
+
+#of early times before 9:15 AM.
+every 10, 20, 50 and 100
+clear off salary
