@@ -26,6 +26,8 @@ button_change_language = Button(text='Change Language', language=main_app_window
 button_print_report = Button(text='Print Report', language=main_app_window.language, settings=button_scheme_1)
 button_exit = Button(text='Exit', language=main_app_window.language, settings=button_scheme_1)
 
+text_first_name = Textbox(label_text='First Name', language=main_app_window.language)
+
 
 main_app_window.menu_frame.addWidget(button_add_teacher, column=0)
 main_app_window.menu_frame.addWidget(button_check_in_teacher, column=0)
@@ -34,6 +36,7 @@ main_app_window.menu_frame.addWidget(button_teacher_database, column=0)
 main_app_window.menu_frame.addWidget(button_change_language, column=0)
 main_app_window.menu_frame.addWidget(button_print_report, column=0)
 main_app_window.menu_frame.addWidget(button_exit, column=0)
+main_app_window.menu_frame.addWidget(text_first_name, column=0)
 
 
 main_window.mainloop()

@@ -23,9 +23,12 @@ class Textbox:
 		self.language = apply_attribute('language')
 		self.fill_tag = apply_attribute('fill_tag')
 
-		self.label_attributes = {'text': self.language[apply_attribute('label_text')].strip(),
+		self.label_attributes = {} if not apply_attribute('settings') or not hasattr(apply_attribute('settings'), 'label_settings') else dict(apply_attribute('settings').label_settings)
+		for attrib, value in {'text': self.language[apply_attribute('label_text')].strip(),
 			'width': apply_attribute('label_width'),
-			'anchor': apply_attribute('anchor')}
+			'anchor': apply_attribute('anchor')
+			}.items():
+			if value: self.label_attributes.update({attrib: value})
 		
 		self.entry_attributes = {'width': apply_attribute('entry_width')}
 
