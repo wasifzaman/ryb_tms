@@ -34,3 +34,5 @@ c.update(b)
 print(a)
 print(c)
 print(b)
+
+dict(False)

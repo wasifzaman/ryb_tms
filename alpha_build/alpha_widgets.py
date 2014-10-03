@@ -6,6 +6,7 @@ import inspect
 
 Notes:
 	- widget language attribute must be a dictionary
+	- when copying widget settings, use dict(settings) to make copy
 
 
 
@@ -87,7 +88,7 @@ class Button:
 
 		self.language = apply_attribute('language')
 
-		self.label_attributes = {} if not apply_attribute('settings') or not hasattr(apply_attribute('settings'), 'label_settings') else apply_attribute('settings').label_settings
+		self.label_attributes = {} if not apply_attribute('settings') or not hasattr(apply_attribute('settings'), 'label_settings') else dict(apply_attribute('settings').label_settings)
 		for attrib, value in {'text': self.language[apply_attribute('text')].strip(),
 			'width': apply_attribute('width'),
 			'bg': apply_attribute('bg'),
@@ -95,7 +96,7 @@ class Button:
 			}.items():
 			if value: self.label_attributes.update({attrib: value})
 
-		self.hover_attributes = {} if not apply_attribute('settings') or not hasattr(apply_attribute('settings'), 'hover_settings') else apply_attribute('settings').hover_settings
+		self.hover_attributes = {} if not apply_attribute('settings') or not hasattr(apply_attribute('settings'), 'hover_settings') else dict(apply_attribute('settings').hover_settings)
 		for attrib, value in {'bg': apply_attribute('hover_bg'),
 			'fg': apply_attribute('hover_fg')
 			}.items():
@@ -145,6 +146,3 @@ class Button:
 
 		self.label.grid()
 		self.encompass_frame.grid(row=self.grid_row, column=self.grid_column)
-
-
-	pass

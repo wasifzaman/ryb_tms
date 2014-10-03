@@ -22,3 +22,12 @@ put in try statements
 #of early times before 9:15 AM.
 every 10, 20, 50 and 100
 clear off salary
+
+#default language 'chinese'
+times in a row
+chinese name
+search for teacher button
+print report -> attendance
+do you want to check out now? yes, use current time /yes, enter time/cancel
+todays date is twice
+reset checkin -> are you sure? -> reset all.
