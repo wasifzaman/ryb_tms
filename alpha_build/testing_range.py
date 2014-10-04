@@ -24,15 +24,4 @@ def show_top():
 	button_kill_window.config(command=top.destroy)
 
 
-a = {'a': 1}
-b = {'b': 2, 'c': 3}
-c = {'a': 5}
-
-a.update(b)
-c.update(b)
-
-print(a)
-print(c)
-print(b)
-
-dict(False)
+print('1.23'.isdigit())

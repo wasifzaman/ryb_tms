@@ -13,7 +13,7 @@ main_window.geometry('800x600+100+100')
 main_app_window = AppWindow(main_window.main_frame, num_rows=3, num_columns=2)
 main_app_window.language = languages.languages['english']
 
-main_app_window.menu_frame = main_app_window.newFrame("Menu Frame", (4, 8), column=0)
+main_app_window.menu_frame = main_app_window.newFrame("Menu Frame", (4, 10), column=0)
 main_app_window.main_image_frame = main_app_window.newFrame("Main Image Frame", (1, 1), column=1)
 main_app_window.app_frame = main_app_window.newFrame("App Frame", (1, 1))
 main_app_window.return_button_frame = main_app_window.newFrame("Return Button Frame", (1, 1))
@@ -27,6 +27,7 @@ button_print_report = Button(text='Print Report', language=main_app_window.langu
 button_exit = Button(text='Exit', language=main_app_window.language, settings=button_scheme_1)
 
 text_first_name = Textbox(label_text='First Name', language=main_app_window.language)
+coin_payment = Coin_widget(label_text='Last Payment', language=main_app_window.language, settings=coin_scheme_1)
 
 
 main_app_window.menu_frame.addWidget(button_add_teacher, column=0)
@@ -37,6 +38,7 @@ main_app_window.menu_frame.addWidget(button_change_language, column=0)
 main_app_window.menu_frame.addWidget(button_print_report, column=0)
 main_app_window.menu_frame.addWidget(button_exit, column=0)
 main_app_window.menu_frame.addWidget(text_first_name, column=0)
+main_app_window.menu_frame.addWidget(coin_payment, column=0)
 
 
 main_window.mainloop()
