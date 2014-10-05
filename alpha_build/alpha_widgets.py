@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter.scrolledtext import ScrolledText
+from datetime import datetime
 import inspect
 
 '''
@@ -7,6 +8,8 @@ import inspect
 Notes:
 	- widget language attribute must be a dictionary
 	- when copying widget settings, use dict(settings) to make copy
+	- date widget's interactive adding of / creates new entry widgets each time / is added
+	- date widget returns and sets datetime object
 
 
 
@@ -34,24 +37,26 @@ class Textbox:
 		self.entry_attributes = {} if not apply_attribute('settings') or not hasattr(apply_attribute('settings'), 'entry_settings') else dict(apply_attribute('settings').entry_settings)
 		for attrib, value in {'width': apply_attribute('entry_width')
 			}.items():
-			if value: self.entry_attributes.update({attrib, value})
+			if value: self.entry_attributes.update({attrib: value})
 
 		
 	def config(self, **kwargs):
 		if 'entry_text' in kwargs:
 			field_string = StringVar()
 			field_string.set(kwargs['entry_text'])
-			self.entry_text.config(textvariable=field_string)
+			self.entry.config(textvariable=field_string)
 
 		if 'language' in kwargs:
 			self.language = kwargs['language']
-			self.label_text.config(text=self.language[self.label_text].strip())
+			self.label.config(text=self.language[self.label.get()].strip())
 
 		return
 
 	def OnValidate(self, d, i, P, s, S, v, V, W):
 		if self.filter == 'int' and S.isdigit(): 
 			return True
+		if self.filter == 'all':
+			return False
 		if not self.filter:
 			return True
 		return False
@@ -76,8 +81,8 @@ class Textbox:
 		self.entry.grid(row=0, column=1)
 		self.encompass_frame.grid(row=self.grid_row, column=self.grid_column)
 
-		vcmd = (self.encompass_frame.register(self.OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
-		self.entry.config(validate="all", validatecommand=vcmd)
+		self.vcmd = (self.encompass_frame.register(self.OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
+		self.entry.config(validate="all", validatecommand=self.vcmd)
 
 	def get_data(self):
 		return self.entry.get()
@@ -120,7 +125,7 @@ class Button:
 	def config(self, **kwargs):
 		if 'language' in kwargs:
 			self.language = kwargs['language']
-			self.label_text.config(text=self.language[self.label_text].strip())
+			self.label.config(text=self.language[self.label.get()].strip())
 
 		if 'command' in kwargs:
 			self.command = kwargs['command']
@@ -180,19 +185,33 @@ class Coin_widget:
 			if value: self.label_attributes.update({attrib: value})
 		
 		self.whole_entry_attributes = {} if not apply_attribute('settings') or not hasattr(apply_attribute('settings'), 'whole_entry_settings') else dict(apply_attribute('settings').whole_entry_settings)
-		for attrib, value in {'width': apply_attribute('whole_entry_width')
+		for attrib, value in {'width': apply_attribute('whole_entry_width'),
+			'text': apply_attribute('whole_text')
 			}.items():
-			if value: self.whole_entry_attributes.update({attrib, value})
+			if value: self.whole_entry_attributes.update({attrib: value})
 
 		self.cent_entry_attributes = {} if not apply_attribute('settings') or not hasattr(apply_attribute('settings'), 'cent_entry_settings') else dict(apply_attribute('settings').cent_entry_settings)
-		for attrib, value in {'widget': apply_attribute('cent_entry_width')
+		for attrib, value in {'widget': apply_attribute('cent_entry_width'),
+			'text': apply_attribute('cent_text')
 			}.items():
-			if value: self.cent_entry_attributes.update({attrib, value})
+			if value: self.cent_entry_attributes.update({attrib: value})
 
 	def config(self, **kwargs):
+		if 'whole_text' in kwargs:
+			field_string = StringVar()
+			field_string.set(kwargs['whole_text'])
+			self.whole_entry.config(textvariable=field_string)
+			self.whole_entry.config(validate="all", validatecommand=self.vcmd_whole)
+
+		if 'cent_text' in kwargs and kwargs['cent_text'] <= 99:
+			field_string = StringVar()
+			field_string.set(kwargs['cent_text'] if kwargs['cent_text'] >= 10 else '0' + str(kwargs['cent_text']))
+			self.cent_entry.config(textvariable=field_string)
+			self.cent_entry.config(validate="all", validatecommand=self.vcmd_cent)
+
 		if 'language' in kwargs:
 			self.language = kwargs['language']
-			self.label_text.config(text=self.language[self.label_text].strip())
+			self.label.config(text=self.language[self.label.get()].strip())
 
 		return
 
@@ -215,14 +234,28 @@ class Coin_widget:
 		self.whole_entry = Entry(self.encompass_frame)
 		self.cent_entry = Entry(self.encompass_frame)
 
+		self.vcmd_whole = (self.encompass_frame.register(self.OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
+		self.vcmd_cent = (self.encompass_frame.register(self.OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W', 'cent_entry', 2)
+
 		for attrib, value in self.label_attributes.items():
 			if value: self.label.__setitem__(attrib, value)
 
 		for attrib, value in self.whole_entry_attributes.items():
 			if value: self.whole_entry.__setitem__(attrib, value)
+			if value and attrib == 'text':
+				field_string = StringVar()
+				field_string.set(value)
+				self.whole_entry.config(textvariable=field_string)
+				self.whole_entry.config(validate="all", validatecommand=self.vcmd_whole)
 
 		for attrib, value in self.cent_entry_attributes.items():
 			if value: self.cent_entry.__setitem__(attrib, value)
+			if value and attrib == 'text':
+				if value >= 100: continue
+				field_string = StringVar()
+				field_string.set(value if value >= 10 else '0' + str(value))
+				self.cent_entry.config(textvariable=field_string)
+				self.cent_entry.config(validate="all", validatecommand=self.vcmd_cent)
 		
 		self.label.grid(row=0, column=0)
 		self.whole_entry.grid(row=0, column=1)
@@ -230,16 +263,15 @@ class Coin_widget:
 		self.cent_entry.grid(row=0, column=3)
 		self.encompass_frame.grid(row=self.grid_row, column=self.grid_column)
 
-		vcmd_whole = (self.encompass_frame.register(self.OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
-		vcmd_cent = (self.encompass_frame.register(self.OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W', 'cent_entry', 2)
-		self.whole_entry.config(validate="all", validatecommand=vcmd_whole)
-		self.cent_entry.config(validate="all", validatecommand=vcmd_cent)
+		self.whole_entry.config(validate="all", validatecommand=self.vcmd_whole)
+		self.cent_entry.config(validate="all", validatecommand=self.vcmd_cent)
 
 	def get_data(self):
-		return self.entry.get()
+		return float(self.whole_entry.get()) + float(self.cent_entry.get())/100
 
 	def set_data(self, data):
-		self.config(entry_text=data)
+		self.config(whole_text=int(str(data)[:str(data).index('.')]))
+		self.config(cent_text=int(str(data)[:str(data).index('.')]))
 
 	def hide_widget(self):
 		self.encompass_frame.grid_forget()
@@ -250,4 +282,37 @@ class Coin_widget:
 
 		self.encompass_frame.grid(row=self.grid_row, column=self.grid_column)
 
-	pass
+
+class Date_widget(Textbox):
+
+	def OnValidate(self, d, i, P, s, S, v, V, W):
+		if len(getattr(self, 'entry').get()) == 10:
+			if len(P) < len(getattr(self, 'entry').get()): return True
+			return False
+		if len(P) == 2 or len(P) == 5:
+			if len(P) < len(getattr(self, 'entry').get()): return True
+			fill_entry = P + '/'
+			self.entry = Entry(self.encompass_frame)
+			
+			for attrib, value in self.entry_attributes.items():
+				if value: self.entry.__setitem__(attrib, value)
+
+			self.entry.grid(row=0, column=1)
+			self.entry.insert(0, fill_entry)
+			
+			self.vcmd = (self.encompass_frame.register(self.OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
+			self.entry.config(validate="all", validatecommand=self.vcmd)
+
+			self.entry.focus_set()
+		if S.isdigit():
+			return True
+		return False
+
+	def get_data(self):
+		return datetime.strptime(self.entry.get(), '%m/%d/%Y')
+
+	def set_data(self, data):
+		field_string = StringVar()
+		field_string.set(datetime.strftime(data, '%m/%d/%Y'))
+		self.entry.config(textvariable=field_string)
+		self.entry.config(validate="all", validatecommand=self.vcmd)

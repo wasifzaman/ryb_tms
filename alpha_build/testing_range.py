@@ -23,5 +23,6 @@ def show_top():
 
 	button_kill_window.config(command=top.destroy)
 
-
-print('1.23'.isdigit())
+data = 105.53
+print(str(data)[:str(data).index('.')])
+print(str(data)[str(data).index('.') + 1:])
