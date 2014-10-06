@@ -27,9 +27,11 @@ button_print_report = Button(text='Print Report', language=main_app_window.langu
 button_exit = Button(text='Exit', language=main_app_window.language, settings=button_scheme_1)
 
 text_first_name = Textbox(label_text='First Name', language=main_app_window.language)
-text_first_name_filter_all = Textbox(label_text='First Name', language=main_app_window.language, filter='all')
+text_first_name_filter_all = Textbox(label_text='Last Name', language=main_app_window.language, filter='all')
+text_notes = Scrolled_textbox(label_text='Notes', language=main_app_window.language, entry_width=50, entry_height=5)
 coin_payment = Coin_widget(label_text='Last Payment', language=main_app_window.language, whole_text=10, cent_text=5, settings=coin_scheme_1)
 date_of_birth = Date_widget(label_text='Date of Birth', language=main_app_window.language, entry_width=10)
+entry_category_student = Entry_category(label_text='Search', language=main_app_window.language, categories=[{'First Name': 'First Name'}, {'Last Name': 'Last Name'}, {'Chinese Name': 'Chinese Name'}], settings=entry_category_scheme_1)
 
 
 main_app_window.menu_frame.addWidget(button_add_teacher, column=0)
@@ -43,7 +45,11 @@ main_app_window.menu_frame.addWidget(text_first_name, column=0)
 main_app_window.menu_frame.addWidget(text_first_name_filter_all, column=0)
 main_app_window.menu_frame.addWidget(coin_payment, column=0)
 main_app_window.menu_frame.addWidget(date_of_birth, column=0)
+main_app_window.menu_frame.addWidget(text_notes, column=0)
+main_app_window.menu_frame.addWidget(entry_category_student, column=0)
+
 
 date_of_birth.set_data(datetime(1988, 10, 7))
+text_notes.set_data('YAY\ntest\ntest')
 
 main_window.mainloop()

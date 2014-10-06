@@ -23,6 +23,4 @@ def show_top():
 
 	button_kill_window.config(command=top.destroy)
 
-data = 105.53
-print(str(data)[:str(data).index('.')])
-print(str(data)[str(data).index('.') + 1:])
+print(float('5.'))
