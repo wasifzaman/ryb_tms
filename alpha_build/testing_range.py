@@ -23,4 +23,83 @@ def show_top():
 
 	button_kill_window.config(command=top.destroy)
 
+def test_listbox():
+
+	window = Tk()
+
+	frame = Frame(window)
+
+
+
+	listbox1 = Listbox(frame, activestyle=NONE, exportselection=0)
+	listbox2 = Listbox(frame, activestyle=NONE, exportselection=0)
+
+	listbox1.insert(END, "a list entry")
+	listbox1.insert(END, "second list entry")
+	listbox2.insert(END, "another entry")
+	listbox2.insert(END, "another entry")
+
+
+	listbox1.grid(row=0, column=0)
+	listbox2.grid(row=0, column=1)
+
+	frame.grid()
+
+
+	def select_corresponding(event):
+		print(listbox1.nearest(event.y))
+		listbox2.selection_clear(0, 10)
+		listbox2.selection_set(listbox1.nearest(event.y))
+		return
+
+
+	listbox1.bind('<ButtonRelease-1>', select_corresponding)
+
+
+
+
+
+	listbox1.selection_set(0)
+	listbox2.selection_set(listbox1.index(ACTIVE))
+
+	window.mainloop()
+
 print(float('5.'))
+
+from tkinter import *
+
+window = Tk()
+
+frame = Frame(window)
+
+canvas = Canvas(frame, width=500, height=300)
+
+canvas.create_rectangle(50, 25, 150, 75, fill="lightblue", outline="lightblue", tag='rect_0', width=0)
+canvas.create_rectangle(150, 25, 250, 75, fill="lightblue", outline="lightblue", tag='rect_0', width=0)
+canvas.create_rectangle(250, 25, 350, 75, fill="lightblue", outline="lightblue", tag='rect_0', width=0)
+
+canvas.create_line(150, 25, 150, 75, width=1)
+canvas.create_line(250, 25, 250, 75, width=1)
+
+canvas.create_text(100, 50, text='text')
+
+
+def select_row(event):
+	for rect in canvas.find_withtag('rect_0'):
+		canvas.itemconfig(rect, fill='blue')
+	return
+
+for rect in canvas.find_withtag('rect_0'):
+	canvas.itemconfig(rect, fill='red')
+
+
+canvas.tag_bind('rect_0', '<Button-1>', select_row)
+
+
+
+frame.grid()
+
+canvas.grid()
+
+window.mainloop()
+
