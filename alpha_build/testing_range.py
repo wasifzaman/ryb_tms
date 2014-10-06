@@ -80,13 +80,17 @@ canvas.create_rectangle(250, 25, 350, 75, fill="lightblue", outline="lightblue",
 
 canvas.create_line(150, 25, 150, 75, width=1)
 canvas.create_line(250, 25, 250, 75, width=1)
+canvas.create_line(50, 25, 150, 25)
+canvas.create_line(50, 75, 150, 75)
+canvas.create_line(150, 75, 250, 75)
+canvas.create_line(50, 25, 50, 75)
 
-canvas.create_text(100, 50, text='text')
+canvas.create_text(100, 50, text='text', tag='rect_0_text')
 
 
 def select_row(event):
 	for rect in canvas.find_withtag('rect_0'):
-		canvas.itemconfig(rect, fill='blue')
+		canvas.itemconfig(rect, fill='lightblue')
 	return
 
 for rect in canvas.find_withtag('rect_0'):
@@ -94,6 +98,7 @@ for rect in canvas.find_withtag('rect_0'):
 
 
 canvas.tag_bind('rect_0', '<Button-1>', select_row)
+canvas.tag_bind('rect_0_text', '<Button-1>', select_row)
 
 
 
