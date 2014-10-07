@@ -289,7 +289,7 @@ def main(t, lang, d):
 		'''
 
 		conf_check_out_method = confirm_check_out_time(w.lang)
-		if conf_check_out_method:
+		if conf_check_out_method == True and conf_check_out_method != 'cancel':
 			w.time_input_confirmed = datetime.now().strftime('%I:%M %p')
 			d.scanOutTeacher(w.s, w.time_input_confirmed)
 
@@ -306,6 +306,8 @@ def main(t, lang, d):
 
 			#reset Scan By to Barcode
 			sby.b.set(sby.rads[0][1])
+
+			d.saveData()
 
 			return
 		elif conf_check_out_method == 'cancel': return
@@ -425,7 +427,7 @@ def main(t, lang, d):
 	def z(mode=False):
 		try:
 			conf_check_out_method = confirm_check_out_time(w.lang)
-			if conf_check_out_method:
+			if conf_check_out_method == True and conf_check_out_method != 'cancel':
 				w.time_input_confirmed = datetime.now().strftime('%I:%M %p')
 				d.scanOutTeacher(w.s, w.time_input_confirmed)
 
@@ -442,6 +444,8 @@ def main(t, lang, d):
 
 				#reset Scan By to Barcode
 				sby.b.set(sby.rads[0][1])
+
+				d.saveData()
 
 				return
 			elif conf_check_out_method == 'cancel': return

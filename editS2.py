@@ -108,23 +108,19 @@ def main(lang, d, top=False, i=0):
 	notes.sentry.grid(column=0, columnspan=2)
 	notes.config(height=8, width=32)
 
-	w.frames["Fourth Frame"].addWidget(checkin10, (0, 0))
-	w.frames["Fourth Frame"].addWidget(checkin20, (0, 2))
+	w.frames["Fourth Frame"].addWidget(checkin25, (0, 2))
 	w.frames["Fourth Frame"].addWidget(checkin50, (0, 4))
 	w.frames["Fourth Frame"].addWidget(checkin100, (0, 6))
 
-	checkin10.label.config(width=4)
-	checkin20.label.config(width=4)
+	checkin25.label.config(width=4)
 	checkin50.label.config(width=4)
 	checkin100.label.config(width=4)
 
-	checkin10.entry.config(width=3)
-	checkin20.entry.config(width=3)
+	checkin25.entry.config(width=3)
 	checkin50.entry.config(width=3)
 	checkin100.entry.config(width=3)
 
-	checkin10.setData(d.studentList[w.s].datapoints['10s'])
-	checkin20.setData(d.studentList[w.s].datapoints['20s'])
+	checkin25.setData(d.studentList[w.s].datapoints['25s'])
 	checkin50.setData(d.studentList[w.s].datapoints['50s'])
 	checkin100.setData(d.studentList[w.s].datapoints['100s'])
 
@@ -162,7 +158,10 @@ def main(lang, d, top=False, i=0):
 
 	w.attinfo = attinfo
 	w.frames["Eleventh Frame"].addWidget(w.attinfo, (0, 0))
-	w.frames["Eleventh Frame"].grid(rowspan=4, sticky=W)
+	w.frames["Eleventh Frame"].grid(rowspan=3, sticky=W)
+	w.attinfo.canvas.config(width=720)
+	w.attinfo.editwidget = False
+	w.attinfo.clast = False
 
 #renew classes button
 	'''

@@ -27,7 +27,7 @@ clear off salary
 #times in a row
 #chinese name
 search for teacher button
-print report -> attendance
+#print report -> attendance
 #do you want to check out now? yes, use current time /yes, enter time/cancel
 #todays date is twice
 #reset checkin -> are you sure? -> reset all.
