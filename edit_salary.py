@@ -36,7 +36,7 @@ def main(lang, d, top=False, i=0): #i is the id of the student passed in
 
 #today's date
 	today = TextboxNoEdit(text="today's date", lang=w.lang, repr='today_date')
-	last_payment = TextboxNoEdit(text="today's date", lang=w.lang, repr='last_pay_date')
+	last_payment = TextboxNoEdit(text="last payment", lang=w.lang, repr='last_pay_date')
 	dollar_per_hour = MoneyTextbox(text="dollar per hour", lang=w.lang, repr='dollar_p_hour')
 	w.frames["First Frame"].addWidget(today, (0, 0))
 	w.frames["First Frame"].addWidget(last_payment, (1, 0))
@@ -52,8 +52,10 @@ def main(lang, d, top=False, i=0): #i is the id of the student passed in
 	sinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
 	firstName_noedit = TextboxNoEdit(text="First Name", lang=language, repr='firstName')
 	lastName_noedit = TextboxNoEdit(text="Last Name", lang=language, repr='lastName')
+	chineseName_noedit = TextboxNoEdit(text="Chinese Name", lang=language, repr='chineseName')
 	w.frames["First Frame"].addWidget(firstName_noedit, (4, 0))
 	w.frames["First Frame"].addWidget(lastName_noedit, (5, 0))
+	w.frames["First Frame"].addWidget(chineseName_noedit, (6, 0))
 
 #reset check in row
 	b_reset_checkin = Buttonbox(text='resetcheckin', lang=language, repr='bresetcheckin')
@@ -93,7 +95,7 @@ def main(lang, d, top=False, i=0): #i is the id of the student passed in
 	if s.datapoints['tpa'] < s.datapoints['tpo']: tpo.entry.config(bg='red')
 
 	def reset_checkin():
-		reset_check_in_row.main(w.lang, d, w.s)
+		reset_confirmation(w.lang, d.reset_checkin(w.s, confirm_reset(w.lang)))
 
 	def collect():
 		if not changed():

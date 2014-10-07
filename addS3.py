@@ -49,7 +49,7 @@ def main(t, lang, d, sM):
 	sinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
 	w.frames["First Frame"].addWidget(firstName, (1, 0))
 	w.frames["First Frame"].addWidget(lastName, (2, 0))
-	#w.frames["First Frame"].addWidget(chineseName, (3, 0))
+	w.frames["First Frame"].addWidget(chineseName, (3, 0))
 	w.frames["First Frame"].addWidget(dob, (4, 0))
 	#w.frames["First Frame"].addWidget(age, (5, 0))
 	#w.frames["First Frame"].addWidget(parentName, (6, 0))

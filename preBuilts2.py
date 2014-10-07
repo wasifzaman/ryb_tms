@@ -106,8 +106,7 @@ ninfo = Labelbox(text='Notes', lang=language, repr='ninfo')
 
 
 #early checkin
-checkin10 = TextboxNoEdit(text='10s', lang=language, repr='10s')
-checkin20 = TextboxNoEdit(text='20s', lang=language, repr='20s')
+checkin25 = TextboxNoEdit(text='25s', lang=language, repr='25s')
 checkin50 = TextboxNoEdit(text='50s', lang=language, repr='50s')
 checkin100 = TextboxNoEdit(text='100s', lang=language, repr='100s')
 
@@ -285,10 +284,12 @@ cm = Photo(repr='cm', path='check_mark_sm.png')
 bok = Buttonbox(text='ok', lang=language, repr='bok')
 byes = Buttonbox(text='yes', lang=language, repr='byes')
 bno = Buttonbox(text='no', lang=language, repr='bno')
+bcancel = Buttonbox(text='Cancel', lang=language, repr='bcancel')
 
 bok.width = 10
 byes.width = 10
 bno.width = 10
+bcancel.width = 10
 
 
 #importexp
@@ -556,6 +557,42 @@ def confirm_overwrite_checkout(s, lang):
 
 	return t.z
 
+def confirm_check_out_time(lang):
+
+	def d(z):
+		t.z = z
+		t.dw()
+
+	t = Mbox()
+
+	t.newFrame("First Frame", (0, 0))
+	t.newFrame("Second Frame", (1, 0))
+
+	cstext = Labelbox(text='Check out prompt', lang=lang, repr='creset')
+
+	byes_current_time = Buttonbox(text='Yes, use current time', lang=lang, repr='bok')
+	byes_enter_time = Buttonbox(text='Yes, enter time', lang=lang, repr='bnok')
+
+	byes_current_time.width = 20
+	byes_enter_time.width = 20
+
+	t.frames["First Frame"].addWidget(hs, (1, 0))
+	t.frames["First Frame"].addWidget(cstext, (2, 0))
+	t.frames["Second Frame"].addWidget(byes_current_time, (0, 0))
+	t.frames["Second Frame"].addWidget(byes_enter_time, (0, 1))
+	t.frames["Second Frame"].addWidget(bcancel, (0, 2))
+
+	byes_current_time.selfframe.grid(sticky=E+W, padx=5)
+	byes_enter_time.selfframe.grid(sticky=E+W, padx=5)
+	bcancel.selfframe.grid(sticky=E+W, padx=5)
+	byes_current_time.config(cmd=lambda: d(True), lang=lang)
+	byes_enter_time.config(cmd=lambda: d(False), lang=lang)
+	bcancel.config(cmd=lambda: d('cancel'), lang=lang)
+
+	t.root.wait_window()
+
+	return t.z
+
 def confirm_print(s, lang):
 
 	def d(z):
@@ -611,6 +648,55 @@ def confirm_check_in(s, lang):
 	t.root.wait_window()
 
 	return t.z
+
+def confirm_reset(lang):
+
+	def d(z):
+		t.z = z
+		t.dw()
+
+	t = Mbox()
+
+	t.newFrame("First Frame", (0, 0))
+	t.newFrame("Second Frame", (1, 0))
+
+	cstext = Labelbox(text='Confirm Reset', lang=lang, repr='creset')
+
+	t.frames["First Frame"].addWidget(hs, (1, 0))
+	t.frames["First Frame"].addWidget(cstext, (2, 0))
+	t.frames["Second Frame"].addWidget(byes, (0, 0))
+	t.frames["Second Frame"].addWidget(bno, (0, 1))
+	t.frames["Second Frame"].addWidget(bcancel, (0, 2))
+
+	byes.selfframe.grid(sticky=E+W, padx=5)
+	bno.selfframe.grid(sticky=E+W, padx=5)
+	bcancel.selfframe.grid(sticky=E+W, padx=5)
+	byes.config(cmd=lambda: d(True), lang=lang)
+	bno.config(cmd=lambda: d(False), lang=lang)
+	bcancel.config(cmd=lambda: d('cancel'), lang=lang)
+
+	t.root.wait_window()
+
+	return t.z
+
+def reset_confirmation(lang, value):
+
+	if value != True: return
+
+	t = Mbox()
+	
+	t.newFrame("First Frame", (0, 0))
+	t.newFrame("Second Frame", (1, 0))
+
+	dbupdate = Labelbox(text='Early Check-ins have been reset', lang=lang, repr='dbupdate')
+
+	t.frames["First Frame"].addWidget(ws, (0, 0))
+	t.frames["First Frame"].addWidget(dbupdate, (1, 0))
+	t.frames["Second Frame"].addWidget(bok, (2, 0))
+
+	bok.config(cmd=t.dw, lang=lang)
+
+	t.root.wait_window()
 
 def ret(s, lang):
 

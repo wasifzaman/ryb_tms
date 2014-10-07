@@ -52,7 +52,7 @@ def main(t, lang, d):
 	sinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
 	w.frames["First Frame"].addWidget(firstName, (1, 0))
 	w.frames["First Frame"].addWidget(lastName, (2, 0))
-	#w.frames["First Frame"].addWidget(chineseName, (3, 0))
+	w.frames["First Frame"].addWidget(chineseName, (3, 0))
 	w.frames["First Frame"].addWidget(dob, (4, 0))
 	#w.frames["First Frame"].addWidget(age, (5, 0))
 	#w.frames["Second Frame"].addWidget(parentName, (8, 0))
@@ -111,18 +111,15 @@ def main(t, lang, d):
 	notes.config(height=6, width=32)
 
 #early checkin
-	w.frames["Fourth Frame"].addWidget(checkin10, (0, 0))
-	w.frames["Fourth Frame"].addWidget(checkin20, (0, 2))
+	w.frames["Fourth Frame"].addWidget(checkin25, (0, 2))
 	w.frames["Fourth Frame"].addWidget(checkin50, (0, 4))
 	w.frames["Fourth Frame"].addWidget(checkin100, (0, 6))
 
-	checkin10.label.config(width=4)
-	checkin20.label.config(width=4)
+	checkin25.label.config(width=4)
 	checkin50.label.config(width=4)
 	checkin100.label.config(width=4)
 
-	checkin10.entry.config(width=3)
-	checkin20.entry.config(width=3)
+	checkin25.entry.config(width=3)
 	checkin50.entry.config(width=3)
 	checkin100.entry.config(width=3)
 
@@ -342,8 +339,7 @@ def main(t, lang, d):
 		w.frames['Eleventh Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
 		w2.frames['Third Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
 
-		checkin10.setData(d.studentList[w.s].datapoints['10s'])
-		checkin20.setData(d.studentList[w.s].datapoints['20s'])
+		checkin25.setData(d.studentList[w.s].datapoints['25s'])
 		checkin50.setData(d.studentList[w.s].datapoints['50s'])
 		checkin100.setData(d.studentList[w.s].datapoints['100s'])
 

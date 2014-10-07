@@ -49,8 +49,7 @@ class StudentInfo:
             "cp": "N",
             "paid_entries": {},
             "last_payment": False,
-            "10s": 0,
-            "20s": 0,
+            "25s": 0,
             "50s": 0,
             "100s": 0,
             "inrow": 0,
@@ -205,10 +204,12 @@ class StudentDB:
         return start + timedelta(days=rem*14)
 
 
-    def calcInRow(self):
+    def calcInRow(self, barcode):
         cdt = datetime.now()
 
         todaysearly = datetime(cdt.year, cdt.month, cdt.day, 9, 15)
+
+        s = self.studentList[barcode].datapoints
         
         if cdt < todaysearly:
             s['inrow'] += 1
@@ -216,12 +217,23 @@ class StudentDB:
                 s['100s'] += 1
             elif s['inrow'] >= 50:
                 s['50s'] += 1
-            elif s['inrow'] >= 20:
-                s['20s'] += 1
-            elif s['inrow'] >= 10:
-                s['10s'] += 1
+            elif s['inrow'] >= 25:
+                s['25s'] += 1
         else:
             s['inrow'] = 0
+
+
+    def reset_checkin(self, barcode, value):
+        if value == True:
+            s = self.studentList[barcode].datapoints
+            s['25s'] = 0
+            s['50s'] = 0
+            s['100s'] = 0
+            print('reset')
+            return True
+
+        return False
+
 
 
 
@@ -249,6 +261,7 @@ class StudentDB:
 
 
         self.studentList[barcode].timesheet.clocktimein()
+        self.calcInRow(barcode)
 
 
     def scanOutTeacher(self, barcode, confirmed_time, xtra=False):

@@ -126,13 +126,16 @@ languages = \
 		"Print All": "Print All",
 		"Confirm Time": "Confirm Time",
 		"Confirm": "Confirm",
-		"10s": " 10s",
-		"20s": " 20s",
+		"25s": " 25s",
 		"50s": " 50s",
 		"100s": " 100s",
 		"set": "Set",
 		"reset": "Reset",
 		"resetcheckin": "Reset Check-In",
+		"Confirm Reset": "Confirm Reset",
+		"Early Check-ins have been reset": "Early Check-ins have been reset",
+		"Yes, use current time": "Yes, use current time",
+		"Yes, enter time": "Yes, enter time"
 		},
 
 	"chinese": {
@@ -259,13 +262,16 @@ languages = \
 		"Print All": "Print All",
 		"Confirm Time": "Confirm Time",
 		"Confirm": "Confirm",
-		"10s": " 10s",
-		"20s": " 20s",
+		"25s": " 25s",
 		"50s": " 50s",
 		"100s": " 100s",
 		"set": "Set",
 		"reset": "Reset",
 		"resetcheckin": "Reset Check-In",
+		"Confirm Reset": "Confirm Reset?",
+		"Early Check-ins have been reset": "Early Check-ins have been reset",
+		"Yes, use current time": "Yes, use current time",
+		"Yes, enter time": "Yes, enter time"
 		}
 		
 }

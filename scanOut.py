@@ -52,7 +52,7 @@ def main(t, lang, d):
 	sinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
 	w.frames["First Frame"].addWidget(firstName, (1, 0))
 	w.frames["First Frame"].addWidget(lastName, (2, 0))
-	#w.frames["First Frame"].addWidget(chineseName, (3, 0))
+	w.frames["First Frame"].addWidget(chineseName, (3, 0))
 	w.frames["First Frame"].addWidget(dob, (4, 0))
 	#w.frames["First Frame"].addWidget(age, (5, 0))
 	#w.frames["Second Frame"].addWidget(parentName, (8, 0))
@@ -111,18 +111,15 @@ def main(t, lang, d):
 	notes.config(height=6, width=32)
 
 #early checkin
-	w.frames["Fourth Frame"].addWidget(checkin10, (0, 0))
-	w.frames["Fourth Frame"].addWidget(checkin20, (0, 2))
+	w.frames["Fourth Frame"].addWidget(checkin25, (0, 2))
 	w.frames["Fourth Frame"].addWidget(checkin50, (0, 4))
 	w.frames["Fourth Frame"].addWidget(checkin100, (0, 6))
 
-	checkin10.label.config(width=4)
-	checkin20.label.config(width=4)
+	checkin25.label.config(width=4)
 	checkin50.label.config(width=4)
 	checkin100.label.config(width=4)
 
-	checkin10.entry.config(width=3)
-	checkin20.entry.config(width=3)
+	checkin25.entry.config(width=3)
 	checkin50.entry.config(width=3)
 	checkin100.entry.config(width=3)
 
@@ -291,7 +288,31 @@ def main(t, lang, d):
 			#	return
 		'''
 
-		if csout(d.studentList[w.s].datapoints['firstName'], w.lang): ss()
+		conf_check_out_method = confirm_check_out_time(w.lang)
+		if conf_check_out_method:
+			w.time_input_confirmed = datetime.now().strftime('%I:%M %p')
+			d.scanOutTeacher(w.s, w.time_input_confirmed)
+
+			w.frames['Eleventh Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
+			w2.frames['Third Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
+
+			checkin25.setData(d.studentList[w.s].datapoints['25s'])
+			checkin50.setData(d.studentList[w.s].datapoints['50s'])
+			checkin100.setData(d.studentList[w.s].datapoints['100s'])
+
+			#auto scroll to last position
+			w.attinfo.canvas.yview_moveto(1.0)
+			w2.attinfo.canvas.yview_moveto(1.0)
+
+			#reset Scan By to Barcode
+			sby.b.set(sby.rads[0][1])
+
+			return
+		elif conf_check_out_method == 'cancel': return
+		else:
+			ss()
+
+		#if csout(d.studentList[w.s].datapoints['firstName'], w.lang): ss()
 		#except:
 		#	nos(w.lang)
 		#	pass
@@ -309,6 +330,9 @@ def main(t, lang, d):
 			no_checkin_today(w.lang)
 			return
 		if last_entry_checkout and not confirm_overwrite_checkout('a', w.lang): return
+
+
+
 
 		def out():
 			time_input = str(hour_input.getData()) + ':' + str(minute_input.getData()) + ' ' + am_pm_input.getData()
@@ -348,13 +372,14 @@ def main(t, lang, d):
 
 		confirm_time.wait_window()
 
+
 		d.scanOutTeacher(w.s, w.time_input_confirmed)#, xtra=w.lang['Scan'] if sby.getData()[0] == 'bCode' and not mode else w.lang['Manual'])
 		print('out', w.time_input_confirmed)
 		d.saveData()
 		
 		#show alert if classes remaining is less than 2
-		cRem = d.studentList[w.s].datapoints['cRemaining']
-		expir = d.studentList[w.s].datapoints['expire']
+		#cRem = d.studentList[w.s].datapoints['cRemaining']
+		#expir = d.studentList[w.s].datapoints['expire']
 		#if cRem <= 2:
 		#	spec.show()
 		#	spec.setData(w.lang['Classes remaining for this student'] + ': ' + str(cRem))
@@ -380,10 +405,14 @@ def main(t, lang, d):
 		#w2.spec2.label.config(fg='#0000B8', font=('Verdana', 15))
 
 		#update cRemaining
-		cRemaining.setData(str(cRem))
+		#cRemaining.setData(str(cRem))
 
 		w.frames['Eleventh Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
 		w2.frames['Third Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
+
+		checkin25.setData(d.studentList[w.s].datapoints['25s'])
+		checkin50.setData(d.studentList[w.s].datapoints['50s'])
+		checkin100.setData(d.studentList[w.s].datapoints['100s'])
 
 		#auto scroll to last position
 		w.attinfo.canvas.yview_moveto(1.0)
@@ -395,7 +424,29 @@ def main(t, lang, d):
 
 	def z(mode=False):
 		try:
-			ss(mode) if csout(d.studentList[w.s].datapoints['firstName'], w.lang) else False
+			conf_check_out_method = confirm_check_out_time(w.lang)
+			if conf_check_out_method:
+				w.time_input_confirmed = datetime.now().strftime('%I:%M %p')
+				d.scanOutTeacher(w.s, w.time_input_confirmed)
+
+				w.frames['Eleventh Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
+				w2.frames['Third Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
+
+				checkin25.setData(d.studentList[w.s].datapoints['25s'])
+				checkin50.setData(d.studentList[w.s].datapoints['50s'])
+				checkin100.setData(d.studentList[w.s].datapoints['100s'])
+
+				#auto scroll to last position
+				w.attinfo.canvas.yview_moveto(1.0)
+				w2.attinfo.canvas.yview_moveto(1.0)
+
+				#reset Scan By to Barcode
+				sby.b.set(sby.rads[0][1])
+
+				return
+			elif conf_check_out_method == 'cancel': return
+			else:
+				ss()
 		except:
 			print("error-105")
 
