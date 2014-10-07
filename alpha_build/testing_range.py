@@ -72,7 +72,7 @@ window = Tk()
 
 frame = Frame(window)
 
-canvas = Canvas(frame, width=500, height=300)
+canvas = Canvas(frame, width=700, height=300)
 
 canvas.create_rectangle(50, 25, 150, 75, fill="lightblue", outline="lightblue", tag='rect_0', width=0)
 canvas.create_rectangle(150, 25, 250, 75, fill="lightblue", outline="lightblue", tag='rect_0', width=0)
@@ -93,14 +93,48 @@ def select_row(event):
 		canvas.itemconfig(rect, fill='lightblue')
 	return
 
-for rect in canvas.find_withtag('rect_0'):
-	canvas.itemconfig(rect, fill='red')
+canvas.addtag_all('all_items')
+
+for rect in canvas.find_withtag('all_items'):
+	if 'rect_0' in canvas.gettags(rect):
+		canvas.itemconfig(rect, fill='red')
 
 
 canvas.tag_bind('rect_0', '<Button-1>', select_row)
 canvas.tag_bind('rect_0_text', '<Button-1>', select_row)
 
 
+class cell_object:
+
+	def __init__(self, p1x, p1y, p2x, p2y, grid_row, grid_column):
+		self.row = grid_row
+		self.column = grid_column
+		self.p1x = p1x
+		self.p1y = p1y
+		self.p2x = p2x
+		self.p2y = p2y
+		self.left_line = (self.p1x, self.p1y, self.p1x, self.p2y)
+		self.right_line = (self.p2x, self.p1y, self.p2x, self.p2y)
+		self.top_line = (self.p1x, self.p1y, self.p2x, self.p1y)
+		self.bottom_line = (self.p1x, self.p2y, self.p2x, self.p2y)
+		self.object_id = canvas.create_rectangle(self.p1x, self.p1y, self.p2x, self.p2y, width=0)
+		#self.tag = str(self.row) + ',' + str(self.column)
+		#canvas.itemconfig(self.object_id, tags=(self.tag))
+
+	pass
+
+cell = cell_object(350, 25, 450, 75, 0, 0)
+
+canvas.create_line(cell.left_line)
+canvas.create_line(cell.top_line)
+canvas.create_line(cell.bottom_line)
+canvas.create_line(cell.right_line)
+
+canvas.itemconfig(cell.object_id, fill='lightgreen')
+
+string = "0;50,25;150,75"
+
+print(string.split(';'))
 
 frame.grid()
 
