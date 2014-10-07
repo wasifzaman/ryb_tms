@@ -113,6 +113,7 @@ class cell_object:
 		self.p1y = p1y
 		self.p2x = p2x
 		self.p2y = p2y
+		self.center = ((p1x + p2x) / 2, (p1y + p2y) / 2)
 		self.left_line = (self.p1x, self.p1y, self.p1x, self.p2y)
 		self.right_line = (self.p2x, self.p1y, self.p2x, self.p2y)
 		self.top_line = (self.p1x, self.p1y, self.p2x, self.p1y)
@@ -124,6 +125,7 @@ class cell_object:
 	pass
 
 cell = cell_object(350, 25, 450, 75, 0, 0)
+canvas.create_text(cell.center, text='text', tag='rect_0_text')
 
 canvas.create_line(cell.left_line)
 canvas.create_line(cell.top_line)
