@@ -104,7 +104,7 @@ canvas.tag_bind('rect_0', '<Button-1>', select_row)
 canvas.tag_bind('rect_0_text', '<Button-1>', select_row)
 
 
-class cell_object:
+class Cell_object:
 
 	def __init__(self, p1x, p1y, p2x, p2y, grid_row, grid_column):
 		self.row = grid_row
@@ -124,7 +124,7 @@ class cell_object:
 
 	pass
 
-cell = cell_object(350, 25, 450, 75, 0, 0)
+cell = Cell_object(350, 25, 450, 75, 0, 0)
 canvas.create_text(cell.center, text='text', tag='rect_0_text')
 
 canvas.create_line(cell.left_line)
@@ -140,7 +140,38 @@ print(string.split(';'))
 
 frame.grid()
 
-canvas.grid()
+#canvas.grid()
+
+
+class Table:
+
+	def __init__(self, parent, num_rows, num_columns):
+
+		self.num_rows = num_rows
+		self.num_columns = num_columns
+		self.canvas = Canvas(parent, width=num_columns * 100, height=num_rows * 25)
+		self.canvas.grid()
+		self.cells = {}
+
+		x, y, row, column = 0, 0, 0, 0
+		while column < num_columns:
+			while row < num_rows:
+				self.cells[(column, row)] = Cell_object(x, y, x + 100, y + 25, row, column)
+				x += 100
+				y += 25
+				row += 1
+				print(column, row)
+				#self.canvas.create_line(self.cells[(column, row)].top_line)
+			column += 1
+			row = 0
+
+
+		self.canvas.create_line(self.cells[(1, 3)].left_line)
+	pass
+
+
+table = Table(frame, 5, 5)
+
 
 window.mainloop()
 
