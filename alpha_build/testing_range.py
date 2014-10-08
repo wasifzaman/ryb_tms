@@ -106,31 +106,44 @@ canvas.tag_bind('rect_0_text', '<Button-1>', select_row)
 
 class Cell_object:
 
-	def __init__(self, p1x, p1y, p2x, p2y, grid_row, grid_column):
+	def __init__(self, canvas, p1x, p1y, p2x, p2y, grid_row, grid_column):
 		self.row = grid_row
 		self.column = grid_column
+		self.canvas = canvas
 		self.p1x = p1x
 		self.p1y = p1y
 		self.p2x = p2x
 		self.p2y = p2y
 		self.center = ((p1x + p2x) / 2, (p1y + p2y) / 2)
-		self.left_line = (self.p1x, self.p1y, self.p1x, self.p2y)
-		self.right_line = (self.p2x, self.p1y, self.p2x, self.p2y)
-		self.top_line = (self.p1x, self.p1y, self.p2x, self.p1y)
-		self.bottom_line = (self.p1x, self.p2y, self.p2x, self.p2y)
-		self.object_id = canvas.create_rectangle(self.p1x, self.p1y, self.p2x, self.p2y, width=0)
+		self.left_line = self.canvas.create_line(self.p1x, self.p1y, self.p1x, self.p2y)
+		self.right_line = self.canvas.create_line(self.p2x, self.p1y, self.p2x, self.p2y)
+		self.top_line = self.canvas.create_line(self.p1x, self.p1y, self.p2x, self.p1y)
+		self.bottom_line = self.canvas.create_line(self.p1x, self.p2y, self.p2x, self.p2y)
+		self.object_id = self.canvas.create_rectangle(self.p1x, self.p1y, self.p2x, self.p2y, width=0)
 		#self.tag = str(self.row) + ',' + str(self.column)
 		#canvas.itemconfig(self.object_id, tags=(self.tag))
 
+	def delete_line(self, line):
+		if line == 'left':
+			self.canvas.delete(self.left_line)
+		elif line == 'right':
+			self.canvas.delete(self.right_line)
+		elif line == 'top':
+			self.canvas.delete(self.top_line)
+		elif line == 'bottom':
+			self.canvas.delete(self.bottom_line)
+		else:
+			return
+
 	pass
 
-cell = Cell_object(350, 25, 450, 75, 0, 0)
+cell = Cell_object(canvas, 350, 25, 450, 75, 0, 0)
 canvas.create_text(cell.center, text='text', tag='rect_0_text')
 
-canvas.create_line(cell.left_line)
-canvas.create_line(cell.top_line)
-canvas.create_line(cell.bottom_line)
-canvas.create_line(cell.right_line)
+#canvas.create_line(cell.left_line)
+#canvas.create_line(cell.top_line)
+#canvas.create_line(cell.bottom_line)
+#canvas.create_line(cell.right_line)
 
 canvas.itemconfig(cell.object_id, fill='lightgreen')
 
@@ -149,24 +162,29 @@ class Table:
 
 		self.num_rows = num_rows
 		self.num_columns = num_columns
-		self.canvas = Canvas(parent, width=num_columns * 100, height=num_rows * 25)
+		self.canvas = Canvas(parent, width=num_columns * 100 + 5, height=num_rows * 25 + 5)
 		self.canvas.grid()
 		self.cells = {}
 
-		x, y, row, column = 0, 0, 0, 0
+		x, y, row, column = 5, 5, 0, 0
 		while column < num_columns:
 			while row < num_rows:
-				self.cells[(column, row)] = Cell_object(x, y, x + 100, y + 25, row, column)
-				x += 100
+				self.cells[(column, row)] = Cell_object(self.canvas, x, y, x + 100, y + 25, row, column)
 				y += 25
+
+				#self.cells[(column, row)].delete_line('top')
+				#self.canvas.create_line(self.cells[(column, row)].left_line)
+				#self.canvas.create_line(self.cells[(column, row)].right_line)
+				#self.canvas.create_line(self.cells[(column, row)].bottom_line)
+				
 				row += 1
-				print(column, row)
-				#self.canvas.create_line(self.cells[(column, row)].top_line)
+			
+			x += 100
+			y = 5	
+
 			column += 1
 			row = 0
 
-
-		self.canvas.create_line(self.cells[(1, 3)].left_line)
 	pass
 
 

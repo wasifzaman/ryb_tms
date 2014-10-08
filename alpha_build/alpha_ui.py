@@ -37,7 +37,7 @@ class AppFrame(Frame):
 			is_empty = self.grid_search()
 
 		if not is_empty:
-			print("grid slot taken")
+			print('grid slot taken')
 			return
 
 		if hasattr(widget, 'fill_tag'):
@@ -77,14 +77,14 @@ class AppWindow(Frame):
 		self.grid_max_rows = num_rows
 		self.grid_max_columns = num_columns
 		self.grid_items = {}
-		self.option_add("*Font", "Verdana 11")
+		self.option_add('*Font', 'Verdana 11')
 
 		self.outer_frame = Frame(self)
 		self.main_frame = Frame(self.outer_frame, bd=10)
-		self.outer_frame.pack(fill="both", expand=True)
-		self.main_frame.place(in_=self.outer_frame, anchor="c", relx=.5, rely=.5)
+		self.outer_frame.pack(fill='both', expand=True)
+		self.main_frame.place(in_=self.outer_frame, anchor='c', relx=.5, rely=.5)
 
-		#self.option_add("*Background", "lightgrey") #debugger
+		#self.option_add('*Background', 'lightgrey') #debugger
 
 		#frames
 		self.frames = {}
@@ -111,7 +111,7 @@ class AppWindow(Frame):
 			is_empty = self.grid_search()
 
 		if not is_empty:
-			print("grid slot taken")
+			print('grid slot taken')
 			return
 
 		self.grid_items[is_empty] = frame_name
@@ -187,16 +187,16 @@ class Window(Tk):
 		self.main_frame = Frame(self.outer_frame)
 
 		#title frame and x button START
-		self.titleFrame = Frame(self.main_frame, bg="#4D4D4D", height=60)
+		self.titleFrame = Frame(self.main_frame, bg='#4D4D4D', height=60)
 		self.titleFrame.pack(fill=X)
 
 		self.wintitle = Label(self.titleFrame, bg='#4D4D4D', fg='white', font=('Jumbo', 15, 'bold'))
-		self.wintitle.place(in_=self.titleFrame, anchor="c", relx=.5, rely=.5)
+		self.wintitle.place(in_=self.titleFrame, anchor='c', relx=.5, rely=.5)
 
-		self.outer_frame.pack(fill="both", expand=True)
-		self.main_frame.place(in_=self.outer_frame, anchor="c", relx=.5, rely=.5)
+		self.outer_frame.pack(fill='both', expand=True)
+		self.main_frame.place(in_=self.outer_frame, anchor='c', relx=.5, rely=.5)
 
-		self.outer_frame.config(bg="#FFF5EE")
+		self.outer_frame.config(bg='#FFF5EE')
 
 
 	def center(self):
@@ -207,7 +207,7 @@ class Window(Tk):
 
 		
 		
-if __name__ == "__main__":
+if __name__ == '__main__':
 
 	w = Window()
 
