@@ -543,6 +543,7 @@ class StudentDB:
 
         totals = 0
         for v in totalondate.values():
+            print(v)
             totals += len(v)
 
         worksheet.write(0, 0, 'Total check-ins: ' + str(totals))

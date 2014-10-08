@@ -290,6 +290,16 @@ def main(t, lang, d):
 
 		conf_check_out_method = confirm_check_out_time(w.lang)
 		if conf_check_out_method == True and conf_check_out_method != 'cancel':
+			last_entry = d.studentList[w.s].datapoints['attinfo'][1][-1]
+			last_entry_date = last_entry[0]
+			last_entry_checkout = False if last_entry[-1] == '' else True
+			print(last_entry_checkout)
+
+			if datetime.strptime(last_entry_date, '%m/%d/%Y').date() != datetime.now().today().date():
+				no_checkin_today(w.lang)
+				return
+			if last_entry_checkout and not confirm_overwrite_checkout('a', w.lang): return
+
 			w.time_input_confirmed = datetime.now().strftime('%I:%M %p')
 			d.scanOutTeacher(w.s, w.time_input_confirmed)
 
@@ -428,6 +438,17 @@ def main(t, lang, d):
 		try:
 			conf_check_out_method = confirm_check_out_time(w.lang)
 			if conf_check_out_method == True and conf_check_out_method != 'cancel':
+
+				last_entry = d.studentList[w.s].datapoints['attinfo'][1][-1]
+				last_entry_date = last_entry[0]
+				last_entry_checkout = False if last_entry[-1] == '' else True
+				print(last_entry_checkout)
+
+				if datetime.strptime(last_entry_date, '%m/%d/%Y').date() != datetime.now().today().date():
+					no_checkin_today(w.lang)
+					return
+				if last_entry_checkout and not confirm_overwrite_checkout('a', w.lang): return
+				
 				w.time_input_confirmed = datetime.now().strftime('%I:%M %p')
 				d.scanOutTeacher(w.s, w.time_input_confirmed)
 
