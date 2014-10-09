@@ -148,6 +148,9 @@ class Cell_object:
 		else:
 			return
 
+	def insert_text(self, text):
+		self.text = self.canvas.create_text(self.center, text=text)
+
 	pass
 
 frame.grid()
@@ -270,7 +273,43 @@ class Table:
 
 	def add_row(self, after):
 
-		if after >= self.num_rows:
+		if after == 0:
+
+			x, y, row, column = 5, self.cells[(0, after)].p1y, self.num_rows - 1, 0
+
+			while row > after - 1:
+				while column < self.num_columns:
+
+					self.canvas.move(self.cells[(column, row)].object_id, 0, 25)
+					self.canvas.move(self.cells[(column, row)].left_line, 0, 25)
+					self.canvas.move(self.cells[(column, row)].right_line, 0, 25)
+					self.canvas.move(self.cells[(column, row)].top_line, 0, 25)
+					self.canvas.move(self.cells[(column, row)].bottom_line, 0, 25)
+
+					if hasattr(self.cells[(column, row)], 'text'):
+						self.canvas.move(self.cells[(column, row)].text, 0, 25)
+
+					self.cells[(column, row + 1)] = self.cells[(column, row)]
+					moved_cell = self.cells[(column, row + 1)]
+					moved_cell.p1y = moved_cell.p1y + 25
+					moved_cell.p2y = moved_cell.p2y + 25
+					moved_cell.center = ((moved_cell.p1x + moved_cell.p2x) / 2, (moved_cell.p1y + moved_cell.p2y) / 2)
+
+					column += 1
+
+				column = 0
+				row -= 1
+
+			x, y, row, column = 5, self.cells[(0, 0)].p1y - 25, after, 0
+
+			while column < self.num_columns:
+				self.cells[(column, row)] = Cell_object(self.canvas, x, y, x + 100, y + 25, row, column)
+
+				column += 1
+
+				x += 100
+
+		elif after >= self.num_rows:
 			after = self.num_rows
 
 			x, y, row, column = 5, self.cells[(0, self.num_rows - 1)].p2y, after, 0
@@ -295,10 +334,14 @@ class Table:
 					self.canvas.move(self.cells[(column, row)].top_line, 0, 25)
 					self.canvas.move(self.cells[(column, row)].bottom_line, 0, 25)
 
+					if hasattr(self.cells[(column, row)], 'text'):
+						self.canvas.move(self.cells[(column, row)].text, 0, 25)
+
 					self.cells[(column, row + 1)] = self.cells[(column, row)]
 					moved_cell = self.cells[(column, row + 1)]
 					moved_cell.p1y = moved_cell.p1y + 25
 					moved_cell.p2y = moved_cell.p2y + 25
+					moved_cell.center = ((moved_cell.p1x + moved_cell.p2x) / 2, (moved_cell.p1y + moved_cell.p2y) / 2)
 
 					column += 1
 
@@ -320,7 +363,44 @@ class Table:
 
 	def add_column(self, after):
 
-		if after >= self.num_columns:
+		if after == 0:
+
+			x, y, row, column = self.cells[(after, 0)].p1x, 5, 0, self.num_columns - 1
+
+			while column > after - 1:
+				while row < self.num_rows:
+
+					self.canvas.move(self.cells[(column, row)].object_id, 100, 0)
+					self.canvas.move(self.cells[(column, row)].left_line, 100, 0)
+					self.canvas.move(self.cells[(column, row)].right_line, 100, 0)
+					self.canvas.move(self.cells[(column, row)].top_line, 100, 0)
+					self.canvas.move(self.cells[(column, row)].bottom_line, 100, 0)
+
+					if hasattr(self.cells[(column, row)], 'text'):
+						self.canvas.move(self.cells[(column, row)].text, 100, 0)
+
+					self.cells[(column + 1, row)] = self.cells[(column, row)]
+					moved_cell = self.cells[(column + 1, row)]
+					moved_cell.p1x = moved_cell.p1x + 100
+					moved_cell.p2x = moved_cell.p2x + 100
+					moved_cell.center = ((moved_cell.p1x + moved_cell.p2x) / 2, (moved_cell.p1y + moved_cell.p2y) / 2)
+
+
+					row += 1
+
+				column -= 1
+				row = 0
+
+			x, y, row, column = self.cells[(after, 0)].p1x - 100, 5, 0, after
+
+			while row < self.num_rows:
+				self.cells[(column, row)] = Cell_object(self.canvas, x, y, x + 100, y + 25, row, column)
+
+				row += 1
+
+				y += 25
+
+		elif after >= self.num_columns:
 			after = self.num_columns
 
 			x, y, row, column = self.cells[(self.num_columns - 1, 0)].p2x, 5, 0, after
@@ -345,10 +425,15 @@ class Table:
 					self.canvas.move(self.cells[(column, row)].top_line, 100, 0)
 					self.canvas.move(self.cells[(column, row)].bottom_line, 100, 0)
 
+					if hasattr(self.cells[(column, row)], 'text'):
+						self.canvas.move(self.cells[(column, row)].text, 100, 0)
+
 					self.cells[(column + 1, row)] = self.cells[(column, row)]
 					moved_cell = self.cells[(column + 1, row)]
 					moved_cell.p1x = moved_cell.p1x + 100
 					moved_cell.p2x = moved_cell.p2x + 100
+					moved_cell.center = ((moved_cell.p1x + moved_cell.p2x) / 2, (moved_cell.p1y + moved_cell.p2y) / 2)
+
 
 					row += 1
 
@@ -367,8 +452,20 @@ class Table:
 		self.num_columns += 1
 	
 		self.canvas.config(width=self.num_columns * 100 + 5)
-			
 
+	def color_row(self, row, color):
+
+		for cell_coord, cell in self.cells.items():
+			if cell_coord[1] == row:
+				self.canvas.itemconfig(cell.object_id, fill=color)
+		return
+
+	def color_column(self, column, color):
+
+		for cell_coord, cell in self.cells.items():
+			if cell_coord[0] == column:
+				self.canvas.itemconfig(cell.object_id, fill=color)
+		return
 
 
 	pass
@@ -378,8 +475,14 @@ table = Table(frame, 5, 5)
 
 #table.erase_line((0, 2), 'left')
 #table.draw_line((0, 0), 'left')
-#table.add_row(2)
-#table.add_column(2)
+#table.cells[(0, 1)].insert_text('abcd')
+#table.add_row(1)
+#table.add_column(0)
+
+#table.color_row(4, 'red')
+#table.color_column(0, 'red')
+#table.cells[(0, 0)].insert_text('abcd')
+#table.cells[(0, 1)].insert_text('abcd')
 
 window.mainloop()
 
