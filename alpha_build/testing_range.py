@@ -290,33 +290,29 @@ class Table:
 				while column < self.num_columns:
 
 					self.canvas.move(self.cells[(column, row)].object_id, 0, 25)
-
-					left_line_state = self.canvas.itemcget(self.cells[(column, row)].left_line, 'state')
-					right_line_state = self.canvas.itemcget(self.cells[(column, row)].right_line, 'state')
-					top_line_state = self.canvas.itemcget(self.cells[(column, row)].top_line, 'state')
-					bottom_line_state = self.canvas.itemcget(self.cells[(column, row)].bottom_line, 'state')
-
-					print(left_line_state)
-
-					self.canvas.delete(self.cells[(column, row)].left_line)
-					self.canvas.delete(self.cells[(column, row)].right_line)
-					self.canvas.delete(self.cells[(column, row)].top_line)
-					self.canvas.delete(self.cells[(column, row)].bottom_line)
+					self.canvas.move(self.cells[(column, row)].left_line, 0, 25)
+					self.canvas.move(self.cells[(column, row)].right_line, 0, 25)
+					self.canvas.move(self.cells[(column, row)].top_line, 0, 25)
+					self.canvas.move(self.cells[(column, row)].bottom_line, 0, 25)
 
 					self.cells[(column, row + 1)] = self.cells[(column, row)]
 					moved_cell = self.cells[(column, row + 1)]
 					moved_cell.p1y = moved_cell.p1y + 25
 					moved_cell.p2y = moved_cell.p2y + 25
 
-					moved_cell.left_line = self.canvas.create_line(moved_cell.p1x, moved_cell.p1y, moved_cell.p1x, moved_cell.p2y, state=left_line_state)
-					moved_cell.right_line = self.canvas.create_line(moved_cell.p2x, moved_cell.p1y, moved_cell.p2x, moved_cell.p2y)
-					moved_cell.top_line = self.canvas.create_line(moved_cell.p1x, moved_cell.p1y, moved_cell.p2x, moved_cell.p1y)
-					moved_cell.bottom_line = self.canvas.create_line(moved_cell.p1x, moved_cell.p2y, moved_cell.p2x, moved_cell.p2y)
-
 					column += 1
 
 				column = 0
 				row -= 1
+
+			x, y, row, column = 5, self.cells[(0, after - 1)].p2y, after, 0
+
+			while column < self.num_columns:
+				self.cells[(column, row)] = Cell_object(self.canvas, x, y, x + 100, y + 25, row, column)
+
+				column += 1
+
+				x += 100
 	
 		self.num_rows += 1
 	
@@ -344,25 +340,29 @@ class Table:
 				while row < self.num_rows:
 
 					self.canvas.move(self.cells[(column, row)].object_id, 100, 0)
-					self.canvas.delete(self.cells[(column, row)].left_line)
-					self.canvas.delete(self.cells[(column, row)].right_line)
-					self.canvas.delete(self.cells[(column, row)].top_line)
-					self.canvas.delete(self.cells[(column, row)].bottom_line)
+					self.canvas.move(self.cells[(column, row)].left_line, 100, 0)
+					self.canvas.move(self.cells[(column, row)].right_line, 100, 0)
+					self.canvas.move(self.cells[(column, row)].top_line, 100, 0)
+					self.canvas.move(self.cells[(column, row)].bottom_line, 100, 0)
 
 					self.cells[(column + 1, row)] = self.cells[(column, row)]
 					moved_cell = self.cells[(column + 1, row)]
 					moved_cell.p1x = moved_cell.p1x + 100
 					moved_cell.p2x = moved_cell.p2x + 100
 
-					moved_cell.left_line = self.canvas.create_line(moved_cell.p1x, moved_cell.p1y, moved_cell.p1x, moved_cell.p2y)
-					moved_cell.right_line = self.canvas.create_line(moved_cell.p2x, moved_cell.p1y, moved_cell.p2x, moved_cell.p2y)
-					moved_cell.top_line = self.canvas.create_line(moved_cell.p1x, moved_cell.p1y, moved_cell.p2x, moved_cell.p1y)
-					moved_cell.bottom_line = self.canvas.create_line(moved_cell.p1x, moved_cell.p2y, moved_cell.p2x, moved_cell.p2y)
-
 					row += 1
 
 				column -= 1
 				row = 0
+
+			x, y, row, column = self.cells[(after - 1, 0)].p2x, 5, 0, after
+
+			while row < self.num_rows:
+				self.cells[(column, row)] = Cell_object(self.canvas, x, y, x + 100, y + 25, row, column)
+
+				row += 1
+
+				y += 25
 	
 		self.num_columns += 1
 	
@@ -376,10 +376,10 @@ class Table:
 
 table = Table(frame, 5, 5)
 
-table.erase_line((0, 1), 'left')
+#table.erase_line((0, 2), 'left')
 #table.draw_line((0, 0), 'left')
-#table.add_row(5)
-#table.add_column(5)
+#table.add_row(2)
+#table.add_column(2)
 
 window.mainloop()
 
