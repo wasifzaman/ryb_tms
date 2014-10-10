@@ -278,6 +278,15 @@ class Table:
 
 	def add_row(self, after):
 
+		if after != 0:
+
+			x = 0
+
+			while x < self.num_columns:
+				if hasattr(self.cells[(x, after)], 'state') and self.cells[(x, after)].state == 'MERGED':
+					return
+				x += 1
+
 		if after == 0:
 
 			x, y, row, column = 5, self.cells[(0, after)].p1y, self.num_rows - 1, 0
@@ -367,6 +376,15 @@ class Table:
 		self.canvas.config(height=self.num_rows * 25 + 5)
 
 	def add_column(self, after):
+
+		if after != 0:
+
+			y = 0
+
+			while y < self.num_rows:
+				if hasattr(self.cells[(after, y)], 'state') and self.cells[(after, y)].state == 'MERGED':
+					return
+				y += 1
 
 		if after == 0:
 
@@ -488,6 +506,9 @@ class Table:
 				if y != to_cell[1]:
 					self.erase_line((x, y), 'bottom')
 
+				if hasattr(self.cells[(x, y)], 'text'):
+					self.canvas.delete(self.cells[(x, y)].text)
+
 				self.cells[(x, y)].state = 'MERGED'
 				self.canvas.itemconfig(self.cells[(x, y)].object_id, fill=self.canvas.itemcget(self.cells[from_cell].object_id, 'fill'))
 
@@ -499,7 +520,9 @@ class Table:
 		self.cells[from_cell].state = 'NORMAL'
 		merged_cell = self.cells[from_cell]
 		merged_cell.p1x, merged_cell.p1y, merged_cell.p2x, merged_cell.p2y = merged_cell.p1x, merged_cell.p1y, self.cells[to_cell].p2x, self.cells[to_cell].p2y
+		merged_cell.center = ((merged_cell.p1x + merged_cell.p2x) / 2, (merged_cell.p1y + merged_cell.p2y) / 2)
 		self.canvas.coords(merged_cell.object_id, merged_cell.p1x, merged_cell.p1y, merged_cell.p2x, merged_cell.p2y)
+
 
 		#self.canvas.coords(merged_cell.left_line, merged_cell.p1x, merged_cell.p1y, merged_cell.p1x, merged_cell.p2y)
 		#self.canvas.coords(merged_cell.right_line, merged_cell.p2x, merged_cell.p1y, merged_cell.p2x, merged_cell.p2y)
@@ -507,6 +530,14 @@ class Table:
 		#self.canvas.coords(merged_cell.bottom_line, merged_cell.p1x, merged_cell.p2y, merged_cell.p2x, merged_cell.p2y)
 
 
+
+		return
+
+	def delete_row(self, row):
+
+		return
+
+	def delete_column(self, column):
 
 		return
 
@@ -519,13 +550,13 @@ table = Table(frame, 5, 5)
 #table.draw_line((0, 0), 'left')
 #table.cells[(0, 1)].insert_text('abcd')
 #table.add_row(1)
-#table.add_column(0)
+#table.add_column(1)
 
 #table.color_column(0, 'red')
 #table.cells[(0, 0)].insert_text('abcd')
 #table.cells[(0, 1)].insert_text('abcd')
 
-#table.merge_cells((0, 0), (1, 1))
+#table.merge_cells((1, 1), (2, 2))
 #table.erase_line((0, 0), 'right')
 #table.canvas.itemconfig(table.cells[(0, 0)].object_id, fill='red')
 
