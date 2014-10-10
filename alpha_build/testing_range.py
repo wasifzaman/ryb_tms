@@ -155,6 +155,16 @@ class Cell_object:
 	def insert_text(self, text):
 		self.text = self.canvas.create_text(self.center, text=text)
 
+	def delete_cell(self):
+		self.canvas.delete(self.left_line)
+		self.canvas.delete(self.right_line)
+		self.canvas.delete(self.top_line)
+		self.canvas.delete(self.bottom_line)
+		self.canvas.delete(self.object_id)
+
+		if hasattr(self, 'text'):
+			self.canvas.delete(self.text)
+
 	pass
 
 frame.grid()
@@ -187,6 +197,7 @@ class Table:
 		self.canvas = Canvas(parent, width=num_columns * 100 + 5, height=num_rows * 25 + 5)
 		self.canvas.grid()
 		self.cells = {}
+		self.merged_cells = {}
 
 		x, y, row, column = 5, 5, 0, 0
 		while column < num_columns:
@@ -512,6 +523,8 @@ class Table:
 				self.cells[(x, y)].state = 'MERGED'
 				self.canvas.itemconfig(self.cells[(x, y)].object_id, fill=self.canvas.itemcget(self.cells[from_cell].object_id, 'fill'))
 
+				self.merged_cells[(x, y)] = from_cell
+
 				y += 1
 
 			x += 1
@@ -519,7 +532,7 @@ class Table:
 
 		self.cells[from_cell].state = 'NORMAL'
 		merged_cell = self.cells[from_cell]
-		merged_cell.p1x, merged_cell.p1y, merged_cell.p2x, merged_cell.p2y = merged_cell.p1x, merged_cell.p1y, self.cells[to_cell].p2x, self.cells[to_cell].p2y
+		merged_cell.p2x, merged_cell.p2y = self.cells[to_cell].p2x, self.cells[to_cell].p2y
 		merged_cell.center = ((merged_cell.p1x + merged_cell.p2x) / 2, (merged_cell.p1y + merged_cell.p2y) / 2)
 		self.canvas.coords(merged_cell.object_id, merged_cell.p1x, merged_cell.p1y, merged_cell.p2x, merged_cell.p2y)
 
@@ -533,11 +546,155 @@ class Table:
 
 		return
 
-	def delete_row(self, row):
+	def restore_merged_cells(self, from_cell):
+
+		delete_from_merged = []
+
+		for cell_coord, cell in self.merged_cells.items():
+			if cell == from_cell:
+				self.draw_line(cell_coord, 'left')
+				self.draw_line(cell_coord, 'top')
+
+				self.cells[cell_coord].state = 'NORMAL'
+
+				delete_from_merged.append(cell_coord)
+
+		for cell_coord in delete_from_merged:
+			del self.merged_cells[cell_coord]
+
+		if hasattr(self.cells[from_cell], 'text'):
+			self.canvas.delete(self.cells[from_cell].text)
+
+		self.cells[from_cell].p2x = self.cells[from_cell].p1x + 100
+		self.cells[from_cell].p2y = self.cells[from_cell].p1y + 25
+		self.cells[from_cell].center = ((self.cells[from_cell].p1x + self.cells[from_cell].p2x) / 2, (self.cells[from_cell].p1y + self.cells[from_cell].p2y) / 2)
+		self.canvas.coords(self.cells[from_cell].object_id, self.cells[from_cell].p1x, self.cells[from_cell].p1y, self.cells[from_cell].p2x, self.cells[from_cell].p2y)
 
 		return
 
-	def delete_column(self, column):
+	def delete_row(self, table_row):
+
+		column, row = 0, table_row
+
+		while column < self.num_columns:
+			if (column, row) in self.merged_cells:
+				self.restore_merged_cells(self.merged_cells[(column, row)])
+
+			column += 1
+
+		if table_row >= self.num_rows:
+			table_row = self.num_rows - 1
+
+			column, row = 0, table_row
+
+			while column < self.num_columns:
+				self.cells[(column, row)].delete_cell()
+
+				column += 1
+		
+		else:
+
+			column, row = 0, table_row - 1
+
+			while column < self.num_columns:
+				self.cells[(column, row)].delete_cell()
+				del self.cells[(column, row)]
+
+				column += 1
+
+			column, row = 0, table_row
+
+			
+			while row < self.num_rows:
+				while column < self.num_columns:
+					self.cells[(column, row - 1)] = self.cells.pop((column, row), None)
+
+					moved_cell = self.cells[(column, row - 1)]
+					self.canvas.move(moved_cell.object_id, 0, -25)
+					self.canvas.move(moved_cell.left_line, 0, -25)
+					self.canvas.move(moved_cell.right_line, 0, -25)
+					self.canvas.move(moved_cell.top_line, 0, -25)
+					self.canvas.move(moved_cell.bottom_line, 0, -25)
+
+					if hasattr(moved_cell, 'text'):
+						self.canvas.move(moved_cell.text, 0, -25)
+
+					moved_cell.p1y = moved_cell.p1y - 25
+					moved_cell.p2y = moved_cell.p2y - 25
+					moved_cell.center = ((moved_cell.p1x + moved_cell.p2x) / 2, (moved_cell.p1y + moved_cell.p2y) / 2)
+
+					column += 1
+
+				row += 1
+				column = 0
+
+
+		self.num_rows -= 1
+
+		self.canvas.config(height=self.num_rows * 25 + 5)
+
+		return
+
+	def delete_column(self, table_column):
+
+		column, row = table_column, 0
+
+		while row < self.num_rows:
+			if (column, row) in self.merged_cells:
+				self.restore_merged_cells(self.merged_cells[(column, row)])
+
+			row += 1
+
+		if table_column >= self.num_columns:
+			table_column = self.num_columns - 1
+
+			column, row = table_column, 0
+
+			while row < self.num_rows:
+				self.cells[(column, row)].delete_cell()
+
+				row += 1
+		
+		else:
+
+			column, row = table_column - 1, 0
+
+			while row < self.num_rows:
+				self.cells[(column, row)].delete_cell()
+				del self.cells[(column, row)]
+
+				row += 1
+
+			column, row = table_column, 0
+
+			
+			while column < self.num_columns:
+				while row < self.num_rows:
+					self.cells[(column - 1, row)] = self.cells.pop((column, row), None)
+
+					moved_cell = self.cells[(column - 1, row)]
+					self.canvas.move(moved_cell.object_id, -100, 0)
+					self.canvas.move(moved_cell.left_line, -100, 0)
+					self.canvas.move(moved_cell.right_line, -100, 0)
+					self.canvas.move(moved_cell.top_line, -100, 0)
+					self.canvas.move(moved_cell.bottom_line, -100, 0)
+
+					if hasattr(moved_cell, 'text'):
+						self.canvas.move(moved_cell.text, -100, 0)
+
+					moved_cell.p1x = moved_cell.p1x - 100
+					moved_cell.p2x = moved_cell.p2x - 100
+					moved_cell.center = ((moved_cell.p1x + moved_cell.p2x) / 2, (moved_cell.p1y + moved_cell.p2y) / 2)
+
+					row += 1
+
+				column += 1
+				row = 0
+
+
+		self.num_columns -= 1
+
+		self.canvas.config(width=self.num_columns * 100 + 5)
 
 		return
 
@@ -557,6 +714,7 @@ table = Table(frame, 5, 5)
 #table.cells[(0, 1)].insert_text('abcd')
 
 #table.merge_cells((1, 1), (2, 2))
+#table.restore_merged_cells((1, 1))
 #table.erase_line((0, 0), 'right')
 #table.canvas.itemconfig(table.cells[(0, 0)].object_id, fill='red')
 
@@ -564,6 +722,11 @@ table = Table(frame, 5, 5)
 #table.color_row(1, 'red')
 #table.color_row(2, 'teal')
 #table.merge_cells((3, 0), (4, 1))
+
+#table.delete_row(1)
+#table.merge_cells((0, 0), (1, 1))
+#table.delete_column(2)
+#table.cells[(0, 0)].insert_text('abcd')
 
 window.mainloop()
 
