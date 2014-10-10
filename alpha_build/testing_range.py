@@ -121,6 +121,10 @@ class Cell_object:
 		self.top_line = self.canvas.create_line(self.p1x, self.p1y, self.p2x, self.p1y)
 		self.bottom_line = self.canvas.create_line(self.p1x, self.p2y, self.p2x, self.p2y)
 		self.object_id = self.canvas.create_rectangle(self.p1x, self.p1y, self.p2x, self.p2y, width=0)
+		self.canvas.tag_raise(self.left_line)
+		self.canvas.tag_raise(self.right_line)
+		self.canvas.tag_raise(self.top_line)
+		self.canvas.tag_raise(self.bottom_line)
 		#self.tag = str(self.row) + ',' + str(self.column)
 		#canvas.itemconfig(self.object_id, tags=(self.tag))
 
@@ -188,6 +192,7 @@ class Table:
 		while column < num_columns:
 			while row < num_rows:
 				self.cells[(column, row)] = Cell_object(self.canvas, x, y, x + 100, y + 25, row, column)
+
 				y += 25
 				
 				row += 1
@@ -456,6 +461,8 @@ class Table:
 	def color_row(self, row, color):
 
 		for cell_coord, cell in self.cells.items():
+			if hasattr(cell, 'state') and cell.state == 'MERGED':
+				continue
 			if cell_coord[1] == row:
 				self.canvas.itemconfig(cell.object_id, fill=color)
 		return
@@ -463,10 +470,45 @@ class Table:
 	def color_column(self, column, color):
 
 		for cell_coord, cell in self.cells.items():
+			if hasattr(cell, 'state') and cell.state == 'MERGED':
+				continue
 			if cell_coord[0] == column:
 				self.canvas.itemconfig(cell.object_id, fill=color)
 		return
 
+	def merge_cells(self, from_cell, to_cell):
+
+		x, y = from_cell[0], from_cell[1]
+
+		while x <= to_cell[0]:
+			while y <= to_cell[1]:
+				if x != to_cell[0]:
+					self.erase_line((x, y), 'right')
+
+				if y != to_cell[1]:
+					self.erase_line((x, y), 'bottom')
+
+				self.cells[(x, y)].state = 'MERGED'
+				self.canvas.itemconfig(self.cells[(x, y)].object_id, fill=self.canvas.itemcget(self.cells[from_cell].object_id, 'fill'))
+
+				y += 1
+
+			x += 1
+			y = from_cell[1]
+
+		self.cells[from_cell].state = 'NORMAL'
+		merged_cell = self.cells[from_cell]
+		merged_cell.p1x, merged_cell.p1y, merged_cell.p2x, merged_cell.p2y = merged_cell.p1x, merged_cell.p1y, self.cells[to_cell].p2x, self.cells[to_cell].p2y
+		self.canvas.coords(merged_cell.object_id, merged_cell.p1x, merged_cell.p1y, merged_cell.p2x, merged_cell.p2y)
+
+		#self.canvas.coords(merged_cell.left_line, merged_cell.p1x, merged_cell.p1y, merged_cell.p1x, merged_cell.p2y)
+		#self.canvas.coords(merged_cell.right_line, merged_cell.p2x, merged_cell.p1y, merged_cell.p2x, merged_cell.p2y)
+		#self.canvas.coords(merged_cell.top_line, merged_cell.p1x, merged_cell.p1y, merged_cell.p2x, merged_cell.p1y)
+		#self.canvas.coords(merged_cell.bottom_line, merged_cell.p1x, merged_cell.p2y, merged_cell.p2x, merged_cell.p2y)
+
+
+
+		return
 
 	pass
 
@@ -479,11 +521,18 @@ table = Table(frame, 5, 5)
 #table.add_row(1)
 #table.add_column(0)
 
-table.canvas.tag_raise('border_line')
-table.color_row(4, 'red')
 #table.color_column(0, 'red')
 #table.cells[(0, 0)].insert_text('abcd')
 #table.cells[(0, 1)].insert_text('abcd')
+
+#table.merge_cells((0, 0), (1, 1))
+#table.erase_line((0, 0), 'right')
+#table.canvas.itemconfig(table.cells[(0, 0)].object_id, fill='red')
+
+#table.color_row(0, 'lightblue')
+#table.color_row(1, 'red')
+#table.color_row(2, 'teal')
+#table.merge_cells((3, 0), (4, 1))
 
 window.mainloop()
 
