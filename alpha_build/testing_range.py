@@ -574,9 +574,10 @@ class Table:
 
 	def delete_row(self, table_row):
 
-		column, row = 0, table_row
+		column, row = 0, table_row - 1
 
 		while column < self.num_columns:
+			print(column, row)
 			if (column, row) in self.merged_cells:
 				self.restore_merged_cells(self.merged_cells[(column, row)])
 
@@ -637,7 +638,7 @@ class Table:
 
 	def delete_column(self, table_column):
 
-		column, row = table_column, 0
+		column, row = table_column - 1, 0
 
 		while row < self.num_rows:
 			if (column, row) in self.merged_cells:
@@ -701,7 +702,7 @@ class Table:
 	pass
 
 
-table = Table(frame, 5, 5)
+#table = Table(frame, 5, 5)
 
 #table.erase_line((0, 2), 'left')
 #table.draw_line((0, 0), 'left')
@@ -723,8 +724,8 @@ table = Table(frame, 5, 5)
 #table.color_row(2, 'teal')
 #table.merge_cells((3, 0), (4, 1))
 
-#table.delete_row(1)
 #table.merge_cells((0, 0), (1, 1))
+#table.delete_row(2)
 #table.delete_column(2)
 #table.cells[(0, 0)].insert_text('abcd')
 

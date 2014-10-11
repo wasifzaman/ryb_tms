@@ -10,13 +10,14 @@ main_window = Window()
 main_window.attributes('-fullscreen', False)
 main_window.geometry('800x600+100+100')
 
-main_app_window = AppWindow(main_window.main_frame, num_rows=3, num_columns=2)
+main_app_window = AppWindow(main_window.main_frame, num_rows=5, num_columns=2)
 main_app_window.language = languages.languages['english']
 
 main_app_window.menu_frame = main_app_window.newFrame("Menu Frame", (4, 15), column=0)
 main_app_window.main_image_frame = main_app_window.newFrame("Main Image Frame", (1, 1), column=1)
 main_app_window.app_frame = main_app_window.newFrame("App Frame", (1, 1))
 main_app_window.return_button_frame = main_app_window.newFrame("Return Button Frame", (1, 1))
+main_app_window.table_frame = main_app_window.newFrame("Table Frame", (1, 1), column=0)
 
 button_add_teacher = Button(text='Add Teachers', language=main_app_window.language, settings=button_scheme_1)
 button_check_in_teacher = Button(text='Check-in Teacher', language=main_app_window.language, settings=button_scheme_1)
@@ -48,6 +49,24 @@ main_app_window.menu_frame.addWidget(date_of_birth, column=0)
 main_app_window.menu_frame.addWidget(text_notes, column=0)
 main_app_window.menu_frame.addWidget(entry_category_student, column=0)
 
+table = Table(main_app_window.table_frame, 5, 5)
+
+table.color_row(1, 'red')
+
+table.color_column(2, 'lightblue')
+
+data = [['abcd', 'def'],[1, 2, 3],['a', 'b', 'c']]
+
+column, row = 0, 0
+
+while column < len(data):
+	while row < len(data[column]):
+		table.cells[(column, row)].insert_text(data[column][row])
+
+		row += 1
+
+	column += 1
+	row = 0
 
 date_of_birth.set_data(datetime(1988, 10, 7))
 text_notes.set_data('YAY\ntest\ntest')
