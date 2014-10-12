@@ -1,4 +1,4 @@
-from tkinter import RIGHT
+from tkinter import RIGHT, E
 
 class object_setting:
 	pass

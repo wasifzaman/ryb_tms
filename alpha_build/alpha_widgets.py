@@ -146,13 +146,15 @@ class Scrolled_textbox:
 
 	def create_widget(self, **kwargs):
 
-		self.encompass_frame = Frame(kwargs['parent_obj'])
+		self.encompass_frame = Frame(kwargs['parent_obj'], width=self.width, height=self.height)
+		self.encompass_label = Frame(self.encompass_frame, width=int(self.width / 4), height=int(self.height / 2))
+		self.encompass_entry = Frame(self.encompass_frame, width=int(3 * self.width / 4), height=int(self.height / 2))
 
 		self.grid_row = kwargs['grid_row']
 		self.grid_column = kwargs['grid_column']
 
-		self.label = Label(self.encompass_frame)
-		self.entry = ScrolledText(self.encompass_frame)
+		self.label = Label(self.encompass_label)
+		self.entry = ScrolledText(self.encompass_entry)
 
 		for attrib, value in self.label_attributes.items():
 			if value: self.label.__setitem__(attrib, value)
@@ -160,9 +162,15 @@ class Scrolled_textbox:
 		for attrib, value in self.entry_attributes.items():
 			if value: self.entry.__setitem__(attrib, value)
 		
-		self.label.grid(row=0, column=0)
-		self.entry.grid(row=0, column=1)
-		self.encompass_frame.grid(row=self.grid_row, column=self.grid_column)
+		self.label.pack(fill=X)
+		self.entry.pack(fill=X)
+		self.encompass_frame.pack_propagate(0)
+		self.encompass_label.pack_propagate(0)
+		self.encompass_entry.pack_propagate(0)
+
+		self.encompass_label.pack(side=LEFT)
+		self.encompass_entry.pack(side=LEFT)
+		self.encompass_frame.place(y=self.grid_row, x=self.grid_column)
 
 	def get_data(self):
 		return self.entry.get('1.0', END + '-1c')
@@ -232,12 +240,13 @@ class Button:
 
 	def create_widget(self, **kwargs):
 
-		self.encompass_frame = Frame(kwargs['parent_obj'])
+		self.encompass_frame = Frame(kwargs['parent_obj'], width=self.width, height=self.height)
+		self.encompass_label = Frame(self.encompass_frame, width=self.width, height=self.height)
 
 		self.grid_row = kwargs['grid_row']
 		self.grid_column = kwargs['grid_column']
 
-		self.label = Label(self.encompass_frame)
+		self.label = Label(self.encompass_label)
 
 		for attrib, value in self.label_attributes.items():
 			if value: self.label.__setitem__(attrib, value)
@@ -245,8 +254,12 @@ class Button:
 		self.label.bind('<Enter>', self.enter)
 		self.label.bind('<Leave>', self.leave)
 
-		self.label.grid()
-		self.encompass_frame.grid(row=self.grid_row, column=self.grid_column)
+		self.label.pack(fill=X, pady=self.height / 4)
+		self.encompass_frame.pack_propagate(0)
+		self.encompass_label.pack_propagate(0)
+
+		self.encompass_label.pack(side=LEFT)
+		self.encompass_frame.place(y=self.grid_row, x=self.grid_column)
 
 
 class Coin_widget:
@@ -297,13 +310,15 @@ class Coin_widget:
 
 	def create_widget(self, **kwargs):
 
-		self.encompass_frame = Frame(kwargs['parent_obj'])
+		self.encompass_frame = Frame(kwargs['parent_obj'], width=self.width, height=self.height)
+		self.encompass_label = Frame(self.encompass_frame, width=int(self.width / 4), height=int(self.height / 2))
+		self.encompass_entry = Frame(self.encompass_frame, width=int(3 * self.width / 4), height=int(self.height / 2))
 
 		self.grid_row = kwargs['grid_row']
 		self.grid_column = kwargs['grid_column']
 
-		self.label = Label(self.encompass_frame)
-		self.entry = Entry(self.encompass_frame)
+		self.label = Label(self.encompass_label)
+		self.entry = Entry(self.encompass_entry)
 
 		self.vcmd = (self.encompass_frame.register(self.OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W', 2)
 
@@ -318,9 +333,15 @@ class Coin_widget:
 				self.entry.config(textvariable=field_string)
 				self.entry.config(validate="all", validatecommand=self.vcmd)
 		
-		self.label.grid(row=0, column=0)
-		self.entry.grid(row=0, column=1)
-		self.encompass_frame.grid(row=self.grid_row, column=self.grid_column)
+		self.label.pack(fill=X)
+		self.entry.pack(fill=X)
+		self.encompass_frame.pack_propagate(0)
+		self.encompass_label.pack_propagate(0)
+		self.encompass_entry.pack_propagate(0)
+
+		self.encompass_label.pack(side=LEFT)
+		self.encompass_entry.pack(side=LEFT)
+		self.encompass_frame.place(y=self.grid_row, x=self.grid_column)
 
 		self.entry.config(validate="all", validatecommand=self.vcmd)
 
@@ -349,15 +370,17 @@ class Date_widget(Textbox):
 		if len(P) == 2 or len(P) == 5:
 			if len(P) < len(getattr(self, 'entry').get()): return True
 			fill_entry = P + '/'
-			self.entry = Entry(self.encompass_frame)
+			self.entry.pack_forget()
+			self.entry = Entry(self.encompass_entry)
 			
 			for attrib, value in self.entry_attributes.items():
 				if value: self.entry.__setitem__(attrib, value)
 
-			self.entry.grid(row=0, column=1)
+			self.entry.pack(fill=X)
+			self.encompass_entry.pack_propagate(0)
 			self.entry.insert(0, fill_entry)
 			
-			self.vcmd = (self.encompass_frame.register(self.OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
+			self.vcmd = (self.encompass_entry.register(self.OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
 			self.entry.config(validate="all", validatecommand=self.vcmd)
 
 			self.entry.focus_set()
@@ -453,15 +476,17 @@ class Entry_category:
 
 	def create_widget(self, **kwargs):
 
-		self.encompass_frame = Frame(kwargs['parent_obj'])
-		self.encompass_textbox = Frame(self.encompass_frame)
-		self.encompass_categores = Frame(self.encompass_frame)
+		self.encompass_frame = Frame(kwargs['parent_obj'], width=self.width, height=self.height)
+		self.encompass_label_entry = Frame(self.encompass_frame, width=self.width, height=int(self.height / 2))
+		self.encompass_label = Frame(self.encompass_label_entry, width=int(self.width / 4), height=int(self.height / 2))
+		self.encompass_entry = Frame(self.encompass_label_entry, width=int(3 * self.width / 4), height=int(self.height / 2))
+		self.encompass_categores = Frame(self.encompass_frame, width=int(self.width), height=int(self.height / 2))
 
 		self.grid_row = kwargs['grid_row']
 		self.grid_column = kwargs['grid_column']
 
-		self.label = Label(self.encompass_textbox)
-		self.entry = Entry(self.encompass_textbox)
+		self.label = Label(self.encompass_label)
+		self.entry = Entry(self.encompass_entry)
 		self.label_categories = {}
 
 
@@ -471,14 +496,20 @@ class Entry_category:
 		for attrib, value in self.entry_attributes.items():
 			if value: self.entry.__setitem__(attrib, value)
 
-		
-		self.label.grid(row=0, column=0)
-		self.entry.grid(row=0, column=1)
+
+		self.label.pack(fill=X, pady=int(self.height / 8))
+		self.entry.pack(fill=X, pady=int(self.height / 8))
+		self.encompass_frame.pack_propagate(0)
+		self.encompass_label.pack_propagate(0)
+		self.encompass_label_entry.pack_propagate(0)
+		self.encompass_categores.pack_propagate(0)
+		self.encompass_entry.pack_propagate(0)
+
 		column = 0
 		for category in self.categories:
 			for label, fill_tag in category.items():
 				self.label_categories[fill_tag] = Label(self.encompass_categores, text=self.language[label])
-				self.label_categories[fill_tag].grid(row=1, column=column)
+				self.label_categories[fill_tag].grid(row=0, column=column)
 				self.label_categories[fill_tag].bind('<Enter>', self.enter)
 				self.label_categories[fill_tag].bind('<Leave>', self.leave)
 				self.label_categories[fill_tag].bind('<Button-1>', self.click)
@@ -497,9 +528,11 @@ class Entry_category:
 			if value: self.label_categories[self.current_category].__setitem__(attrib, value)
 
 
-		self.encompass_textbox.grid(row=0)
-		self.encompass_categores.grid(row=1)
-		self.encompass_frame.grid(row=self.grid_row, column=self.grid_column)
+		self.encompass_label.pack(side=LEFT)
+		self.encompass_entry.pack(side=LEFT)
+		self.encompass_label_entry.pack()
+		self.encompass_categores.pack()
+		self.encompass_frame.place(y=self.grid_row, x=self.grid_column)
 
 		self.vcmd = (self.encompass_frame.register(self.OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
 		self.entry.config(validate="all", validatecommand=self.vcmd)
