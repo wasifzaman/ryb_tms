@@ -1,4 +1,4 @@
-from alpha_ui import *
+from ui import *
 from alpha_widgets import *
 from object_settings import *
 import languages

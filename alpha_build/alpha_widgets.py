@@ -27,6 +27,8 @@ class Textbox:
 		self.language = apply_attribute('language')
 		self.fill_tag = apply_attribute('fill_tag')
 		self.filter = apply_attribute('filter')
+		self.height = apply_attribute('height')
+		self.width = apply_attribute('width')
 
 		self.label_attributes = {} if not apply_attribute('settings') or not hasattr(apply_attribute('settings'), 'label_settings') else dict(apply_attribute('settings').label_settings)
 		for attrib, value in {'text': self.language[apply_attribute('label_text')].strip(),
@@ -40,7 +42,6 @@ class Textbox:
 			}.items():
 			if value: self.entry_attributes.update({attrib: value})
 
-		
 	def config(self, **kwargs):
 		if 'entry_text' in kwargs:
 			field_string = StringVar()
@@ -65,23 +66,31 @@ class Textbox:
 
 	def create_widget(self, **kwargs):
 
-		self.encompass_frame = Frame(kwargs['parent_obj'])
+		self.encompass_frame = Frame(kwargs['parent_obj'], width=self.width, height=self.height)
+		self.encompass_label = Frame(self.encompass_frame, width=int(self.width / 4), height=int(self.height / 2))
+		self.encompass_entry = Frame(self.encompass_frame, width=int(3 * self.width / 4), height=int(self.height / 2))
 
 		self.grid_row = kwargs['grid_row']
 		self.grid_column = kwargs['grid_column']
 
-		self.label = Label(self.encompass_frame)
-		self.entry = Entry(self.encompass_frame)
+		self.label = Label(self.encompass_label)
+		self.entry = Entry(self.encompass_entry)
 
 		for attrib, value in self.label_attributes.items():
 			if value: self.label.__setitem__(attrib, value)
 
 		for attrib, value in self.entry_attributes.items():
 			if value: self.entry.__setitem__(attrib, value)
-		
-		self.label.grid(row=0, column=0)
-		self.entry.grid(row=0, column=1)
-		self.encompass_frame.grid(row=self.grid_row, column=self.grid_column)
+
+		self.label.pack(fill=X)
+		self.entry.pack(fill=X)
+		self.encompass_frame.pack_propagate(0)
+		self.encompass_label.pack_propagate(0)
+		self.encompass_entry.pack_propagate(0)
+
+		self.encompass_label.pack(side=LEFT)
+		self.encompass_entry.pack(side=LEFT)
+		self.encompass_frame.place(y=self.grid_row, x=self.grid_column)
 
 		self.vcmd = (self.encompass_frame.register(self.OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
 		self.entry.config(validate="all", validatecommand=self.vcmd)
