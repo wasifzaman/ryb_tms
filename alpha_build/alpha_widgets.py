@@ -67,13 +67,13 @@ class Textbox:
 	def create_widget(self, **kwargs):
 
 		self.encompass_frame = Frame(kwargs['parent_obj'], width=self.width, height=self.height)
-		self.encompass_label = Frame(self.encompass_frame, width=int(self.width / 4), height=int(self.height / 2))
-		self.encompass_entry = Frame(self.encompass_frame, width=int(3 * self.width / 4), height=int(self.height / 2))
+		self.encompass_label = Frame(self.encompass_frame, width=int(self.width / 4), height=self.height)
+		self.encompass_entry = Frame(self.encompass_frame, width=int(3 * self.width / 4), height=self.height)
 
 		self.grid_row = kwargs['grid_row']
 		self.grid_column = kwargs['grid_column']
 
-		self.label = Label(self.encompass_label)
+		self.label = Label(self.encompass_label, height=int(self.height))
 		self.entry = Entry(self.encompass_entry)
 
 		for attrib, value in self.label_attributes.items():
@@ -82,8 +82,9 @@ class Textbox:
 		for attrib, value in self.entry_attributes.items():
 			if value: self.entry.__setitem__(attrib, value)
 
+
 		self.label.pack(fill=X)
-		self.entry.pack(fill=X)
+		self.entry.place(anchor="c", relwidth=1.0, relx=.5, rely=.5)
 		self.encompass_frame.pack_propagate(0)
 		self.encompass_label.pack_propagate(0)
 		self.encompass_entry.pack_propagate(0)
@@ -153,7 +154,7 @@ class Scrolled_textbox:
 		self.grid_row = kwargs['grid_row']
 		self.grid_column = kwargs['grid_column']
 
-		self.label = Label(self.encompass_label)
+		self.label = Label(self.encompass_label, height=int(self.height))
 		self.entry = ScrolledText(self.encompass_entry)
 
 		for attrib, value in self.label_attributes.items():
@@ -246,7 +247,7 @@ class Button:
 		self.grid_row = kwargs['grid_row']
 		self.grid_column = kwargs['grid_column']
 
-		self.label = Label(self.encompass_label)
+		self.label = Label(self.encompass_label, height=int(self.height))
 
 		for attrib, value in self.label_attributes.items():
 			if value: self.label.__setitem__(attrib, value)
@@ -254,7 +255,7 @@ class Button:
 		self.label.bind('<Enter>', self.enter)
 		self.label.bind('<Leave>', self.leave)
 
-		self.label.pack(fill=X, pady=self.height / 4)
+		self.label.pack(fill=X)
 		self.encompass_frame.pack_propagate(0)
 		self.encompass_label.pack_propagate(0)
 
@@ -376,7 +377,7 @@ class Date_widget(Textbox):
 			for attrib, value in self.entry_attributes.items():
 				if value: self.entry.__setitem__(attrib, value)
 
-			self.entry.pack(fill=X)
+			self.entry.place(anchor="c", relwidth=1.0, relx=.5, rely=.5)
 			self.encompass_entry.pack_propagate(0)
 			self.entry.insert(0, fill_entry)
 			
@@ -485,7 +486,7 @@ class Entry_category:
 		self.grid_row = kwargs['grid_row']
 		self.grid_column = kwargs['grid_column']
 
-		self.label = Label(self.encompass_label)
+		self.label = Label(self.encompass_label, height=int(self.height / 2))
 		self.entry = Entry(self.encompass_entry)
 		self.label_categories = {}
 
@@ -497,8 +498,8 @@ class Entry_category:
 			if value: self.entry.__setitem__(attrib, value)
 
 
-		self.label.pack(fill=X, pady=int(self.height / 8))
-		self.entry.pack(fill=X, pady=int(self.height / 8))
+		self.label.pack(fill=X)
+		self.entry.place(anchor="c", relwidth=1.0, relx=.5, rely=.5)
 		self.encompass_frame.pack_propagate(0)
 		self.encompass_label.pack_propagate(0)
 		self.encompass_label_entry.pack_propagate(0)

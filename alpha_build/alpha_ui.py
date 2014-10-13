@@ -67,12 +67,12 @@ class Window:
 window = Window(500, 500, 10)
 
 
-#window.add(Textbox(label_text='First Name', language=languages.languages['english'], fill_tag='test'), 5, 2, 0, 0)
+#window.add(Textbox(label_text='First Name', language=languages.languages['english'], fill_tag='test'), 5, 4, 0, 0)
 #window.add(Scrolled_textbox(label_text='First Name', language=languages.languages['english'], fill_tag='test'), 5, 2, 0, 2)
 #window.add(Button(text='First Name', language=languages.languages['english'], fill_tag='test', settings=button_scheme_1), 5, 1, 0, 2)
 #window.add(Coin_widget(label_text='First Name', language=languages.languages['english'], whole_text=10, cent_text=5, settings=coin_scheme_1, fill_tag='test'), 5, 1, 0, 2)
 #window.add(Date_widget(label_text='First Name', language=languages.languages['english'], fill_tag='test'), 5, 2, 0, 0)
-#window.add(Entry_category(label_text='Search', language=languages.languages['english'], categories=[{'First Name': 'First Name'}, {'Last Name': 'Last Name'}, {'Chinese Name': 'Chinese Name'}], settings=entry_category_scheme_1), 7, 2, 0, 0)
+#window.add(Entry_category(label_text='Search', language=languages.languages['english'], categories=[{'First Name': 'First Name'}, {'Last Name': 'Last Name'}, {'Chinese Name': 'Chinese Name'}], settings=entry_category_scheme_1), 7, 3, 0, 0)
 
 
 
