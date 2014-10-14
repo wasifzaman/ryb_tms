@@ -729,5 +729,7 @@ class Table:
 #table.delete_column(2)
 #table.cells[(0, 0)].insert_text('abcd')
 
-window.mainloop()
+#window.mainloop()
+
+print({x: x for x in 'abcd,efg'.split(',')})
 

@@ -86,44 +86,62 @@ def select_widget(event):
 
 	selector = Window(600, 200, 10, toplevel=True)
 	widget_file = open('alpha_widgets.py', 'r')
-	widget_list = {}
+	widget_list = []
+	widget_map = {}
+	widget_index = 0
 	for line in widget_file:
+		widget = False
 		if line[:5] == 'class':
-			widget_list[line[6:line.index(':')]] = True
+			if line.find('(') != -1:
+				widget = line[6:line.index('(')]
+			else:
+				widget = line[6:line.index(':')]
+		if widget:
+			widget_map[widget_index] = widget
+			widget_list.append(widget)
+			widget_index += 1
 	scrollbar = Scrollbar(selector.window, orient=VERTICAL)
 	widget_list_widget = Listbox(selector.window, yscrollcommand=scrollbar.set)
 	widget_list_widget.place(x=0, y=0, width=180, height=200)
 	scrollbar.config(command=widget_list_widget.yview)
 	scrollbar.place(x=180, y=0, height=200)
 
+	selector.value = Textbox(label_text='Value:', language={'Value:': 'Value:'}, fill_tag='value')
+	selector.add(selector.value, 4, 2, 6, 3)
+
+	selector.widget_value_list_widget = Listbox(selector.window)
+	selector.widget_value_list_widget.place(x=240, y=60, width=120, height=140)
+
+	selector.style_select = Listbox(selector.window)
+	selector.style_select.place(x=420, y=100, width=180, height=100)
+
 
 	def set_value(event):
 
-		selector.widget_value_list = {}
-		selector.widget_value_list_widget = Listbox(selector.window)
-		selector.widget_value_list_widget.place(x=240, y=60, width=120, height=140)
-
-		selector.value = Textbox(label_text='Value:', language={'Value:': 'Value:'}, fill_tag='value')
-		selector.add(selector.value, 4, 2, 6, 3)
+		selector.widget_value_list_widget.delete(0, END)
 
 		def OnValidate(d, i, P, s, S, v, V, W):
-			selector.widget_value_list[selector.widget_value_list_widget.get(ACTIVE)] = selector.value.get_data()
+			selector.widget_value_list[selector.widget_value_list_widget.get(ACTIVE)] = P
 			return True
 
 		selector.value.vcmd = (selector.value.encompass_frame.register(OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
 		selector.value.entry.config(validate="all", validatecommand=selector.value.vcmd)
 
-		for attr in widget_build_dictionary[widget_list_widget.get(ACTIVE)]:
+		for attr in widget_build_dictionary[widget_map[widget_list_widget.curselection()[0]]]:
+			selector.widget_value_list[attr] = False
 			selector.widget_value_list_widget.insert(END, attr)
-
-		selector.widget_value_list_widget.bind('<Button-1>', lambda event: selector.value.set_data(''))
 
 		return
 
-	widget_list_widget.bind('<Button-1>', set_value)
+	selector.widget_value_list = {}
+
+	widget_list_widget.bind('<<ListboxSelect>>', set_value)
+	#selector.widget_value_list_widget.bind('<Button-1>', lambda event: selector.value.set_data(''))
 
 	add_button = Button(text='Add', language={'Add': 'Add'}, fill_tag='test', settings=button_scheme_1)
-	selector.add(add_button, 3, 2, 5, 0)
+	close_button = Button(text='Close', language={'Close': 'Close'}, fill_tag='test', settings=button_scheme_1)
+	selector.add(add_button, 3, 2, 4, 0)
+	selector.add(close_button, 3, 2, 7, 0)
 
 	widget_build_dictionary = {'Textbox': {'label_text': False, 'language': False, 'fill_tag':False, 'width': False, 'height': False, \
 								'build': lambda self:Textbox(label_text=self['label_text'], language=self['language'], fill_tag=self['fill_tag'])},
@@ -135,10 +153,10 @@ def select_widget(event):
 								'build': lambda self: Coin_widget(label_text=self['label_text'], language=self['language'], fill_tag=self['fill_tag'])},
 								'Date_widget': {'label_text': False, 'language': False, 'fill_tag':False, 'width': False, 'height': False, \
 								'build': lambda self: Date_widget(label_text=self['label_text'], language=self['language'], fill_tag=self['fill_tag'])},
-								'Entry_category': {'label_text': False, 'language': False, 'fill_tag':False, 'width': False, 'height': False, \
-								'build': lambda self: Entry_category(label_text=self['label_text'], language=self['language'], fill_tag=self['fill_tag'])}}
+								'Entry_category': {'label_text': False, 'language': False, 'fill_tag':False, 'width': False, 'height': False, 'categories': False, \
+								'build': lambda self: Entry_category(label_text=self['label_text'], language=self['language'], fill_tag=self['fill_tag'], categories=[{x: x} for x in self['categories'].split(',')])}}
 
-	#selector.grid.place_forget()
+	selector.grid.place_forget()
 
 	for widget in widget_list:
 		if widget == 'Cell_object' or widget == 'Table': continue
@@ -154,7 +172,7 @@ def select_widget(event):
 
 		print(selector.widget_value_list)
 
-		widget['language'] = {'abcd': 'abcd'}
+		widget['language'] = {'abcd': 'abcd', 'def': 'def', 'ghi': 'ghi'}
 		width, height = int(widget['width']), int(widget['height'])	
 
 
@@ -163,6 +181,7 @@ def select_widget(event):
 
 
 	add_button.label.bind('<Button-1>', lambda event: add())
+	close_button.label.bind('<Button-1>', lambda event: selector.window.destroy())
 
 
 def add_textbox(event, text, fill_tag, width, height):
