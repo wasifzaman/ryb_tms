@@ -510,9 +510,9 @@ def main(t, lang, d):
 	sstudent.config(cmd=collect)
 	sstudent.selfframe.grid(padx=5)
 
-	bcheck = Buttonbox(text='Scan Out Teacher', lang=language, repr='bcheck')
-	w.frames["Fifth Frame"].addWidget(bcheck, (0, 1))
-	bcheck.config(cmd=lambda: z(True))
+	#bcheck = Buttonbox(text='Scan Out Teacher', lang=language, repr='bcheck')
+	#w.frames["Fifth Frame"].addWidget(bcheck, (0, 1))
+	#bcheck.config(cmd=lambda: z(True))
 
 
 

@@ -535,9 +535,9 @@ class StudentDB:
                     for timeslot in totalondate:
                         cintime = att[2] if att[1] == '' else att[1]
                         if att[2][:5] in timeslot or att[2][:4] in timeslot:
-                            totalondate[timeslot].append([str(cintime), str(student.datapoints['bCode']), str(student.datapoints['firstName']) + ' ' + str(student.datapoints['lastName']), str(student.datapoints['chineseName'])])
+                            totalondate[timeslot].append([str(cintime), str(student.datapoints['bCode']), str(student.datapoints['firstName']) + ' ' + str(student.datapoints['lastName']), str(student.datapoints['chineseName']), str(att[-1])])
                         else:
-                            totalondate['other'].append([str(cintime), str(student.datapoints['bCode']), str(student.datapoints['firstName']) + ' ' + str(student.datapoints['lastName']), str(student.datapoints['chineseName'])])
+                            totalondate['other'].append([str(cintime), str(student.datapoints['bCode']), str(student.datapoints['firstName']) + ' ' + str(student.datapoints['lastName']), str(student.datapoints['chineseName']), str(att[-1])])
 
         print(totalondate)
 
