@@ -1122,4 +1122,3 @@ class Table:
 		return
 
 	pass
-	
