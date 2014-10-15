@@ -116,7 +116,7 @@ def main():
 
 #main window and starting language
 	w = AppWindow(t.mainFrame)
-	w.lang = languages['english']
+	w.lang = languages['chinese']
 
 #title
 	t.wintitle.config(text=w.lang['RYB Student Management'])

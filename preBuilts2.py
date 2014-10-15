@@ -93,8 +93,7 @@ sby = Picker(repr='sby', text=language['Search By'], rads=[(language['Barcode'],
 	(language['First Name'], 'firstName'), \
 	(language['Last Name'], 'lastName'), \
 	(language['Chinese Name'], 'chineseName'), \
-	(language['Phone Number'], 'phoneNumber'), \
-	(language['Date of Birth'], 'dob')])
+	(language['Phone Number'], 'phoneNumber')])
 
 
 #info titles

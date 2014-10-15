@@ -535,15 +535,13 @@ class StudentDB:
                     for timeslot in totalondate:
                         cintime = att[2] if att[1] == '' else att[1]
                         if att[2][:5] in timeslot or att[2][:4] in timeslot:
-                            totalondate[timeslot].append([str(cintime), str(student.datapoints['bCode']), str(student.datapoints['firstName']) + ' ' + str(student.datapoints['lastName']), str(student.datapoints['chineseName']), str(att[-1])])
+                            totalondate[timeslot].append([str(cintime), str(att[-1]), str(student.datapoints['bCode']), str(student.datapoints['firstName']) + ' ' + str(student.datapoints['lastName']), str(student.datapoints['chineseName'])])
                         else:
-                            totalondate['other'].append([str(cintime), str(student.datapoints['bCode']), str(student.datapoints['firstName']) + ' ' + str(student.datapoints['lastName']), str(student.datapoints['chineseName']), str(att[-1])])
+                            totalondate['other'].append([str(cintime), str(att[-1]), str(student.datapoints['bCode']), str(student.datapoints['firstName']) + ' ' + str(student.datapoints['lastName']), str(student.datapoints['chineseName'])])
 
-        print(totalondate)
-
+        
         totals = 0
         for v in totalondate.values():
-            print(v)
             totals += len(v)
 
         worksheet.write(0, 0, 'Total check-ins: ' + str(totals))
@@ -573,6 +571,7 @@ class StudentDB:
             worksheet.write(r, c + 1, str(len(l[1])), tformat)
             worksheet.write(r, c + 2, '', tformat)
             worksheet.write(r, c + 3, '', tformat)
+            worksheet.write(r, c + 4, '', tformat)
             l[1].sort()
             r += 1
             for t in l[1]:
@@ -580,6 +579,7 @@ class StudentDB:
                 worksheet.write(r, 1, t[1])
                 worksheet.write(r, 2, t[2])
                 worksheet.write(r, 3, t[3])
+                worksheet.write(r, 4, t[4])
                 r += 1
 
             worksheet.write(r, c, '')
@@ -589,6 +589,7 @@ class StudentDB:
         worksheet.set_column(0, 1, 30)
         worksheet.set_column(0, 2, 30)
         worksheet.set_column(0, 3, 30)
+        worksheet.set_column(0, 4, 30)
         workbook.close()
 
 
@@ -602,33 +603,48 @@ class StudentDB:
         worksheet = workbook.add_worksheet()
 
         info_headerformat = workbook.add_format({'bold': True, 'bg_color': '#C2FFAD', 'border': 1})
+        info_headerformat.set_border_color = '#E0E0E0'
 
         timesheet_headerformat = workbook.add_format({'bold': True, 'bg_color': '#66FFCC', 'border': 1})
+        timesheet_headerformat.set_border_color = '#E0E0E0'
 
         footer_format = workbook.add_format({'bold': True, 'bg_color': '#EBF5FF', 'border': 1})
+        footer_format.set_border_color = '#E0E0E0'
 
         paid_alias = self.studentList[employee_id].datapoints['paid_entries']
         paid_alias = dict(list(paid_alias.items()) + list(pay_entries.items()))
         self.studentList[employee_id].datapoints['paid_entries'] = paid_alias
         self.studentList[employee_id].datapoints['last_payment'] = datetime.now().date()
 
-        worksheet.write(0, 0, self.studentList[employee_id].datapoints['firstName'], info_headerformat)
-        worksheet.write(0, 1, self.studentList[employee_id].datapoints['lastName'], info_headerformat)
-        worksheet.write(0, 2, self.studentList[employee_id].datapoints['bCode'], info_headerformat)
-        worksheet.write(0, 3, datetime.strftime(datetime.now().date(), '%m/%d/%Y'), info_headerformat)
-        worksheet.write(0, 4, '', info_headerformat)
+        worksheet.write(0, 0, "发票号码:", info_headerformat)
+        worksheet.write(0, 1, "", info_headerformat)
+        worksheet.write(0, 2, "", info_headerformat)
+        worksheet.write(0, 3, "今天日期", info_headerformat)
+        worksheet.write(0, 4, datetime.strftime(datetime.now().date(), '%m/%d/%Y'), info_headerformat)
+        
+        worksheet.write(1, 0, "", info_headerformat)
+        worksheet.write(1, 1, "", info_headerformat)
+        worksheet.write(1, 2, "", info_headerformat)
+        worksheet.write(1, 3, "", info_headerformat)
+        worksheet.write(1, 4, "", info_headerformat)
 
-        worksheet.write(1, 0, 'Date', timesheet_headerformat)
-        worksheet.write(1, 1, 'Start Time', timesheet_headerformat)
-        worksheet.write(1, 2, 'Confirm Time', timesheet_headerformat)
-        worksheet.write(1, 3, 'Hours', timesheet_headerformat)
-        worksheet.write(1, 4, 'Dollar Pay', timesheet_headerformat)
+        worksheet.write(2, 0, self.studentList[employee_id].datapoints['chineseName'], info_headerformat)
+        worksheet.write(2, 1, self.studentList[employee_id].datapoints['firstName'], info_headerformat)
+        worksheet.write(2, 2, self.studentList[employee_id].datapoints['lastName'], info_headerformat)
+        worksheet.write(2, 3, "", info_headerformat)
+        worksheet.write(2, 4, self.studentList[employee_id].datapoints['bCode'], info_headerformat)
+
+        worksheet.write(3, 0, '日期', timesheet_headerformat)
+        worksheet.write(3, 1, '工作开始时间', timesheet_headerformat)
+        worksheet.write(3, 2, '工作结束时间', timesheet_headerformat)
+        worksheet.write(3, 3, '支付小时', timesheet_headerformat)
+        worksheet.write(3, 4, '工资', timesheet_headerformat)
 
         #column width
         worksheet.set_column(0, 0, 15)
         worksheet.set_column(1, 4, 20)
 
-        r = 2
+        r = 4
         for entry in pay_entries.values():
 
             date = entry[0]
@@ -648,23 +664,24 @@ class StudentDB:
             r += 1
 
 
-        r += 2
+        r += 1
 
         
-        for row in range(r, r+4):
+        for row in range(r, r+8):
             for cell in range(0, 5):
                 worksheet.write(row, cell, ' ', footer_format)
 
-        worksheet.write(r, 0, "Flushing Total:", footer_format)
+        worksheet.write(r, 3, "法拉盛工资:", footer_format)
         r += 1
-        worksheet.write(r, 0, "Other School:", footer_format)
-        worksheet.write(r, 3, "Cash", footer_format)
+        worksheet.write(r, 3, "其他学校工资:", footer_format)
+        r += 2
+        worksheet.write(r, 3, "现金工资:", footer_format)
         r += 1
-        worksheet.write(r, 0, "Total Salary:", footer_format)
-        worksheet.write(r, 3, "Check", footer_format)
+        worksheet.write(r, 3, "支票工资:", footer_format)
         r += 1
-        worksheet.write(r, 2, "Invoice Number", footer_format)
-        worksheet.write(r, 3, "Check Number", footer_format)
-
-
+        worksheet.write(r, 3, "支票号码:", footer_format)
+        r += 2
+        worksheet.write(r, 3, "合计薪水:", footer_format)
+        
+    
         self.saveData()

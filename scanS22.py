@@ -172,7 +172,7 @@ def main(t, lang, d):
 
 	sby.rads=[('Barcode', 'bCode'), ('First Name', 'firstName'), \
 		('Last Name', 'lastName'), ('Chinese Name', 'chineseName'), \
-		('Phone Number', 'phoneNumber'), ('Date of Birth', 'dob')]
+		('Phone Number', 'phoneNumber')]
 
 	w.tdp = dict()
 
@@ -182,7 +182,7 @@ def main(t, lang, d):
 		w.s = sby.getData()[1]
 
 		if len(w.s) == 0: return
-		if w.s not in d.studentList:
+		if sby.getData()[0] == 'bCode' and w.s not in d.studentList:
 			nos(w.lang)
 			return
 

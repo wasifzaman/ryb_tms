@@ -36,4 +36,4 @@ search for teacher button
 #remove checkin teacher
 change chinese names
 make salary translation format for each salary word
-add check out to print report
+#add check out to print report
