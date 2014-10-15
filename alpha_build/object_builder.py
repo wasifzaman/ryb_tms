@@ -4,6 +4,28 @@ from object_settings import *
 
 
 
+class Textbox_builder:
+
+	def __init__(self):
+		self.properties = {'label_text': False, 'language': {'abcd': 'abcd'}, 'fill_tag': False}
+
+	def build_object(self):
+		self.build = lambda: Textbox(label_text=self.properties['label_text'], language=self.properties['language'], fill_tag=self.properties['fill_tag'])
+
+	def string_output(self):
+		output = 'Textbox('
+		for attr, value in self.properties.items():
+			output += attr + '='
+			if attr != 'language':
+				output += '\'' + str(value) + '\''
+			else:
+				output += str(value)
+			output += ', '
+
+		print(output[:-2] + ')')
+
+	pass
+
 
 
 
@@ -119,5 +141,13 @@ window = Window(500, 500, 10)
 for grid_coords, rectangle in window.grid_rectangles.items():
 	window.grid.itemconfig(rectangle, fill='lightblue')
 	window.grid.tag_bind(rectangle, '<Button-1>', select_widget)
+
+
+
+textbox = Textbox_builder()
+textbox.properties['label_text'] = 'abcd'
+textbox.build_object()
+textbox.string_output()
+window.add(textbox.build(), 5, 4, 0, 0)
 
 window.window.mainloop()
