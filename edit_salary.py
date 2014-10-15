@@ -142,8 +142,11 @@ def main(lang, d, top=False, i=0): #i is the id of the student passed in
 			#place a try here
 
 			first_cell = w.attinfo.cells[p]
-			if first_cell.bgcolor == 'tomato' or p[0] == 0: return
-			if first_cell.bgcolor == first_cell.altbgcolor:
+			if p[0] == 0: return
+			if first_cell.bgcolor == 'tomato':
+				pickRow(p, True)
+				w.picked[p[0]] = w.attinfo.data[p[0]-1]
+			elif first_cell.bgcolor == first_cell.altbgcolor:
 				pickRow(p)
 				w.picked[p[0]] = w.attinfo.data[p[0]-1]
 				print(w.picked)
@@ -166,12 +169,15 @@ def main(lang, d, top=False, i=0): #i is the id of the student passed in
 	#picked cells
 	w.picked = {}
 
-	def pickRow(entry):
+	def pickRow(entry, printed=False):
 		x, y = entry[0], entry[1]
 		for cell in w.attinfo.cells.values():
 			if cell.pos[0] == x:
 				cell.altbgcolor = cell.bgcolor
-				cell.config(bgcolor='lightblue')
+				if not printed:
+					cell.config(bgcolor='lightblue')
+				else:
+					cell.config(bgcolor='pink')
 		return
 
 	def unpickRow(entry):

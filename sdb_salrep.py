@@ -62,16 +62,13 @@ def main(t, lang, d):
 	fward = Buttonbox(text='>> Next 30 >>', lang=w.lang, repr='>>')
 	bward = Buttonbox(text='<< Previous 30 <<', lang=w.lang, repr='<<')
 	blast = Buttonbox(text='>>> Last Page >>>', lang=w.lang, repr='>>>')
-	bprintall = Buttonbox(text='Print All', lang=w.lang, repr='printall')
 	w.frames["Fifth Frame"].addWidget(fward, (1, 1))
 	w.frames["Fifth Frame"].addWidget(bward, (1, 0))
 	w.frames["Fifth Frame"].addWidget(blast, (1, 2))
-	w.frames["Fifth Frame"].addWidget(bprintall, (2, 1))
 
 	fward.config(width=17)
 	bward.config(width=17)
 	blast.config(width=17)
-	bprintall.config(width=17)
 
 	fward.selfframe.grid(padx=2)
 	bward.selfframe.grid(padx=2)
