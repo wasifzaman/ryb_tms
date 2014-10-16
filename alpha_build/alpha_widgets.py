@@ -31,7 +31,7 @@ class Textbox:
 		self.width = apply_attribute('width')
 
 		self.label_attributes = {} if not apply_attribute('settings') or not hasattr(apply_attribute('settings'), 'label_settings') else dict(apply_attribute('settings').label_settings)
-		for attrib, value in {'text': self.language[apply_attribute('label_text')].strip(),
+		for attrib, value in {'text': self.language[apply_attribute('label_text')].strip() if self.language else apply_attribute('label_text'),
 			'width': apply_attribute('label_width'),
 			'anchor': apply_attribute('anchor')
 			}.items():
@@ -123,7 +123,7 @@ class Scrolled_textbox:
 		self.filter = apply_attribute('filter')
 
 		self.label_attributes = {} if not apply_attribute('settings') or not hasattr(apply_attribute('settings'), 'label_settings') else dict(apply_attribute('settings').label_settings)
-		for attrib, value in {'text': self.language[apply_attribute('label_text')].strip(),
+		for attrib, value in {'text': self.language[apply_attribute('label_text')].strip() if self.language else apply_attribute('label_text'),
 			'width': apply_attribute('label_width'),
 			'anchor': apply_attribute('anchor')
 			}.items():
@@ -199,7 +199,7 @@ class Button:
 		self.language = apply_attribute('language')
 
 		self.label_attributes = {} if not apply_attribute('settings') or not hasattr(apply_attribute('settings'), 'label_settings') else dict(apply_attribute('settings').label_settings)
-		for attrib, value in {'text': self.language[apply_attribute('text')].strip(),
+		for attrib, value in {'text': self.language[apply_attribute('text')].strip() if self.language else apply_attribute('text'),
 			'width': apply_attribute('width'),
 			'bg': apply_attribute('bg'),
 			'fg': apply_attribute('fg')
@@ -273,7 +273,7 @@ class Coin_widget:
 		self.fill_tag = apply_attribute('fill_tag')
 
 		self.label_attributes = {} if not apply_attribute('settings') or not hasattr(apply_attribute('settings'), 'label_settings') else dict(apply_attribute('settings').label_settings)
-		for attrib, value in {'text': self.language[apply_attribute('label_text')].strip(),
+		for attrib, value in {'text': self.language[apply_attribute('label_text')].strip() if self.language else apply_attribute('label_text'),
 			'width': apply_attribute('label_width'),
 			'anchor': apply_attribute('anchor')
 			}.items():
@@ -410,7 +410,7 @@ class Entry_category:
 		self.categories = apply_attribute('categories')
 
 		self.label_attributes = {} if not apply_attribute('settings') or not hasattr(apply_attribute('settings'), 'label_settings') else dict(apply_attribute('settings').label_settings)
-		for attrib, value in {'text': self.language[apply_attribute('label_text')].strip(),
+		for attrib, value in {'text': self.language[apply_attribute('label_text')].strip() if self.language else apply_attribute('label_text'),
 			'width': apply_attribute('label_width'),
 			'anchor': apply_attribute('anchor')
 			}.items():

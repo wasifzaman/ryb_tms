@@ -18,10 +18,7 @@ class Object_builder:
 		output = self.object_type + '('
 		for attr, value in self.properties.items():
 			output += attr + '='
-			if attr != 'language':
-				output += '\'' + str(value) + '\''
-			else:
-				output += str(value)
+			output += '\'' + str(value) + '\''
 			output += ', '
 
 		return output[:-2] + ')'
@@ -100,33 +97,17 @@ def select_widget(event):
 	widget_list_widget.bind('<<ListboxSelect>>', set_value)
 	#selector.widget_value_list_widget.bind('<Button-1>', lambda event: selector.value.set_data(''))
 
-	add_button = Button(text='Add', language={'Add': 'Add'}, fill_tag='test', settings=button_scheme_1)
-	close_button = Button(text='Close', language={'Close': 'Close'}, fill_tag='test', settings=button_scheme_1)
+	add_button = Button(text='Add', fill_tag='test', settings=button_scheme_1)
+	close_button = Button(text='Close', fill_tag='test', settings=button_scheme_1)
 	selector.add(add_button, 3, 2, 4, 0)
 	selector.add(close_button, 3, 2, 7, 0)
 
-	'''
-	widget_build_dictionary = {'Textbox': {'label_text': False, 'language': False, 'fill_tag':False, 'width': False, 'height': False, \
-								'build': lambda self:Textbox(label_text=self['label_text'], language=self['language'], fill_tag=self['fill_tag'])},
-								'Scrolled_textbox': {'label_text': False, 'language': False, 'fill_tag': False, 'width': False, 'height': False, \
-								'build': lambda self:Scrolled_textbox(label_text=self['label_text'], language=self['language'], fill_tag=self['fill_tag'])},
-								'Button': {'label_text': False, 'language': False, 'width': False, 'height': False, \
-								'build': lambda self:Button(text=self['label_text'], language=self['language'])},
-								'Coin_widget': {'label_text': False, 'language': False, 'fill_tag':False, 'width': False, 'height': False, \
-								'build': lambda self: Coin_widget(label_text=self['label_text'], language=self['language'], fill_tag=self['fill_tag'])},
-								'Date_widget': {'label_text': False, 'language': False, 'fill_tag':False, 'width': False, 'height': False, \
-								'build': lambda self: Date_widget(label_text=self['label_text'], language=self['language'], fill_tag=self['fill_tag'])},
-								'Entry_category': {'label_text': False, 'language': False, 'fill_tag':False, 'width': False, 'height': False, 'categories': False, \
-								'build': lambda self: Entry_category(label_text=self['label_text'], language=self['language'], fill_tag=self['fill_tag'], categories=[{x: x} for x in self['categories'].split(',')])}}
-
-	'''
-
-	widget_build_dictionary = {'Textbox': Object_builder('Textbox', {'label_text': False, 'language': {'abcd': 'abcd'}, 'fill_tag': False}),
-								'Scrolled_textbox': Object_builder('Scrolled_textbox', {'label_text': False, 'language': {'abcd': 'abcd'}, 'fill_tag': False}),
-								'Button': Object_builder('Button', {'text': False, 'language': {'abcd': 'abcd'}}),
-								'Coin_widget': Object_builder('Coin_widget', {'label_text': False, 'language': False, 'fill_tag':False}),
-								'Date_widget': Object_builder('Date_widget', {'label_text': False, 'language': False, 'fill_tag':False}),
-								'Entry_category': Object_builder('Entry_category', {'label_text': False, 'language': False, 'fill_tag':False, 'categories': False})}
+	widget_build_dictionary = {'Textbox': Object_builder('Textbox', {'label_text': False, 'fill_tag': False}),
+								'Scrolled_textbox': Object_builder('Scrolled_textbox', {'label_text': False, 'fill_tag': False}),
+								'Button': Object_builder('Button', {'text': False}),
+								'Coin_widget': Object_builder('Coin_widget', {'label_text': False, 'fill_tag':False}),
+								'Date_widget': Object_builder('Date_widget', {'label_text': False, 'fill_tag':False}),
+								'Entry_category': Object_builder('Entry_category', {'label_text': False, 'fill_tag':False, 'categories': False})}
 
 	selector.grid.place_forget()
 
@@ -144,7 +125,6 @@ def select_widget(event):
 
 		print(selector.widget_value_list)
 
-		widget.properties['language'] = {'abcd': 'abcd', 'def': 'def', 'ghi': 'ghi'}
 		width, height = int(widget.properties['width']), int(widget.properties['height'])	
 
 		window.add(widget.build(), width, height, x, y)
@@ -162,8 +142,7 @@ for grid_coords, rectangle in window.grid_rectangles.items():
 
 
 
-textbox = Object_builder('Scrolled_textbox', {'label_text': False, 'language': {'abcd': 'abcd'}, 'fill_tag': False})
-textbox.properties['label_text'] = 'abcd'
+textbox = Object_builder('Scrolled_textbox', {'label_text': False, 'fill_tag': False})
 window.add(textbox.build(), 5, 4, 0, 0)
 
 window.window.mainloop()
