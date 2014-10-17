@@ -11,7 +11,7 @@ class Object_builder:
 	def __init__(self, object_type, properties):
 		self.object_type = object_type
 		self.properties = properties
-		self.properties.update({'width': False, 'height': False})
+		self.properties.extend(['width', 'height'])
 		self.need_to_convert_to_str = [list, int]
 
 	def build(self):
@@ -19,15 +19,19 @@ class Object_builder:
 
 	def string_output(self):
 		output = self.object_type + '('
-		for attr, value in self.properties.items():
+		for attr in self.properties:
 			output += attr + '='
-			try:
-				if type(eval(value)) in self.need_to_convert_to_str:
-					output += str(value)
-			except (TypeError, NameError) as error:
-				output += repr(value)
+			if not hasattr(self, attr):
+				output += repr(False)
+			else:
+				try:
+					if type(eval(getattr(self, attr))) in self.need_to_convert_to_str:
+						output += str(getattr(self, attr))
+				except (TypeError, NameError) as error:
+					output += repr(getattr(self, attr))
 			output += ', '
 
+		print(output)
 		return output[:-2] + ')'
 
 	def move(self):
@@ -41,12 +45,12 @@ class Object_builder:
 	pass
 
 
-widget_build_dictionary = {'Textbox': Object_builder('Textbox', {'label_text': False, 'fill_tag': False}),
-							'Scrolled_textbox': Object_builder('Scrolled_textbox', {'label_text': False, 'fill_tag': False}),
-							'Button': Object_builder('Button', {'text': False}),
-							'Coin_widget': Object_builder('Coin_widget', {'label_text': False, 'fill_tag':False}),
-							'Date_widget': Object_builder('Date_widget', {'label_text': False, 'fill_tag':False}),
-							'Entry_category': Object_builder('Entry_category', {'label_text': False, 'fill_tag':False, 'categories': False})}
+widget_build_dictionary = {'Textbox': Object_builder('Textbox', ['label_text', 'fill_tag']),
+							'Scrolled_textbox': Object_builder('Scrolled_textbox', ['label_text', 'fill_tag']),
+							'Button': Object_builder('Button', ['text']),
+							'Coin_widget': Object_builder('Coin_widget', ['label_text', 'fill_tag']),
+							'Date_widget': Object_builder('Date_widget', ['label_text', 'fill_tag']),
+							'Entry_category': Object_builder('Entry_category', ['label_text', 'fill_tag', 'categories'])}
 
 
 def select_widget(event):
@@ -92,22 +96,19 @@ def select_widget(event):
 		widget_value_list_widget.delete(0, END)
 
 		def OnValidate(d, i, P, s, S, v, V, W):
-			#setattr(current_active, widget_value_list_widget.get(ACTIVE), P)
-			widget_value_list[widget_value_list_widget.get(ACTIVE)] = P
+			current_active_property = widget_value_list_widget.get(ACTIVE)
+			setattr(current_active, current_active_property, P)
 			return True
 
 		value_of_property.vcmd = (value_of_property.encompass_frame.register(OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
 		value_of_property.entry.config(validate="all", validatecommand=value_of_property.vcmd)
 
 		current_active = widget_build_dictionary[widget_map[widget_list_widget.curselection()[0]]]
-		print(setattr(current_active, 'abcd', 5))
+
 		for attr in widget_build_dictionary[widget_map[widget_list_widget.curselection()[0]]].properties:
-			widget_value_list[attr] = False
 			widget_value_list_widget.insert(END, attr)
 
 		return
-
-	widget_value_list = {}
 
 	widget_list_widget.bind('<<ListboxSelect>>', set_value)
 	#widget_value_list_widget.bind('<Button-1>', lambda event: selector.value.set_data(''))
@@ -127,13 +128,7 @@ def select_widget(event):
 
 		widget = widget_build_dictionary[widget_list_widget.get(ACTIVE)]
 
-		for attr, value in widget_value_list.items():
-			if attr == 'build': continue
-			widget.properties[attr] = value
-
-		print(widget_value_list)
-
-		width, height = int(widget.properties['width']), int(widget.properties['height'])	
+		width, height = int(widget.width), int(widget.height)	
 
 		window.add(widget.build(), width, height, x, y)
 
@@ -150,9 +145,9 @@ for grid_coords, rectangle in window.grid_rectangles.items():
 
 
 
-textbox = Object_builder('Date_widget', {'label_text': False, 'fill_tag': False, 'categories': "[{'abcd': 'abcd'}]"})
-textbox.properties['label_text'] = 'abcd'
-window.add(textbox.build(), 5, 2, 0, 0)
+textbox = Object_builder('Date_widget', ['label_text', 'fill_tag', 'categories'])
+textbox.label_text = 'abcd'
+#window.add(textbox.build(), 5, 2, 0, 0)
 
 print(int(str('2')))
 
