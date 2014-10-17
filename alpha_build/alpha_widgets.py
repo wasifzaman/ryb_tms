@@ -508,6 +508,7 @@ class Entry_category:
 
 		column = 0
 		for category in self.categories:
+			print(category)
 			for label, fill_tag in category.items():
 				self.label_categories[fill_tag] = Label(self.encompass_categores, text=self.language[label])
 				self.label_categories[fill_tag].grid(row=0, column=column)

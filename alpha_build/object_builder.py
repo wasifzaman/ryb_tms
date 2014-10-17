@@ -3,13 +3,19 @@ from object_settings import *
 
 
 
+class Property:
+
+	def __init__(self, prop_type, value):
+		self.prop_type = prop_type
+		self.value = value
+
 
 class Object_builder:
 
 	def __init__(self, object_type, properties):
 		self.object_type = object_type
 		self.properties = properties
-		self.properties.update({'width': False, 'height': False})
+		self.properties.update({'width': Property(int, "False"), 'height': Property(int, "False")})
 
 	def build(self):
 		return eval(self.string_output())
@@ -18,9 +24,10 @@ class Object_builder:
 		output = self.object_type + '('
 		for attr, value in self.properties.items():
 			output += attr + '='
-			output += '\'' + str(value) + '\''
+			output += repr(value.value)
 			output += ', '
 
+		print(output)
 		return output[:-2] + ')'
 
 	def move(self):
@@ -34,7 +41,12 @@ class Object_builder:
 	pass
 
 
-
+widget_build_dictionary = {'Textbox': Object_builder('Textbox', {'label_text': Property(str, False), 'fill_tag': Property(str, False)}),
+							'Scrolled_textbox': Object_builder('Scrolled_textbox', {'label_text': False, 'fill_tag': False}),
+							'Button': Object_builder('Button', {'text': False}),
+							'Coin_widget': Object_builder('Coin_widget', {'label_text': False, 'fill_tag':False}),
+							'Date_widget': Object_builder('Date_widget', {'label_text': False, 'fill_tag':False}),
+							'Entry_category': Object_builder('Entry_category', {'label_text': False, 'fill_tag':False, 'categories': False})}
 
 
 def select_widget(event):
@@ -102,13 +114,6 @@ def select_widget(event):
 	selector.add(add_button, 3, 2, 4, 0)
 	selector.add(close_button, 3, 2, 7, 0)
 
-	widget_build_dictionary = {'Textbox': Object_builder('Textbox', {'label_text': False, 'fill_tag': False}),
-								'Scrolled_textbox': Object_builder('Scrolled_textbox', {'label_text': False, 'fill_tag': False}),
-								'Button': Object_builder('Button', {'text': False}),
-								'Coin_widget': Object_builder('Coin_widget', {'label_text': False, 'fill_tag':False}),
-								'Date_widget': Object_builder('Date_widget', {'label_text': False, 'fill_tag':False}),
-								'Entry_category': Object_builder('Entry_category', {'label_text': False, 'fill_tag':False, 'categories': False})}
-
 	selector.grid.place_forget()
 
 	for widget in widget_list:
@@ -142,7 +147,15 @@ for grid_coords, rectangle in window.grid_rectangles.items():
 
 
 
-textbox = Object_builder('Scrolled_textbox', {'label_text': False, 'fill_tag': False})
+textbox = Object_builder('Entry_category', {'label_text': Property(str, "False"), 'fill_tag': Property(str, "False"), 'categories': Property(dict, {'abcd': 'abcd'})})
+textbox.properties['label_text'].value = 'abcd'
 window.add(textbox.build(), 5, 4, 0, 0)
+
+#print(eval(textbox.properties['categories'].value))
+
+#print(eval("{'abcd': 'abcd'}").items())
+
+#expr = compile("{'abcd': 'abcd'}", "<string>", "exec")
+#print(eval(expr))
 
 window.window.mainloop()
