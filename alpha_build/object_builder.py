@@ -77,37 +77,40 @@ def select_widget(event):
 	scrollbar.config(command=widget_list_widget.yview)
 	scrollbar.place(x=180, y=0, height=200)
 
-	selector.value = Textbox(label_text='Value:', language={'Value:': 'Value:'}, fill_tag='value')
-	selector.add(selector.value, 4, 2, 6, 3)
+	value_of_property = Textbox(label_text='Value:', language={'Value:': 'Value:'}, fill_tag='value')
+	selector.add(value_of_property, 4, 2, 6, 3)
 
-	selector.widget_value_list_widget = Listbox(selector.window)
-	selector.widget_value_list_widget.place(x=240, y=60, width=120, height=140)
+	widget_value_list_widget = Listbox(selector.window)
+	widget_value_list_widget.place(x=240, y=60, width=120, height=140)
 
-	selector.style_select = Listbox(selector.window)
-	selector.style_select.place(x=420, y=100, width=180, height=100)
+	style_select = Listbox(selector.window)
+	style_select.place(x=420, y=100, width=180, height=100)
 
 
 	def set_value(event):
 
-		selector.widget_value_list_widget.delete(0, END)
+		widget_value_list_widget.delete(0, END)
 
 		def OnValidate(d, i, P, s, S, v, V, W):
-			selector.widget_value_list[selector.widget_value_list_widget.get(ACTIVE)] = P
+			#setattr(current_active, widget_value_list_widget.get(ACTIVE), P)
+			widget_value_list[widget_value_list_widget.get(ACTIVE)] = P
 			return True
 
-		selector.value.vcmd = (selector.value.encompass_frame.register(OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
-		selector.value.entry.config(validate="all", validatecommand=selector.value.vcmd)
+		value_of_property.vcmd = (value_of_property.encompass_frame.register(OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
+		value_of_property.entry.config(validate="all", validatecommand=value_of_property.vcmd)
 
+		current_active = widget_build_dictionary[widget_map[widget_list_widget.curselection()[0]]]
+		print(setattr(current_active, 'abcd', 5))
 		for attr in widget_build_dictionary[widget_map[widget_list_widget.curselection()[0]]].properties:
-			selector.widget_value_list[attr] = False
-			selector.widget_value_list_widget.insert(END, attr)
+			widget_value_list[attr] = False
+			widget_value_list_widget.insert(END, attr)
 
 		return
 
-	selector.widget_value_list = {}
+	widget_value_list = {}
 
 	widget_list_widget.bind('<<ListboxSelect>>', set_value)
-	#selector.widget_value_list_widget.bind('<Button-1>', lambda event: selector.value.set_data(''))
+	#widget_value_list_widget.bind('<Button-1>', lambda event: selector.value.set_data(''))
 
 	add_button = Button(text='Add', fill_tag='test', settings=button_scheme_1)
 	close_button = Button(text='Close', fill_tag='test', settings=button_scheme_1)
@@ -124,11 +127,11 @@ def select_widget(event):
 
 		widget = widget_build_dictionary[widget_list_widget.get(ACTIVE)]
 
-		for attr, value in selector.widget_value_list.items():
+		for attr, value in widget_value_list.items():
 			if attr == 'build': continue
 			widget.properties[attr] = value
 
-		print(selector.widget_value_list)
+		print(widget_value_list)
 
 		width, height = int(widget.properties['width']), int(widget.properties['height'])	
 
