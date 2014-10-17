@@ -508,9 +508,8 @@ class Entry_category:
 
 		column = 0
 		for category in self.categories:
-			print(category)
 			for label, fill_tag in category.items():
-				self.label_categories[fill_tag] = Label(self.encompass_categores, text=self.language[label])
+				self.label_categories[fill_tag] = Label(self.encompass_categores, text=self.language[label] if self.language else label)
 				self.label_categories[fill_tag].grid(row=0, column=column)
 				self.label_categories[fill_tag].bind('<Enter>', self.enter)
 				self.label_categories[fill_tag].bind('<Leave>', self.leave)
