@@ -294,7 +294,7 @@ class Table:
 			x = 0
 
 			while x < self.num_columns:
-				if hasattr(self.cells[(x, after)], 'state') and self.cells[(x, after)].state == 'MERGED':
+				if hasattr(self.cells[(x, after - 1)], 'state') and self.cells[(x, after - 1)].state == 'MERGED':
 					return
 				x += 1
 
@@ -702,13 +702,15 @@ class Table:
 	pass
 
 
-#table = Table(frame, 5, 5)
+table = Table(frame, 5, 5)
 
 #table.erase_line((0, 2), 'left')
 #table.draw_line((0, 0), 'left')
 #table.cells[(0, 1)].insert_text('abcd')
-#table.add_row(1)
-#table.add_column(1)
+#table.cells[(0, 0)].insert_text('abcd')
+#table.add_row(0)
+#table.add_column(2)
+
 
 #table.color_column(0, 'red')
 #table.cells[(0, 0)].insert_text('abcd')
@@ -719,7 +721,7 @@ class Table:
 #table.erase_line((0, 0), 'right')
 #table.canvas.itemconfig(table.cells[(0, 0)].object_id, fill='red')
 
-#table.color_row(0, 'lightblue')
+#table.color_row(1, 'lightblue')
 #table.color_row(1, 'red')
 #table.color_row(2, 'teal')
 #table.merge_cells((3, 0), (4, 1))
@@ -729,7 +731,8 @@ class Table:
 #table.delete_column(2)
 #table.cells[(0, 0)].insert_text('abcd')
 
-#window.mainloop()
+
+window.mainloop()
 
 print({x: x for x in 'abcd,efg'.split(',')})
 

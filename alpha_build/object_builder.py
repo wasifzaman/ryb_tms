@@ -1,5 +1,6 @@
 from alpha_ui import *
 from object_settings import *
+from alpha_widgets import Table, Cell_object
 
 
 
@@ -64,6 +65,9 @@ def select_widget(event):
 	widget_list = []
 	widget_map = {}
 	widget_index = 0
+
+	widget_table = Table(selector.window, 1, 1)
+
 	for line in widget_file:
 		widget = False
 		if line[:5] == 'class':
@@ -71,14 +75,16 @@ def select_widget(event):
 				widget = line[6:line.index('(')]
 			else:
 				widget = line[6:line.index(':')]
+		if widget == 'Table' or widget == 'Cell_object': continue
 		if widget:
 			widget_map[widget_index] = widget
 			widget_list.append(widget)
 			widget_index += 1
+
 	scrollbar = Scrollbar(selector.window, orient=VERTICAL)
 	widget_list_widget = Listbox(selector.window, yscrollcommand=scrollbar.set)
-	widget_list_widget.place(x=0, y=0, width=180, height=200)
-	scrollbar.config(command=widget_list_widget.yview)
+	#widget_list_widget.place(x=0, y=0, width=180, height=200)
+	scrollbar.config(command=widget_table.canvas.yview)
 	scrollbar.place(x=180, y=0, height=200)
 
 	value_of_property = Textbox(label_text='Value:', language={'Value:': 'Value:'}, fill_tag='value')
@@ -96,9 +102,19 @@ def select_widget(event):
 		widget_value_list_widget.delete(0, END)
 
 		def OnValidate(d, i, P, s, S, v, V, W):
-			current_active_property = widget_value_list_widget.get(ACTIVE)
-			setattr(current_active, current_active_property, P)
+			
+			current_active_property = current_active.properties[widget_value_list_widget.curselection()[0]]
+			setattr(current_active, current_active.properties[widget_value_list_widget.curselection()[0]], P)
 			return True
+
+		def set_property_value(event):
+
+			current_active_property = widget_value_list_widget.get(widget_value_list_widget.curselection())
+			if hasattr(current_active, current_active_property):
+				value_of_property.set_data(getattr(current_active, current_active_property))
+			else:
+				value_of_property.set_data('')
+			return
 
 		value_of_property.vcmd = (value_of_property.encompass_frame.register(OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
 		value_of_property.entry.config(validate="all", validatecommand=value_of_property.vcmd)
@@ -107,6 +123,10 @@ def select_widget(event):
 
 		for attr in widget_build_dictionary[widget_map[widget_list_widget.curselection()[0]]].properties:
 			widget_value_list_widget.insert(END, attr)
+
+		widget_value_list_widget.select_set(0)
+
+		widget_value_list_widget.bind('<<ListboxSelect>>', set_property_value)
 
 		return
 
@@ -120,9 +140,19 @@ def select_widget(event):
 
 	selector.grid.place_forget()
 
-	for widget in widget_list:
-		if widget == 'Cell_object' or widget == 'Table': continue
-		widget_list_widget.insert(END, widget)
+	row = 0
+	while row < len(widget_list):
+		widget_table.cells[(0, row)].insert_text(widget_list[row])
+		row += 1
+		if row != len(widget_list):
+			widget_table.add_row(row)
+
+	def print_text(cell):
+		print(cell.canvas.itemcget(cell.text, 'text'))
+
+	for cell_coord, cell in widget_table.cells.items():
+		cell.bind('<Button-1>', print_text)
+
 
 	def add():
 
@@ -149,7 +179,7 @@ textbox = Object_builder('Date_widget', ['label_text', 'fill_tag', 'categories']
 textbox.label_text = 'abcd'
 #window.add(textbox.build(), 5, 2, 0, 0)
 
-print(int(str('2')))
+
 
 
 window.window.mainloop()

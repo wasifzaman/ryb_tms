@@ -10,6 +10,7 @@ Notes:
 	- when copying widget settings, use dict(settings) to make copy
 	- date widget's interactive adding of / creates new entry widgets each time / is added
 	- date widget returns and sets datetime object
+	- cell callback must only have 1 argument and the argument is the cell
 
 
 
@@ -553,10 +554,11 @@ class Entry_category:
 
 class Cell_object:
 
-	def __init__(self, canvas, p1x, p1y, p2x, p2y, grid_row, grid_column):
+	def __init__(self, canvas, p1x, p1y, p2x, p2y, grid_row, grid_column, button_bind='<Button-1>'):
 		self.row = grid_row
 		self.column = grid_column
 		self.canvas = canvas
+		self.button_bind = button_bind
 		self.p1x = p1x
 		self.p1y = p1y
 		self.p2x = p2x
@@ -571,8 +573,10 @@ class Cell_object:
 		self.canvas.tag_raise(self.right_line)
 		self.canvas.tag_raise(self.top_line)
 		self.canvas.tag_raise(self.bottom_line)
-		#self.tag = str(self.row) + ',' + str(self.column)
-		#canvas.itemconfig(self.object_id, tags=(self.tag))
+
+	def bind(self, event, callback):
+		for canvas_object in self.canvas.find_enclosed(self.p1x, self.p1y, self.p2x, self.p2y):
+			self.canvas.tag_bind(canvas_object, event, lambda event: callback(self))
 
 	def erase_line(self, line):
 		if line == 'left':
@@ -720,7 +724,7 @@ class Table:
 			x = 0
 
 			while x < self.num_columns:
-				if hasattr(self.cells[(x, after)], 'state') and self.cells[(x, after)].state == 'MERGED':
+				if hasattr(self.cells[(x, after - 1)], 'state') and self.cells[(x, after - 1)].state == 'MERGED':
 					return
 				x += 1
 
@@ -819,7 +823,7 @@ class Table:
 			y = 0
 
 			while y < self.num_rows:
-				if hasattr(self.cells[(after, y)], 'state') and self.cells[(after, y)].state == 'MERGED':
+				if hasattr(self.cells[(after - 1, y)], 'state') and self.cells[(after - 1, y)].state == 'MERGED':
 					return
 				y += 1
 
