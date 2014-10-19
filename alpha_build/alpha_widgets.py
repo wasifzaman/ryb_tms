@@ -10,7 +10,7 @@ Notes:
 	- when copying widget settings, use dict(settings) to make copy
 	- date widget's interactive adding of / creates new entry widgets each time / is added
 	- date widget returns and sets datetime object
-	- cell callback must only have 1 argument and the argument is the cell
+	- Cell_object argument callback on method bind must only have 1 argument and the argument is the cell
 
 
 
@@ -1003,7 +1003,6 @@ class Table:
 		column, row = 0, table_row - 1
 
 		while column < self.num_columns:
-			print(column, row)
 			if (column, row) in self.merged_cells:
 				self.restore_merged_cells(self.merged_cells[(column, row)])
 

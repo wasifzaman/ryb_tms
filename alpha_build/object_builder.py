@@ -32,7 +32,6 @@ class Object_builder:
 					output += repr(getattr(self, attr))
 			output += ', '
 
-		print(output)
 		return output[:-2] + ')'
 
 	def move(self):
@@ -46,15 +45,16 @@ class Object_builder:
 	pass
 
 
-widget_build_dictionary = {'Textbox': Object_builder('Textbox', ['label_text', 'fill_tag']),
+
+
+def select_widget(event):
+
+	widget_build_dictionary = {'Textbox': Object_builder('Textbox', ['label_text', 'fill_tag']),
 							'Scrolled_textbox': Object_builder('Scrolled_textbox', ['label_text', 'fill_tag']),
 							'Button': Object_builder('Button', ['text']),
 							'Coin_widget': Object_builder('Coin_widget', ['label_text', 'fill_tag']),
 							'Date_widget': Object_builder('Date_widget', ['label_text', 'fill_tag']),
 							'Entry_category': Object_builder('Entry_category', ['label_text', 'fill_tag', 'categories'])}
-
-
-def select_widget(event):
 
 	coords = window.grid.coords(event.widget.find_closest(event.x, event.y))
 	x = int(coords[0] / (window.width / window.grid_spacing))
@@ -63,10 +63,13 @@ def select_widget(event):
 	selector = Window(600, 200, 10, toplevel=True)
 	widget_file = open('alpha_widgets.py', 'r')
 	widget_list = []
-	widget_map = {}
-	widget_index = 0
+	selector.current_widget = ''
+	selector.current_widget_value = ''
 
 	widget_table = Table(selector.window, 1, 1)
+	widget_value_table = Table(selector.window, 1, 1)
+
+	widget_value_table.canvas.place(x=240, y=60)
 
 	for line in widget_file:
 		widget = False
@@ -77,61 +80,18 @@ def select_widget(event):
 				widget = line[6:line.index(':')]
 		if widget == 'Table' or widget == 'Cell_object': continue
 		if widget:
-			widget_map[widget_index] = widget
 			widget_list.append(widget)
-			widget_index += 1
 
 	scrollbar = Scrollbar(selector.window, orient=VERTICAL)
-	widget_list_widget = Listbox(selector.window, yscrollcommand=scrollbar.set)
-	#widget_list_widget.place(x=0, y=0, width=180, height=200)
+	widget_table.canvas.config(yscrollcommand=scrollbar.set)
 	scrollbar.config(command=widget_table.canvas.yview)
 	scrollbar.place(x=180, y=0, height=200)
 
 	value_of_property = Textbox(label_text='Value:', language={'Value:': 'Value:'}, fill_tag='value')
 	selector.add(value_of_property, 4, 2, 6, 3)
 
-	widget_value_list_widget = Listbox(selector.window)
-	widget_value_list_widget.place(x=240, y=60, width=120, height=140)
-
 	style_select = Listbox(selector.window)
 	style_select.place(x=420, y=100, width=180, height=100)
-
-
-	def set_value(event):
-
-		widget_value_list_widget.delete(0, END)
-
-		def OnValidate(d, i, P, s, S, v, V, W):
-			
-			current_active_property = current_active.properties[widget_value_list_widget.curselection()[0]]
-			setattr(current_active, current_active.properties[widget_value_list_widget.curselection()[0]], P)
-			return True
-
-		def set_property_value(event):
-
-			current_active_property = widget_value_list_widget.get(widget_value_list_widget.curselection())
-			if hasattr(current_active, current_active_property):
-				value_of_property.set_data(getattr(current_active, current_active_property))
-			else:
-				value_of_property.set_data('')
-			return
-
-		value_of_property.vcmd = (value_of_property.encompass_frame.register(OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
-		value_of_property.entry.config(validate="all", validatecommand=value_of_property.vcmd)
-
-		current_active = widget_build_dictionary[widget_map[widget_list_widget.curselection()[0]]]
-
-		for attr in widget_build_dictionary[widget_map[widget_list_widget.curselection()[0]]].properties:
-			widget_value_list_widget.insert(END, attr)
-
-		widget_value_list_widget.select_set(0)
-
-		widget_value_list_widget.bind('<<ListboxSelect>>', set_property_value)
-
-		return
-
-	widget_list_widget.bind('<<ListboxSelect>>', set_value)
-	#widget_value_list_widget.bind('<Button-1>', lambda event: selector.value.set_data(''))
 
 	add_button = Button(text='Add', fill_tag='test', settings=button_scheme_1)
 	close_button = Button(text='Close', fill_tag='test', settings=button_scheme_1)
@@ -147,20 +107,65 @@ def select_widget(event):
 		if row != len(widget_list):
 			widget_table.add_row(row)
 
-	def print_text(cell):
-		print(cell.canvas.itemcget(cell.text, 'text'))
+	def set_value_table(widget):
+
+		row = widget_value_table.num_rows
+		while row > 1:
+			widget_value_table.delete_row(row)
+			row -= 1
+			if row == 1:
+				column = widget_value_table.num_columns
+				while column > 1:
+					cell = widget_value_table.cells[(column, row)]
+					if hasattr(cell, 'text'):
+						cell.canvas.delete(cell.text)
+					column -= 1
+				last_cell = widget_value_table.cells[(0, 0)]
+				if hasattr(last_cell, 'text'):
+					last_cell.canvas.delete(last_cell.text)
+
+		widget_values = widget_build_dictionary[widget].properties
+		row = 0
+		while row < len(widget_values):
+			widget_value_table.cells[(0, row)].insert_text(widget_values[row])
+			row += 1
+			if row != len(widget_values):
+				widget_value_table.add_row(row)
+
+		def OnValidate(d, i, P, s, S, v, V, W):
+			
+			setattr(selector.current_widget, selector.current_widget_value, P)
+			return True
+
+		def set_current_value(cell):
+			print(cell.canvas.itemcget(cell.text, 'text'))
+			selector.current_widget_value = cell.canvas.itemcget(cell.text, 'text')
+
+			if hasattr(selector.current_widget, selector.current_widget_value):
+				value_of_property.set_data(getattr(selector.current_widget, selector.current_widget_value))
+			else:
+				value_of_property.set_data('')
+			return
+
+		for cell in widget_value_table.cells.values():
+			cell.bind('<Button-1>', set_current_value)
+
+		value_of_property.vcmd = (value_of_property.encompass_frame.register(OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
+		value_of_property.entry.config(validate="all", validatecommand=value_of_property.vcmd)
+
+	def set_current_widget(cell):
+		selector.current_widget = widget_build_dictionary[cell.canvas.itemcget(cell.text, 'text')]
+		set_value_table(cell.canvas.itemcget(cell.text, 'text'))
 
 	for cell_coord, cell in widget_table.cells.items():
-		cell.bind('<Button-1>', print_text)
+		cell.bind('<Button-1>', set_current_widget)
 
 
 	def add():
 
-		widget = widget_build_dictionary[widget_list_widget.get(ACTIVE)]
+		width, height = int(selector.current_widget.width), int(selector.current_widget.height)	
 
-		width, height = int(widget.width), int(widget.height)	
-
-		window.add(widget.build(), width, height, x, y)
+		window.add(selector.current_widget.build(), width, height, x, y)
 
 
 	add_button.label.bind('<Button-1>', lambda event: add())
