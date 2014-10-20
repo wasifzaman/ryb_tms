@@ -63,8 +63,14 @@ def select_widget(event):
 	selector = Window(600, 200, 10, toplevel=True)
 	widget_file = open('alpha_widgets.py', 'r')
 	widget_list = []
-	selector.current_widget = ''
-	selector.current_widget_value = ''
+	selector.current_widget = False
+	selector.current_widget_value = False
+	selector.objects_to_track = {}
+
+	def de_select(self):
+		self.canvas.itemconfig(self.object_id, fill='')
+
+	Cell_object.de_select = de_select
 
 	widget_table = Table(selector.window, 1, 1)
 	widget_value_table = Table(selector.window, 1, 1)
@@ -138,6 +144,9 @@ def select_widget(event):
 			return True
 
 		def set_current_value(cell):
+			if selector.current_widget_value in selector.objects_to_track:
+				selector.objects_to_track[selector.current_widget_value].de_select()
+
 			print(cell.canvas.itemcget(cell.text, 'text'))
 			selector.current_widget_value = cell.canvas.itemcget(cell.text, 'text')
 
@@ -145,6 +154,9 @@ def select_widget(event):
 				value_of_property.set_data(getattr(selector.current_widget, selector.current_widget_value))
 			else:
 				value_of_property.set_data('')
+
+			selector.objects_to_track[selector.current_widget_value] = cell
+			cell.canvas.itemconfig(cell.object_id, fill='lightblue')
 			return
 
 		for cell in widget_value_table.cells.values():
@@ -154,8 +166,13 @@ def select_widget(event):
 		value_of_property.entry.config(validate="all", validatecommand=value_of_property.vcmd)
 
 	def set_current_widget(cell):
+		if selector.current_widget in selector.objects_to_track:
+			selector.objects_to_track[selector.current_widget].de_select()
 		selector.current_widget = widget_build_dictionary[cell.canvas.itemcget(cell.text, 'text')]
 		set_value_table(cell.canvas.itemcget(cell.text, 'text'))
+
+		selector.objects_to_track[selector.current_widget] = cell
+		cell.canvas.itemconfig(cell.object_id, fill='pink')
 
 	for cell_coord, cell in widget_table.cells.items():
 		cell.bind('<Button-1>', set_current_widget)
