@@ -699,6 +699,14 @@ class Table:
 
 		return
 
+	def set_column_width(self, column, width):
+
+		return
+
+	def set_row_height(self, row, height):
+
+		return
+
 	pass
 
 

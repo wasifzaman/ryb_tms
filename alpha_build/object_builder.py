@@ -1,6 +1,7 @@
 from alpha_ui import *
 from object_settings import *
 from alpha_widgets import Table, Cell_object
+from tkinter import Label
 
 
 
@@ -16,7 +17,8 @@ class Object_builder:
 		self.need_to_convert_to_str = [list, int]
 
 	def build(self):
-		return eval(self.string_output())
+		self.widget = eval(self.string_output())
+		return self.widget
 
 	def string_output(self):
 		output = self.object_type + '('
@@ -34,9 +36,26 @@ class Object_builder:
 
 		return output[:-2] + ')'
 
-	def move(self):
+	def make_movable(self):
 
-		return
+		def onclick(event):
+			self.drag_x = event.x
+			self.drag_y = event.y
+
+		def onmotion(event):
+			delta_x = event.x - self.drag_x
+			delta_y = event.y - self.drag_y
+
+			self.widget.grid_row = self.widget.grid_row + delta_y
+			self.widget.grid_column = self.widget.grid_column + delta_x
+
+			self.widget.encompass_frame.place(x=self.widget.grid_column, y=self.widget.grid_row)
+
+		self.move_drag_point = Label(self.widget.encompass_frame, text='D')
+		self.move_drag_point.place(x=self.widget.grid_row + 1, y=self.widget.grid_column + 1)
+
+		self.move_drag_point.bind('<Button-1>', onclick)
+		self.move_drag_point.bind('<B1-Motion>', onmotion)
 
 	def resize(self):
 
@@ -199,7 +218,26 @@ for grid_coords, rectangle in window.grid_rectangles.items():
 
 textbox = Object_builder('Date_widget', ['label_text', 'fill_tag', 'categories'])
 textbox.label_text = 'abcd'
-#window.add(textbox.build(), 5, 2, 0, 0)
+window.add(textbox.build(), 5, 2, 0, 0)
+
+textbox.make_movable()
+textbox.move(50, 20)
+
+
+def onclick(event):
+	textbox.drag_x = event.x
+	textbox.drag_y = event.y
+
+def callback(event):
+	delta_x = event.x - textbox.drag_x
+	delta_y = event.y - textbox.drag_y
+	textbox.widget.grid_row = textbox.widget.grid_row + delta_y
+	textbox.widget.grid_column = textbox.widget.grid_column + delta_x
+	textbox.widget.encompass_frame.place(y=textbox.widget.grid_row, x=textbox.widget.grid_column)
+	return
+
+#textbox.move_drag_point.bind('<Button-1>', onclick)
+#textbox.move_drag_point.bind('<B1-Motion>', callback)
 
 
 
