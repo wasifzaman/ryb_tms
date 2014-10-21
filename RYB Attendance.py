@@ -4,7 +4,7 @@ from dataHandler import *
 from languages import *
 from labelWidgets2 import *
 from photoWidget2 import *
-from preBuilts2 import ret, titlePic
+from preBuilts2 import ret, titlePic, choose_school
 from tkinter import filedialog
 import addS3
 import scanS22
@@ -137,6 +137,7 @@ def main():
 	w.frames['Third Frame'].grid_forget()
 
 #buttons to call sub-windows
+	bchoose_school = Buttonbox(text='Choose School', lang=w.lang, repr='bcschool')
 	bsadd = Buttonbox(text='Add Students', lang=w.lang, repr='bsadd') #Add Student
 	bsscan = Buttonbox(text='Scan Students', lang=w.lang, repr='bsscan') #Scan Student
 	bsscan2 = Buttonbox(text='Scan Out Teacher', lang=w.lang, repr='bsscan2') #Scan Student
@@ -151,19 +152,21 @@ def main():
 	w.p = Photo(repr='splash', path='background_IMG.jpg')
 
 #place buttons and background image
-	w.frames["First Frame"].addWidget(bsadd, (0, 0))
-	w.frames["First Frame"].addWidget(bsscan, (1, 0))
-	w.frames["First Frame"].addWidget(bsscan2, (2, 0))
-	w.frames["First Frame"].addWidget(bssdb, (3, 0))
-	w.frames["First Frame"].addWidget(bstools, (4, 0))
+	w.frames["First Frame"].addWidget(bchoose_school, (0, 0))
+	w.frames["First Frame"].addWidget(bsadd, (1, 0))
+	w.frames["First Frame"].addWidget(bsscan, (2, 0))
+	w.frames["First Frame"].addWidget(bsscan2, (3, 0))
+	w.frames["First Frame"].addWidget(bssdb, (4, 0))
+	w.frames["First Frame"].addWidget(bstools, (5, 0))
 	w.frames["Third Frame"].addWidget(bsbmm, (0, 0))
-	w.frames["First Frame"].addWidget(bprint, (5, 0))
-	w.frames["First Frame"].addWidget(bsexit, (6, 0))
-	w.frames["First Frame"].addWidget(bclang, (4, 0))
+	w.frames["First Frame"].addWidget(bprint, (6, 0))
+	w.frames["First Frame"].addWidget(bsexit, (7, 0))
+	w.frames["First Frame"].addWidget(bclang, (5, 0))
 	w.frames["First Frame"].addWidget(w.p, (0, 2))
 	Label(w.frames["First Frame"], text='  ').grid(column=1) #separator between buttons and background image
 
 #set commands for each button
+	bchoose_school.config(cmd=lambda: choose_school(w.lang))
 	bsadd.config(cmd=lambda: showWindow(addS3.main))
 	bsscan.config(cmd=lambda: showWindow(scanS22.main))
 	bsscan2.config(cmd=lambda: showWindow(scanOut.main))
@@ -181,6 +184,11 @@ def main():
 
 	w.mmbuttoncol = '#E3E9F9'
 	w.mmbuttonfg = 'black'
+
+	bchoose_school.idlebg = w.mmbuttoncol
+	bchoose_school.fg = w.mmbuttonfg
+	bchoose_school.hoverfg = 'white'
+	bchoose_school.button.config(bg=bchoose_school.idlebg, fg=bchoose_school.fg)
 
 	bsbmm.idlebg = w.mmbuttoncol
 	bsbmm.fg = w.mmbuttonfg

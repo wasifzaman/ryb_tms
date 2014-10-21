@@ -135,7 +135,12 @@ languages = \
 		"Confirm Reset": "Confirm Reset",
 		"Early Check-ins have been reset": "Early Check-ins have been reset",
 		"Yes, use current time": "Yes, use current time",
-		"Yes, enter time": "Yes, enter time"
+		"Yes, enter time": "Yes, enter time",
+		"Brooklyn": "Brooklyn",
+		"Chinatown": "Chinatown",
+		"Elmhurst": "Elmhurst",
+		"Flushing": "Flushing",
+		"Choose School": "Choose School"
 		},
 
 	"chinese": {
@@ -271,7 +276,12 @@ languages = \
 		"Confirm Reset": "Confirm Reset?",
 		"Early Check-ins have been reset": "Early Check-ins have been reset",
 		"Yes, use current time": "Yes, use current time",
-		"Yes, enter time": "Yes, enter time"
+		"Yes, enter time": "Yes, enter time",
+		"Brooklyn": "Brooklyn",
+		"Chinatown": "Chinatown",
+		"Elmhurst": "Elmhurst",
+		"Flushing": "Flushing",
+		"Choose School": "Choose School"
 		}
 		
 }
