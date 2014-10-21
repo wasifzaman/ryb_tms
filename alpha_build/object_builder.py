@@ -218,10 +218,10 @@ for grid_coords, rectangle in window.grid_rectangles.items():
 
 textbox = Object_builder('Date_widget', ['label_text', 'fill_tag', 'categories'])
 textbox.label_text = 'abcd'
-window.add(textbox.build(), 5, 2, 0, 0)
+window.add(textbox.build(), 200, 245, 0, 0)
 
 textbox.make_movable()
-textbox.move(50, 20)
+#textbox.move(50, 20)
 
 
 def onclick(event):
