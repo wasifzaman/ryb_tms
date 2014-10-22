@@ -4,7 +4,7 @@ from dataHandler import *
 from languages import *
 from labelWidgets2 import *
 from photoWidget2 import *
-from preBuilts2 import ret, titlePic, choose_school
+from preBuilts2 import ret, titlePic
 from tkinter import filedialog
 import addS3
 import scanS22
@@ -12,6 +12,7 @@ import scanOut
 import sDb22
 import tools2
 import sdb_salrep
+import preBuilts2
 
 def main():
 
@@ -39,9 +40,12 @@ def main():
 		try:
 			#w.frames["Title Frame"].grid_forget()
 			w.frames["First Frame"].grid_forget()
+			print(f.__doc__)
 			if (f.__doc__) == 'addS3':
 				t.con = True
 				w.t = f(w.frames["Second Frame"], w.lang, w.d, showMain)
+			elif (f.__doc__) == 'tools2':
+				w.t = f(w.frames["Second Frame"], w.lang, w.d, w.k)
 			else:
 				t.con = False
 				w.t = f(w.frames["Second Frame"], w.lang, w.d)
@@ -112,6 +116,14 @@ def main():
 		rbutton.selfframe.grid(columnspan=2, pady=20)
 
 		rbutton.config(cmd=out)
+
+	def choose_school(event):
+		
+		w.k.files['school'] = preBuilts2.choose_school(w.lang)
+		w.d.school = w.k.files['school']
+		w.k.save()
+
+		return
 		
 
 #main window and starting language
@@ -125,6 +137,13 @@ def main():
 #load current database
 	w.k = keeper.Keeper('keeper.db')
 	w.d = StudentDB(file=w.k.files['cfilepath'], cfile=w.k.fname)
+
+	if 'school' not in w.k.files:
+		w.k.files['school'] = preBuilts2.choose_school(w.lang)
+		w.d.school = w.k.files['school']
+		w.k.save()
+	else:
+		w.d.school = w.k.files['school']
 
 #frame creation and positions
 	#w.newFrame("Title Frame", (0, 0))
@@ -152,7 +171,7 @@ def main():
 	w.p = Photo(repr='splash', path='background_IMG.jpg')
 
 #place buttons and background image
-	w.frames["First Frame"].addWidget(bchoose_school, (0, 0))
+	#w.frames["First Frame"].addWidget(bchoose_school, (0, 0))
 	w.frames["First Frame"].addWidget(bsadd, (1, 0))
 	w.frames["First Frame"].addWidget(bsscan, (2, 0))
 	w.frames["First Frame"].addWidget(bsscan2, (3, 0))
@@ -166,7 +185,7 @@ def main():
 	Label(w.frames["First Frame"], text='  ').grid(column=1) #separator between buttons and background image
 
 #set commands for each button
-	bchoose_school.config(cmd=lambda: choose_school(w.lang))
+	#bchoose_school.config(cmd=lambda: choose_school(w.lang))
 	bsadd.config(cmd=lambda: showWindow(addS3.main))
 	bsscan.config(cmd=lambda: showWindow(scanS22.main))
 	bsscan2.config(cmd=lambda: showWindow(scanOut.main))
@@ -185,10 +204,10 @@ def main():
 	w.mmbuttoncol = '#E3E9F9'
 	w.mmbuttonfg = 'black'
 
-	bchoose_school.idlebg = w.mmbuttoncol
-	bchoose_school.fg = w.mmbuttonfg
-	bchoose_school.hoverfg = 'white'
-	bchoose_school.button.config(bg=bchoose_school.idlebg, fg=bchoose_school.fg)
+	#bchoose_school.idlebg = w.mmbuttoncol
+	#bchoose_school.fg = w.mmbuttonfg
+	#bchoose_school.hoverfg = 'white'
+	#bchoose_school.button.config(bg=bchoose_school.idlebg, fg=bchoose_school.fg)
 
 	bsbmm.idlebg = w.mmbuttoncol
 	bsbmm.fg = w.mmbuttonfg

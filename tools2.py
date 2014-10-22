@@ -5,9 +5,11 @@ from datetime import datetime
 import importwiz
 import os
 import sdb_salrep
+import preBuilts2
 
 
-def main(t, lang, d):
+def main(t, lang, d, k):
+	'''tools2'''
 
 	def cdb():
 		try:
@@ -67,7 +69,17 @@ def main(t, lang, d):
 			return
 
 
+	def choose_school_(event):
+		print(d.school)
 
+		school = preBuilts2.choose_school(w.lang)
+		if school == 'cancel': return
+
+		k.files['school'] = school
+		d.school = k.files['school']
+		k.save()
+
+		return
 
 		
 
@@ -93,6 +105,8 @@ def main(t, lang, d):
 	w.frames["Third Frame"].config(bg='#DBDBDB')
 	w.frames["Third Frame"].grid(rowspan=3)
 
+	bchoose_school = Buttonbox(text='Choose School', lang=w.lang, repr='bcschool')
+
 #title
 	#w.frames["Title Frame"].grid(columnspan=4, sticky=E+W)
 	#Label(w.frames["Title Frame"], text='Database Management', bg='#3B5C8D', fg='white', \
@@ -114,6 +128,9 @@ def main(t, lang, d):
 	#salary report
 	w.frames["Second Frame"].addWidget(bsalrep, (3, 0))
 
+	#choose school
+	w.frames["Second Frame"].addWidget(bchoose_school, (4, 0))
+
 	curdb = Label(w.frames['Third Frame'], text=d.file, wraplength=200, bg='#DBDBDB')
 	w.frames["Third Frame"].addWidget(curfile, (0, 0))
 	curfile.label.config(bg='#DBDBDB')
@@ -125,6 +142,7 @@ def main(t, lang, d):
 	#w.frames['Fourth Frame'].addWidget(bsav, (0, 0))
 
 	#bsav.config(cmd=ss)
+	bchoose_school.config(cmd=lambda: choose_school_(w.lang))
 	bimp.config(cmd=lambda: importwiz.main(w.lang, d))
 	bcdb.config(cmd=cdb)
 	bimpt.config(cmd=ctdb)

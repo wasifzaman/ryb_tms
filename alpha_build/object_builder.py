@@ -1,4 +1,4 @@
-from alpha_ui import *
+from alpha_ui_separate_grid import *
 from object_settings import *
 from alpha_widgets import Table, Cell_object
 from tkinter import Label

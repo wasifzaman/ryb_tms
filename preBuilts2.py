@@ -620,6 +620,29 @@ def confirm_print(s, lang):
 
 	return t.z
 
+def print_succesful(lang):
+
+	def d(z):
+		t.z = z
+		t.dw()
+
+	t = Mbox()
+	
+	t.newFrame("First Frame", (0, 0))
+	t.newFrame("Second Frame", (1, 0))
+
+	nostext = Labelbox(text='Print Successful', lang=lang, repr='nostext')
+
+	t.frames["First Frame"].addWidget(ws, (0, 0))
+	t.frames["First Frame"].addWidget(nostext, (1, 0))
+	t.frames["Second Frame"].addWidget(bok, (2, 0))
+	
+	bok.config(cmd=lambda: d(True), lang=lang)
+
+	t.root.wait_window()
+
+	return t.z
+
 def confirm_check_in(s, lang):
 
 	def d(z):
@@ -704,6 +727,7 @@ def choose_school(lang):
 		t.dw()
 
 	t = Mbox()
+	t.root.overrideredirect(0)
 
 	t.newFrame("First Frame", (0, 0))
 

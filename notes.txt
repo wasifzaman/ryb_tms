@@ -41,3 +41,6 @@ make salary translation format for each salary word
 
 #remove card printed and email
 calc by 5, pay by 5
+
+#print notes, confirm and close window
+move choose school to secret menu..

@@ -56,7 +56,7 @@ def main(t, lang, d):
 	w.frames["First Frame"].addWidget(dob, (4, 0))
 	#w.frames["First Frame"].addWidget(age, (5, 0))
 	#w.frames["Second Frame"].addWidget(parentName, (8, 0))
-	w.frames["First Frame"].addWidget(cp, (5, 0))
+	#w.frames["First Frame"].addWidget(cp, (5, 0))
 
 #address widgets
 	#w.frames["Second Frame"].addWidget(ainfo, (0, 0))
@@ -66,7 +66,7 @@ def main(t, lang, d):
 	#w.frames["Second Frame"].addWidget(city, (4, 0))
 	#w.frames["Second Frame"].addWidget(state, (5, 0))
 	#w.frames["Second Frame"].addWidget(zip, (6, 0))
-	w.frames["First Frame"].addWidget(email, (6, 0))
+	#w.frames["First Frame"].addWidget(email, (6, 0))
 
 #contact widgets
 	'''
@@ -168,7 +168,7 @@ def main(t, lang, d):
 	'''
 
 	w.attinfo.editwidget=False
-	w.attinfo.canvas.config(width=700, height=400)
+	w.attinfo.canvas.config(width=696, height=400)
 
 	sby.rads=[('Barcode', 'bCode'), ('First Name', 'firstName'), \
 		('Last Name', 'lastName'), ('Chinese Name', 'chineseName'), \
@@ -239,7 +239,7 @@ def main(t, lang, d):
 		w.frames["Eleventh Frame"].grid(rowspan=4, sticky=W)
 
 		w.attinfo.editwidget=False
-		w.attinfo.canvas.config(width=700, height=400)
+		w.attinfo.canvas.config(width=696, height=400)
 
 
 		#temp workaround while table is fixed
@@ -251,7 +251,7 @@ def main(t, lang, d):
 		w2.frames["Third Frame"].grid(rowspan=100, sticky=W)
 
 		w2.attinfo.editwidget=False
-		w2.attinfo.canvas.config(width=700, height=500)
+		w2.attinfo.canvas.config(width=696, height=500)
 		#
 		dp = d.studentList[w.s].datapoints
 
@@ -461,7 +461,7 @@ def main(t, lang, d):
 	w2.frames["Third Frame"].grid(rowspan=100, sticky=W)
 
 	w2.attinfo.editwidget=False
-	w.attinfo.canvas.config(width=700, height=500)
+	w.attinfo.canvas.config(width=696, height=500)
 
 #set starting lang
 	for frame in w.frames.values():

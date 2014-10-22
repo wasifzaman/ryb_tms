@@ -140,7 +140,8 @@ languages = \
 		"Chinatown": "Chinatown",
 		"Elmhurst": "Elmhurst",
 		"Flushing": "Flushing",
-		"Choose School": "Choose School"
+		"Choose School": "Choose School",
+		"Print Successful": "Print Successful"
 		},
 
 	"chinese": {
@@ -275,13 +276,14 @@ languages = \
 		"resetcheckin": "Reset Check-In",
 		"Confirm Reset": "Confirm Reset?",
 		"Early Check-ins have been reset": "Early Check-ins have been reset",
-		"Yes, use current time": "Yes, use current time",
-		"Yes, enter time": "Yes, enter time",
-		"Brooklyn": "Brooklyn",
-		"Chinatown": "Chinatown",
-		"Elmhurst": "Elmhurst",
-		"Flushing": "Flushing",
-		"Choose School": "Choose School"
+		"Yes, use current time": "使用现在时间",
+		"Yes, enter time": "输入结束时间",
+		"Brooklyn": "布鲁克林学校",
+		"Chinatown": "唐人街学校",
+		"Elmhurst": "艾姆赫斯特学校",
+		"Flushing": "法拉盛学校",
+		"Choose School": "选择学校",
+		"Print Successful": "Print Successful"
 		}
 		
 }

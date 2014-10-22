@@ -193,7 +193,10 @@ def main(lang, d, top=False, i=0): #i is the id of the student passed in
 	def print_to_file():
 		if not confirm_print('a', w.lang): return
 		file_name = filedialog.asksaveasfilename()
-		d.print_pay_entries(file_name, i, w.picked, dollar_per_hour.getData())
+		printed = d.print_pay_entries(file_name, i, w.picked, dollar_per_hour.getData())
+		if printed:
+			print_succesful(w.lang)
+			t.destroy()
 
 	b_print_to_file = Buttonbox(text='print to file', lang=w.lang, repr='print_to_file')
 	w.frames["Fifth Frame"].addWidget(b_print_to_file, (0, 0))

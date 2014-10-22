@@ -5,6 +5,7 @@ import pickle
 import xlrd
 import xlsxwriter
 import shutil
+import math
 
 #sched feature to add: log all changes
 
@@ -123,6 +124,8 @@ class StudentDB:
         
         #time table
         self.timeslot = {(time(6, 30, 0), time(9, 15, 0)): '09:15 AM'}
+
+        self.school = ''
         
         #last barcode
         self.setLast()
@@ -173,6 +176,15 @@ class StudentDB:
                 return self.timeslot[timeslot]
 
         h, m, p = '{:%I}'.format(time), '{:%M}'.format(time), '{:%p}'.format(time)
+
+        x = int(m)
+        if x % 10 > 5:
+            x = (x - x % 5)
+        elif x % 10 < 5:
+            x = (x - x % 10)
+
+        m = str(x) if x >= 10 else '0' + str(x)
+
         return h + ':' + m + ' ' + p
 
         #no time slot for teachers
@@ -235,8 +247,6 @@ class StudentDB:
         return False
 
 
-
-
     def scanStudent(self, barcode, xtra=False):
         #try:
         #scan the current student in
@@ -250,7 +260,8 @@ class StudentDB:
         #date = datetime.now().date()
         #time = datetime.strptime(str(date) + ' ' + timeslot, '%Y-%m-%d %I:%M %p')
 
-        data = [date, time, timeslot, '', '']
+        data = [date, time, timeslot, '', '', self.school]
+        print(data)
 
         s = self.studentList[barcode].datapoints
         s['attinfo'] = list(s['attinfo'])
@@ -671,9 +682,12 @@ class StudentDB:
             for cell in range(0, 5):
                 worksheet.write(row, cell, ' ', footer_format)
 
-        worksheet.write(r, 3, "法拉盛工资:", footer_format)
-        r += 1
-        worksheet.write(r, 3, "其他学校工资:", footer_format)
+        school_translation = {'Flushing': '法拉盛学校',
+                                'Chinatown': '唐人街学校',
+                                'Brooklyn': '布鲁克林学校',
+                                'Elmhurst': '艾姆赫斯特学校'}
+
+        worksheet.write(r, 3, school_translation[self.school] + ':', footer_format)
         r += 2
         worksheet.write(r, 3, "现金工资:", footer_format)
         r += 1
@@ -685,3 +699,5 @@ class StudentDB:
         
     
         self.saveData()
+
+        return True
