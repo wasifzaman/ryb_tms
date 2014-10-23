@@ -236,6 +236,8 @@ def callback(event):
 	textbox.widget.encompass_frame.place(y=textbox.widget.grid_row, x=textbox.widget.grid_column)
 	return
 
+
+#print(eval('window.add(' + textbox.string_output() + ',' + str(textbox.widget.width) + ',' + str(textbox.widget.height) + ',' + str(textbox.widget.grid_column) + ',' + str(textbox.widget.grid_row) + ')'))
 #textbox.move_drag_point.bind('<Button-1>', onclick)
 #textbox.move_drag_point.bind('<B1-Motion>', callback)
 
