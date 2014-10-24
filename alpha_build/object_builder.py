@@ -63,27 +63,29 @@ class Object_builder:
 			self.drag_x = event.x
 			self.drag_y = event.y
 
-		def onmotion(event):
+		def onmotion(event, corner_id):
 			delta_x = event.x - self.drag_x
 			delta_y = event.y - self.drag_y
 			
-			#bottom_left
-			#self.widget.width = self.widget.width + (delta_x * -1)
-			#top_right
-			self.widget.width = self.widget.width + delta_x
-			self.widget.height = self.widget.height + (delta_y * -1)
+			if corner_id == 'bottom_left':
+				self.widget.width = self.widget.width + (delta_x * -1)
+				self.widget.height = self.widget.height + delta_y
+				self.widget.grid_column = self.widget.grid_column + delta_x
+				self.widget.encompass_frame.place(x=self.widget.grid_column)
+			elif corner_id == 'top_right':
+				self.widget.width = self.widget.width + delta_x
+				self.widget.height = self.widget.height + (delta_y * -1)
+				self.widget.grid_row = self.widget.grid_row + delta_y
+				self.widget.encompass_frame.place(y=self.widget.grid_row)
+			elif corner_id == 'bottom_right':
+				self.widget.width = self.widget.width + delta_x
+				self.widget.height = self.widget.height + delta_y
 
 			self.widget.encompass_frame.config(width=self.widget.width, height=self.widget.height)
+
 			self.resize_point_bottom_right.place(x=self.widget.width - 10, y=self.widget.height - 15)
 			self.resize_point_bottom_left.place(x=-3, y=self.widget.height - 15)
-			self.resize_point_top_right.place(x=self.widget.width - 10, y=-7)
-
-			#bottom_left
-			#self.widget.grid_column = self.widget.grid_column + delta_x
-			#self.widget.encompass_frame.place(x=self.widget.grid_column)
-			#top_right
-			self.widget.grid_row = self.widget.grid_row + delta_y
-			self.widget.encompass_frame.place(y=self.widget.grid_row)
+			self.resize_point_top_right.place(x=self.widget.width - 10, y=-7)		
 
 		self.resize_point_bottom_right = Label(self.widget.encompass_frame, text='o')
 		self.resize_point_bottom_left = Label(self.widget.encompass_frame, text='o')
@@ -93,12 +95,12 @@ class Object_builder:
 		self.resize_point_top_right.place(x=self.widget.width - 10, y=-7)
 
 		self.resize_point_bottom_right.bind('<ButtonPress-1>', onclick)
-		self.resize_point_bottom_right.bind('<B1-Motion>', onmotion)
+		self.resize_point_bottom_right.bind('<B1-Motion>', lambda event: onmotion(event, 'bottom_right'))
 		#self.resize_point_bottom_right.bind('<ButtonRelease-1>', onrelease)
 		self.resize_point_bottom_left.bind('<Button-1>', onclick)
-		self.resize_point_bottom_left.bind('<B1-Motion>', onmotion)
+		self.resize_point_bottom_left.bind('<B1-Motion>', lambda event: onmotion(event, 'bottom_left'))
 		self.resize_point_top_right.bind('<Button-1>', onclick)
-		self.resize_point_top_right.bind('<B1-Motion>', onmotion)
+		self.resize_point_top_right.bind('<B1-Motion>', lambda event: onmotion(event, 'top_right'))
 
 
 		return
@@ -130,6 +132,10 @@ def select_widget(event):
 
 	def de_select(self):
 		self.canvas.itemconfig(self.object_id, fill='')
+
+	def snap_to_nearest(self):
+
+		return
 
 	Cell_object.de_select = de_select
 
