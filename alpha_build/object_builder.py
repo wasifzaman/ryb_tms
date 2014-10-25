@@ -97,10 +97,36 @@ class Object_builder:
 		self.resize_point_bottom_right.bind('<ButtonPress-1>', onclick)
 		self.resize_point_bottom_right.bind('<B1-Motion>', lambda event: onmotion(event, 'bottom_right'))
 		#self.resize_point_bottom_right.bind('<ButtonRelease-1>', onrelease)
-		self.resize_point_bottom_left.bind('<Button-1>', onclick)
+		self.resize_point_bottom_left.bind('<ButtonPress-1>', onclick)
 		self.resize_point_bottom_left.bind('<B1-Motion>', lambda event: onmotion(event, 'bottom_left'))
-		self.resize_point_top_right.bind('<Button-1>', onclick)
+		self.resize_point_top_right.bind('<ButtonPress-1>', onclick)
 		self.resize_point_top_right.bind('<B1-Motion>', lambda event: onmotion(event, 'top_right'))
+
+
+		return
+
+	def make_snappable(self, canvas):
+
+		def onrelease(event, corner_id):
+
+			#print(canvas.window.winfo_pointerxy())
+			geo = canvas.window.geometry()
+			geo = geo[geo.index('+') + 1:].split('+')
+			#print(geo)
+			x, y = canvas.window.winfo_pointerx() - int(geo[0]), canvas.window.winfo_pointery() - int(geo[1])
+			#print(canvas.window.geometry())
+			canvas.grid.itemconfig(canvas.grid.find_closest(x, y), fill='red')
+			#print(event.x, event.y)
+			#canvas.itemconfig(canvas.find_closest(event.x, event.y), fill='red')
+
+			return
+
+		self.resize_point_bottom_right.bind('<ButtonRelease-1>', lambda event: onrelease(event, 'bottom_right'))
+		self.resize_point_bottom_left.bind('<ButtonRelease-1>', lambda event: onrelease(event, 'bottom_left'))
+		self.resize_point_top_right.bind('<ButtonRelease-1>', lambda event: onrelease(event, 'top_right'))
+
+
+
 
 
 		return
@@ -111,6 +137,8 @@ class Object_builder:
 
 
 def select_widget(event):
+
+	print(event.x, event.y)
 
 	widget_build_dictionary = {'Textbox': Object_builder('Textbox', ['label_text', 'fill_tag']),
 							'Scrolled_textbox': Object_builder('Scrolled_textbox', ['label_text', 'fill_tag']),
@@ -270,6 +298,7 @@ window.add(textbox.build(), 300, 245, 0, 0)
 
 textbox.make_movable()
 textbox.make_resizable()
+textbox.make_snappable(window)
 #textbox.move(50, 20)
 
 
