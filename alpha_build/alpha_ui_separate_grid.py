@@ -32,53 +32,19 @@ class Window:
 		x, y = 0, 0
 		while x < width:
 			while y < height:
-				self.grid_rectangles[(int(x / (width / grid_spacing)), int(y / (height / grid_spacing)))] = self.grid.create_rectangle(x, y, x + width / self.grid_spacing, y + height / self.grid_spacing)
-				self.grid.create_text(x + width / self.grid_spacing / 2, y + height / self.grid_spacing / 2, text='(' + str(int(x / (width / grid_spacing))) + ',' + str(int(y / (height / grid_spacing))) + ')')
+				self.grid_rectangles[(x // grid_spacing, y // grid_spacing)] = self.grid.create_rectangle(x, y, x + self.grid_spacing, y + self.grid_spacing)
 
-				y += height / self.grid_spacing
+				y += self.grid_spacing
 
-			x += width / self.grid_spacing
+			x += self.grid_spacing
 			y = 0
 
 	def add(self, item, width, height, column, row):
 
-		'''
-		x, y = column, row
-
-		while y < row + height:
-			while x < column + width:
-				if (x, y) in self.grid_occupied:
-					return
-
-				x += 1
-
-			y += 1
-			x = column
-		'''
-
-		#item.width = width * self.width / self.grid_spacing
-		#item.height = height * self.height / self.grid_spacing
-
 		item.width = width
 		item.height = height
 
-		#x, y = column * self.width / self.grid_spacing, row * self.height / self.grid_spacing
-		#item.create_widget(parent_obj=self.window, grid_row=y, grid_column=x)
-
 		item.create_widget(parent_obj=self.window, grid_row=row, grid_column=column)
-
-		'''
-		x, y = column, row
-
-		while row < y + height:
-			while column < x + width:
-				self.grid_occupied[(column, row)] = True
-
-				column += 1
-
-			row += 1
-			column = 0
-		'''
 
 		return
 

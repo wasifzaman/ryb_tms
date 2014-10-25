@@ -52,9 +52,9 @@ class Object_builder:
 			self.widget.encompass_frame.place(x=self.widget.grid_column, y=self.widget.grid_row)
 
 		self.move_drag_point = Label(self.widget.encompass_frame, text='D')
-		self.move_drag_point.place(x=self.widget.grid_row + 1, y=self.widget.grid_column + 1)
+		self.move_drag_point.place(x=1, y=1)
 
-		self.move_drag_point.bind('<Button-1>', onclick)
+		self.move_drag_point.bind('<ButtonPress-1>', onclick)
 		self.move_drag_point.bind('<B1-Motion>', onmotion)
 
 	def make_resizable(self):
@@ -78,8 +78,8 @@ class Object_builder:
 				self.widget.grid_row = self.widget.grid_row + delta_y
 				self.widget.encompass_frame.place(y=self.widget.grid_row)
 			elif corner_id == 'bottom_right':
-				self.widget.width = self.widget.width + delta_x
-				self.widget.height = self.widget.height + delta_y
+				self.widget.width = (self.widget.width + delta_x) 
+				self.widget.height = (self.widget.height + delta_y) 
 
 			self.widget.encompass_frame.config(width=self.widget.width, height=self.widget.height)
 
@@ -96,7 +96,6 @@ class Object_builder:
 
 		self.resize_point_bottom_right.bind('<ButtonPress-1>', onclick)
 		self.resize_point_bottom_right.bind('<B1-Motion>', lambda event: onmotion(event, 'bottom_right'))
-		#self.resize_point_bottom_right.bind('<ButtonRelease-1>', onrelease)
 		self.resize_point_bottom_left.bind('<ButtonPress-1>', onclick)
 		self.resize_point_bottom_left.bind('<B1-Motion>', lambda event: onmotion(event, 'bottom_left'))
 		self.resize_point_top_right.bind('<ButtonPress-1>', onclick)
@@ -105,25 +104,51 @@ class Object_builder:
 
 		return
 
-	def make_snappable(self, canvas):
+	def make_snappable(self, grid_spacing):
 
 		def onrelease(event, corner_id):
 
-			#print(canvas.window.winfo_pointerxy())
-			geo = canvas.window.geometry()
-			geo = geo[geo.index('+') + 1:].split('+')
-			#print(geo)
-			x, y = canvas.window.winfo_pointerx() - int(geo[0]), canvas.window.winfo_pointery() - int(geo[1])
-			#print(canvas.window.geometry())
-			canvas.grid.itemconfig(canvas.grid.find_closest(x, y), fill='red')
-			#print(event.x, event.y)
-			#canvas.itemconfig(canvas.find_closest(event.x, event.y), fill='red')
+			if corner_id == 'bottom_left':
+				self.widget.width = self.widget.width // grid_spacing * grid_spacing + grid_spacing
+				self.widget.height = self.widget.height // grid_spacing * grid_spacing + grid_spacing
+				self.widget.grid_column = self.widget.grid_column // grid_spacing * grid_spacing
+				self.widget.encompass_frame.place(x=self.widget.grid_column)
+			elif corner_id == 'top_right':
+				self.widget.width = self.widget.width // grid_spacing * grid_spacing + grid_spacing
+				self.widget.height = self.widget.height // grid_spacing * grid_spacing + grid_spacing
+				self.widget.grid_row = self.widget.grid_row // grid_spacing * grid_spacing + grid_spacing
+				self.widget.encompass_frame.place(y=self.widget.grid_row)
+			elif corner_id == 'bottom_right':
+				self.widget.width = self.widget.width // grid_spacing * grid_spacing
+				self.widget.height = self.widget.height // grid_spacing * grid_spacing
+
+			self.widget.encompass_frame.config(width=self.widget.width, height=self.widget.height)
+
+			self.resize_point_bottom_right.place(x=self.widget.width - 10, y=self.widget.height - 15)
+			self.resize_point_bottom_left.place(x=-3, y=self.widget.height - 15)
+			self.resize_point_top_right.place(x=self.widget.width - 10, y=-7)
+			
 
 			return
 
-		self.resize_point_bottom_right.bind('<ButtonRelease-1>', lambda event: onrelease(event, 'bottom_right'))
-		self.resize_point_bottom_left.bind('<ButtonRelease-1>', lambda event: onrelease(event, 'bottom_left'))
-		self.resize_point_top_right.bind('<ButtonRelease-1>', lambda event: onrelease(event, 'top_right'))
+		def drag_onrelease(event):
+
+			self.widget.grid_row = self.widget.grid_row // grid_spacing * grid_spacing
+			self.widget.grid_column = self.widget.grid_column // grid_spacing * grid_spacing
+
+			self.widget.encompass_frame.place(x=self.widget.grid_column, y=self.widget.grid_row)
+
+			self.move_drag_point.place(x=1, y=1)
+
+		if grid_spacing:
+			self.resize_point_bottom_right.bind('<ButtonRelease-1>', lambda event: onrelease(event, 'bottom_right'))
+			self.resize_point_bottom_left.bind('<ButtonRelease-1>', lambda event: onrelease(event, 'bottom_left'))
+			self.resize_point_top_right.bind('<ButtonRelease-1>', lambda event: onrelease(event, 'top_right'))
+
+			self.move_drag_point.bind('<ButtonRelease-1>', drag_onrelease)
+
+		else:
+			return
 
 
 
@@ -298,8 +323,7 @@ window.add(textbox.build(), 300, 245, 0, 0)
 
 textbox.make_movable()
 textbox.make_resizable()
-textbox.make_snappable(window)
-#textbox.move(50, 20)
+textbox.make_snappable(window.grid_spacing)
 
 
 def onclick(event):
@@ -313,12 +337,6 @@ def callback(event):
 	textbox.widget.grid_column = textbox.widget.grid_column + delta_x
 	textbox.widget.encompass_frame.place(y=textbox.widget.grid_row, x=textbox.widget.grid_column)
 	return
-
-
-#print(eval('window.add(' + textbox.string_output() + ',' + str(textbox.widget.width) + ',' + str(textbox.widget.height) + ',' + str(textbox.widget.grid_column) + ',' + str(textbox.widget.grid_row) + ')'))
-#textbox.move_drag_point.bind('<Button-1>', onclick)
-#textbox.move_drag_point.bind('<B1-Motion>', callback)
-
 
 
 
