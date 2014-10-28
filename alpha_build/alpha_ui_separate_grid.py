@@ -22,22 +22,66 @@ class Window:
 		self.height = height
 		self.grid_spacing = grid_spacing
 		self.grid_occupied = {}
-		self.grid_rectangles = {}
+		self.vertical_lines = {}
+		self.horizontal_lines = {}
 
 		self.window = Toplevel() if apply_attribute('toplevel') else Tk()
 		self.window.geometry(str(width) + 'x' + str(height))
 		self.grid = Canvas(self.window, width=width, height=height)
 		self.grid.place(x=0, y=0)
 
-		x, y = 0, 0
+		x = 0
 		while x < width:
-			while y < height:
-				self.grid_rectangles[(x // grid_spacing, y // grid_spacing)] = self.grid.create_rectangle(x, y, x + self.grid_spacing, y + self.grid_spacing)
+			self.vertical_lines[x] = self.grid.create_line(x, 0, x, self.height)
+
+			x += self.grid_spacing
+
+		y = 0
+		while y < height:
+			self.horizontal_lines[y] = self.grid.create_line(0, y, self.width, y)
+
+			y+= self.grid_spacing
+
+		def create_and_modify_grid_lines(event):
+
+			if self.width == self.window.winfo_width() and self.height == self.window.winfo_height():
+				return
+
+			for line in self.vertical_lines.values():
+				cur_coords = self.grid.coords(line)
+				cur_coords[3] = self.window.winfo_height()
+				self.grid.coords(line, cur_coords[0], cur_coords[1], cur_coords[2], cur_coords[3])
+
+			for line in self.horizontal_lines.values():
+				cur_coords = self.grid.coords(line)
+				cur_coords[2] = self.window.winfo_width()
+				self.grid.coords(line, cur_coords[0], cur_coords[1], cur_coords[2], cur_coords[3])
+
+			x = self.width
+
+			while x < self.window.winfo_width():
+				p1x = x - x % self.grid_spacing
+				if p1x in self.vertical_lines:
+					self.grid.delete(self.vertical_lines[p1x])
+				self.vertical_lines[p1x] = self.grid.create_line(p1x, 0, p1x, self.height)
+
+				x += self.grid_spacing
+
+			y = self.height
+
+			while y < self.window.winfo_height():
+				p1y = y - y % self.grid_spacing
+				if p1y in self.horizontal_lines:
+					self.grid.delete(self.horizontal_lines[p1y])
+				self.horizontal_lines[p1y] = self.grid.create_line(0, p1y, self.width, p1y)
 
 				y += self.grid_spacing
 
-			x += self.grid_spacing
-			y = 0
+			self.width, self.height = self.window.winfo_width(), self.window.winfo_height()
+
+			self.grid.config(width=self.width, height=self.height)
+
+		self.window.bind('<Configure>', create_and_modify_grid_lines)
 
 	def add(self, item, width, height, column, row):
 
@@ -54,8 +98,8 @@ class Window:
 
 def add_textbox(event, text, fill_tag, width, height):
 	coords = window.grid.coords(event.widget.find_closest(event.x, event.y))
-	x = int(coords[0] / (window.width / window.grid_spacing))
-	y = int(coords[1] / (window.height / window.grid_spacing))
+	x = int(coords[0] / (window.width / window.self.grid_spacing))
+	y = int(coords[1] / (window.height / window.self.grid_spacing))
 	window.add(Textbox(label_text=text, language=languages.languages['english'], fill_tag=fill_tag), width, height, x, y)
 
 

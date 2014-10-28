@@ -161,9 +161,7 @@ class Object_builder:
 
 
 
-def select_widget(event):
-
-	print(event.x, event.y)
+def select_widget(event, grid_spacing):
 
 	widget_build_dictionary = {'Textbox': Object_builder('Textbox', ['label_text', 'fill_tag']),
 							'Scrolled_textbox': Object_builder('Scrolled_textbox', ['label_text', 'fill_tag']),
@@ -171,10 +169,6 @@ def select_widget(event):
 							'Coin_widget': Object_builder('Coin_widget', ['label_text', 'fill_tag']),
 							'Date_widget': Object_builder('Date_widget', ['label_text', 'fill_tag']),
 							'Entry_category': Object_builder('Entry_category', ['label_text', 'fill_tag', 'categories'])}
-
-	coords = window.grid.coords(event.widget.find_closest(event.x, event.y))
-	x = int(coords[0] / (window.width / window.grid_spacing))
-	y = int(coords[1] / (window.height / window.grid_spacing))
 
 	selector = Window(600, 200, 10, toplevel=True)
 	widget_file = open('alpha_widgets.py', 'r')
@@ -185,10 +179,6 @@ def select_widget(event):
 
 	def de_select(self):
 		self.canvas.itemconfig(self.object_id, fill='')
-
-	def snap_to_nearest(self):
-
-		return
 
 	Cell_object.de_select = de_select
 
@@ -214,15 +204,15 @@ def select_widget(event):
 	scrollbar.place(x=180, y=0, height=200)
 
 	value_of_property = Textbox(label_text='Value:', language={'Value:': 'Value:'}, fill_tag='value')
-	selector.add(value_of_property, 4, 2, 6, 3)
+	selector.add(value_of_property, 180, 20, 420, 70)
 
 	style_select = Listbox(selector.window)
 	style_select.place(x=420, y=100, width=180, height=100)
 
 	add_button = Button(text='Add', fill_tag='test', settings=button_scheme_1)
 	close_button = Button(text='Close', fill_tag='test', settings=button_scheme_1)
-	selector.add(add_button, 3, 2, 4, 0)
-	selector.add(close_button, 3, 2, 7, 0)
+	selector.add(add_button, 140, 40, 390, 10)
+	selector.add(close_button, 140, 40, 245, 10)
 
 	selector.grid.place_forget()
 
@@ -302,20 +292,23 @@ def select_widget(event):
 
 		width, height = int(selector.current_widget.width), int(selector.current_widget.height)	
 
-		window.add(selector.current_widget.build(), width, height, x, y)
+		window.add(selector.current_widget.build(), width, height, 20, 20)
+
+		selector.current_widget.make_resizable()
+		selector.current_widget.make_movable()
+		selector.current_widget.make_snappable(grid_spacing)
 
 
 	add_button.label.bind('<Button-1>', lambda event: add())
 	close_button.label.bind('<Button-1>', lambda event: selector.window.destroy())
 
 
-window = Window(500, 500, 10)
+window = Window(426, 500, 10)
+tools = Window(200, 100, 10, toplevel=True)
 
-for grid_coords, rectangle in window.grid_rectangles.items():
-	window.grid.itemconfig(rectangle, fill='lightblue')
-	window.grid.tag_bind(rectangle, '<Button-1>', select_widget)
-
-
+add_widget_selector = Button(text='Add', fill_tag='test', settings=button_scheme_1)
+tools.add(add_widget_selector, 140, 40, 20, 20)
+add_widget_selector.label.bind('<Button-1>', lambda event: select_widget(event, window.grid_spacing))
 
 textbox = Object_builder('Date_widget', ['label_text', 'fill_tag', 'categories'])
 textbox.label_text = 'abcd'
@@ -337,7 +330,5 @@ def callback(event):
 	textbox.widget.grid_column = textbox.widget.grid_column + delta_x
 	textbox.widget.encompass_frame.place(y=textbox.widget.grid_row, x=textbox.widget.grid_column)
 	return
-
-
 
 window.window.mainloop()
