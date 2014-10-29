@@ -178,10 +178,16 @@ class StudentDB:
         h, m, p = '{:%I}'.format(time), '{:%M}'.format(time), '{:%p}'.format(time)
 
         x = int(m)
-        if x % 10 > 5:
-            x = (x - x % 5)
-        elif x % 10 < 5:
-            x = (x - x % 10)
+        if x % 15 > 7:
+            x = 15 * x % 15
+            if x == 60:
+                h += 1
+                if h > 12:
+                    if p == 'AM': p = 'PM'
+                    else: p = 'AM'
+                    h = h - 12
+        elif x % 15 <= 7:
+            x = (x - x % 15)
 
         m = str(x) if x >= 10 else '0' + str(x)
 
@@ -222,7 +228,10 @@ class StudentDB:
         todaysearly = datetime(cdt.year, cdt.month, cdt.day, 9, 15)
 
         s = self.studentList[barcode].datapoints
+
+        s['inrow'] += 1
         
+        '''
         if cdt < todaysearly:
             s['inrow'] += 1
             if s['inrow'] >= 100:
@@ -233,6 +242,7 @@ class StudentDB:
                 s['25s'] += 1
         else:
             s['inrow'] = 0
+        '''
 
 
     def reset_checkin(self, barcode, value):
