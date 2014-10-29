@@ -111,6 +111,7 @@ def main(t, lang, d):
 	notes.config(height=6, width=32)
 
 #early checkin
+	'''
 	w.frames["Fourth Frame"].addWidget(checkin25, (0, 2))
 	w.frames["Fourth Frame"].addWidget(checkin50, (0, 4))
 	w.frames["Fourth Frame"].addWidget(checkin100, (0, 6))
@@ -122,6 +123,8 @@ def main(t, lang, d):
 	checkin25.entry.config(width=3)
 	checkin50.entry.config(width=3)
 	checkin100.entry.config(width=3)
+	'''
+	w.frames["Fourth Frame"].addWidget(early_checkin, (0, 0))
 
 #special
 	'''
@@ -306,9 +309,11 @@ def main(t, lang, d):
 			w.frames['Eleventh Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
 			w2.frames['Third Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
 
+			'''
 			checkin25.setData(d.studentList[w.s].datapoints['25s'])
 			checkin50.setData(d.studentList[w.s].datapoints['50s'])
 			checkin100.setData(d.studentList[w.s].datapoints['100s'])
+			'''
 
 			#auto scroll to last position
 			w.attinfo.canvas.yview_moveto(1.0)
@@ -422,9 +427,11 @@ def main(t, lang, d):
 		w.frames['Eleventh Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
 		w2.frames['Third Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
 
+		'''
 		checkin25.setData(d.studentList[w.s].datapoints['25s'])
 		checkin50.setData(d.studentList[w.s].datapoints['50s'])
 		checkin100.setData(d.studentList[w.s].datapoints['100s'])
+		'''
 
 		#auto scroll to last position
 		w.attinfo.canvas.yview_moveto(1.0)
@@ -455,9 +462,11 @@ def main(t, lang, d):
 				w.frames['Eleventh Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
 				w2.frames['Third Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
 
+				'''
 				checkin25.setData(d.studentList[w.s].datapoints['25s'])
 				checkin50.setData(d.studentList[w.s].datapoints['50s'])
 				checkin100.setData(d.studentList[w.s].datapoints['100s'])
+				'''
 
 				#auto scroll to last position
 				w.attinfo.canvas.yview_moveto(1.0)

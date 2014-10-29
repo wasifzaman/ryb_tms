@@ -108,6 +108,7 @@ ninfo = Labelbox(text='Notes', lang=language, repr='ninfo')
 checkin25 = TextboxNoEdit(text='25s', lang=language, repr='25s')
 checkin50 = TextboxNoEdit(text='50s', lang=language, repr='50s')
 checkin100 = TextboxNoEdit(text='100s', lang=language, repr='100s')
+early_checkin = TextboxNoEdit(text='Early Check-in', lang=language, repr='inrow')
 
 
 

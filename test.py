@@ -1,3 +1,4 @@
+'''
 from tkinter import *
 from alpha_ui import *
 from dataHandler import *
@@ -133,5 +134,16 @@ def main():
 	main_window.mainloop()
 
 
-if __name__ == '__main__':
-	main()
+#if __name__ == '__main__':
+	#main()
+'''
+
+x = 21
+
+print(x % 15 >= 7)
+print(15 * (x // 15) + 15)
+print(x - x % 15)
+
+
+
+

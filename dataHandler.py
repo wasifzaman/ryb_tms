@@ -178,17 +178,14 @@ class StudentDB:
         h, m, p = '{:%I}'.format(time), '{:%M}'.format(time), '{:%p}'.format(time)
 
         x = int(m)
-        if x % 15 > 7:
-            x = 15 * x % 15
-            if x == 60:
-                h += 1
-                if h > 12:
-                    if p == 'AM': p = 'PM'
-                    else: p = 'AM'
-                    h = h - 12
-        elif x % 15 <= 7:
+        if x % 15 >= 7:
+            x = 15 * (x // 15) + 15
+        elif x % 15 < 7:
             x = (x - x % 15)
 
+        if x >= 60:
+            x = 0
+            h = str(int(h) + 1)
         m = str(x) if x >= 10 else '0' + str(x)
 
         return h + ':' + m + ' ' + p
@@ -251,6 +248,7 @@ class StudentDB:
             s['25s'] = 0
             s['50s'] = 0
             s['100s'] = 0
+            s['inrow'] = 0
             print('reset')
             return True
 
@@ -619,7 +617,7 @@ class StudentDB:
         return (int(h) * 3600 + int(m) * 60 + int(s)) / 3600
 
 
-    def print_pay_entries(self, fpath, employee_id, pay_entries, pay_per_hour=1.00):
+    def print_pay_entries(self, fpath, employee_id, pay_entries, pay_per_hour=1.00, max_hours=False):
         workbook = xlsxwriter.Workbook(fpath + '.xlsx')
         worksheet = workbook.add_worksheet()
 
@@ -630,6 +628,9 @@ class StudentDB:
         timesheet_headerformat.set_border_color = '#E0E0E0'
 
         footer_format = workbook.add_format({'bold': True, 'bg_color': '#EBF5FF', 'border': 1})
+        footer_format.set_border_color = '#E0E0E0'
+
+        hours_exceeded_format = workbook.add_format({'bold': True, 'bg_color': 'red', 'border': 1, 'font_color': 'yellow'})
         footer_format.set_border_color = '#E0E0E0'
 
         paid_alias = self.studentList[employee_id].datapoints['paid_entries']
@@ -665,20 +666,24 @@ class StudentDB:
         worksheet.set_column(0, 0, 15)
         worksheet.set_column(1, 4, 20)
 
+        #total hours
+        total_time = 0
+
         r = 4
         for entry in pay_entries.values():
 
             date = entry[0]
             checkin = datetime.strptime(date + ' ' + entry[2], '%m/%d/%Y %I:%M %p')
             checkout = datetime.strptime(date + ' ' + entry[4], '%m/%d/%Y %I:%M %p')
-            total_time = checkout - checkin
-            decimal_time = self.stringtime_to_decimal(str(total_time))
+            time_clocked = checkout - checkin
+            decimal_time = self.stringtime_to_decimal(str(time_clocked))
+            total_time += decimal_time
             #print()
 
             worksheet.write(r, 0, entry[0])
             worksheet.write(r, 1, entry[2])
             worksheet.write(r, 2, entry[4])
-            worksheet.write(r, 3, str(total_time))
+            worksheet.write(r, 3, str(time_clocked))
             worksheet.write(r, 4, str("%.2f" % float(decimal_time * pay_per_hour)))
             #worksheet.write(r, 4, )
 
@@ -707,7 +712,16 @@ class StudentDB:
         r += 2
         worksheet.write(r, 3, "合计薪水:", footer_format)
         
-    
+        if max_hours and max_hours < total_time:
+            
+            r += 1
+
+            for column in range(0, 5):
+            worksheet.write(r, column, ' ', hours_exceeded_format)
+
+            worksheet.write(r, 0, "Hours Exceeded:", hours_exceeded_format)
+            worksheet.write(r, 1, str(total_time - max_hours), hours_exceeded_format)
+
         self.saveData()
 
         return True

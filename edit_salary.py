@@ -38,24 +38,26 @@ def main(lang, d, top=False, i=0): #i is the id of the student passed in
 	today = TextboxNoEdit(text="today's date", lang=w.lang, repr='today_date')
 	last_payment = TextboxNoEdit(text="last payment", lang=w.lang, repr='last_pay_date')
 	dollar_per_hour = MoneyTextbox(text="dollar per hour", lang=w.lang, repr='dollar_p_hour')
+	max_hours = IntTextbox(text="max hours", lang=w.lang, repr='max_hours')
 	w.frames["First Frame"].addWidget(today, (0, 0))
 	w.frames["First Frame"].addWidget(last_payment, (1, 0))
 	w.frames["First Frame"].addWidget(dollar_per_hour, (2, 0))
+	w.frames["First Frame"].addWidget(max_hours, (3, 0))
 	today.config(text=str(datetime.strftime(datetime.now().date(), '%m/%d/%Y')))
 	if d.studentList[i].datapoints['last_payment']:
 		last_payment.config(text=datetime.strftime(d.studentList[i].datapoints['last_payment'], '%m/%d/%Y'))
 
 
 #student info widgets
-	w.frames["First Frame"].addWidget(sinfo, (3, 0))
+	w.frames["First Frame"].addWidget(sinfo, (4, 0))
 	sinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
 	sinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
 	firstName_noedit = TextboxNoEdit(text="First Name", lang=language, repr='firstName')
 	lastName_noedit = TextboxNoEdit(text="Last Name", lang=language, repr='lastName')
 	chineseName_noedit = TextboxNoEdit(text="Chinese Name", lang=language, repr='chineseName')
-	w.frames["First Frame"].addWidget(firstName_noedit, (4, 0))
-	w.frames["First Frame"].addWidget(lastName_noedit, (5, 0))
-	w.frames["First Frame"].addWidget(chineseName_noedit, (6, 0))
+	w.frames["First Frame"].addWidget(firstName_noedit, (5, 0))
+	w.frames["First Frame"].addWidget(lastName_noedit, (6, 0))
+	w.frames["First Frame"].addWidget(chineseName_noedit, (7, 0))
 
 #reset check in row
 	b_reset_checkin = Buttonbox(text='resetcheckin', lang=language, repr='bresetcheckin')
@@ -193,7 +195,7 @@ def main(lang, d, top=False, i=0): #i is the id of the student passed in
 	def print_to_file():
 		if not confirm_print('a', w.lang): return
 		file_name = filedialog.asksaveasfilename()
-		printed = d.print_pay_entries(file_name, i, w.picked, dollar_per_hour.getData())
+		printed = d.print_pay_entries(file_name, i, w.picked, dollar_per_hour.getData(), max_hours.getData())
 		if printed:
 			print_succesful(w.lang)
 			t.destroy()

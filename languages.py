@@ -141,7 +141,9 @@ languages = \
 		"Elmhurst": "Elmhurst",
 		"Flushing": "Flushing",
 		"Choose School": "Choose School",
-		"Print Successful": "Print Successful"
+		"Print Successful": "Print Successful",
+		"Early Check-in": "Early Check-in",
+		"max hours": "Maximum Hours"
 		},
 
 	"chinese": {
@@ -283,7 +285,9 @@ languages = \
 		"Elmhurst": "艾姆赫斯特学校",
 		"Flushing": "法拉盛学校",
 		"Choose School": "选择学校",
-		"Print Successful": "Print Successful"
+		"Print Successful": "Print Successful",
+		"Early Check-in": "Early Check-in",
+		"max hours": "Maximum Hours"
 		}
 		
 }
