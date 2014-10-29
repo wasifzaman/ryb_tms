@@ -2,6 +2,7 @@ from alpha_ui_separate_grid import *
 from object_settings import *
 from alpha_widgets import Table, Cell_object
 from tkinter import Label
+from PIL import Image, ImageTk
 
 
 
@@ -51,7 +52,7 @@ class Object_builder:
 
 			self.widget.encompass_frame.place(x=self.widget.grid_column, y=self.widget.grid_row)
 
-		self.move_drag_point = Label(self.widget.encompass_frame, text='D')
+		self.move_drag_point = Label(self.widget.encompass_frame, text=' ', cursor='fleur')
 		self.move_drag_point.place(x=1, y=1)
 
 		self.move_drag_point.bind('<ButtonPress-1>', onclick)
@@ -87,9 +88,9 @@ class Object_builder:
 			self.resize_point_bottom_left.place(x=-3, y=self.widget.height - 15)
 			self.resize_point_top_right.place(x=self.widget.width - 10, y=-7)		
 
-		self.resize_point_bottom_right = Label(self.widget.encompass_frame, text='o')
-		self.resize_point_bottom_left = Label(self.widget.encompass_frame, text='o')
-		self.resize_point_top_right = Label(self.widget.encompass_frame, text='o')
+		self.resize_point_bottom_right = Label(self.widget.encompass_frame, text=' ', cursor='bottom_right_corner')
+		self.resize_point_bottom_left = Label(self.widget.encompass_frame, text=' ', cursor='bottom_left_corner')
+		self.resize_point_top_right = Label(self.widget.encompass_frame, text=' ', cursor='top_right_corner')
 		self.resize_point_bottom_right.place(x=self.widget.width - 10, y=self.widget.height - 15)
 		self.resize_point_bottom_left.place(x=-3, y=self.widget.height - 15)
 		self.resize_point_top_right.place(x=self.widget.width - 10, y=-7)
@@ -150,9 +151,16 @@ class Object_builder:
 		else:
 			return
 
+		return
 
+	def make_removable(self, window):
 
+		self.delete_point = Label(self.widget.encompass_frame, text='×', font=('Helvetica',20))
+		self.delete_point.place(relx=0.5, y=3)
 
+		self.delete_point.bind('<Button-1>', lambda event: window.remove(self.widget))
+
+		print(window.widget_set)
 
 		return
 
@@ -297,6 +305,7 @@ def select_widget(event, grid_spacing):
 		selector.current_widget.make_resizable()
 		selector.current_widget.make_movable()
 		selector.current_widget.make_snappable(grid_spacing)
+		selector.current_widget.make_removable(window)
 
 
 	add_button.label.bind('<Button-1>', lambda event: add())
@@ -306,9 +315,15 @@ def select_widget(event, grid_spacing):
 window = Window(426, 500, 10)
 tools = Window(200, 100, 10, toplevel=True)
 
-add_widget_selector = Button(text='Add', fill_tag='test', settings=button_scheme_1)
+tools.toggle_grid()
+
+add_widget_selector = Button(text='Add', settings=button_scheme_1)
+toggle_grid = Button(text='Toggle Grid', settings=button_scheme_1)
 tools.add(add_widget_selector, 140, 40, 20, 20)
+tools.add(toggle_grid, 140, 40, 20, 61)
 add_widget_selector.label.bind('<Button-1>', lambda event: select_widget(event, window.grid_spacing))
+toggle_grid.label.bind('<Button-1>', lambda event: window.toggle_grid())
+
 
 textbox = Object_builder('Date_widget', ['label_text', 'fill_tag', 'categories'])
 textbox.label_text = 'abcd'
@@ -317,6 +332,7 @@ window.add(textbox.build(), 300, 245, 0, 0)
 textbox.make_movable()
 textbox.make_resizable()
 textbox.make_snappable(window.grid_spacing)
+textbox.make_removable(window)
 
 
 def onclick(event):
@@ -330,5 +346,6 @@ def callback(event):
 	textbox.widget.grid_column = textbox.widget.grid_column + delta_x
 	textbox.widget.encompass_frame.place(y=textbox.widget.grid_row, x=textbox.widget.grid_column)
 	return
+
 
 window.window.mainloop()

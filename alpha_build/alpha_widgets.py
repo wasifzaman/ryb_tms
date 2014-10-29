@@ -97,6 +97,9 @@ class Textbox:
 		self.vcmd = (self.encompass_frame.register(self.OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
 		self.entry.config(validate="all", validatecommand=self.vcmd)
 
+	def delete_widget(self):
+		self.encompass_frame.place_forget()
+
 	def get_data(self):
 		return self.entry.get()
 
@@ -173,6 +176,9 @@ class Scrolled_textbox:
 		self.encompass_label.pack(side=LEFT)
 		self.encompass_entry.pack(side=LEFT)
 		self.encompass_frame.place(y=self.grid_row, x=self.grid_column)
+
+	def delete_widget(self):
+		self.encompass_frame.place_forget()
 
 	def get_data(self):
 		return self.entry.get('1.0', END + '-1c')
@@ -263,6 +269,9 @@ class Button:
 		self.encompass_label.pack(side=LEFT)
 		self.encompass_frame.place(y=self.grid_row, x=self.grid_column)
 
+	def delete_widget(self):
+		self.encompass_frame.place_forget()
+
 
 class Coin_widget:
 
@@ -346,6 +355,9 @@ class Coin_widget:
 		self.encompass_frame.place(y=self.grid_row, x=self.grid_column)
 
 		self.entry.config(validate="all", validatecommand=self.vcmd)
+
+	def delete_widget(self):
+		self.encompass_frame.place_forget()
 
 	def get_data(self):
 		return float(self.entry.get())
@@ -538,6 +550,9 @@ class Entry_category:
 
 		self.vcmd = (self.encompass_frame.register(self.OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
 		self.entry.config(validate="all", validatecommand=self.vcmd)
+
+	def delete_widget(self):
+		self.encompass_frame.place_forget()
 
 	def get_data(self):
 		return self.entry.get(), self.current_category

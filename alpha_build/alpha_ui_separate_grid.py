@@ -21,7 +21,7 @@ class Window:
 		self.width = width
 		self.height = height
 		self.grid_spacing = grid_spacing
-		self.grid_occupied = {}
+		self.grid_status = 'on'
 		self.vertical_lines = {}
 		self.horizontal_lines = {}
 
@@ -29,6 +29,8 @@ class Window:
 		self.window.geometry(str(width) + 'x' + str(height))
 		self.grid = Canvas(self.window, width=width, height=height)
 		self.grid.place(x=0, y=0)
+
+		self.widget_set = set()
 
 		x = 0
 		while x < width:
@@ -89,8 +91,24 @@ class Window:
 		item.height = height
 
 		item.create_widget(parent_obj=self.window, grid_row=row, grid_column=column)
+		self.widget_set.add(item)
 
 		return
+
+	def remove(self, item):
+		item.delete_widget()
+
+		self.widget_set.remove(item)
+
+		return		
+
+	def toggle_grid(self):
+		if self.grid_status == 'on':
+			self.grid_status = 'off'
+			self.grid.place_forget()
+		elif self.grid_status == 'off':
+			self.grid_status = 'on'
+			self.grid.place(x=0, y=0)
 
 	pass
 
