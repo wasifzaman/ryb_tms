@@ -717,7 +717,7 @@ class StudentDB:
             r += 1
 
             for column in range(0, 5):
-            worksheet.write(r, column, ' ', hours_exceeded_format)
+                worksheet.write(r, column, ' ', hours_exceeded_format)
 
             worksheet.write(r, 0, "Hours Exceeded:", hours_exceeded_format)
             worksheet.write(r, 1, str(total_time - max_hours), hours_exceeded_format)
