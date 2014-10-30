@@ -307,6 +307,8 @@ def select_widget(event, grid_spacing):
 		selector.current_widget.make_snappable(grid_spacing)
 		selector.current_widget.make_removable(window)
 
+		object_builder_set.add(selector.current_widget)
+
 
 	add_button.label.bind('<Button-1>', lambda event: add())
 	close_button.label.bind('<Button-1>', lambda event: selector.window.destroy())
@@ -314,6 +316,7 @@ def select_widget(event, grid_spacing):
 
 window = Window(426, 500, 10)
 tools = Window(200, 100, 10, toplevel=True)
+object_builder_set = set()
 
 tools.toggle_grid()
 
