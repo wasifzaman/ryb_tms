@@ -4,8 +4,16 @@ from object_builder import *
 from alpha_widgets import Table, Cell_object
 from tkinter import Label
 from PIL import Image, ImageTk
+import cop
+
+'''
+Notes:
+	- de_select in select_widget method is a helper method to Cell_object
 
 
+
+
+'''
 
 
 
@@ -23,11 +31,11 @@ class Window_builder:
 		toggle_grid = Button(text='Toggle Grid', settings=button_scheme_1)
 		self.tools.add(add_widget_selector, 140, 40, 20, 20)
 		self.tools.add(toggle_grid, 140, 40, 20, 61)
-		add_widget_selector.label.bind('<Button-1>', lambda event: self.select_widget(event, self.window.grid_spacing))
+		add_widget_selector.label.bind('<Button-1>', self.select_widget)
 		toggle_grid.label.bind('<Button-1>', lambda event: self.window.toggle_grid())
 
 
-	def select_widget(self, event, grid_spacing):
+	def select_widget(self, event):
 
 		widget_build_dictionary = {'Textbox': Object_builder('Textbox', ['label_text', 'fill_tag']),
 								'Scrolled_textbox': Object_builder('Scrolled_textbox', ['label_text', 'fill_tag']),
