@@ -153,14 +153,18 @@ class Object_builder:
 
 		return
 
-	def make_removable(self, window):
+	def make_removable(self, window_builder):
+
+		def remove(event):
+			window_builder.window.remove(self.widget)
+			window_builder.object_builder_set.remove(self)
 
 		self.delete_point = Label(self.widget.encompass_frame, text='×', font=('Helvetica',20))
 		self.delete_point.place(relx=0.5, y=3)
 
-		self.delete_point.bind('<Button-1>', lambda event: window.remove(self.widget))
+		self.delete_point.bind('<Button-1>', remove)
 
-		print(window.widget_set)
+		print(window_builder.object_builder_set)
 
 		return
 
@@ -168,7 +172,7 @@ class Object_builder:
 
 
 
-
+'''
 def select_widget(event, grid_spacing):
 
 	widget_build_dictionary = {'Textbox': Object_builder('Textbox', ['label_text', 'fill_tag']),
@@ -314,6 +318,7 @@ def select_widget(event, grid_spacing):
 	close_button.label.bind('<Button-1>', lambda event: selector.window.destroy())
 
 
+
 window = Window(426, 500, 10)
 tools = Window(200, 100, 10, toplevel=True)
 object_builder_set = set()
@@ -351,4 +356,4 @@ def callback(event):
 	return
 
 
-window.window.mainloop()
+#window.window.mainloop()'''
