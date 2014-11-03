@@ -37,22 +37,22 @@ def main():
 
 #show and hide sub-windows
 	def showWindow(f):
-		try:
-			#w.frames["Title Frame"].grid_forget()
-			w.frames["First Frame"].grid_forget()
-			print(f.__doc__)
-			if (f.__doc__) == 'addS3':
-				t.con = True
-				w.t = f(w.frames["Second Frame"], w.lang, w.d, showMain)
-			elif (f.__doc__) == 'tools2':
-				w.t = f(w.frames["Second Frame"], w.lang, w.d, w.k)
-			else:
-				t.con = False
-				w.t = f(w.frames["Second Frame"], w.lang, w.d)
-			w.frames["Second Frame"].grid()
-			w.frames["Third Frame"].grid()
-		except:
-			print('unknown error', 'error in function showWindow', f.__doc__)
+		#try:
+		#w.frames["Title Frame"].grid_forget()
+		w.frames["First Frame"].grid_forget()
+		print(f.__doc__)
+		if (f.__doc__) == 'addS3':
+			t.con = True
+			w.t = f(w.frames["Second Frame"], w.lang, w.d, showMain)
+		elif (f.__doc__) == 'tools2':
+			w.t = f(w.frames["Second Frame"], w.lang, w.d, w.k)
+		else:
+			t.con = False
+			w.t = f(w.frames["Second Frame"], w.lang, w.d)
+		w.frames["Second Frame"].grid()
+		w.frames["Third Frame"].grid()
+		#except:
+		#	print('unknown error', 'error in function showWindow', f.__doc__)
 
 #show and hide main window
 	def showMain(con):
@@ -255,3 +255,14 @@ def main():
 
 if __name__ == '__main__':
 	main()
+
+	'''
+	key = '0123456789abcdef'
+	IV = 16 * '\x00'           # Initialization vector: discussed later
+	mode = AES.MODE_CBC
+	encryptor = AES.new(key, mode, IV=IV)
+
+	text = 'j' * 64 + 'i' * 128
+	ciphertext = encryptor.encrypt(text)
+	print(ciphertext)
+	'''

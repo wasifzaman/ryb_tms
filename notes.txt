@@ -46,3 +46,6 @@ calc by 5, pay by 5
 move choose school to secret menu..
 +1 every early
 pay by 15 mins, set max hour per day x 
+
+11/3
+#Show button for admin

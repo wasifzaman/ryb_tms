@@ -1,4 +1,6 @@
 from datetime import datetime, time, timedelta
+from Crypto.Cipher import AES
+from Crypto import Random
 from timeclock import *
 import keeper
 import pickle
@@ -109,6 +111,10 @@ class StudentDB:
 
     def __init__(self, **kwargs):
         self.file = kwargs['file']
+
+        self.iv = b't\xd4\xbc\xee~\xa2\xc2\xc1\x14T\x91\xcfd\x95/\xfc'
+
+        self.studentList = {}
         
         try:
             #load data on call from self.file
@@ -336,11 +342,40 @@ class StudentDB:
 
 
     def saveData(self):
-        pickle.dump(self.studentList, open(self.file, "wb"))
+        key = b'Sixteen byte key'
+        cipher = AES.new(key, AES.MODE_CFB, self.iv)
+
+        binary_string = pickle.dumps(self.studentList)
+        encrypted = cipher.encrypt(binary_string)
+
+        f = open(self.file, 'wb')
+        f.write(bytearray(encrypted))
+        f.close()
+
+        #print('encrypted', encrypted)
 
 
     def loadData(self):
-        self.studentList = pickle.load(open(self.file, "rb"))
+        key = b'Sixteen byte key'
+        cipher = AES.new(key, AES.MODE_CFB, self.iv)
+
+        try:
+            f = open(self.file, 'rb')
+            print('opened')
+        except:
+            self.saveData()
+            f = open(self.file, 'rb')
+            print('created')
+        
+        decrypted = cipher.decrypt(f.read())
+        self.studentList = pickle.loads(decrypted)
+
+        #print('student_list', self.studentList)
+
+        #self.studentList = pickle.loads(cipher.decrypt(f.read()))
+
+        #print(self.studentList)
+
         self.setLast()
 
 

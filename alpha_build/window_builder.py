@@ -4,7 +4,6 @@ from object_builder import *
 from alpha_widgets import Table, Cell_object
 from tkinter import Label
 from PIL import Image, ImageTk
-import cop
 
 '''
 Notes:
