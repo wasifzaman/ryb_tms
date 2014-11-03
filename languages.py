@@ -143,7 +143,8 @@ languages = \
 		"Choose School": "Choose School",
 		"Print Successful": "Print Successful",
 		"Early Check-in": "Early Check-in",
-		"max hours": "Maximum Hours"
+		"max hours": "Maximum Hours",
+		"Choose PW File": "Choose PW File"
 		},
 
 	"chinese": {
@@ -287,7 +288,8 @@ languages = \
 		"Choose School": "选择学校",
 		"Print Successful": "Print Successful",
 		"Early Check-in": "Early Check-in",
-		"max hours": "Maximum Hours"
+		"max hours": "Maximum Hours",
+		"Choose PW File": "Choose PW File"
 		}
 		
 }

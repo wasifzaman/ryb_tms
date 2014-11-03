@@ -136,7 +136,7 @@ def main():
 
 #load current database
 	w.k = keeper.Keeper('keeper.db')
-	w.d = StudentDB(file=w.k.files['cfilepath'], cfile=w.k.fname)
+	w.d = StudentDB(file=w.k.files['cfilepath'], pwfile=w.k.files['pwfile'], cfile=w.k.fname)
 
 	if 'school' not in w.k.files:
 		w.k.files['school'] = preBuilts2.choose_school(w.lang)
@@ -144,6 +144,12 @@ def main():
 		w.k.save()
 	else:
 		w.d.school = w.k.files['school']
+
+	try:
+		f = open(w.k.files['pwfile'], 'rb')
+		f.close()
+	except:
+		print('invalid path')
 
 #frame creation and positions
 	#w.newFrame("Title Frame", (0, 0))

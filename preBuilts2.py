@@ -757,6 +757,44 @@ def choose_school(lang):
 
 	return t.z
 
+def choose_pw_file(d, lang):
+
+	def get_return(z):
+		t.z = z
+		t.dw()
+
+	def set_db(file):
+		if file == 'new':
+			t.db = filedialog.asksaveasfilename()
+		else:
+			t.db = filedialog.askopenfile()
+		return
+
+	t = Mbox()
+	t.root.overrideredirect(0)
+	t.db = ''
+
+	t.newFrame("First Frame", (0, 0))
+
+	create_pwfile = Buttonbox(text='Create PW File', lang=lang, repr='createpwfile')
+	choose_pwfile = Buttonbox(text='Choose PW File', lang=lang, repr='cpwfile')
+	curpwfile = Label(w.frames['Third Frame'], text=d.pwfile, wraplength=200, bg='#DBDBDB')
+	curpwfile.grid(row=3, column=0, pady=10)
+
+
+	create_pwfile.bind()
+
+	t.frames["First Frame"].addWidget(createpwfile, (0, 0))
+	t.frames["First Frame"].addWidget(choose_pwfile, (1, 0))
+
+
+
+	bcancel.config(cmd=lambda: get_return('cancel'), lang=lang)
+
+	t.root.wait_window()
+
+	return t.z
+
 def ret(s, lang):
 
 	def d(z):

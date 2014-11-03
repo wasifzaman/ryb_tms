@@ -5,7 +5,7 @@ class Keeper:
 
 	def __init__(self, fname):
 		self.fname = fname
-		self.files = {'cfilepath': 'temp1234.db'}
+		self.files = {'cfilepath': 'temp1234.rybdb', 'pwfile': 'printer.rybdb'}
 		
 		try:
 			self.load()

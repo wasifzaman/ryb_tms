@@ -24,7 +24,6 @@ class StudentInfo:
             "sid": 0,
             "dob": '1/1/1900',
             "age": 0,
-            "gender": 'N/A',
             "parentName": 'N/A',
             "hPhone": 0,
             "cPhone": 0,
@@ -111,6 +110,7 @@ class StudentDB:
 
     def __init__(self, **kwargs):
         self.file = kwargs['file']
+        self.pwfile = kwargs['pwfile']
 
         self.iv = b't\xd4\xbc\xee~\xa2\xc2\xc1\x14T\x91\xcfd\x95/\xfc'
 
@@ -342,7 +342,7 @@ class StudentDB:
 
 
     def saveData(self):
-        key = b'Sixteen byte key'
+        key = b'=5<(M8R_P8CJx);^'
         cipher = AES.new(key, AES.MODE_CFB, self.iv)
 
         binary_string = pickle.dumps(self.studentList)
@@ -356,7 +356,7 @@ class StudentDB:
 
 
     def loadData(self):
-        key = b'Sixteen byte key'
+        key = b'=5<(M8R_P8CJx);^'
         cipher = AES.new(key, AES.MODE_CFB, self.iv)
 
         try:

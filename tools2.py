@@ -11,16 +11,16 @@ import preBuilts2
 def main(t, lang, d, k):
 	'''tools2'''
 
-	def cdb():
+	def cdb(label):
 		try:
 			p = filedialog.askopenfile(mode='r').name
 			y = os.path.abspath(p)
 			p = p.split('/')[-1]
-			if p[p.rfind('.'):]!= '.db':
+			if p[p.rfind('.'):]!= '.rybdb':
 				print("invalid file")
 				return
 			else:
-				curdb.config(text=y)
+				label.config(text=y)
 				d.file = y
 				#d.loadData()
 		except:
@@ -50,12 +50,17 @@ def main(t, lang, d, k):
 		dbs(w.lang)
 
 
+	def choose_pwfile():
+		d.key = curpwfile.cget('text')
+
+
+
 	def expf():
 		try:
 			p = filedialog.askdirectory()
 			d.exportxlsx(p + '/student_list.xlsx')
 			d.exporttxlsx(p + '/student_att.xlsx')
-			d.exportdb(p + '/backup_' + str(datetime.now().date()) + '.db')
+			d.exportdb(p + '/backup_' + str(datetime.now().date()) + '.ryb`db')
 		except:
 			return
 
@@ -114,15 +119,12 @@ def main(t, lang, d, k):
 
 #import export widgets
 	w.frames["First Frame"].addWidget(imp, (0, 0))
-	#w.frames["First Frame"].addWidget(sepr, (1, 0))
 	w.frames["First Frame"].addWidget(bimp, (2, 0))
 
 	w.frames["Fifth Frame"].addWidget(impt, (0, 0))
-	#w.frames["Fifth Frame"].addWidget(sepr, (1, 0))
 	w.frames["Fifth Frame"].addWidget(bimpt, (2, 0))
 
 	w.frames["Second Frame"].addWidget(exp, (0, 0))
-	#w.frames["Second Frame"].addWidget(sepr, (1, 0))
 	w.frames["Second Frame"].addWidget(bexp, (2, 0))
 
 	#salary report
@@ -136,7 +138,13 @@ def main(t, lang, d, k):
 	curfile.label.config(bg='#DBDBDB')
 	curdb.grid(row=2, column=0, pady=10)
 
+	curpwfile = Label(w.frames['Third Frame'], text=d.pwfile, wraplength=200, bg='#DBDBDB')
+	curpwfile.grid(row=4, column=0, pady=10)
+
+	choose_pwfile = Buttonbox(text='Choose PW File', lang=w.lang, repr='cpwfile')
+
 	w.frames["Third Frame"].addWidget(bcdb, (1, 0))
+	w.frames["Third Frame"].addWidget(choose_pwfile, (3, 0))
 
 
 	#w.frames['Fourth Frame'].addWidget(bsav, (0, 0))
@@ -144,7 +152,7 @@ def main(t, lang, d, k):
 	#bsav.config(cmd=ss)
 	bchoose_school.config(cmd=lambda: choose_school_(w.lang))
 	bimp.config(cmd=lambda: importwiz.main(w.lang, d))
-	bcdb.config(cmd=cdb)
+	bcdb.config(cmd=lambda: cdb(curdb))
 	bimpt.config(cmd=ctdb)
 	bexp.config(cmd=expf)
 	bsalrep.config(cmd=salrep)
