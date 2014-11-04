@@ -136,15 +136,17 @@ def main(t, lang, d, k):
 	curdb = Label(w.frames['Third Frame'], text=d.file, wraplength=200, bg='#DBDBDB')
 	w.frames["Third Frame"].addWidget(curfile, (0, 0))
 	curfile.label.config(bg='#DBDBDB')
-	curdb.grid(row=2, column=0, pady=10)
+	curdb.grid(row=3, column=0, pady=10)
 
 	curpwfile = Label(w.frames['Third Frame'], text=d.pwfile, wraplength=200, bg='#DBDBDB')
-	curpwfile.grid(row=4, column=0, pady=10)
+	curpwfile.grid(row=5, column=0, pady=10)
 
 	choose_pwfile = Buttonbox(text='Choose PW File', lang=w.lang, repr='cpwfile')
+	create_db = Buttonbox(text='Create new Database', lang=w.lang, repr='createdb')
 
-	w.frames["Third Frame"].addWidget(bcdb, (1, 0))
-	w.frames["Third Frame"].addWidget(choose_pwfile, (3, 0))
+	w.frames["Third Frame"].addWidget(bcdb, (2, 0))
+	w.frames["Third Frame"].addWidget(choose_pwfile, (4, 0))
+	w.frames["Third Frame"].addWidget(create_db, (1, 0))
 
 
 	#w.frames['Fourth Frame'].addWidget(bsav, (0, 0))

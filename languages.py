@@ -144,7 +144,9 @@ languages = \
 		"Print Successful": "Print Successful",
 		"Early Check-in": "Early Check-in",
 		"max hours": "Maximum Hours",
-		"Choose PW File": "Choose PW File"
+		"Choose PW File": "Choose PW File",
+		"Create PW File": "Create PW File",
+		"Create new Database": "Create new Database"
 		},
 
 	"chinese": {
@@ -289,7 +291,9 @@ languages = \
 		"Print Successful": "Print Successful",
 		"Early Check-in": "Early Check-in",
 		"max hours": "Maximum Hours",
-		"Choose PW File": "Choose PW File"
+		"Choose PW File": "Choose PW File",
+		"Create PW File": "Create PW File",
+		"Create new Database": "Create new Database"
 		}
 		
 }

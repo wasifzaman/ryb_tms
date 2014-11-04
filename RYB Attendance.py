@@ -145,12 +145,6 @@ def main():
 	else:
 		w.d.school = w.k.files['school']
 
-	try:
-		f = open(w.k.files['pwfile'], 'rb')
-		f.close()
-	except:
-		print('invalid path')
-
 #frame creation and positions
 	#w.newFrame("Title Frame", (0, 0))
 	w.newFrame("First Frame", (1, 0))
