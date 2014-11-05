@@ -178,9 +178,9 @@ def main():
 	w.frames["First Frame"].addWidget(bssdb, (4, 0))
 	w.frames["First Frame"].addWidget(bstools, (5, 0))
 	w.frames["Third Frame"].addWidget(bsbmm, (0, 0))
-	w.frames["First Frame"].addWidget(bprint, (6, 0))
-	w.frames["First Frame"].addWidget(bsexit, (7, 0))
-	w.frames["First Frame"].addWidget(bclang, (5, 0))
+	w.frames["First Frame"].addWidget(bclang, (6, 0))
+	w.frames["First Frame"].addWidget(bprint, (7, 0))
+	w.frames["First Frame"].addWidget(bsexit, (8, 0))
 	w.frames["First Frame"].addWidget(w.p, (0, 2))
 	Label(w.frames["First Frame"], text='  ').grid(column=1) #separator between buttons and background image
 
@@ -195,7 +195,7 @@ def main():
 	bprint.config(cmd=printPrompt)
 	bsexit.config(cmd=t.destroy)
 	bclang.config(cmd=clang)
-	bstools.selfframe.grid_forget()
+	#bstools.selfframe.grid_forget()
 	#secret configuration to call Database Management
 	w.p.label.bind('<Control-Alt-Shift-D>', lambda e: showWindow(tools2.main))
 
@@ -248,6 +248,11 @@ def main():
 	bprint.fg = w.mmbuttonfg
 	bprint.hoverfg = 'white'
 	bprint.button.config(bg=bprint.idlebg, fg=bprint.fg)
+
+	bstools.idlebg = w.mmbuttoncol
+	bstools.fg = w.mmbuttonfg
+	bstools.hoverfg = 'white'
+	bstools.button.config(bg=bstools.idlebg, fg=bstools.fg)
 
 	t.iconbitmap('RYB_Attendance.ico')
 	t.mainloop()

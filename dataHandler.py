@@ -116,13 +116,13 @@ class StudentDB:
         self.iv = b't\xd4\xbc\xee~\xa2\xc2\xc1\x14T\x91\xcfd\x95/\xfc'
 
         self.studentList = {}
-        
-        try:
-            #load data on call from self.file
+    
+        if os.path.isfile(self.pwfile) and os.path.isfile(self.file):
             self.key = open(self.pwfile, 'rb').read()
             self.loadData()
-        except:
+        else:
             #create the file in the directory of self.file when not in databse
+            print('creating file')
             self.studentList = {}
             self.saveData()
             print(self.file + " file not found, new file was created")
@@ -345,10 +345,12 @@ class StudentDB:
 
     def saveData(self):
         if not hasattr(self, 'key'):
+            print('creating key')
             self.key = b'=5<(M8R_P8CJx);^'
             f = open(self.pwfile, 'wb')
             f.write(bytearray(self.key))
             f.close()
+            print(self.key)
         cipher = AES.new(self.key, AES.MODE_CFB, self.iv)
 
         binary_string = pickle.dumps(self.studentList)

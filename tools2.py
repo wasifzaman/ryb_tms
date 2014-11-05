@@ -50,9 +50,15 @@ def main(t, lang, d, k):
 		dbs(w.lang)
 
 
-	def set_pwfile(event):
-		f = open(filedialog.askopenfile().name)
+	def set_pwfile(label):
+		open_f = filedialog.askopenfile()
+		f = open(open_f.name)
 		d.key = f.read()
+		label.config(text=open_f.name)
+		d.pwfile = open_f.name
+		k.files['pwfile'] = open_f.name
+		k.save()
+
 
 
 
@@ -122,11 +128,11 @@ def main(t, lang, d, k):
 	w.frames["First Frame"].addWidget(imp, (0, 0))
 	w.frames["First Frame"].addWidget(bimp, (2, 0))
 
-	w.frames["Fifth Frame"].addWidget(impt, (0, 0))
-	w.frames["Fifth Frame"].addWidget(bimpt, (2, 0))
+	#w.frames["Fifth Frame"].addWidget(impt, (0, 0))
+	w.frames["Fifth Frame"].addWidget(bimpt, (0, 0))
 
-	w.frames["Second Frame"].addWidget(exp, (0, 0))
-	w.frames["Second Frame"].addWidget(bexp, (2, 0))
+	#w.frames["Second Frame"].addWidget(exp, (0, 0))
+	w.frames["Second Frame"].addWidget(bexp, (0, 0))
 
 	#salary report
 	w.frames["Second Frame"].addWidget(bsalrep, (3, 0))
@@ -144,11 +150,13 @@ def main(t, lang, d, k):
 
 	choose_pwfile = Buttonbox(text='Choose PW File', lang=w.lang, repr='cpwfile')
 	create_db = Buttonbox(text='Create new Database', lang=w.lang, repr='createdb')
+	convert_db = Buttonbox(text='Convert to Encrypted DB', lang=w.lang, repr='convertdb')
 
 	w.frames["Third Frame"].addWidget(bcdb, (2, 0))
 	w.frames["Third Frame"].addWidget(choose_pwfile, (4, 0))
 	w.frames["Third Frame"].addWidget(create_db, (1, 0))
 
+	w.frames["Second Frame"].addWidget(convert_db, (5, 0))
 
 	#w.frames['Fourth Frame'].addWidget(bsav, (0, 0))
 
@@ -159,7 +167,8 @@ def main(t, lang, d, k):
 	bimpt.config(cmd=ctdb)
 	bexp.config(cmd=expf)
 	bsalrep.config(cmd=salrep)
-	choose_pwfile.config(cmd=set_pwfile)
+	choose_pwfile.config(cmd=lambda: set_pwfile(curpwfile))
+	convert_db.config(cmd=lambda: convert_to_encrypted(w.lang, d))
 	create_db.config(cmd=lambda: create_new_db(w.lang, d))
 	#curdb.config(text=s.config['dbFile'])
 	#exp.config(cmd=importwiz.main)

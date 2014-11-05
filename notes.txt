@@ -49,3 +49,19 @@ pay by 15 mins, set max hour per day x
 
 11/3
 #Show button for admin
+
+11/4
+export database instead of export to excel
+Student software:
+Add input field:
+	Add Students:
+		Radio button, 2 choices: cash, check. If check, check number under. (do not add to Student Database)
+	Scan students:
+		Under renew classes, New Payment, pop-up: Tuition pay date, amount, radio button: cash, check. Ok and Cancel. Ok asks for confirm.
+		Total amount, already paid, amount owed, changed.
+		Update Tuition Pay Day and make it non-editable.
+	Tools:
+		All items under Import/Export database
+		Check Payment button: pop-up: start date, end date. Check Payment. All payments within those dates, export it to excel file with barcode, name, amount paid, amount paid, amount owed and cash or check. Bottom Total.
+Make window scalable:
+	Scale window up

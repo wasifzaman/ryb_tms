@@ -146,7 +146,8 @@ languages = \
 		"max hours": "Maximum Hours",
 		"Choose PW File": "Choose PW File",
 		"Create PW File": "Create PW File",
-		"Create new Database": "Create new Database"
+		"Create new Database": "Create new Database",
+		"Convert to Encrypted DB": "Convert to Encrypted DB"
 		},
 
 	"chinese": {
@@ -293,7 +294,8 @@ languages = \
 		"max hours": "Maximum Hours",
 		"Choose PW File": "Choose PW File",
 		"Create PW File": "Create PW File",
-		"Create new Database": "Create new Database"
+		"Create new Database": "Create new Database",
+		"Convert to Encrypted DB": "Convert to Encrypted DB"
 		}
 		
 }
