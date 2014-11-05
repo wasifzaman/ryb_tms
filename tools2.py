@@ -50,8 +50,9 @@ def main(t, lang, d, k):
 		dbs(w.lang)
 
 
-	def choose_pwfile():
-		d.key = curpwfile.cget('text')
+	def set_pwfile(event):
+		f = open(filedialog.askopenfile().name)
+		d.key = f.read()
 
 
 
@@ -158,6 +159,8 @@ def main(t, lang, d, k):
 	bimpt.config(cmd=ctdb)
 	bexp.config(cmd=expf)
 	bsalrep.config(cmd=salrep)
+	choose_pwfile.config(cmd=set_pwfile)
+	create_db.config(cmd=lambda: create_new_db(w.lang, d))
 	#curdb.config(text=s.config['dbFile'])
 	#exp.config(cmd=importwiz.main)
 

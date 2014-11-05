@@ -8,6 +8,7 @@ import xlrd
 import xlsxwriter
 import shutil
 import math
+import os
 
 #sched feature to add: log all changes
 
@@ -118,6 +119,7 @@ class StudentDB:
         
         try:
             #load data on call from self.file
+            self.key = open(self.pwfile, 'rb').read()
             self.loadData()
         except:
             #create the file in the directory of self.file when not in databse
@@ -342,8 +344,12 @@ class StudentDB:
 
 
     def saveData(self):
-        key = b'=5<(M8R_P8CJx);^'
-        cipher = AES.new(key, AES.MODE_CFB, self.iv)
+        if not hasattr(self, 'key'):
+            self.key = b'=5<(M8R_P8CJx);^'
+            f = open(self.pwfile, 'wb')
+            f.write(bytearray(self.key))
+            f.close()
+        cipher = AES.new(self.key, AES.MODE_CFB, self.iv)
 
         binary_string = pickle.dumps(self.studentList)
         encrypted = cipher.encrypt(binary_string)
@@ -356,8 +362,8 @@ class StudentDB:
 
 
     def loadData(self):
-        key = b'=5<(M8R_P8CJx);^'
-        cipher = AES.new(key, AES.MODE_CFB, self.iv)
+        #key = b'=5<(M8R_P8CJx);^'
+        cipher = AES.new(self.key, AES.MODE_CFB, self.iv)
 
         try:
             f = open(self.file, 'rb')

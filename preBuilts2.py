@@ -4,6 +4,8 @@ from photoWidget2 import *
 from languages import *
 from mbox2 import *
 from tkinter import filedialog
+from Crypto.Cipher import AES
+import pickle
 
 language = languages["english"]
 
@@ -757,43 +759,82 @@ def choose_school(lang):
 
 	return t.z
 
-def choose_pw_file(d, lang):
+def create_new_db(lang, d):
 
 	def get_return(z):
 		t.z = z
+		t.db_file = db_file_textbox.getData()
+		t.pw_file = pw_file_textbox.getData()
+		t.pw = pw_textbox.getData()
 		t.dw()
 
-	def set_db(file):
-		if file == 'new':
-			t.db = filedialog.asksaveasfilename()
-		else:
-			t.db = filedialog.askopenfile()
+	def set_file(file_):
+		f_path = filedialog.askdirectory()
+		print(f_path + '/' + db_file_textbox.getData())
+		if file_ == 'db_file':
+			db_file_textbox.setData(f_path + '/' + db_file_textbox.getData())
+		elif file_ == 'pw_file':
+			pw_file_textbox.setData(f_path + '/' + pw_file_textbox.getData())
+
 		return
+
 
 	t = Mbox()
 	t.root.overrideredirect(0)
-	t.db = ''
 
 	t.newFrame("First Frame", (0, 0))
 
-	create_pwfile = Buttonbox(text='Create PW File', lang=lang, repr='createpwfile')
-	choose_pwfile = Buttonbox(text='Choose PW File', lang=lang, repr='cpwfile')
-	curpwfile = Label(w.frames['Third Frame'], text=d.pwfile, wraplength=200, bg='#DBDBDB')
-	curpwfile.grid(row=3, column=0, pady=10)
+
+	db_file_textbox = Textbox(text='Database File', lang={'Database File': 'Database File'}, repr='db_file')
+	pw_file_textbox = Textbox(text='Password File', lang={'Password File': 'Password File'}, repr='pw_file')
+	pw_textbox = Textbox(text='Password', lang={'Password': 'Password'}, repr='pw')
+
+	brw1 = Buttonbox(text='browse', lang=language, repr='brw1')
+	brw2 = Buttonbox(text='browse', lang=language, repr='brw2')
+
+	t.frames["First Frame"].addWidget(db_file_textbox,(0, 0))
+	t.frames["First Frame"].addWidget(pw_file_textbox,(1, 0))
+	t.frames["First Frame"].addWidget(brw1, (0, 2))
+	t.frames["First Frame"].addWidget(brw2, (1, 2))
+	t.frames["First Frame"].addWidget(pw_textbox, (2, 0))
+	t.frames["First Frame"].addWidget(bsav, (3, 1))
+	t.frames["First Frame"].addWidget(bcancel, (4, 1))
 
 
-	create_pwfile.bind()
+	db_file_textbox.label.config(width=12)
+	pw_file_textbox.label.config(width=12)
+	pw_textbox.label.config(width=12)
+	brw1.button.config(width=7)
+	brw2.button.config(width=7)
+	bsav.button.config(width=22)
 
-	t.frames["First Frame"].addWidget(createpwfile, (0, 0))
-	t.frames["First Frame"].addWidget(choose_pwfile, (1, 0))
-
-
-
+	brw1.config(cmd=lambda: set_file('db_file'))
+	brw2.config(cmd=lambda: set_file('pw_file'))
+	bsav.config(cmd=lambda: get_return('success'))
 	bcancel.config(cmd=lambda: get_return('cancel'), lang=lang)
+
+
 
 	t.root.wait_window()
 
-	return t.z
+	if t.z == 'cancel':
+		return
+
+	key = str.encode(t.pw)
+	studentList = {}
+	cipher = AES.new(key, AES.MODE_CFB, d.iv)
+	binary_string = pickle.dumps(studentList)
+	encrypted = cipher.encrypt(binary_string)
+
+	f = open(t.db_file, 'wb')
+	f.write(bytearray(encrypted))
+	f.close()
+
+	f = open(t.pw_file, 'wb')
+	f.write(bytearray(str.encode(t.pw)))
+	f.close()
+
+	print(t.z)
 
 def ret(s, lang):
 
