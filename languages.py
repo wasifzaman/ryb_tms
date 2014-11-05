@@ -55,7 +55,7 @@ languages = \
 		"impxls": "Import from Excel",
 		"impt": "Import Time Data",
 		"imptxls": "Import Time Data from Excel",
-		"expxls": "Export to Excel",
+		"expxls": "Export Database",
 		"curfile": "Current Database File",
 		"browse": "Browse",
 		"browsephoto": "Select Picture",

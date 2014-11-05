@@ -65,9 +65,9 @@ def main(t, lang, d, k):
 	def expf():
 		try:
 			p = filedialog.askdirectory()
-			d.exportxlsx(p + '/student_list.xlsx')
-			d.exporttxlsx(p + '/student_att.xlsx')
-			d.exportdb(p + '/backup_' + str(datetime.now().date()) + '.ryb`db')
+			#d.exportxlsx(p + '/student_list.xlsx')
+			#d.exporttxlsx(p + '/student_att.xlsx')
+			d.exportdb(p + '/backup_' + str(datetime.now().date()) + '.rybdb')
 		except:
 			return
 
