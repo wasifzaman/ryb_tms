@@ -772,9 +772,9 @@ def create_new_db(lang, d):
 		f_path = filedialog.askdirectory()
 		print(f_path + '/' + db_file_textbox.getData())
 		if file_ == 'db_file':
-			db_file_textbox.setData(f_path + '/' + db_file_textbox.getData())
+			db_file_textbox.setData(f_path + '/' + db_file_textbox.getData() + '.rybdb')
 		elif file_ == 'pw_file':
-			pw_file_textbox.setData(f_path + '/' + pw_file_textbox.getData())
+			pw_file_textbox.setData(f_path + '/' + pw_file_textbox.getData() + '.rybdb')
 
 		return
 
@@ -820,7 +820,19 @@ def create_new_db(lang, d):
 	if t.z == 'cancel':
 		return
 
+	if len(t.pw.strip()) == 0 or len(t.db_file.strip()) == 0 or len(t.pw_file.strip()) == 0:
+		return
+
+	if not (os.path.exists(os.path.dirname(t.pw_file)) and os.path.exists(os.path.dirname(t.db_file))):
+		print('invalid paths')
+		return
+
 	key = str.encode(t.pw)
+
+	if len(key) != 16 and len(key) != 24 and len(key) != 32:
+		print('failed')
+		return
+
 	studentList = {}
 	cipher = AES.new(key, AES.MODE_CFB, d.iv)
 	binary_string = pickle.dumps(studentList)

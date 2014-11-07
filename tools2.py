@@ -28,20 +28,20 @@ def main(t, lang, d, k):
 
 
 	def ctdb():
-		#try:
-		p = filedialog.askopenfile(mode='r').name
-		l = p.split('/')[-1]
-		ext = l[l.rfind('.'):]
-		if ext != '.xls' and ext != '.xlsx':
-			print("invalid file")
+		try:
+			p = filedialog.askopenfile(mode='r').name
+			l = p.split('/')[-1]
+			ext = l[l.rfind('.'):]
+			if ext != '.xls' and ext != '.xlsx':
+				print("invalid file")
+				return
+			else:
+				d.loadData()
+				ns, nt = d.importtimexlsx(p)
+				ctimp(w.lang, ns, nt)
+				#d.saveData()
+		except:
 			return
-		else:
-			d.loadData()
-			ns, nt = d.importtimexlsx(p)
-			ctimp(w.lang, ns, nt)
-			#d.saveData()
-		#except:
-		#	return
 			#print("error opening file.")
 
 
