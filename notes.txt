@@ -65,3 +65,8 @@ Add input field:
 		Check Payment button: pop-up: start date, end date. Check Payment. All payments within those dates, export it to excel file with barcode, name, amount paid, amount paid, amount owed and cash or check. Bottom Total.
 Make window scalable:
 	Scale window up
+
+11/6
+Move export databse to main window
+recolor salary report to red
+add password to database management

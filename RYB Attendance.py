@@ -4,7 +4,7 @@ from dataHandler import *
 from languages import *
 from labelWidgets2 import *
 from photoWidget2 import *
-from preBuilts2 import ret, titlePic
+from preBuilts2 import ret, titlePic, bexp
 from tkinter import filedialog
 import addS3
 import scanS22
@@ -124,7 +124,13 @@ def main():
 		w.k.save()
 
 		return
-		
+	
+	def expf():
+		try:
+			p = filedialog.askdirectory()
+			d.exportdb(p + '/backup_' + str(datetime.now().date()) + '.rybdb')
+		except:
+			return
 
 #main window and starting language
 	w = AppWindow(t.mainFrame)
@@ -166,6 +172,7 @@ def main():
 	bsexit = Buttonbox(text='Exit', lang=w.lang, repr='bsexit') #Exit
 	bclang = Buttonbox(text='changelanguage', lang=w.lang, repr='bclang') #Change Language
 	bprint = Buttonbox(text='print report', lang=w.lang, repr='bprint') #Print end of day report
+	bexp = Buttonbox(text='expxls', lang=w.lang, repr='bexp')
 
 #background image
 	w.p = Photo(repr='splash', path='background_IMG.jpg')
@@ -177,10 +184,11 @@ def main():
 	w.frames["First Frame"].addWidget(bsscan2, (3, 0))
 	w.frames["First Frame"].addWidget(bssdb, (4, 0))
 	w.frames["First Frame"].addWidget(bstools, (5, 0))
+	w.frames["First Frame"].addWidget(bexp, (6, 0))
 	w.frames["Third Frame"].addWidget(bsbmm, (0, 0))
-	w.frames["First Frame"].addWidget(bclang, (6, 0))
-	w.frames["First Frame"].addWidget(bprint, (7, 0))
-	w.frames["First Frame"].addWidget(bsexit, (8, 0))
+	w.frames["First Frame"].addWidget(bclang, (7, 0))
+	w.frames["First Frame"].addWidget(bprint, (8, 0))
+	w.frames["First Frame"].addWidget(bsexit, (9, 0))
 	w.frames["First Frame"].addWidget(w.p, (0, 2))
 	Label(w.frames["First Frame"], text='  ').grid(column=1) #separator between buttons and background image
 
@@ -195,6 +203,7 @@ def main():
 	bprint.config(cmd=printPrompt)
 	bsexit.config(cmd=t.destroy)
 	bclang.config(cmd=clang)
+	bexp.config(cmd=expf)
 	#bstools.selfframe.grid_forget()
 	#secret configuration to call Database Management
 	w.p.label.bind('<Control-Alt-Shift-D>', lambda e: showWindow(tools2.main))
@@ -253,6 +262,11 @@ def main():
 	bstools.fg = w.mmbuttonfg
 	bstools.hoverfg = 'white'
 	bstools.button.config(bg=bstools.idlebg, fg=bstools.fg)
+
+	bexp.idlebg = w.mmbuttoncol
+	bexp.fg = w.mmbuttonfg
+	bexp.hoverfg = 'white'
+	bexp.button.config(bg=bexp.idlebg, fg=bexp.fg)
 
 	t.iconbitmap('RYB_Attendance.ico')
 	t.mainloop()

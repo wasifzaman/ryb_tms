@@ -132,7 +132,7 @@ def main(t, lang, d, k):
 	w.frames["Fifth Frame"].addWidget(bimpt, (0, 0))
 
 	#w.frames["Second Frame"].addWidget(exp, (0, 0))
-	w.frames["Second Frame"].addWidget(bexp, (0, 0))
+	#w.frames["Second Frame"].addWidget(bexp, (0, 0))
 
 	#salary report
 	w.frames["Second Frame"].addWidget(bsalrep, (3, 0))
@@ -165,13 +165,23 @@ def main(t, lang, d, k):
 	bimp.config(cmd=lambda: importwiz.main(w.lang, d))
 	bcdb.config(cmd=lambda: cdb(curdb))
 	bimpt.config(cmd=ctdb)
-	bexp.config(cmd=expf)
+	#bexp.config(cmd=expf)
 	bsalrep.config(cmd=salrep)
 	choose_pwfile.config(cmd=lambda: set_pwfile(curpwfile))
 	convert_db.config(cmd=lambda: convert_to_encrypted(w.lang, d))
 	create_db.config(cmd=lambda: create_new_db(w.lang, d))
 	#curdb.config(text=s.config['dbFile'])
 	#exp.config(cmd=importwiz.main)
+
+	w.mmbuttoncol = 'tomato'
+	w.mmbuttonfg = 'black'
+
+	bsalrep.idlebg = w.mmbuttoncol
+	bsalrep.fg = w.mmbuttonfg
+	bsalrep.hoverfg = 'white'
+	bsalrep.hoverbg = 'crimson'
+	bsalrep.button.config(bg=bsalrep.idlebg, fg=bsalrep.fg)
+
 
 #set starting lang
 	for frame in w.frames.values():

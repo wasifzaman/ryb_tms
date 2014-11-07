@@ -936,6 +936,10 @@ def convert_to_encrypted(lang, d):
 
 	print(t.z)
 
+def password_prompt(lang):
+
+	return
+
 def ret(s, lang):
 
 	def d(z):
