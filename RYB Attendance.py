@@ -4,7 +4,7 @@ from dataHandler import *
 from languages import *
 from labelWidgets2 import *
 from photoWidget2 import *
-from preBuilts2 import ret, titlePic, bexp, password_prompt
+from preBuilts2 import ret, titlePic, bexp, password_prompt, wrong_password, pw_reset_confirm
 from tkinter import filedialog
 import addS3
 import scanS22
@@ -45,7 +45,22 @@ def main():
 			t.con = True
 			w.t = f(w.frames["Second Frame"], w.lang, w.d, showMain)
 		elif (f.__doc__) == 'tools2':
-			password_prompt(w.lang, False)
+			if w.k.files['resetpw'] == True:
+				new_pw = password_prompt(w.lang, w.k.files['dbpw'])
+				if new_pw == 'cancel' or w.k.hashpw(new_pw[0]) != w.k.files['dbpw']:
+					wrong_password(w.lang)
+					showMain(t.con)
+					return
+				w.k.files['dbpw'] = w.k.hashpw(new_pw[1])
+				w.k.files['resetpw'] = False
+				w.k.save()
+				pw_reset_confirm(w.lang)
+			else:
+				pw_input = password_prompt(w.lang, False)
+				if not w.k.hashpw(pw_input) == w.k.files['dbpw'] or pw_input == 'cancel':
+					wrong_password(w.lang)
+					showMain(t.con)
+					return
 			w.t = f(w.frames["Second Frame"], w.lang, w.d, w.k)
 		else:
 			t.con = False
@@ -205,7 +220,7 @@ def main():
 	bsexit.config(cmd=t.destroy)
 	bclang.config(cmd=clang)
 	bexp.config(cmd=expf)
-	#bstools.selfframe.grid_forget()
+	bstools.selfframe.grid_forget()
 	#secret configuration to call Database Management
 	w.p.label.bind('<Control-Alt-Shift-D>', lambda e: showWindow(tools2.main))
 

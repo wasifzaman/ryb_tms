@@ -93,6 +93,16 @@ def main(t, lang, d, k):
 
 		return
 
+	def reset_dbmanager_pw(lang):
+
+		new_pw = password_prompt(lang, k.files['dbpw'])
+		if new_pw == 'cancel' or k.hashpw(new_pw[0]) != k.files['dbpw']:
+			wrong_password(w.lang)
+			return
+		k.files['dbpw'] = k.hashpw(new_pw[1])
+		k.files['resetpw'] = False
+		k.save()
+		pw_reset_confirm(w.lang)
 		
 
 
@@ -118,6 +128,7 @@ def main(t, lang, d, k):
 	w.frames["Third Frame"].grid(rowspan=3)
 
 	bchoose_school = Buttonbox(text='Choose School', lang=w.lang, repr='bcschool')
+	reset_db_manager_pw = Buttonbox(text='Reset DB Manager PW', lang=w.lang, repr='resetdbmanagerpw')
 
 #title
 	#w.frames["Title Frame"].grid(columnspan=4, sticky=E+W)
@@ -139,6 +150,7 @@ def main(t, lang, d, k):
 
 	#choose school
 	w.frames["Second Frame"].addWidget(bchoose_school, (4, 0))
+	w.frames["Second Frame"].addWidget(reset_db_manager_pw, (6, 0))
 
 	curdb = Label(w.frames['Third Frame'], text=d.file, wraplength=200, bg='#DBDBDB')
 	w.frames["Third Frame"].addWidget(curfile, (0, 0))
@@ -170,6 +182,7 @@ def main(t, lang, d, k):
 	choose_pwfile.config(cmd=lambda: set_pwfile(curpwfile))
 	convert_db.config(cmd=lambda: convert_to_encrypted(w.lang, d))
 	create_db.config(cmd=lambda: create_new_db(w.lang, d))
+	reset_db_manager_pw.config(cmd=lambda: reset_dbmanager_pw(w.lang))
 	#curdb.config(text=s.config['dbFile'])
 	#exp.config(cmd=importwiz.main)
 

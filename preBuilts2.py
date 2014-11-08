@@ -936,34 +936,92 @@ def convert_to_encrypted(lang, d):
 
 	print(t.z)
 
-def password_prompt(lang, pw_exists):
+def password_prompt(lang, reset_pw):
 
 	def get_return(z):
+		if z == 'pw_mismatch':
+			return
 		t.z = z
 		t.dw()
 
 	t = Mbox()
 	t.root.overrideredirect(0)
 
-	t.newFrame("First Frame", (0, 0))
-	t.newFrame("Second Frame", (1, 0))
+	t.newFrame("Top Frame", (0, 0))
+	t.newFrame("First Frame", (1, 0))
+	t.newFrame("Second Frame", (2, 0))
 
 	no_pw_detected = Labelbox(text="no_pw_set_pw", lang=lang, repr='nopwsetpw')
 	old_pw_textbox = Textbox(text="Old Password", lang={"Old Password": "Old Password"}, repr='oldpwtextbox')
 	new_pw_textbox = Textbox(text="New Password", lang={"New Password": "New Password"}, repr='newpwtextbox')
 	retype_new_pw_textbox = Textbox(text="Retype New Password", lang={"Retype New Password": "Retype New Password"}, repr='retypenewpwtextbox')
+	pw_textbox = Textbox(text="Old Password", lang={"Old Password": "Old Password"}, repr='oldpwtextbox')
 
-	t.frames["First Frame"].addWidget(no_pw_detected, (0, 0))
-	t.frames["First Frame"].addWidget(old_pw_textbox, (1, 0))
-	t.frames["First Frame"].addWidget(new_pw_textbox, (2, 0))
-	t.frames["First Frame"].addWidget(retype_new_pw_textbox, (3, 0))
+	if reset_pw:
+		t.frames["Top Frame"].addWidget(no_pw_detected, (0, 0))
+		t.frames["First Frame"].addWidget(old_pw_textbox, (1, 0))
+		t.frames["First Frame"].addWidget(new_pw_textbox, (2, 0))
+		t.frames["First Frame"].addWidget(retype_new_pw_textbox, (3, 0))
+		t.frames["Second Frame"].addWidget(bsav, (0, 1))
+		bsav.config(cmd=lambda: get_return((old_pw_textbox.getData(), new_pw_textbox.getData())) if new_pw_textbox.getData() == retype_new_pw_textbox.getData() else get_return('pw_mismatch'))
+		bsav.button.config(width=10)
+		old_pw_textbox.label.config(width=19)
+		new_pw_textbox.label.config(width=19)
+		retype_new_pw_textbox.label.config(width=19)
+	else:
+		t.frames["First Frame"].addWidget(pw_textbox, (0, 0))
+		t.frames["Second Frame"].addWidget(bok, (0, 1))
+		bok.config(cmd=lambda: get_return(pw_textbox.getData()))
+		bok.button.config(width=10)
 
 	t.frames["Second Frame"].addWidget(bcancel, (0, 0))
-	t.frames["Second Frame"].addWidget(bsav, (0, 1))
+
+	bcancel.button.config(width=10)
+	
+	bcancel.config(cmd=lambda: get_return('cancel'))
+
 
 	t.root.wait_window()
 
 	return t.z
+
+def pw_reset_confirm(lang):
+
+	t = Mbox()
+	t.root.overrideredirect(0)
+	
+	t.newFrame("First Frame", (0, 0))
+
+	t.frames["First Frame"].addWidget(bok, (1, 0))
+
+	confirmed_reset = Labelbox(text='confirmed reset', lang=lang, repr='confirmedreset')
+
+	t.frames["First Frame"].addWidget(confirmed_reset, (0, 0))
+	t.frames["First Frame"].addWidget(bok, (1, 0))
+
+	bok.config(cmd=t.dw)
+
+	t.root.wait_window()
+
+	return
+
+def wrong_password(lang):
+
+	t = Mbox()
+	t.root.overrideredirect(0)
+	
+	t.newFrame("First Frame", (0, 0))
+
+	wrong_pw_label = Labelbox(text='wrong password try again', lang=lang, repr='wrongpwtryagain')
+
+	t.frames["First Frame"].addWidget(wrong_pw_label, (0, 0))
+	t.frames["First Frame"].addWidget(bok, (1, 0))
+
+	bok.config(cmd=t.dw)
+
+	t.root.wait_window()
+
+	return
 
 def ret(s, lang):
 

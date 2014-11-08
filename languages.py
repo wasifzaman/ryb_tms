@@ -148,8 +148,11 @@ languages = \
 		"Create PW File": "Create PW File",
 		"Create new Database": "Create new Database",
 		"Convert to Encrypted DB": "Convert to Encrypted DB",
-		"no_pw_set_pw": "First use detected.\nPlease enter the password you received\nfollowed by the new password",
-		"Enter Password": "Enter Password"
+		"no_pw_set_pw": "First must be reset.\nPlease enter the old password\nfollowed by the new password",
+		"Enter Password": "Enter Password",
+		"Reset DB Manager PW": "Reset DB Manager PW",
+		"confirmed reset": "Password has been reset!",
+		"wrong password try again": "You have entered the wrong password, try again!"
 		},
 
 	"chinese": {
@@ -298,8 +301,11 @@ languages = \
 		"Create PW File": "Create PW File",
 		"Create new Database": "Create new Database",
 		"Convert to Encrypted DB": "Convert to Encrypted DB",
-		"no_pw_set_pw": "First use detected.\nPlease enter the password you received\nfollowed by the new password",
-		"Enter Password": "Enter Password"
+		"no_pw_set_pw": "First must be reset.\nPlease enter the old password\nfollowed by the new password",
+		"Enter Password": "Enter Password",
+		"Reset DB Manager PW": "Reset DB Manager PW",
+		"confirmed reset": "Password has been reset!",
+		"wrong password try again": "You have entered the wrong password, try again!"
 		}
 		
 }
