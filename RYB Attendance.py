@@ -4,7 +4,7 @@ from dataHandler import *
 from languages import *
 from labelWidgets2 import *
 from photoWidget2 import *
-from preBuilts2 import ret, titlePic, bexp
+from preBuilts2 import ret, titlePic, bexp, password_prompt
 from tkinter import filedialog
 import addS3
 import scanS22
@@ -45,6 +45,7 @@ def main():
 			t.con = True
 			w.t = f(w.frames["Second Frame"], w.lang, w.d, showMain)
 		elif (f.__doc__) == 'tools2':
+			password_prompt(w.lang, False)
 			w.t = f(w.frames["Second Frame"], w.lang, w.d, w.k)
 		else:
 			t.con = False

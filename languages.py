@@ -147,7 +147,9 @@ languages = \
 		"Choose PW File": "Choose PW File",
 		"Create PW File": "Create PW File",
 		"Create new Database": "Create new Database",
-		"Convert to Encrypted DB": "Convert to Encrypted DB"
+		"Convert to Encrypted DB": "Convert to Encrypted DB",
+		"no_pw_set_pw": "First use detected.\nPlease enter the password you received\nfollowed by the new password",
+		"Enter Password": "Enter Password"
 		},
 
 	"chinese": {
@@ -295,7 +297,9 @@ languages = \
 		"Choose PW File": "Choose PW File",
 		"Create PW File": "Create PW File",
 		"Create new Database": "Create new Database",
-		"Convert to Encrypted DB": "Convert to Encrypted DB"
+		"Convert to Encrypted DB": "Convert to Encrypted DB",
+		"no_pw_set_pw": "First use detected.\nPlease enter the password you received\nfollowed by the new password",
+		"Enter Password": "Enter Password"
 		}
 		
 }

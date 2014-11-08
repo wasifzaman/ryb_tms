@@ -936,9 +936,34 @@ def convert_to_encrypted(lang, d):
 
 	print(t.z)
 
-def password_prompt(lang):
+def password_prompt(lang, pw_exists):
 
-	return
+	def get_return(z):
+		t.z = z
+		t.dw()
+
+	t = Mbox()
+	t.root.overrideredirect(0)
+
+	t.newFrame("First Frame", (0, 0))
+	t.newFrame("Second Frame", (1, 0))
+
+	no_pw_detected = Labelbox(text="no_pw_set_pw", lang=lang, repr='nopwsetpw')
+	old_pw_textbox = Textbox(text="Old Password", lang={"Old Password": "Old Password"}, repr='oldpwtextbox')
+	new_pw_textbox = Textbox(text="New Password", lang={"New Password": "New Password"}, repr='newpwtextbox')
+	retype_new_pw_textbox = Textbox(text="Retype New Password", lang={"Retype New Password": "Retype New Password"}, repr='retypenewpwtextbox')
+
+	t.frames["First Frame"].addWidget(no_pw_detected, (0, 0))
+	t.frames["First Frame"].addWidget(old_pw_textbox, (1, 0))
+	t.frames["First Frame"].addWidget(new_pw_textbox, (2, 0))
+	t.frames["First Frame"].addWidget(retype_new_pw_textbox, (3, 0))
+
+	t.frames["Second Frame"].addWidget(bcancel, (0, 0))
+	t.frames["Second Frame"].addWidget(bsav, (0, 1))
+
+	t.root.wait_window()
+
+	return t.z
 
 def ret(s, lang):
 
