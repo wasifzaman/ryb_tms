@@ -4,7 +4,7 @@ Notes:
 
 '''
 
-object_builder_objects = {
+object_builder_object_properties = {
 	
 	'Textbox': ['label_text', 'fill_tag'],
 	'Scrolled_textbox': ['label_text', 'fill_tag'],
@@ -17,3 +17,11 @@ object_builder_objects = {
 
 }
 
+''' Compiler '''
+
+from object_builder import Object_builder
+
+object_builder_objects = {}
+
+for obj, properties, in object_builder_object_properties.items():
+	object_builder_objects[obj] = Object_builder(obj, properties)

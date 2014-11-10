@@ -4,6 +4,8 @@ from object_builder import *
 from alpha_widgets import Table, Cell_object
 from tkinter import Label
 from PIL import Image, ImageTk
+from object_builder_objects import object_builder_objects
+from copy import copy, deepcopy
 
 
 '''
@@ -37,12 +39,16 @@ class Window_builder:
 
 	def select_widget(self, event):
 
+		'''
 		widget_build_dictionary = {'Textbox': Object_builder('Textbox', ['label_text', 'fill_tag']),
 								'Scrolled_textbox': Object_builder('Scrolled_textbox', ['label_text', 'fill_tag']),
 								'Button': Object_builder('Button', ['text']),
 								'Coin_widget': Object_builder('Coin_widget', ['label_text', 'fill_tag']),
 								'Date_widget': Object_builder('Date_widget', ['label_text', 'fill_tag']),
 								'Entry_category': Object_builder('Entry_category', ['label_text', 'fill_tag', 'categories'])}
+		'''
+
+		widget_build_dictionary = deepcopy(object_builder_objects)
 
 		selector = Window(600, 200, 10, toplevel=True)
 		widget_file = open('alpha_widgets.py', 'r')
@@ -174,6 +180,8 @@ class Window_builder:
 			selector.current_widget.make_removable(self)
 
 			self.object_builder_set.add(selector.current_widget)
+
+			print(self.object_builder_set)
 
 		add_button.label.bind('<Button-1>', lambda event: add())
 		close_button.label.bind('<Button-1>', lambda event: selector.window.destroy())
