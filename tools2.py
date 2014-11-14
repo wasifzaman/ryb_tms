@@ -59,6 +59,12 @@ def main(t, lang, d, k):
 		k.files['pwfile'] = open_f.name
 		k.save()
 
+	def set_markerfile(label):
+		open_f = filedialog.askopenfile()
+		label.config(text=open_f.name)
+		k.files['markerfile'] = open_f.name
+		k.save()
+
 
 
 
@@ -76,7 +82,7 @@ def main(t, lang, d, k):
 		try:
 			for child in t.winfo_children():
 				child.destroy()
-			sdb_salrep.main(t, w.lang, d)
+			sdb_salrep.main(t, w.lang, d, k.files['markerfile'])
 		except:
 			return
 
@@ -104,7 +110,9 @@ def main(t, lang, d, k):
 		k.save()
 		pw_reset_confirm(w.lang)
 		
+	def choose_makerfile(lang):
 
+		return
 
 	def it():
 		return
@@ -159,14 +167,18 @@ def main(t, lang, d, k):
 
 	curpwfile = Label(w.frames['Third Frame'], text=d.pwfile, wraplength=200, bg='#DBDBDB')
 	curpwfile.grid(row=5, column=0, pady=10)
+	curmarkerfile = Label(w.frames['Third Frame'], text=k.files['markerfile'], wraplength=200, bg='#DBDBDB')
+	curmarkerfile.grid(row=7, column=0, pady=10)
 
 	choose_pwfile = Buttonbox(text='Choose PW File', lang=w.lang, repr='cpwfile')
+	choose_markerfile = Buttonbox(text='Choose Maker File', lang=w.lang, repr='cmarkerfile')
 	create_db = Buttonbox(text='Create new Database', lang=w.lang, repr='createdb')
 	convert_db = Buttonbox(text='Convert to Encrypted DB', lang=w.lang, repr='convertdb')
 
 	w.frames["Third Frame"].addWidget(bcdb, (2, 0))
 	w.frames["Third Frame"].addWidget(choose_pwfile, (4, 0))
 	w.frames["Third Frame"].addWidget(create_db, (1, 0))
+	w.frames["Third Frame"].addWidget(choose_markerfile, (6, 0))
 
 	w.frames["Second Frame"].addWidget(convert_db, (5, 0))
 
@@ -182,6 +194,7 @@ def main(t, lang, d, k):
 	choose_pwfile.config(cmd=lambda: set_pwfile(curpwfile))
 	convert_db.config(cmd=lambda: convert_to_encrypted(w.lang, d))
 	create_db.config(cmd=lambda: create_new_db(w.lang, d))
+	choose_markerfile.config(cmd=lambda: set_markerfile(curmarkerfile))
 	reset_db_manager_pw.config(cmd=lambda: reset_dbmanager_pw(w.lang))
 	#curdb.config(text=s.config['dbFile'])
 	#exp.config(cmd=importwiz.main)

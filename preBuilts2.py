@@ -765,6 +765,7 @@ def create_new_db(lang, d):
 		t.z = z
 		t.db_file = db_file_textbox.getData()
 		t.pw_file = pw_file_textbox.getData()
+		t.marker_file = marker_file_textbox.getData()
 		t.pw = pw_textbox.getData()
 		t.dw()
 
@@ -775,6 +776,8 @@ def create_new_db(lang, d):
 			db_file_textbox.setData(f_path + '/' + db_file_textbox.getData() + '.rybdb')
 		elif file_ == 'pw_file':
 			pw_file_textbox.setData(f_path + '/' + pw_file_textbox.getData() + '.rybdb')
+		elif file_ == 'marker_file':
+			marker_file_textbox.setData(f_path + '/' + marker_file_textbox.getData() + '.rybdb')
 
 		return
 
@@ -787,29 +790,36 @@ def create_new_db(lang, d):
 
 	db_file_textbox = Textbox(text='Database File', lang={'Database File': 'Database File'}, repr='db_file')
 	pw_file_textbox = Textbox(text='Password File', lang={'Password File': 'Password File'}, repr='pw_file')
+	marker_file_textbox = Textbox(text='Marker File', lang={'Marker File': 'Marker File'}, repr='marker_file')
 	pw_textbox = Textbox(text='Password', lang={'Password': 'Password'}, repr='pw')
 
 	brw1 = Buttonbox(text='browse', lang=language, repr='brw1')
 	brw2 = Buttonbox(text='browse', lang=language, repr='brw2')
+	brw3 = Buttonbox(text='browse', lang=language, repr='brw3')
 
 	t.frames["First Frame"].addWidget(db_file_textbox,(0, 0))
 	t.frames["First Frame"].addWidget(pw_file_textbox,(1, 0))
+	t.frames["First Frame"].addWidget(marker_file_textbox,(2, 0))
 	t.frames["First Frame"].addWidget(brw1, (0, 2))
 	t.frames["First Frame"].addWidget(brw2, (1, 2))
-	t.frames["First Frame"].addWidget(pw_textbox, (2, 0))
-	t.frames["First Frame"].addWidget(bsav, (3, 1))
-	t.frames["First Frame"].addWidget(bcancel, (4, 1))
+	t.frames["First Frame"].addWidget(brw3,(2, 2))
+	t.frames["First Frame"].addWidget(pw_textbox, (3, 0))
+	t.frames["First Frame"].addWidget(bsav, (4, 1))
+	t.frames["First Frame"].addWidget(bcancel, (5, 1))
 
 
 	db_file_textbox.label.config(width=12)
 	pw_file_textbox.label.config(width=12)
+	marker_file_textbox.label.config(width=12)
 	pw_textbox.label.config(width=12)
 	brw1.button.config(width=7)
 	brw2.button.config(width=7)
+	brw3.button.config(width=7)
 	bsav.button.config(width=22)
 
 	brw1.config(cmd=lambda: set_file('db_file'))
 	brw2.config(cmd=lambda: set_file('pw_file'))
+	brw3.config(cmd=lambda: set_file('marker_file'))
 	bsav.config(cmd=lambda: get_return('success'))
 	bcancel.config(cmd=lambda: get_return('cancel'), lang=lang)
 
@@ -845,6 +855,9 @@ def create_new_db(lang, d):
 	f = open(t.pw_file, 'wb')
 	f.write(bytearray(str.encode(t.pw)))
 	f.close()
+
+	if t.marker_file.strip() != "":
+		pickle.dump({}, open(t.marker_file, "wb"))
 
 	print(t.z)
 

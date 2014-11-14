@@ -4,8 +4,8 @@ from object_builder import *
 from alpha_widgets import Table, Cell_object
 from tkinter import Label
 from PIL import Image, ImageTk
-from object_builder_objects import object_builder_objects
-from copy import copy, deepcopy
+from object_builder_objects import default_objects_object_properties
+from copy import deepcopy
 
 
 '''
@@ -22,7 +22,7 @@ Notes:
 
 class Window_builder:
 
-	def __init__(self, window_width, window_height, grid_spacing):
+	def __init__(self, window_width, window_height, grid_spacing, object_builder_objects):
 		self.window = Window(window_width, window_height, grid_spacing)
 		self.tools = Window(200, 100, 10, toplevel=True)
 		self.object_builder_set = set()
@@ -36,19 +36,15 @@ class Window_builder:
 		add_widget_selector.label.bind('<Button-1>', self.select_widget)
 		toggle_grid.label.bind('<Button-1>', lambda event: self.window.toggle_grid())
 
+		self.object_builder_objects = {}
+
+		for obj, properties in object_builder_objects.items():
+			self.object_builder_objects[obj] = Object_builder(obj, properties)
+
 
 	def select_widget(self, event):
 
-		'''
-		widget_build_dictionary = {'Textbox': Object_builder('Textbox', ['label_text', 'fill_tag']),
-								'Scrolled_textbox': Object_builder('Scrolled_textbox', ['label_text', 'fill_tag']),
-								'Button': Object_builder('Button', ['text']),
-								'Coin_widget': Object_builder('Coin_widget', ['label_text', 'fill_tag']),
-								'Date_widget': Object_builder('Date_widget', ['label_text', 'fill_tag']),
-								'Entry_category': Object_builder('Entry_category', ['label_text', 'fill_tag', 'categories'])}
-		'''
-
-		widget_build_dictionary = deepcopy(object_builder_objects)
+		widget_build_dictionary = deepcopy(self.object_builder_objects)
 
 		selector = Window(600, 200, 10, toplevel=True)
 		widget_file = open('alpha_widgets.py', 'r')
@@ -187,5 +183,5 @@ class Window_builder:
 		close_button.label.bind('<Button-1>', lambda event: selector.window.destroy())
 
 
-test_window = Window_builder(426, 500, 10)
+test_window = Window_builder(426, 500, 10, default_objects_object_properties)
 test_window.window.window.mainloop()

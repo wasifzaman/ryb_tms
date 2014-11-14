@@ -4,9 +4,12 @@ from preBuilts2 import *
 import reset_check_in_row
 
 
-def main(lang, d, top=False, i=0): #i is the id of the student passed in
+def main(lang, d, top=False, i=0, markerfile=False): #i is the id of the student passed in
 
 	d.loadData()
+	marker = False
+	if markerfile:
+		marker = pickle.load(markerfile)
 
 	t = Window(top=top)
 	t.attributes('-fullscreen', False)
@@ -161,10 +164,9 @@ def main(lang, d, top=False, i=0): #i is the id of the student passed in
 		#bind cells
 		#place a try here
 
-		paid_alias = d.studentList[i].datapoints['paid_entries']
 		for pos, cell in w.attinfo.cells.items():
 			cell.config(bind=('<Button-1>', lambda event, pos=pos: fsb(pos)))
-			if pos[0] in paid_alias:
+			if marker and (pos[0] in marker[i]):
 				cell.config(bgcolor='tomato')
 
 
@@ -196,6 +198,12 @@ def main(lang, d, top=False, i=0): #i is the id of the student passed in
 		if not confirm_print('a', w.lang): return
 		file_name = filedialog.asksaveasfilename()
 		printed = d.print_pay_entries(file_name, i, w.picked, dollar_per_hour.getData(), max_hours.getData())
+		if markerfile:
+			if i not in marker:
+				marker[i] = w.picked
+			else:
+				marker[i].update(w.picked)
+			pickle.dump(marker, markerfile)
 		if printed:
 			print_succesful(w.lang)
 			t.destroy()

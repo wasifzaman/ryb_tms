@@ -4,8 +4,9 @@ from dataHandler import *
 from preBuilts2 import *
 
 
-def main(t, lang, d):
+def main(t, lang, d, markerfile):
 
+	print('markerfile', markerfile)
 #
 	d.loadData()
 
@@ -173,7 +174,9 @@ def main(t, lang, d):
 					w.s = spicker(sl)
 					if not w.s: return
 
-			edit_salary.main(w.lang, d=d, top=True, i=w.s)
+			if not os.path.isfile(markerfile):
+				markerfile = False
+			edit_salary.main(w.lang, d=d, top=True, i=w.s, markerfile=markerfile)
 		except:
 			nos(w.lang)
 			return

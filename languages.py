@@ -152,7 +152,8 @@ languages = \
 		"Enter Password": "Enter Password",
 		"Reset DB Manager PW": "Reset DB Manager PW",
 		"confirmed reset": "Password has been reset!",
-		"wrong password try again": "You have entered the wrong password, try again!"
+		"wrong password try again": "You have entered the wrong password, try again!",
+		"Choose Maker File": "Choose Maker File"
 		},
 
 	"chinese": {
@@ -305,7 +306,8 @@ languages = \
 		"Enter Password": "Enter Password",
 		"Reset DB Manager PW": "Reset DB Manager PW",
 		"confirmed reset": "Password has been reset!",
-		"wrong password try again": "You have entered the wrong password, try again!"
+		"wrong password try again": "You have entered the wrong password, try again!",
+		"Choose Maker File": "Choose Maker File"
 		}
 		
 }
