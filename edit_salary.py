@@ -4,12 +4,12 @@ from preBuilts2 import *
 import reset_check_in_row
 
 
-def main(lang, d, top=False, i=0, markerfile=False): #i is the id of the student passed in
+def main(lang, d, markerfile=False, top=False, i=0): #i is the id of the student passed in
 
 	d.loadData()
 	marker = False
 	if markerfile:
-		marker = pickle.load(markerfile)
+		marker = pickle.load(open(markerfile, "rb"))
 
 	t = Window(top=top)
 	t.attributes('-fullscreen', False)
@@ -144,7 +144,7 @@ def main(lang, d, top=False, i=0, markerfile=False): #i is the id of the student
 	def sTbind(func_pass):
 		def fsb(p):
 			#function on click on cell
-			#place a try here
+			print(marker)
 
 			first_cell = w.attinfo.cells[p]
 			if p[0] == 0: return
@@ -167,7 +167,7 @@ def main(lang, d, top=False, i=0, markerfile=False): #i is the id of the student
 		for pos, cell in w.attinfo.cells.items():
 			cell.config(bind=('<Button-1>', lambda event, pos=pos: fsb(pos)))
 			if marker and (pos[0] in marker[i]):
-				cell.config(bgcolor='tomato')
+				cell.config(bgcolor=marker[i]['row_color'][pos[0]])
 
 
 	#picked cells
@@ -199,11 +199,19 @@ def main(lang, d, top=False, i=0, markerfile=False): #i is the id of the student
 		file_name = filedialog.asksaveasfilename()
 		printed = d.print_pay_entries(file_name, i, w.picked, dollar_per_hour.getData(), max_hours.getData())
 		if markerfile:
-			if i not in marker:
+			if i not in marker.values():
 				marker[i] = w.picked
+				marker[i]['color_set'] = ['tomato', 'cornflowerblue']
+				marker[i]['current_color'] = 0
+				marker[i]['row_color'] = {}
+				for row_num in w.picked:
+					marker[i]['row_color'][row_num] = marker[i]['color_set'][marker[i]['current_color']]
 			else:
+				marker[i]['current_color'] = (marker[i]['current_color'] + 1) % len(marker[i]['color_set'])
+				for row_num in w.picked:
+					marker[i]['row_color'][row_num] = marker[i]['color_set'][marker[i]['current_color']]
 				marker[i].update(w.picked)
-			pickle.dump(marker, markerfile)
+			pickle.dump(marker, open(markerfile, "wb"))
 		if printed:
 			print_succesful(w.lang)
 			t.destroy()

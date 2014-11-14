@@ -138,12 +138,8 @@ def main():
 	#main()
 '''
 
-x = 21
-
-print(x % 15 >= 7)
-print(15 * (x // 15) + 15)
-print(x - x % 15)
-
+x = 2
+print(1 % x)
 
 
 

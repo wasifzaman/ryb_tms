@@ -6,8 +6,12 @@ from preBuilts2 import *
 
 def main(t, lang, d, markerfile):
 
-	print('markerfile', markerfile)
-#
+	if os.path.isfile(markerfile):
+		print('found', markerfile)
+	else:
+		markerfile = False
+		print('not found', markerfile)
+
 	d.loadData()
 
 	w = AppWindow(t)
@@ -23,17 +27,17 @@ def main(t, lang, d, markerfile):
 	def sTbind(func_pass):
 		def fsb(p):
 			i = w.sT.data[p[0]-1][0]
-			try:
-				func_pass(i)
-			except:
-				pass
+			#try:
+			func_pass(i)
+			#except:
+			#	pass
 				#print(w.sT.data[p[0]-1][0])
 
-		try:
-			for pos, cell in w.sT.cells.items():
-				cell.config(bind=('<Double-Button-1>', lambda event, pos=pos: fsb(pos)))
-		except:
-			pass
+		#try:
+		for pos, cell in w.sT.cells.items():
+			cell.config(bind=('<Double-Button-1>', lambda event, pos=pos: fsb(pos)))
+		#except:
+		#	pass
 			#print("cells could not be bound")
 
 #frame initialization
@@ -114,7 +118,7 @@ def main(t, lang, d, markerfile):
 		w.sT.build(headers=stableh, data=sL[p])
 		w.frames["Second Frame"].addWidget(w.sT, (2, 0))
 		w.sT.canvas.config(width=700, height=550)
-		sTbind(lambda i: edit_salary.main(w.lang, top=True, i=i, d=d))
+		sTbind(lambda i: edit_salary.main(w.lang, markerfile=markerfile, top=True, i=i, d=d))
 
 	def f():
 		if w.pNum == len(sL) - 1: return
@@ -139,47 +143,45 @@ def main(t, lang, d, markerfile):
 		toPage(0)
 #
 	def s():
-		try:
-			w.s = w.sby.getData()[1]
+		#try:
+		w.s = w.sby.getData()[1]
 
 
-			if w.sby.getData()[0] != 'bCode':
-				sty = w.sby.getData()[0]
-				sdp = w.sby.getData()[1]
+		if w.sby.getData()[0] != 'bCode':
+			sty = w.sby.getData()[0]
+			sdp = w.sby.getData()[1]
 
-				sl = []
+			sl = []
 
-				for s in d.studentList:
-					dp = False
-					if sty == 'phoneNumber':
-						if d.studentList[s].datapoints['hPhone'] == sdp or \
-							d.studentList[s].datapoints['cPhone'] == sdp or \
-							d.studentList[s].datapoints['cPhone2'] == sdp:
-							dp = d.studentList[s].datapoints
-
-					elif d.studentList[s].datapoints[sty] == sdp:
+			for s in d.studentList:
+				dp = False
+				if sty == 'phoneNumber':
+					if d.studentList[s].datapoints['hPhone'] == sdp or \
+						d.studentList[s].datapoints['cPhone'] == sdp or \
+						d.studentList[s].datapoints['cPhone2'] == sdp:
 						dp = d.studentList[s].datapoints
-					
-					if dp:
-						sl.append([dp['bCode'], dp['firstName'], dp['lastName'], dp['chineseName']])
+
+				elif d.studentList[s].datapoints[sty] == sdp:
+					dp = d.studentList[s].datapoints
+				
+				if dp:
+					sl.append([dp['bCode'], dp['firstName'], dp['lastName'], dp['chineseName']])
 
 
-				if len(sl) == 0:
-					nos(w.lang)
-					return
+			if len(sl) == 0:
+				nos(w.lang)
+				return
 
-				w.s = sl[0][0]
-				if len(sl) > 1:
-					sl.sort()
-					w.s = spicker(sl)
-					if not w.s: return
+			w.s = sl[0][0]
+			if len(sl) > 1:
+				sl.sort()
+				w.s = spicker(sl)
+				if not w.s: return
 
-			if not os.path.isfile(markerfile):
-				markerfile = False
-			edit_salary.main(w.lang, d=d, top=True, i=w.s, markerfile=markerfile)
-		except:
-			nos(w.lang)
-			return
+		edit_salary.main(w.lang, d=d, top=True, i=w.s, markerfile=markerfile)
+		#except:
+			#nos(w.lang)
+			#return
 
 
 	w.frames["First Frame"].widgets['sby'].entry.bind("<Return>", lambda x: s())
