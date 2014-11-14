@@ -127,10 +127,10 @@ def main(t, lang, d, k):
 #frame initialization
 	#w.newFrame("Title Frame", (0, 0))
 	w.newFrame("First Frame", (1, 0))
-	w.newFrame("Fifth Frame", (2, 0))
+	#w.newFrame("Fifth Frame", (2, 0))
 	w.newFrame("Second Frame", (3, 0))
 	w.newFrame("Third Frame", (1, 1))
-	w.newFrame("Fourth Frame", (4, 1))
+	#w.newFrame("Fourth Frame", (4, 1))
 
 	w.frames["Third Frame"].config(bg='#DBDBDB')
 	w.frames["Third Frame"].grid(rowspan=3)
@@ -145,20 +145,20 @@ def main(t, lang, d, k):
 
 #import export widgets
 	w.frames["First Frame"].addWidget(imp, (0, 0))
-	w.frames["First Frame"].addWidget(bimp, (2, 0))
+	w.frames["First Frame"].addWidget(bimp, (1, 0))
 
 	#w.frames["Fifth Frame"].addWidget(impt, (0, 0))
-	w.frames["Fifth Frame"].addWidget(bimpt, (0, 0))
+	w.frames["First Frame"].addWidget(bimpt, (2, 0))
 
 	#w.frames["Second Frame"].addWidget(exp, (0, 0))
 	#w.frames["Second Frame"].addWidget(bexp, (0, 0))
 
 	#salary report
-	w.frames["Second Frame"].addWidget(bsalrep, (3, 0))
+	w.frames["First Frame"].addWidget(bsalrep, (3, 0))
 
 	#choose school
-	w.frames["Second Frame"].addWidget(bchoose_school, (4, 0))
-	w.frames["Second Frame"].addWidget(reset_db_manager_pw, (6, 0))
+	w.frames["First Frame"].addWidget(bchoose_school, (4, 0))
+	w.frames["First Frame"].addWidget(reset_db_manager_pw, (5, 0))
 
 	curdb = Label(w.frames['Third Frame'], text=d.file, wraplength=200, bg='#DBDBDB')
 	w.frames["Third Frame"].addWidget(curfile, (0, 0))
@@ -168,19 +168,21 @@ def main(t, lang, d, k):
 	curpwfile = Label(w.frames['Third Frame'], text=d.pwfile, wraplength=200, bg='#DBDBDB')
 	curpwfile.grid(row=5, column=0, pady=10)
 	curmarkerfile = Label(w.frames['Third Frame'], text=k.files['markerfile'], wraplength=200, bg='#DBDBDB')
-	curmarkerfile.grid(row=7, column=0, pady=10)
+	curmarkerfile.grid(row=8, column=0, pady=10)
 
 	choose_pwfile = Buttonbox(text='Choose PW File', lang=w.lang, repr='cpwfile')
 	choose_markerfile = Buttonbox(text='Choose Maker File', lang=w.lang, repr='cmarkerfile')
 	create_db = Buttonbox(text='Create new Database', lang=w.lang, repr='createdb')
+	create_markerfile = Buttonbox(text='Create new Markerfile', lang=w.lang, repr='createmfile')
 	convert_db = Buttonbox(text='Convert to Encrypted DB', lang=w.lang, repr='convertdb')
 
 	w.frames["Third Frame"].addWidget(bcdb, (2, 0))
 	w.frames["Third Frame"].addWidget(choose_pwfile, (4, 0))
 	w.frames["Third Frame"].addWidget(create_db, (1, 0))
-	w.frames["Third Frame"].addWidget(choose_markerfile, (6, 0))
+	w.frames["Third Frame"].addWidget(create_markerfile, (6, 0))
+	w.frames["Third Frame"].addWidget(choose_markerfile, (7, 0))
 
-	w.frames["Second Frame"].addWidget(convert_db, (5, 0))
+	w.frames["First Frame"].addWidget(convert_db, (6, 0))
 
 	#w.frames['Fourth Frame'].addWidget(bsav, (0, 0))
 
@@ -194,6 +196,7 @@ def main(t, lang, d, k):
 	choose_pwfile.config(cmd=lambda: set_pwfile(curpwfile))
 	convert_db.config(cmd=lambda: convert_to_encrypted(w.lang, d))
 	create_db.config(cmd=lambda: create_new_db(w.lang, d))
+	create_markerfile.config(cmd=lambda: create_new_markerfile(w.lang))
 	choose_markerfile.config(cmd=lambda: set_markerfile(curmarkerfile))
 	reset_db_manager_pw.config(cmd=lambda: reset_dbmanager_pw(w.lang))
 	#curdb.config(text=s.config['dbFile'])

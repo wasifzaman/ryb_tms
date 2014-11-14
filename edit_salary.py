@@ -7,9 +7,7 @@ import reset_check_in_row
 def main(lang, d, markerfile=False, top=False, i=0): #i is the id of the student passed in
 
 	d.loadData()
-	marker = False
-	if markerfile:
-		marker = pickle.load(open(markerfile, "rb"))
+	
 
 	t = Window(top=top)
 	t.attributes('-fullscreen', False)
@@ -22,6 +20,10 @@ def main(lang, d, markerfile=False, top=False, i=0): #i is the id of the student
 
 	w.lang = lang
 	w.s = i
+
+	marker = False
+	if markerfile:
+		marker = pickle.load(open(markerfile, "rb"))
 
 #frame initialization
 	w.newFrame("First Frame", (1, 1))
@@ -91,7 +93,7 @@ def main(lang, d, markerfile=False, top=False, i=0): #i is the id of the student
 
 	s = d.studentList[i]
 	#print(s.datapoints['attinfo'])
-	print(s.datapoints['notes'])
+	#print(s.datapoints['notes'])
 	w.populate(s.datapoints)
 
 	tdp = dict(w.collect(s.datapoints))
@@ -144,7 +146,6 @@ def main(lang, d, markerfile=False, top=False, i=0): #i is the id of the student
 	def sTbind(func_pass):
 		def fsb(p):
 			#function on click on cell
-			print(marker)
 
 			first_cell = w.attinfo.cells[p]
 			if p[0] == 0: return
@@ -166,7 +167,8 @@ def main(lang, d, markerfile=False, top=False, i=0): #i is the id of the student
 
 		for pos, cell in w.attinfo.cells.items():
 			cell.config(bind=('<Button-1>', lambda event, pos=pos: fsb(pos)))
-			if marker and (pos[0] in marker[i]):
+			if marker and (pos[0] in marker[i]['paid_set']):
+				print(marker[i]['paid_set'])
 				cell.config(bgcolor=marker[i]['row_color'][pos[0]])
 
 
@@ -199,18 +201,22 @@ def main(lang, d, markerfile=False, top=False, i=0): #i is the id of the student
 		file_name = filedialog.asksaveasfilename()
 		printed = d.print_pay_entries(file_name, i, w.picked, dollar_per_hour.getData(), max_hours.getData())
 		if markerfile:
-			if i not in marker.values():
-				marker[i] = w.picked
+			if i not in marker:
+				marker[i] = {}
+				marker[i]['paid_set'] = w.picked
 				marker[i]['color_set'] = ['tomato', 'cornflowerblue']
 				marker[i]['current_color'] = 0
 				marker[i]['row_color'] = {}
 				for row_num in w.picked:
 					marker[i]['row_color'][row_num] = marker[i]['color_set'][marker[i]['current_color']]
 			else:
+				print(i, ' in marker file, appending..')
 				marker[i]['current_color'] = (marker[i]['current_color'] + 1) % len(marker[i]['color_set'])
+				print(marker[i]['current_color'])
 				for row_num in w.picked:
 					marker[i]['row_color'][row_num] = marker[i]['color_set'][marker[i]['current_color']]
-				marker[i].update(w.picked)
+				marker[i]['paid_set'].update(w.picked)
+			print(marker)
 			pickle.dump(marker, open(markerfile, "wb"))
 		if printed:
 			print_succesful(w.lang)

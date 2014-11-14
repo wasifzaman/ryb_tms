@@ -153,7 +153,8 @@ languages = \
 		"Reset DB Manager PW": "Reset DB Manager PW",
 		"confirmed reset": "Password has been reset!",
 		"wrong password try again": "You have entered the wrong password, try again!",
-		"Choose Maker File": "Choose Maker File"
+		"Choose Maker File": "Choose Maker File",
+		"Create new Markerfile": "Create new Markerfile"
 		},
 
 	"chinese": {
@@ -307,7 +308,8 @@ languages = \
 		"Reset DB Manager PW": "Reset DB Manager PW",
 		"confirmed reset": "Password has been reset!",
 		"wrong password try again": "You have entered the wrong password, try again!",
-		"Choose Maker File": "Choose Maker File"
+		"Choose Maker File": "Choose Maker File",
+		"Create new Markerfile": "Create new Markerfile"
 		}
 		
 }
