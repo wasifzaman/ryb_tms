@@ -731,6 +731,7 @@ def choose_school(lang):
 
 	t = Mbox()
 	t.root.overrideredirect(0)
+	t.root.bind("<Destroy>", lambda event: d('cancel'))
 
 	t.newFrame("First Frame", (0, 0))
 
@@ -782,6 +783,7 @@ def create_new_db(lang, d):
 
 	t = Mbox()
 	t.root.overrideredirect(0)
+	t.root.bind("<Destroy>", lambda event: d('cancel'))
 
 	t.newFrame("First Frame", (0, 0))
 
@@ -875,6 +877,7 @@ def convert_to_encrypted(lang, d):
 
 	t = Mbox()
 	t.root.overrideredirect(0)
+	t.root.bind("<Destroy>", lambda event: d('cancel'))
 
 	t.newFrame("First Frame", (0, 0))
 
@@ -947,6 +950,7 @@ def password_prompt(lang, reset_pw):
 
 	t = Mbox()
 	t.root.overrideredirect(0)
+	t.root.bind("<Destroy>", lambda event: d('cancel'))
 
 	t.newFrame("Top Frame", (0, 0))
 	t.newFrame("First Frame", (1, 0))
@@ -990,6 +994,7 @@ def pw_reset_confirm(lang):
 
 	t = Mbox()
 	t.root.overrideredirect(0)
+	t.root.bind("<Destroy>", lambda event: d('cancel'))
 	
 	t.newFrame("First Frame", (0, 0))
 
@@ -1010,6 +1015,7 @@ def wrong_password(lang):
 
 	t = Mbox()
 	t.root.overrideredirect(0)
+	t.root.bind("<Destroy>", lambda event: d('cancel'))
 	
 	t.newFrame("First Frame", (0, 0))
 
@@ -1041,6 +1047,7 @@ def create_new_markerfile(lang):
 
 	t = Mbox()
 	t.root.overrideredirect(0)
+	t.root.bind("<Destroy>", lambda event: d('cancel'))
 
 	t.newFrame("First Frame", (0, 0))
 

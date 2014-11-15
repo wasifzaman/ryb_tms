@@ -144,19 +144,22 @@ def main(lang, d, markerfile=False, top=False, i=0): #i is the id of the student
 
 	#bind time sheet cells
 	def sTbind(func_pass):
-		def fsb(p):
+		def fsb(p, i):
 			#function on click on cell
 
 			first_cell = w.attinfo.cells[p]
 			if p[0] == 0: return
-			if first_cell.bgcolor == 'tomato':
+			if first_cell.bgcolor in marker[i]['color_set']:
+				print('already printed')
 				pickRow(p, True)
 				w.picked[p[0]] = w.attinfo.data[p[0]-1]
 			elif first_cell.bgcolor == first_cell.altbgcolor:
+				print('picked!')
 				pickRow(p)
 				w.picked[p[0]] = w.attinfo.data[p[0]-1]
 				print(w.picked)
 			else:
+				print('unpicked!')
 				unpickRow(p)
 				del w.picked[p[0]]
 				print(w.picked)
@@ -166,9 +169,8 @@ def main(lang, d, markerfile=False, top=False, i=0): #i is the id of the student
 		#place a try here
 
 		for pos, cell in w.attinfo.cells.items():
-			cell.config(bind=('<Button-1>', lambda event, pos=pos: fsb(pos)))
+			cell.config(bind=('<Button-1>', lambda event, pos=pos: fsb(pos, i)))
 			if marker and (pos[0] in marker[i]['paid_set']):
-				print(marker[i]['paid_set'])
 				cell.config(bgcolor=marker[i]['row_color'][pos[0]])
 
 
