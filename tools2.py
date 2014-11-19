@@ -52,6 +52,7 @@ def main(t, lang, d, k):
 
 	def set_pwfile(label):
 		open_f = filedialog.askopenfile()
+		if open_f == None: return
 		f = open(open_f.name)
 		d.key = f.read()
 		label.config(text=open_f.name)

@@ -766,7 +766,6 @@ def create_new_db(lang, d):
 		t.z = z
 		t.db_file = db_file_textbox.getData()
 		t.pw_file = pw_file_textbox.getData()
-		t.marker_file = marker_file_textbox.getData()
 		t.pw = pw_textbox.getData()
 		t.dw()
 
@@ -782,8 +781,8 @@ def create_new_db(lang, d):
 
 
 	t = Mbox()
-	t.root.overrideredirect(0)
-	t.root.bind("<Destroy>", lambda event: d('cancel'))
+	#t.root.overrideredirect(0)
+	#t.root.attributes(toolwindow=1)
 
 	t.newFrame("First Frame", (0, 0))
 
@@ -876,8 +875,8 @@ def convert_to_encrypted(lang, d):
 
 
 	t = Mbox()
-	t.root.overrideredirect(0)
-	t.root.bind("<Destroy>", lambda event: d('cancel'))
+	#t.root.overrideredirect(0)
+	#t.root.bind("<Destroy>", lambda event: None)
 
 	t.newFrame("First Frame", (0, 0))
 
@@ -949,8 +948,7 @@ def password_prompt(lang, reset_pw):
 		t.dw()
 
 	t = Mbox()
-	t.root.overrideredirect(0)
-	t.root.bind("<Destroy>", lambda event: d('cancel'))
+	#t.root.overrideredirect(0)
 
 	t.newFrame("Top Frame", (0, 0))
 	t.newFrame("First Frame", (1, 0))
@@ -960,7 +958,7 @@ def password_prompt(lang, reset_pw):
 	old_pw_textbox = Textbox(text="Old Password", lang={"Old Password": "Old Password"}, repr='oldpwtextbox')
 	new_pw_textbox = Textbox(text="New Password", lang={"New Password": "New Password"}, repr='newpwtextbox')
 	retype_new_pw_textbox = Textbox(text="Retype New Password", lang={"Retype New Password": "Retype New Password"}, repr='retypenewpwtextbox')
-	pw_textbox = Textbox(text="Old Password", lang={"Old Password": "Old Password"}, repr='oldpwtextbox')
+	pw_textbox = Textbox(text="Password", lang={"Password": "Password"}, repr='oldpwtextbox')
 
 	if reset_pw:
 		t.frames["Top Frame"].addWidget(no_pw_detected, (0, 0))
@@ -994,7 +992,6 @@ def pw_reset_confirm(lang):
 
 	t = Mbox()
 	t.root.overrideredirect(0)
-	t.root.bind("<Destroy>", lambda event: d('cancel'))
 	
 	t.newFrame("First Frame", (0, 0))
 
@@ -1015,7 +1012,6 @@ def wrong_password(lang):
 
 	t = Mbox()
 	t.root.overrideredirect(0)
-	t.root.bind("<Destroy>", lambda event: d('cancel'))
 	
 	t.newFrame("First Frame", (0, 0))
 
@@ -1046,8 +1042,8 @@ def create_new_markerfile(lang):
 
 
 	t = Mbox()
-	t.root.overrideredirect(0)
-	t.root.bind("<Destroy>", lambda event: d('cancel'))
+	#t.root.overrideredirect(0)
+	#t.root.bind("<Destroy>", lambda event: None)
 
 	t.newFrame("First Frame", (0, 0))
 
