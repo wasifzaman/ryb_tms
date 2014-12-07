@@ -585,7 +585,10 @@ class StudentDB:
         sdsplit = sdate.split('/')
         sdates.append(str(int(sdsplit[0])) + '/' + str(int(sdsplit[1])) + '/' + (sdsplit[2][2:] if len(sdsplit[2]) > 2 else sdsplit[2]))
 
-        workbook = xlsxwriter.Workbook(fpath + '.xlsx')# + 'report_' + sdate.replace('/', '.') + '.xlsx')
+        today = datetime.now()
+        date = today.strftime('%m.%d.%y')
+        time = today.strftime('%I.%M.%p')
+        workbook = xlsxwriter.Workbook(fpath + '/Teacher Report - ' + self.school + ' ' + date + ' ' + time + '.xlsx')
         worksheet = workbook.add_worksheet()
 
         totalondate = {v: [] for k, v in self.timeslot.items()}

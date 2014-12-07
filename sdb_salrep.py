@@ -47,8 +47,8 @@ def main(t, lang, d, markerfile):
 	w.newFrame("Fourth Frame", (4, 1))
 	w.newFrame("Fifth Frame", (3, 0))
 
-	w.frames["Second Frame"].rowconfigure(0, weight=5, minsize=570)
-	w.frames["Second Frame"].columnconfigure(0, weight=5, minsize=730)
+	w.frames["Second Frame"].rowconfigure(0, weight=5, minsize=470)
+	w.frames["Second Frame"].columnconfigure(0, weight=5, minsize=630)
 
 	w.frames["Fifth Frame"].grid(columnspan=3)
 
@@ -80,7 +80,7 @@ def main(t, lang, d, markerfile):
 	blast.selfframe.grid(padx=2)
 
 	w.frames["Second Frame"].addWidget(w.sT, (2, 0))
-	w.sT.canvas.config(width=700, height=580)
+	w.sT.canvas.config(width=700, height=480)
 
 	#sby.rads=[('Barcode', 'bCode'), ('First Name', 'firstName'), \
 	#	('Last Name', 'lastName'), ('Chinese Name', 'chineseName'), \
@@ -117,7 +117,7 @@ def main(t, lang, d, markerfile):
 
 		w.sT.build(headers=stableh, data=sL[p])
 		w.frames["Second Frame"].addWidget(w.sT, (2, 0))
-		w.sT.canvas.config(width=700, height=550)
+		w.sT.canvas.config(width=700, height=450)
 		sTbind(lambda i: edit_salary.main(w.lang, markerfile=markerfile, top=True, i=i, d=d))
 
 	def f():

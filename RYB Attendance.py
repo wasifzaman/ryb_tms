@@ -4,7 +4,7 @@ from dataHandler import *
 from languages import *
 from labelWidgets2 import *
 from photoWidget2 import *
-from preBuilts2 import ret, titlePic, bexp, password_prompt, wrong_password, pw_reset_confirm
+from preBuilts2 import ret, titlePic, bexp, password_prompt, wrong_password, pw_reset_confirm, print_succesful, database_backup_successful
 from tkinter import filedialog
 import addS3
 import scanS22
@@ -100,12 +100,13 @@ def main():
 
 		def out():
 			try:
-				p = filedialog.asksaveasfilename()
+				p = filedialog.askdirectory()
 			except:
 				return
 
 			try:
 				w.d.exportreport(p, rdate.getData())
+				print_succesful(w.lang)
 			except:
 				pass
 
@@ -135,7 +136,8 @@ def main():
 
 	def choose_school(event):
 		
-		w.k.files['school'] = preBuilts2.choose_school(w.lang)
+		school = preBuilts2.choose_school(w.lang)
+		w.k.files['school'] = 'Flushing' if school == 'cancel' else school
 		w.d.school = w.k.files['school']
 		w.k.save()
 
@@ -144,7 +146,8 @@ def main():
 	def expf():
 		try:
 			p = filedialog.askdirectory()
-			d.exportdb(p + '/backup_' + str(datetime.now().date()) + '.rybdb')
+			w.d.exportdb(p + '/backup_' + str(datetime.now().date()) + '.rybdb')
+			database_backup_successful(w.lang)
 		except:
 			return
 
@@ -165,6 +168,7 @@ def main():
 		w.d.school = w.k.files['school']
 		w.k.save()
 	else:
+		print(w.k.files['school'])
 		w.d.school = w.k.files['school']
 
 #frame creation and positions

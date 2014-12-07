@@ -76,3 +76,18 @@ bind x to get_return
 
 Pablo: GR pro
 6463802571
+
+11/25
+remove fullscreen
+get rid of window
+rename by school name + date + time
+student database window doesn't fit
+
+2870.75
+
+12/2
+1280x740 max screen size
+Make payment options non-editable
+Add Payment:
+	Total payment etc add to Add Payment window
+TMS: second window

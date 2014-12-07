@@ -110,10 +110,10 @@ class Window(Tk):
 		self.mainFrame = Frame(self.oframe)#, bd=1, bg='lightgrey')
 
 #title frame and x button START
-		self.titleFrame = Frame(self.mainFrame, bg="#4D4D4D", height=60)
+		self.titleFrame = Frame(self.mainFrame, bg="#000000", height=60)
 		self.titleFrame.pack(fill=X)
 
-		self.wintitle = Label(self.titleFrame, bg='#4D4D4D', fg='white', font=('Jumbo', 15, 'bold'))
+		self.wintitle = Label(self.titleFrame, bg='#000000', fg='white', font=('Jumbo', 15, 'bold'))
 		self.wintitle.place(in_=self.titleFrame, anchor="c", relx=.5, rely=.5)
 
 		#self.exit = Label(self.titleFrame, bg='#B20000', fg='white', text='  ×  ', font=('Arial', 12, 'bold'))

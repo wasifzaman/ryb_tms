@@ -38,7 +38,7 @@ def main(t, lang, d):
 	w.frames["Tenth Frame"].grid(columnspan=5)
 	w.frames["Eleventh Frame"].grid(sticky=N)
 	w.frames["Eigth Frame"].grid(sticky=S, rowspan=2)
-	w.frames["Eleventh Frame"].columnconfigure(0, weight=5, minsize=520)
+	w.frames["Eleventh Frame"].columnconfigure(0, weight=5, minsize=420)
 	w.frames["Eigth Frame"].rowconfigure(0, weight=5, minsize=20)
 	#w.frames["First Frame"].grid(columnspan=5)
 	#w.frames["Sixth Frame"].grid(rowspan=2, sticky=N)
@@ -156,7 +156,7 @@ def main(t, lang, d):
 		dp['cAwarded'] = dp['cAwarded'] + r
 		dp['expire'] = d.calcExpir(datetime.now().date(), r)
 		spec.setData("")
-		w2.spec2.setData("")
+		#w2.spec2.setData("")
 		cRemaining.setData(dp['cRemaining'])
 		cAwarded.setData(dp['cAwarded'])
 		tpa.setData(0)
@@ -171,7 +171,7 @@ def main(t, lang, d):
 	'''
 
 	w.attinfo.editwidget=False
-	w.attinfo.canvas.config(width=695, height=400)
+	w.attinfo.canvas.config(width=695, height=300)
 
 	sby.rads=[('Barcode', 'bCode'), ('First Name', 'firstName'), \
 		('Last Name', 'lastName'), ('Chinese Name', 'chineseName'), \
@@ -231,7 +231,7 @@ def main(t, lang, d):
 
 		#reset classes rem
 		#spec.setData("")
-		#w2.spec2.setData("")
+		##w2.spec2.setData("")
 
 		#temp workaround while table is fixed
 		for child in w.frames["Eleventh Frame"].winfo_children():
@@ -242,24 +242,24 @@ def main(t, lang, d):
 		w.frames["Eleventh Frame"].grid(rowspan=4, sticky=W)
 
 		w.attinfo.editwidget=False
-		w.attinfo.canvas.config(width=695, height=400)
+		w.attinfo.canvas.config(width=695, height=300)
 
 
 		#temp workaround while table is fixed
-		for child in w2.frames["Third Frame"].winfo_children():
-			child.destroy()
+		#for child in #w2.frames["Third Frame"].winfo_children():
+		#	child.destroy()
 
-		w2.attinfo.build(headers=w2.attinfoh, data=[[]])
-		w2.frames["Third Frame"].addWidget(w2.attinfo, (0, 0))
-		w2.frames["Third Frame"].grid(rowspan=100, sticky=W)
+		#w2.attinfo.build(headers=#w2.attinfoh, data=[[]])
+		#w2.frames["Third Frame"].addWidget(#w2.attinfo, (0, 0))
+		#w2.frames["Third Frame"].grid(rowspan=100, sticky=W)
 
-		w2.attinfo.editwidget=False
-		w2.attinfo.canvas.config(width=695, height=500)
+		#w2.attinfo.editwidget=False
+		#w2.attinfo.canvas.config(width=695, height=500)
 		#
 		dp = d.studentList[w.s].datapoints
 
 		w.populate(dp)
-		w2.populate(dp)
+		#w2.populate(dp)
 
 		w.tdp = dict(w.collect(d.studentList[w.s].datapoints))
 
@@ -270,9 +270,9 @@ def main(t, lang, d):
 		sby.entry.delete(0, END)
 
 		'''
-			#w2.spec2.show()
-			#w2.spec2.setData(w.lang['Classes remaining for this student'] + ': ' + str(d.studentList[w.s].datapoints['cRemaining']))
-			#w2.spec2.label.config(fg='#0000B8', font=('Verdana', 15))
+			##w2.spec2.show()
+			##w2.spec2.setData(w.lang['Classes remaining for this student'] + ': ' + str(d.studentList[w.s].datapoints['cRemaining']))
+			##w2.spec2.label.config(fg='#0000B8', font=('Verdana', 15))
 
 			#try:
 			#	if datetime.now().date() > d.studentList[w.s].datapoints['expire']:
@@ -307,7 +307,7 @@ def main(t, lang, d):
 			d.scanOutTeacher(w.s, w.time_input_confirmed)
 
 			w.frames['Eleventh Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
-			w2.frames['Third Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
+			#w2.frames['Third Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
 
 			'''
 			checkin25.setData(d.studentList[w.s].datapoints['25s'])
@@ -317,7 +317,7 @@ def main(t, lang, d):
 
 			#auto scroll to last position
 			w.attinfo.canvas.yview_moveto(1.0)
-			w2.attinfo.canvas.yview_moveto(1.0)
+			#w2.attinfo.canvas.yview_moveto(1.0)
 
 			#reset Scan By to Barcode
 			sby.b.set(sby.rads[0][1])
@@ -417,15 +417,15 @@ def main(t, lang, d):
 
 		#spec.setData(w.lang['Classes remaining for this student'] + ': ' + str(cRem))
 
-		#w2.spec2.show()
-		#w2.spec2.setData(w.lang['Classes remaining for this student'] + ': ' + str(cRem))
-		#w2.spec2.label.config(fg='#0000B8', font=('Verdana', 15))
+		##w2.spec2.show()
+		##w2.spec2.setData(w.lang['Classes remaining for this student'] + ': ' + str(cRem))
+		##w2.spec2.label.config(fg='#0000B8', font=('Verdana', 15))
 
 		#update cRemaining
 		#cRemaining.setData(str(cRem))
 
 		w.frames['Eleventh Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
-		w2.frames['Third Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
+		#w2.frames['Third Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
 
 		'''
 		checkin25.setData(d.studentList[w.s].datapoints['25s'])
@@ -435,7 +435,7 @@ def main(t, lang, d):
 
 		#auto scroll to last position
 		w.attinfo.canvas.yview_moveto(1.0)
-		w2.attinfo.canvas.yview_moveto(1.0)
+		#w2.attinfo.canvas.yview_moveto(1.0)
 
 		#reset Scan By to Barcode
 		sby.b.set(sby.rads[0][1])
@@ -460,7 +460,7 @@ def main(t, lang, d):
 				d.scanOutTeacher(w.s, w.time_input_confirmed)
 
 				w.frames['Eleventh Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
-				w2.frames['Third Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
+				#w2.frames['Third Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
 
 				'''
 				checkin25.setData(d.studentList[w.s].datapoints['25s'])
@@ -470,7 +470,7 @@ def main(t, lang, d):
 
 				#auto scroll to last position
 				w.attinfo.canvas.yview_moveto(1.0)
-				w2.attinfo.canvas.yview_moveto(1.0)
+				#w2.attinfo.canvas.yview_moveto(1.0)
 
 				#reset Scan By to Barcode
 				sby.b.set(sby.rads[0][1])
@@ -541,20 +541,20 @@ def main(t, lang, d):
 	t2.update_idletasks()
 	t2.after_idle(lambda: t2.minsize(t2.winfo_width(), t2.winfo_height()))
 
-	w2 = AppWindow(t2.mainFrame)
+	#w2 = AppWindow(t2.mainFrame)
 
-	w2.lang = lang
+	#w2.lang = lang
 
 #attendance table
-	w2.attinfo = Table(repr='attinfo', edit=True)
-	w2.attinfoh = [language['Date'], language['Check-In Time'], language['Class Time'], language['Check-Out Time']]
-	w2.attinfo.build(headers=w2.attinfoh, data=[[]])
-	w2.attinfo.clast = '#FF99FF'
+	#w2.attinfo = Table(repr='attinfo', edit=True)
+	#w2.attinfoh = [language['Date'], language['Check-In Time'], language['Class Time'], language['Check-Out Time']]
+	#w2.attinfo.build(headers=#w2.attinfoh, data=[[]])
+	#w2.attinfo.clast = '#FF99FF'
 
 #frame initialization
-	w2.newFrame("First Frame", (0, 0))
-	w2.newFrame("Second Frame", (1, 0))
-	w2.newFrame("Third Frame", (0, 1))
+	#w2.newFrame("First Frame", (0, 0))
+	#w2.newFrame("Second Frame", (1, 0))
+	#w2.newFrame("Third Frame", (0, 1))
 
 	firstName2 = Textbox(text="First Name", lang=language, repr='firstName')
 	lastName2 = Textbox(text="Last Name", lang=language, repr='lastName')
@@ -564,39 +564,39 @@ def main(t, lang, d):
 	dob2 = Datebox(text="Date of Birth", lang=language, repr='dob')
 	portr2 = Photo(repr='portr', path='monet_sm.jpg')
 
-	w2.frames["First Frame"].addWidget(portr2, (0, 0))
+	#w2.frames["First Frame"].addWidget(portr2, (0, 0))
 
 #special
 	'''
-	w2.spec2 = Labelbox(text='spec', lang=w.lang, repr='spec')
-	w2.frames["Second Frame"].addWidget(w2.spec2, (4, 0))
-	w2.spec2.label.config(font=('Verdana', 15), wraplength=200, justify=LEFT)
-	w2.spec2.label.grid(columnspan=2, sticky=N)
+	#w2.spec2 = Labelbox(text='spec', lang=w.lang, repr='spec')
+	#w2.frames["Second Frame"].addWidget(#w2.spec2, (4, 0))
+	#w2.spec2.label.config(font=('Verdana', 15), wraplength=200, justify=LEFT)
+	#w2.spec2.label.grid(columnspan=2, sticky=N)
 	'''
 
 #basic info widgets
-	w2.frames["Second Frame"].addWidget(sinfo, (0, 0))
+	#w2.frames["Second Frame"].addWidget(sinfo, (0, 0))
 	sinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
 	sinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
-	w2.frames["Second Frame"].addWidget(firstName2, (1, 0))
-	w2.frames["Second Frame"].addWidget(lastName2, (2, 0))
-	w2.frames["Second Frame"].addWidget(bCode2, (3, 0))
-	#w2.frames["Second Frame"].addWidget(chineseName2, (3, 0))
+	#w2.frames["Second Frame"].addWidget(firstName2, (1, 0))
+	#w2.frames["Second Frame"].addWidget(lastName2, (2, 0))
+	#w2.frames["Second Frame"].addWidget(bCode2, (3, 0))
+	##w2.frames["Second Frame"].addWidget(chineseName2, (3, 0))
 
 #att table widget
-	w2.frames["Third Frame"].addWidget(w.attinfo, (0, 0))
-	w2.frames["Third Frame"].grid(rowspan=100, sticky=W)
+	#w2.frames["Third Frame"].addWidget(w.attinfo, (0, 0))
+	#w2.frames["Third Frame"].grid(rowspan=100, sticky=W)
 
-	w2.attinfo.editwidget=False
-	w.attinfo.canvas.config(width=695, height=500)
+	#w2.attinfo.editwidget=False
+	w.attinfo.canvas.config(width=695, height=300)
 
 #set starting lang
 	for frame in w.frames.values():
 		for widget in frame.widgets.values():
 			widget.config(lang=w.lang)
 
-	for frame in w2.frames.values():
-		for widget in frame.widgets.values():
-			widget.config(lang=w.lang)
+#	for frame in #w2.frames.values():
+#		for widget in frame.widgets.values():
+#			widget.config(lang=w.lang)
 
 	return t2

@@ -731,7 +731,7 @@ def choose_school(lang):
 
 	t = Mbox()
 	t.root.overrideredirect(0)
-	t.root.bind("<Destroy>", lambda event: d('cancel'))
+	t.root.protocol('WM_DELETE_WINDOW', lambda: False)
 
 	t.newFrame("First Frame", (0, 0))
 
@@ -758,6 +758,7 @@ def choose_school(lang):
 
 	t.root.wait_window()
 
+	print(t.z)
 	return t.z
 
 def create_new_db(lang, d):
@@ -863,13 +864,13 @@ def convert_to_encrypted(lang, d):
 	def set_file(file_):
 		if file_ == 'db_file':
 			f_path = filedialog.askdirectory()
-			db_file_textbox.setData(f_path + '/' + db_file_textbox.getData())
+			db_file_textbox.setData(f_path + '/' + db_file_textbox.getData() + '.rybdb')
 		elif file_ == 'pw_file':
 			f_path = filedialog.askdirectory()
-			pw_file_textbox.setData(f_path + '/' + pw_file_textbox.getData())
+			pw_file_textbox.setData(f_path + '/' + pw_file_textbox.getData() + '.rybdb')
 		elif file_ == 'to_enc_file':
 			f_path = filedialog.askopenfile()
-			to_encrypt_file_textbox.setData(f_path)
+			to_encrypt_file_textbox.setData(f_path.name)
 
 		return
 
@@ -924,7 +925,7 @@ def convert_to_encrypted(lang, d):
 		return
 
 	key = str.encode(t.pw)
-	studentList = pickle.load(t.to_encrypt_file)
+	studentList = pickle.load(open(t.to_encrypt_file, 'rb'))
 	cipher = AES.new(key, AES.MODE_CFB, d.iv)
 	binary_string = pickle.dumps(studentList)
 	encrypted = cipher.encrypt(binary_string)
@@ -1231,6 +1232,29 @@ def renew(lang):
 	t.wait_window()
 
 	return w.ret
+
+def database_backup_successful(lang):
+
+	def d(z):
+		t.z = z
+		t.dw()
+
+	t = Mbox()
+	
+	t.newFrame("First Frame", (0, 0))
+	t.newFrame("Second Frame", (1, 0))
+
+	nostext = Labelbox(text='Database Backup Successful', lang=lang, repr='nostext')
+
+	t.frames["First Frame"].addWidget(ws, (0, 0))
+	t.frames["First Frame"].addWidget(nostext, (1, 0))
+	t.frames["Second Frame"].addWidget(bok, (2, 0))
+	
+	bok.config(cmd=lambda: d(True), lang=lang)
+
+	t.root.wait_window()
+
+	return t.z
 
 #clang
 def clang():

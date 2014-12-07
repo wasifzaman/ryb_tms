@@ -149,7 +149,7 @@ def main(lang, d, markerfile=False, top=False, i=0): #i is the id of the student
 
 			first_cell = w.attinfo.cells[p]
 			if p[0] == 0: return
-			if first_cell.bgcolor in marker[i]['color_set']:
+			if marker and first_cell.bgcolor in marker[i]['color_set']:
 				print('already printed')
 				pickRow(p, True)
 				w.picked[p[0]] = w.attinfo.data[p[0]-1]
@@ -200,7 +200,11 @@ def main(lang, d, markerfile=False, top=False, i=0): #i is the id of the student
 	#print to file
 	def print_to_file():
 		if not confirm_print('a', w.lang): return
-		file_name = filedialog.asksaveasfilename()
+		file_path = filedialog.askdirectory()
+		today = datetime.now()
+		date = today.strftime('%m.%d.%y')
+		time = today.strftime('%I.%M.%p')
+		file_name = file_path + '/Salary Report ' + d.school + ' ' + date + ' ' + time + '.xlsx'
 		printed = d.print_pay_entries(file_name, i, w.picked, dollar_per_hour.getData(), max_hours.getData())
 		if markerfile:
 			if i not in marker:
