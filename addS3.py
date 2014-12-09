@@ -19,19 +19,20 @@ def main(t, lang, d, sM):
 	w.newFrame("Title Frame", (0, 0))
 	w.newFrame("First Frame", (1, 1))
 	w.newFrame("Second Frame", (1, 2))
-	w.newFrame("Third Frame", (2, 1))
 	w.newFrame("Fourth Frame", (2, 2))
 	w.newFrame("Fifth Frame", (5, 0))
 	w.newFrame("Sixth Frame", (4, 2))
 	w.newFrame("Seventh Frame", (1, 0))
 	w.newFrame("Eigth Frame", (3, 2))
-	w.newFrame("Ninth Frame", (3, 1))
+	w.newFrame("Ninth Frame", (2, 1))
+	#w.newFrame("Third Frame", (2, 1))
 
 #title
 	w.frames["Title Frame"].grid(columnspan=4, sticky=E+W)
 	Label(w.frames["Title Frame"], text='Add students', bg='#3B5C8D', fg='white', \
 		height=3, font=('Jumbo', '12', 'bold')).pack(fill='both', expand=True)
 
+	w.frames["Ninth Frame"].grid(rowspan=3)
 	w.frames["Fifth Frame"].grid(columnspan=5, sticky=S)
 	w.frames["Seventh Frame"].grid(rowspan=2)
 	w.frames["Ninth Frame"].grid(rowspan=2, sticky=E)

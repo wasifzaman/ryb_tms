@@ -29,7 +29,7 @@ def main():
 
 	t = Window(top=False)
 	t.attributes('-fullscreen', False)
-	t.geometry('1440x900+100+100')
+	t.geometry('1280x740+1+1')
 	t.wm_title("RYB Teacher Attendance")
 
 #confirm closing of the add student window
@@ -37,8 +37,8 @@ def main():
 
 #show and hide sub-windows
 	def showWindow(f):
-		#try:
-		#w.frames["Title Frame"].grid_forget()
+		t.titleFrame.config(height=1)
+		t.wintitle.place_forget()
 		w.frames["First Frame"].grid_forget()
 		print(f.__doc__)
 		if (f.__doc__) == 'addS3':
@@ -67,14 +67,16 @@ def main():
 			w.t = f(w.frames["Second Frame"], w.lang, w.d)
 		w.frames["Second Frame"].grid()
 		w.frames["Third Frame"].grid()
-		#except:
-		#	print('unknown error', 'error in function showWindow', f.__doc__)
 
 #show and hide main window
 	def showMain(con):
 		if con:
 			if not ret('a', w.lang): return
 
+		w.frames['Second Frame'].grid_forget()
+		t.titleFrame.config(height=60)
+		t.wintitle.place(in_=t.titleFrame, anchor="c", relx=.5, rely=.5)
+		
 		w.frames['Second Frame'].grid_forget()
 		try:
 			#to destroy the extra window in scan student

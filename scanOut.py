@@ -9,7 +9,7 @@ def main(t, lang, d):
 
 	w = AppWindow(t)
 
-	w.bind("<Destroy>", lambda event: t2.destroy)
+	#w.bind("<Destroy>", lambda event: t2.destroy)
 
 	w.lang = lang
 
@@ -529,17 +529,17 @@ def main(t, lang, d):
 
 
 #t2 window
-	t2 = Window(top=True)
-	t2.attributes('-fullscreen', False)
-	t2.attributes('-alpha', 0.0)
-	t2.geometry('1200x800')
+	#t2 = Window(top=True)
+	#t2.attributes('-fullscreen', False)
+	#t2.attributes('-alpha', 0.0)
+	#t2.geometry('1200x800')
 
 #remove close button function
-	t2.protocol('WM_DELETE_WINDOW', lambda: False)
+	#t2.protocol('WM_DELETE_WINDOW', lambda: False)
 
 #set minimum height
-	t2.update_idletasks()
-	t2.after_idle(lambda: t2.minsize(t2.winfo_width(), t2.winfo_height()))
+	#t2.update_idletasks()
+	#t2.after_idle(lambda: t2.minsize(t2.winfo_width(), t2.winfo_height()))
 
 	#w2 = AppWindow(t2.mainFrame)
 
@@ -599,4 +599,4 @@ def main(t, lang, d):
 #		for widget in frame.widgets.values():
 #			widget.config(lang=w.lang)
 
-	return t2
+	#return t2
