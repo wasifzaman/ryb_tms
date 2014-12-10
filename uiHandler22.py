@@ -41,13 +41,13 @@ class AppWindow(Frame):
 
 		#frames
 		self.frames = {}
-		self.framePadding = (10, 1)
+		self.framePadding = (5, 1)
 
 		#
 		#self.update_idletasks()
 		#self.after_idle(lambda: self.minsize(self.winfo_width(), self.winfo_height()))	
 
-		self.pack()
+		self.pack(side=LEFT)
 		self.oframe.grid()
 		self.mainFrame.grid()
 

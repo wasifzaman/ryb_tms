@@ -91,3 +91,6 @@ Make payment options non-editable
 Add Payment:
 	Total payment etc add to Add Payment window
 TMS: second window
+
+12/10
+bind pictures based on school
