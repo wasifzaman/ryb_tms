@@ -94,3 +94,18 @@ TMS: second window
 
 12/10
 bind pictures based on school
+
+12/18
+new student icon
+hidden menu:
+	Payment Report:
+		date a and date b:
+		searches all dates inclusive
+		shows all payments made between those dates
+		create excel:
+			first col: date
+			second col: student name (first, last, chinese, barcode)
+			third col: payment fields
+			last line: all payments received
+
+on second window, classes left, scale and make it larger
