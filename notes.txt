@@ -11,7 +11,7 @@ no phone number and birthdate for search
 ~framework :/
 1. make adding ui widgets easier
 2. serial add
-3. occupied row, occupied column, good idea?
+3. occupied row, occupied column, good idea? No
 4. premade grid size
 5. test test
 6. make referencing frames easier
@@ -96,7 +96,7 @@ TMS: second window
 bind pictures based on school
 
 12/18
-new student icon
+new student software icon
 hidden menu:
 	Payment Report:
 		date a and date b:
@@ -108,4 +108,8 @@ hidden menu:
 			third col: payment fields
 			last line: all payments received
 
-on second window, classes left, scale and make it larger
+on second window, classes left, scale and make it largest
+
+do:
+	on add student, add payment
+	
