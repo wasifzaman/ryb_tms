@@ -112,4 +112,8 @@ on second window, classes left, scale and make it largest
 
 do:
 	on add student, add payment
-	
+
+
+12/23
+print payment confirmation
+payment added confirmation
