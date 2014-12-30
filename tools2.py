@@ -212,6 +212,12 @@ def main(t, lang, d, k):
 	bsalrep.hoverbg = 'crimson'
 	bsalrep.button.config(bg=bsalrep.idlebg, fg=bsalrep.fg)
 
+	bcdb.idlebg = w.mmbuttoncol
+	bcdb.fg = w.mmbuttonfg
+	bcdb.hoverfg = 'white'
+	bcdb.hoverbg = 'crimson'
+	bcdb.button.config(bg=bcdb.idlebg, fg=bcdb.fg)
+
 
 #set starting lang
 	for frame in w.frames.values():

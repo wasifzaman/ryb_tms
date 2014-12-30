@@ -230,6 +230,12 @@ def main(lang, d, top=False, i=0):
 	w2.populate(s.datapoints)
 	w3.populate(s.datapoints)
 
+	for cell_id, cell_val in w2.attinfo.cells.items():
+		if cell_id[0] == 0:
+			cur_text = cell_val.label.cget('text')
+			cell_val.label.config(text=lang[cur_text])
+
+
 	tdp = dict(w2.collect(s.datapoints))
 
 	#if amount owed is larger than amount paid, color amount owed in red

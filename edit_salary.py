@@ -96,6 +96,11 @@ def main(lang, d, markerfile=False, top=False, i=0): #i is the id of the student
 	#print(s.datapoints['notes'])
 	w.populate(s.datapoints)
 
+	for cell_id, cell_val in w.attinfo.cells.items():
+		if cell_id[0] == 0:
+			cur_text = cell_val.label.cget('text')
+			cell_val.label.config(text=lang[cur_text])
+
 	tdp = dict(w.collect(s.datapoints))
 
 	#if amount owed is larger than amount paid, color amount owed in red

@@ -261,6 +261,11 @@ def main(t, lang, d):
 		w.populate(dp)
 		#w2.populate(dp)
 
+		for cell_id, cell_val in w.attinfo.cells.items():
+			if cell_id[0] == 0:
+				cur_text = cell_val.label.cget('text')
+				cell_val.label.config(text=lang[cur_text])
+
 		w.tdp = dict(w.collect(d.studentList[w.s].datapoints))
 
 		#if amount owed is larger than amount paid, color amount owed in red
