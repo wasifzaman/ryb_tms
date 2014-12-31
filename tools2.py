@@ -62,6 +62,7 @@ def main(t, lang, d, k):
 
 	def set_markerfile(label):
 		open_f = filedialog.askopenfile()
+		if open_f == None: return
 		label.config(text=open_f.name)
 		k.files['markerfile'] = open_f.name
 		k.save()

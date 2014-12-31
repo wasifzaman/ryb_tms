@@ -186,10 +186,23 @@ class StudentDB:
         h, m, p = '{:%I}'.format(time), '{:%M}'.format(time), '{:%p}'.format(time)
 
         x = int(m)
+        if x <= 10:
+            x = 0
+        elif x > 10 and x <= 25:
+            x = 15
+        elif x > 25 and x <=40:
+            x = 30
+        elif x > 40 and x <= 55:
+            x = 45
+        elif x > 55:
+            x = 60
+
+        '''
         if x % 15 >= 7:
             x = 15 * (x // 15) + 15
         elif x % 15 < 7:
             x = (x - x % 15)
+        '''
 
         if x >= 60:
             x = 0
@@ -199,6 +212,7 @@ class StudentDB:
         return h + ':' + m + ' ' + p
 
         #no time slot for teachers
+        '''
         m = int(m)
 
         if m > 40:
@@ -210,6 +224,7 @@ class StudentDB:
             m = '00'
 
         return h + ':' + m + ' ' + p
+        '''
 
 
     def calcAge(self, dob):
@@ -585,78 +600,64 @@ class StudentDB:
         sdsplit = sdate.split('/')
         sdates.append(str(int(sdsplit[0])) + '/' + str(int(sdsplit[1])) + '/' + (sdsplit[2][2:] if len(sdsplit[2]) > 2 else sdsplit[2]))
 
-        today = datetime.now()
-        date = today.strftime('%m.%d.%y')
-        time = today.strftime('%I.%M.%p')
-        workbook = xlsxwriter.Workbook(fpath + '/Teacher Report - ' + self.school + ' ' + date + ' ' + time + '.xlsx')
+        date = sdates[1].replace('/', '.')
+        workbook = xlsxwriter.Workbook(fpath + '/Teacher Report - ' + self.school + ' ' + date + '.xlsx')
         worksheet = workbook.add_worksheet()
 
-        totalondate = {v: [] for k, v in self.timeslot.items()}
-        totalondate['other'] = []
+        #totalondate = {v: [] for k, v in self.timeslot.items()}
+        #totalondate['other'] = []
+        rows = []
 
         for student in self.studentList.values():
             for att in student.datapoints['attinfo'][1]:
                 if att[0] in sdates:
-                    for timeslot in totalondate:
-                        cintime = att[2] if att[1] == '' else att[1]
-                        if att[2][:5] in timeslot or att[2][:4] in timeslot:
-                            totalondate[timeslot].append([str(cintime), str(att[-1]), str(student.datapoints['bCode']), str(student.datapoints['firstName']) + ' ' + str(student.datapoints['lastName']), str(student.datapoints['chineseName'])])
-                        else:
-                            totalondate['other'].append([str(cintime), str(att[-1]), str(student.datapoints['bCode']), str(student.datapoints['firstName']) + ' ' + str(student.datapoints['lastName']), str(student.datapoints['chineseName'])])
+                    first_name = student.datapoints['firstName']
+                    last_name = student.datapoints['lastName']
+                    barcode_ = student.datapoints['bCode']
+                    rows.append([att[2], att[4], first_name, last_name, barcode_])
 
-        
-        totals = 0
-        for v in totalondate.values():
-            totals += len(v)
+                    '''
+                    cintime = att[2] if att[1] == '' else att[1]
+                    if att[2][:5] in timeslot or att[2][:4] in timeslot:
+                        totalondate[timeslot].append([str(cintime), str(att[-1]), str(student.datapoints['bCode']), str(student.datapoints['firstName']) + ' ' + str(student.datapoints['lastName']), str(student.datapoints['chineseName'])])
+                    else:
+                        totalondate['other'].append([str(cintime), str(att[-1]), str(student.datapoints['bCode']), str(student.datapoints['firstName']) + ' ' + str(student.datapoints['lastName']), str(student.datapoints['chineseName'])])
+                    '''
 
-        worksheet.write(0, 0, 'Total check-ins: ' + str(totals))
 
-        #cleanup
-        for k, v in totalondate.items():
-            l = []
-            for s in v:
-                if s not in l:
-                    l.append(s)
-            totalondate[k] = l
-
-        #to list
-        totalondate = [(k, v) for k, v in totalondate.items()]
-        totalondate.sort()
-        totalondate = totalondate[3:] + totalondate[:3]
+        #sorted
+        row_indexed = [(att[0], att) for att in rows]
+        row_indexed.sort()
+        row_sorted = [index_[1] for index_ in row_indexed]
 
         #format
         tformat = workbook.add_format({'bold': True})
         tformat.set_bg_color('#C2FFAD')
 
+        title_format = workbook.add_format({'bold': True})
+
         #to excel
-        r, c = 2, 0
+        worksheet.set_column(0, 4, 15)
+        worksheet.write(0, 0, 'RYB Teacher Attendance Report', title_format)
+        worksheet.write(1, 0, 'Total check-ins: ' + str(len(row_sorted)), title_format)
+        worksheet.write(2, 0, '日期: ' + str(sdates[0]), title_format)
+        worksheet.write(4, 0, '到达时间', tformat) #check-in
+        worksheet.write(4, 1, '注销时间', tformat) #check-out
+        worksheet.write(4, 2, '名字', tformat) #first_name
+        worksheet.write(4, 3, '姓', tformat) #last_name
+        worksheet.write(4, 4, '条码号', tformat) #barcode
 
-        for l in totalondate:
-            worksheet.write(r, c, l[0], tformat)
-            worksheet.write(r, c + 1, str(len(l[1])), tformat)
-            worksheet.write(r, c + 2, '', tformat)
-            worksheet.write(r, c + 3, '', tformat)
-            worksheet.write(r, c + 4, '', tformat)
-            l[1].sort()
+        r, c = 5, 0
+
+        for row in row_sorted:
+            worksheet.write(r, 0, row[0])
+            worksheet.write(r, 1, row[1])
+            worksheet.write(r, 2, row[2])
+            worksheet.write(r, 3, row[3])
+            worksheet.write(r, 4, row[4])
             r += 1
-            for t in l[1]:
-                worksheet.write(r, 0, t[0])
-                worksheet.write(r, 1, t[1])
-                worksheet.write(r, 2, t[2])
-                worksheet.write(r, 3, t[3])
-                worksheet.write(r, 4, t[4])
-                r += 1
 
-            worksheet.write(r, c, '')
-            r += 1
-
-        worksheet.set_column(0, 0, 5)
-        worksheet.set_column(0, 1, 30)
-        worksheet.set_column(0, 2, 30)
-        worksheet.set_column(0, 3, 30)
-        worksheet.set_column(0, 4, 30)
-        workbook.close()
-
+        return
 
     def stringtime_to_decimal(self, string_time):
         (h, m, s) = string_time.split(':')

@@ -309,7 +309,10 @@ def main(t, lang, d):
 			if last_entry_checkout and not confirm_overwrite_checkout('a', w.lang): return
 
 			w.time_input_confirmed = datetime.now().strftime('%I:%M %p')
-			d.scanOutTeacher(w.s, w.time_input_confirmed)
+			try:
+				d.scanOutTeacher(w.s, w.time_input_confirmed)
+			except AttributeError:
+				return
 
 			w.frames['Eleventh Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
 			#w2.frames['Third Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
@@ -394,8 +397,10 @@ def main(t, lang, d):
 
 		confirm_time.wait_window()
 
-
-		d.scanOutTeacher(w.s, w.time_input_confirmed)#, xtra=w.lang['Scan'] if sby.getData()[0] == 'bCode' and not mode else w.lang['Manual'])
+		try:
+			d.scanOutTeacher(w.s, w.time_input_confirmed)#, xtra=w.lang['Scan'] if sby.getData()[0] == 'bCode' and not mode else w.lang['Manual'])
+		except AttributeError:
+			return
 		print('out', w.time_input_confirmed)
 		d.saveData()
 		

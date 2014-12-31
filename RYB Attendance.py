@@ -147,8 +147,11 @@ def main():
 	
 	def expf():
 		try:
-			p = filedialog.askdirectory()
-			w.d.exportdb(p + '/backup_' + str(datetime.now().date()) + '.rybdb')
+			fpath = filedialog.askdirectory()
+			today = datetime.now()
+			date = today.strftime('%m.%d.%y')
+			time = today.strftime('%I.%M.%p')
+			w.d.exportdb(fpath + '/RYB Teacher Backup - ' + w.d.school + ' ' + date + ' ' + time + '.rybdb')			
 			database_backup_successful(w.lang)
 		except:
 			return

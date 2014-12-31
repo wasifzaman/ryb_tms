@@ -47,7 +47,7 @@ def main(lang, d, markerfile=False, top=False, i=0): #i is the id of the student
 	w.frames["First Frame"].addWidget(today, (0, 0))
 	w.frames["First Frame"].addWidget(last_payment, (1, 0))
 	w.frames["First Frame"].addWidget(dollar_per_hour, (2, 0))
-	w.frames["First Frame"].addWidget(max_hours, (3, 0))
+	#w.frames["First Frame"].addWidget(max_hours, (3, 0))
 	today.config(text=str(datetime.strftime(datetime.now().date(), '%m/%d/%Y')))
 	if d.studentList[i].datapoints['last_payment']:
 		last_payment.config(text=datetime.strftime(d.studentList[i].datapoints['last_payment'], '%m/%d/%Y'))
@@ -210,7 +210,7 @@ def main(lang, d, markerfile=False, top=False, i=0): #i is the id of the student
 		date = today.strftime('%m.%d.%y')
 		time = today.strftime('%I.%M.%p')
 		file_name = file_path + '/Salary Report ' + d.school + ' ' + date + ' ' + time + '.xlsx'
-		printed = d.print_pay_entries(file_name, i, w.picked, dollar_per_hour.getData(), max_hours.getData())
+		printed = d.print_pay_entries(file_name, i, w.picked, dollar_per_hour.getData(), False) #false is for max_hours
 		if markerfile:
 			if i not in marker:
 				marker[i] = {}

@@ -117,3 +117,11 @@ do:
 12/23
 print payment confirmation
 payment added confirmation
+
+12/30
+round teacher soft up to 30 mins if more than 15
+round upto 60 if more than 45
+remove max hours
+
+teacher software export - add school name
+teacher report
