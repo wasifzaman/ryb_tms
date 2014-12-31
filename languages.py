@@ -158,7 +158,8 @@ languages = \
 		"Create new Markerfile": "Create new Markerfile",
 		"Database Backup Successful": "Database Backup Successful",
 		"Student Information": "Teacher Information",
-		"Attendance Table": "Sign-in Table"
+		"Attendance Table": "Sign-in Table",
+		"Manual Entry": "Manual Entry"
 		},
 
 	"chinese": {
@@ -318,7 +319,8 @@ languages = \
 		"Create new Markerfile": "创造工资据库",
 		"Database Backup Successful": "报告完成",
 		"Student Information": "Teacher Information",
-		"Attendance Table": "Sign-in Table"
+		"Attendance Table": "Sign-in Table",
+		"Manual Entry": "Manual Entry"
 		}
 		
 }

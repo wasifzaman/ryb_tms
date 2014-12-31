@@ -85,22 +85,6 @@ def main(t, lang, d):
 	#pinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
 	w.frames["First Frame"].addWidget(bCodeNE, (7, 0))
 
-#payment widgets
-	'''
-	w.frames["Fourth Frame"].addWidget(tpd, (2, 0))
-	w.frames["Fourth Frame"].addWidget(tpa, (3, 0))
-	w.frames["Fourth Frame"].addWidget(tp, (4, 0))
-	w.frames["Fourth Frame"].addWidget(tpo, (5, 0))
-	'''
-
-#class widget
-	'''
-	w.frames["Fourth Frame"].addWidget(sType, (6, 0))
-	w.frames["Fourth Frame"].addWidget(cAwarded, (7, 0))
-	w.frames["Fourth Frame"].addWidget(cRemaining, (8, 0))
-	w.frames["Fourth Frame"].addWidget(ctime, (9, 0))
-	'''
-
 #notes widget
 	w.frames["First Frame"].addWidget(ninfo, (8, 0))
 	ninfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
@@ -111,19 +95,6 @@ def main(t, lang, d):
 	notes.config(height=6, width=32)
 
 #early checkin
-	'''
-	w.frames["Fourth Frame"].addWidget(checkin25, (0, 2))
-	w.frames["Fourth Frame"].addWidget(checkin50, (0, 4))
-	w.frames["Fourth Frame"].addWidget(checkin100, (0, 6))
-
-	checkin25.label.config(width=4)
-	checkin50.label.config(width=4)
-	checkin100.label.config(width=4)
-
-	checkin25.entry.config(width=3)
-	checkin50.entry.config(width=3)
-	checkin100.entry.config(width=3)
-	'''
 	w.frames["Fourth Frame"].addWidget(early_checkin, (0, 0))
 
 #special
@@ -313,53 +284,77 @@ def main(t, lang, d):
 				d.studentList[w.s].datapoints['attinfo'][1][-1][2] = "09:15 AM"
 
 		d.saveData()
-		
-		#show alert if classes remaining is less than 2
-		cRem = d.studentList[w.s].datapoints['cRemaining']
-		expir = d.studentList[w.s].datapoints['expire']
-		#if cRem <= 2:
-		#	spec.show()
-		#	spec.setData(w.lang['Classes remaining for this student'] + ': ' + str(cRem))
-		#	spec.label.config(fg='red', font=('Verdana', 15))
-		#else:
-		#	spec.setData("")
-		#	#hide, show will work better once window size is set
-		#	pass
-
-		#print(expir > datetime.now().date())
-		#try:
-		#	if datetime.now().date() > expir:
-		#		spec.show()
-		#		spec.setData(w.lang['Membership Expired'])
-		#		spec.label.config(fg='red', font=('Verdana', 15))
-		#except:
-		#	pass
-
-		#spec.setData(w.lang['Classes remaining for this student'] + ': ' + str(cRem))
-
-		##w2.spec2.show()
-		##w2.spec2.setData(w.lang['Classes remaining for this student'] + ': ' + str(cRem))
-		##w2.spec2.label.config(fg='#0000B8', font=('Verdana', 15))
-
-		#update cRemaining
-		cRemaining.setData(str(cRem))
 
 		w.frames['Eleventh Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
-		#w2.frames['Third Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
+		
 
-		'''
-		checkin25.setData(d.studentList[w.s].datapoints['25s'])
-		checkin50.setData(d.studentList[w.s].datapoints['50s'])
-		checkin100.setData(d.studentList[w.s].datapoints['100s'])
-		'''
+		sby.b.set(sby.rads[0][1]) #reset Scan By to Barcode
+		w.attinfo.canvas.yview_moveto(1.0) #scroll to bottom
 
-		#auto scroll to last position
-		w.attinfo.canvas.yview_moveto(1.0)
-		#w2.attinfo.canvas.yview_moveto(1.0)
+	def manual_scan():
 
-		#reset Scan By to Barcode
-		sby.b.set(sby.rads[0][1])
+		print(bCodeNE.getData())
+		if (len(bCodeNE.getData())) == 0: return
 
+		def out():
+			time_input = str(hour_input.getData()) + ':' + str(minute_input.getData()) + ' ' + am_pm_input.getData()
+			w.time_input_confirmed = time_input
+			confirm_time.destroy()
+
+		confirm_time = Window(top=True)
+		confirm_time.attributes('-fullscreen', False)
+		confirm_time.resizable(0, 0)
+		confirm_time.geometry('400x200+200+200')
+		confirm_time.grab_set()
+		confirm_time.focus_set()
+
+		confirm_window = AppWindow(confirm_time.mainFrame)
+
+		hour_input = IntTextbox(text='Hour', lang=w.lang, repr='h_input')
+		minute_input = IntTextbox(text='Minute', lang=w.lang, repr='m_input')
+		am_pm_input = Textbox(text='AM/PM', lang=w.lang, repr='am_pm')
+		rbutton = Buttonbox(text='Confirm', lang=w.lang, repr='rbutton')
+
+		confirm_window.newFrame("First Frame", (0, 0))
+
+		confirm_window.frames["First Frame"].addWidget(hour_input, (0, 0))
+		confirm_window.frames["First Frame"].addWidget(minute_input, (0, 2))
+		confirm_window.frames["First Frame"].addWidget(am_pm_input, (0, 4))
+		confirm_window.frames["First Frame"].addWidget(rbutton, (1, 0))
+
+		hour_input.label.config(width=4)
+		minute_input.label.config(width=6)
+		am_pm_input.label.config(width=6)
+		hour_input.entry.config(width=3)
+		minute_input.entry.config(width=3)
+		am_pm_input.entry.config(width=3)
+		rbutton.selfframe.grid(columnspan=6, pady=20)
+
+		rbutton.config(cmd=out)
+
+		confirm_time.wait_window()
+
+		try:
+			cdt = datetime.now()
+			time = '{:%I:%M %p}'.format(cdt)
+			date = '{:%m/%d/%Y}'.format(cdt)
+			data = [date, time, w.time_input_confirmed, '', '', d.school]
+			print(data)
+
+			s = d.studentList[bCodeNE.getData()].datapoints
+			s['attinfo'] = list(s['attinfo'])
+			s['attinfo'][0] = ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time']
+			s['attinfo'][1].append(data)
+		except AttributeError:
+			return
+		print('out', w.time_input_confirmed)
+		d.saveData()
+
+		w.frames['Eleventh Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
+		
+
+		sby.b.set(sby.rads[0][1]) #reset Scan By to Barcode
+		w.attinfo.canvas.yview_moveto(1.0) #scroll to bottom
 
 	def z(mode=False):
 		try:
@@ -402,6 +397,9 @@ def main(t, lang, d):
 	sstudent.config(cmd=collect)
 	sstudent.selfframe.grid(padx=5)
 
+	manual_entry_button = Buttonbox(text='Manual Entry', lang=language, repr='manualentrybutton')
+	w.frames["Fifth Frame"].addWidget(manual_entry_button, (0, 1))
+	manual_entry_button.config(cmd=lambda: manual_scan())
 	#bcheck = Buttonbox(text='cinstudent', lang=language, repr='bcheck')
 	#w.frames["Fifth Frame"].addWidget(bcheck, (0, 1))
 	#bcheck.config(cmd=lambda: z(True))
