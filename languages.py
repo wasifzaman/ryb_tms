@@ -320,7 +320,7 @@ languages = \
 		"Database Backup Successful": "报告完成",
 		"Student Information": "Teacher Information",
 		"Attendance Table": "Sign-in Table",
-		"Manual Entry": "Manual Entry"
+		"Manual Entry": "登錄教师"
 		}
 		
 }
