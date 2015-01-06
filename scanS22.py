@@ -200,11 +200,6 @@ def main(t, lang, d):
 		w.portr.setData('monet_sm.jpg')
 		portr2.setData('monet_sm.jpg')
 
-		#reset classes rem
-		#spec.setData("")
-		##w2.spec2.setData("")
-
-		#temp workaround while table is fixed
 		for child in w.frames["Eleventh Frame"].winfo_children():
 			child.destroy()
 
@@ -215,22 +210,9 @@ def main(t, lang, d):
 		w.attinfo.editwidget=False
 		w.attinfo.canvas.config(width=696, height=300)
 
-
-		#temp workaround while table is fixed
-		#for child in #w2.frames["Third Frame"].winfo_children():
-		#	child.destroy()
-
-		#w2.attinfo.build(headers=#w2.attinfoh, data=[[]])
-		#w2.frames["Third Frame"].addWidget(#w2.attinfo, (0, 0))
-		#w2.frames["Third Frame"].grid(rowspan=100, sticky=W)
-
-		#w2.attinfo.editwidget=False
-		#w2.attinfo.canvas.config(width=696, height=500)
-		#
 		dp = d.studentList[w.s].datapoints
 
 		w.populate(dp)
-		#w2.populate(dp)
 
 		for cell_id, cell_val in w.attinfo.cells.items():
 			if cell_id[0] == 0:
@@ -238,51 +220,20 @@ def main(t, lang, d):
 				cell_val.label.config(text=lang[cur_text])
 
 		w.tdp = dict(w.collect(d.studentList[w.s].datapoints))
-
-		#if amount owed is larger than amount paid, color amount owed in red
-		#if dp['tpa'] < dp['tpo']: tpo.entry.config(bg='red')
-		#else: tpo.entry.config(bg='white')
-
 		sby.entry.delete(0, END)
 
-		'''
-			##w2.spec2.show()
-			##w2.spec2.setData(w.lang['Classes remaining for this student'] + ': ' + str(d.studentList[w.s].datapoints['cRemaining']))
-			##w2.spec2.label.config(fg='#0000B8', font=('Verdana', 15))
-
-			#try:
-			#	if datetime.now().date() > d.studentList[w.s].datapoints['expire']:
-			#		spec.show()
-			#		spec.setData(w.lang['Membership Expired'])
-			#		spec.label.config(fg='red', font=('Verdana', 15))
-			#except:
-			#	pass
-
-			#if d.studentList[w.s].datapoints['cRemaining'] == 0:
-			#	spec.show()
-			#	spec.setData(w.lang['Classes remaining for this student'] + ': ' + str(d.studentList[w.s].datapoints['cRemaining']))
-			#	spec.label.config(fg='red', font=('Verdana', 15))				
-			#	noc(w.lang)
-			#	sby.b.set(sby.rads[0][1])
-			#	return
-		'''
-
-		if cs(d.studentList[w.s].datapoints['firstName'], w.lang): ss()
-		#except:
-		#	nos(w.lang)
-		#	pass
-
+		if confirm_check_in_time(w.lang, d): ss()
+		#if cs(d.studentList[w.s].datapoints['firstName'], w.lang): ss()
 
 #scan student
 	def ss(mode=False):
 		d.scanStudent(w.s, xtra=w.lang['Scan'] if sby.getData()[0] == 'bCode' and not mode else w.lang['Manual'])
-		cdt = datetime.now()
-		earlytime = datetime(cdt.year, cdt.month, cdt.day, 9, 15)
-		last_checkin = datetime(cdt.year, cdt.month, cdt.day, 9, 30)
-		if cdt > earlytime and cdt < last_checkin:
-			if confirm_check_in(w.s, w.lang):
-				d.studentList[w.s].datapoints['attinfo'][1][-1][2] = "09:15 AM"
-
+		#cdt = datetime.now()
+		#earlytime = datetime(cdt.year, cdt.month, cdt.day, 9, 15)
+		#last_checkin = datetime(cdt.year, cdt.month, cdt.day, 9, 30)
+		#if cdt > earlytime and cdt < last_checkin:
+			#if confirm_check_in(w.s, w.lang):
+				#d.studentList[w.s].datapoints['attinfo'][1][-1][2] = "09:15 AM"
 		d.saveData()
 
 		w.frames['Eleventh Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
@@ -310,6 +261,7 @@ def main(t, lang, d):
 
 		confirm_window = AppWindow(confirm_time.mainFrame)
 
+		date_input = Datebox(text='Check-in date', lang=w.lang, repr='dateinput')
 		hour_input = IntTextbox(text='Hour', lang=w.lang, repr='h_input')
 		minute_input = IntTextbox(text='Minute', lang=w.lang, repr='m_input')
 		am_pm_input = Textbox(text='AM/PM', lang=w.lang, repr='am_pm')
@@ -317,10 +269,11 @@ def main(t, lang, d):
 
 		confirm_window.newFrame("First Frame", (0, 0))
 
-		confirm_window.frames["First Frame"].addWidget(hour_input, (0, 0))
-		confirm_window.frames["First Frame"].addWidget(minute_input, (0, 2))
-		confirm_window.frames["First Frame"].addWidget(am_pm_input, (0, 4))
-		confirm_window.frames["First Frame"].addWidget(rbutton, (1, 0))
+		confirm_window.frames["First Frame"].addWidget(date_input, (0, 0))
+		confirm_window.frames["First Frame"].addWidget(hour_input, (1, 0))
+		confirm_window.frames["First Frame"].addWidget(minute_input, (1, 2))
+		confirm_window.frames["First Frame"].addWidget(am_pm_input, (1, 4))
+		confirm_window.frames["First Frame"].addWidget(rbutton, (2, 0))
 
 		hour_input.label.config(width=4)
 		minute_input.label.config(width=6)
@@ -328,9 +281,14 @@ def main(t, lang, d):
 		hour_input.entry.config(width=3)
 		minute_input.entry.config(width=3)
 		am_pm_input.entry.config(width=3)
+		hour_input.label.grid(sticky=E)
 		rbutton.selfframe.grid(columnspan=6, pady=20)
+		date_input.label.config(width=11)
+		date_input.selfframe.grid(columnspan=7, pady=15)
 
 		rbutton.config(cmd=out)
+
+		confirm_time.titleFrame.pack_forget()
 
 		confirm_time.wait_window()
 
@@ -400,42 +358,6 @@ def main(t, lang, d):
 	manual_entry_button = Buttonbox(text='Manual Entry', lang=language, repr='manualentrybutton')
 	w.frames["Fifth Frame"].addWidget(manual_entry_button, (0, 1))
 	manual_entry_button.config(cmd=lambda: manual_scan())
-	#bcheck = Buttonbox(text='cinstudent', lang=language, repr='bcheck')
-	#w.frames["Fifth Frame"].addWidget(bcheck, (0, 1))
-	#bcheck.config(cmd=lambda: z(True))
-
-
-
-
-
-
-#t2 window
-	#t2 = Window(top=True)
-	#t2.attributes('-fullscreen', False)
-	#t2.attributes('-alpha', 0.0)
-	#t2.geometry('1200x800')
-
-#remove close button function
-	#t2.protocol('WM_DELETE_WINDOW', lambda: False)
-
-#set minimum height
-	#t2.update_idletasks()
-	#t2.after_idle(lambda: t2.minsize(t2.winfo_width(), t2.winfo_height()))
-
-	#w2 = AppWindow(t2.mainFrame)
-
-	#w2.lang = lang
-
-#attendance table
-	#w2.attinfo = Table(repr='attinfo', edit=True)
-	#w2.attinfoh = [language['Date'], language['Check-In Time'], language['Class Time'], language['Check-Out Time']]
-	#w2.attinfo.build(headers=#w2.attinfoh, data=[[]])
-	#w2.attinfo.clast = '#FF99FF'
-
-#frame initialization
-	#w2.newFrame("First Frame", (0, 0))
-	#w2.newFrame("Second Frame", (1, 0))
-	#w2.newFrame("Third Frame", (0, 1))
 
 	firstName2 = Textbox(text="First Name", lang=language, repr='firstName')
 	lastName2 = Textbox(text="Last Name", lang=language, repr='lastName')

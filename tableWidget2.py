@@ -93,6 +93,7 @@ class Table(Widget):
 
 		#color last
 		self.clast = False
+		self.editable = 'all'
 
 
 	def config(self, **kwargs):
@@ -105,6 +106,9 @@ class Table(Widget):
 
 		#skip if headers or numbers
 		if pos[0] == 0 or pos[1] == 0: return
+
+		#limit editing to column numbers
+		print(pos[0]-1, pos[1]-1)
 
 		def kill(event):
 			self.data[pos[0]-1][pos[1]-1] = self.temp.get()

@@ -16,77 +16,42 @@ class StudentInfo:
 
     def __init__(self):
         self.datapoints = {
-            #datapoints to of each student
-            "lastName": 'N/A',
-            "firstName": 'N/A',
-            "chineseName": 'N/A',
-            "schoolLoc": 'N/A',
-            "bCode": 'N/A',
-            "sid": 0,
-            "dob": '1/1/1900',
-            "age": 0,
-            "parentName": 'N/A',
-            "hPhone": 0,
-            "cPhone": 0,
-            "cPhone2": 0,
-            "pup": 'N/A',
-            "addr": 'N/A',
-            "state": 'N/A',
-            "city": 'N/A',
-            "zip": 0,
+            "lastName": 'N/A', "firstName": 'N/A', "chineseName": 'N/A',
+            "schoolLoc": 'N/A', "bCode": 'N/A', "sid": 0,
+            "dob": '1/1/1900', "age": 0, "parentName": 'N/A',
+            "hPhone": 0, "cPhone": 0, "cPhone2": 0, "pup": 'N/A',
+            "addr": 'N/A', "state": 'N/A', "city": 'N/A', "zip": 0,
             "wkdwknd": 'N/A',
-            "tpd": '1/1/1900',
-            "tpa": 0,
-            "tpo": 0,
-            "tp": 0,
+            "tpd": '1/1/1900', "tpa": 0, "tpo": 0, "tp": 0,
             "email": 'N/A',
             "sType": 'N/A',
-            "cAwarded": 0,
-            "cRemaining": 0,
+            "cAwarded": 0, "cRemaining": 0,
             "findSchool": 'N/A',
             "notes": 'N/A',
             "attinfo": [['Date', 'Check-In Time', 'Start Time', 'Check-Out Time'], []],
             "portr": '',
-            "ctime": 'N/A',
-            "expire": 'N/A',
-            "cp": "N",
+            "ctime": 'N/A', "expire": 'N/A', "cp": "N",
             "paid_entries": {},
-            "last_payment": False,
-            "25s": 0,
-            "50s": 0,
-            "100s": 0,
-            "inrow": 0,
+            "last_payment": False
+            #"25s": 0, "50s": 0, "100s": 0, "inrow": 0,
             }
 
         self.dpalias = {
             #import aliases
-            "Last Name": "lastName",
-            "First Name": "firstName",
-            "Chinese Name": "chineseName",
-            "School Location": "schoolLoc",
-            "Barcode": "bCode",
+            "Last Name": "lastName", "First Name": "firstName", "Chinese Name": "chineseName",
+            "School Location": "schoolLoc", "Barcode": "bCode",
             "Student Number": "sid",
-            "Date of Birth": "dob",
-            "Age": "age",
-            "Gender": "gender",
-            "Parent Name": "parentName",
-            "Home Phone": "hPhone",
-            "Cell Phone": "cPhone",
-            "Cell Phone 2": "cPhone2",
+            "Date of Birth": "dob", "Age": "age", "Gender": "gender",
+            "Parent Name": "parentName", "Home Phone": "hPhone",
+            "Cell Phone": "cPhone", "Cell Phone 2": "cPhone2",
             "Pick Up Person": "pup",
-            "Address": "addr",
-            "State": "state",
-            "City": "city",
-            "Zip": "zip",
+            "Address": "addr", "State": "state", "City": "city", "Zip": "zip",
             "Weekday/Weekend": "wkdwknd",
-            "Payment Date": "tpd",
-            "Payment Method": "Payment Method: ",
-            "Payment Amount": "tpa",
-            "Payment Owed": "tpo",
+            "Payment Date": "tpd", "Payment Method": "Payment Method: ",
+            "Payment Amount": "tpa", "Payment Owed": "tpo",
             "Email": "email",
             "Service Type": "sType",
-            "Classes Awarded": "cAwarded",
-            "Classes Remaining": "cRemaining",
+            "Classes Awarded": "cAwarded", "Classes Remaining": "cRemaining",
             "How did you hear about the school?": "findSchool",
             "Notes": "notes",
             "Already Paid": "tp",
@@ -178,24 +143,19 @@ class StudentDB:
 
 
     def findTimeSlot(self, time):
-        #find the time slot for the student according to scan in time
-        for timeslot in self.timeslot:
-            if time.time() > timeslot[0] and time.time() < timeslot[1]:
-                return self.timeslot[timeslot]
-
         h, m, p = '{:%I}'.format(time), '{:%M}'.format(time), '{:%p}'.format(time)
 
         x = int(m)
         if x <= 10:
             x = 0
-        elif x > 10 and x <= 25:
-            x = 15
-        elif x > 25 and x <=40:
+        elif x > 10 and x <= 40:
             x = 30
-        elif x > 40 and x <= 55:
-            x = 45
-        elif x > 55:
+        elif x > 40:
             x = 60
+        #elif x > 40 and x <= 55:
+        #    x = 45
+        #elif x > 55:
+        #    x = 60
 
         '''
         if x % 15 >= 7:
@@ -210,21 +170,6 @@ class StudentDB:
         m = str(x) if x >= 10 else '0' + str(x)
 
         return h + ':' + m + ' ' + p
-
-        #no time slot for teachers
-        '''
-        m = int(m)
-
-        if m > 40:
-            m = '00'
-            h = '{:%I}'.format(time + timedelta(hours=1))
-        elif m > 10:
-            m = '30'
-        else:
-            m = '00'
-
-        return h + ':' + m + ' ' + p
-        '''
 
 
     def calcAge(self, dob):
@@ -288,9 +233,6 @@ class StudentDB:
         time = '{:%I:%M %p}'.format(cdt)
         date = '{:%m/%d/%Y}'.format(cdt)
 
-        #date = datetime.now().date()
-        #time = datetime.strptime(str(date) + ' ' + timeslot, '%Y-%m-%d %I:%M %p')
-
         data = [date, time, timeslot, '', '', self.school]
         print(data)
 
@@ -298,17 +240,12 @@ class StudentDB:
         s['attinfo'] = list(s['attinfo'])
         s['attinfo'][0] = ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time']
         s['attinfo'][1].append(data)
-        #except:
-        #    return print("scanStudent function error in datahandler.py")
-
 
         self.studentList[barcode].timesheet.clocktimein()
         self.calcInRow(barcode)
 
 
     def scanOutTeacher(self, barcode, confirmed_time, xtra=False):
-        #try:
-        #scan the current student in
         cdt = datetime.now()
 
         timeslot = self.findTimeSlot(datetime.strptime(confirmed_time, '%I:%M %p'))
@@ -321,19 +258,12 @@ class StudentDB:
         s['attinfo'][0] = ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time']
         s['attinfo'][1][-1][3] = time
         s['attinfo'][1][-1][4] = timeslot
-        #except:
-        #    return print("scanOutTeacher function error in datahandler.py")
-
-        
-        #print(checkout - checkin)
 
         self.studentList[barcode].timesheet.clocktimeout()
         #print(self.studentList[barcode].timesheet.printtimesheet())
 
 
     def checkCode(self, barcode):
-        #check if barcode exists
-        ##bugfix 1
         return barcode in self.studentList
 
 

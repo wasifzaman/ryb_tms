@@ -189,11 +189,20 @@ def main(lang, d, top=False, i=0):
 
 	w.frames["Seventh Frame"].addWidget(portr, (0, 0))
 
+	def save_attendance_():
+		#print()
+		d.studentList[i].datapoints['attinfo'] = list(w2.attinfo.getData())
+		d.saveData()
+		return
+
 	w2.attinfo = attinfo
 	w3.frames["table_frame"].addWidget(w2.attinfo, (0, 0))
 	w3.frames["table_frame"].grid(rowspan=3, sticky=W)
+	#w3.frames["table_frame"].addWidget(save_attendance, (1, 0))
+	#save_attendance = Buttonbox(text='Save Attendance', lang=w2.lang, repr='saveattendance')
+	#save_attendance.config(cmd=save_attendance_)
 	w2.attinfo.canvas.config(width=720)
-	w2.attinfo.editwidget = False
+	w2.attinfo.editwidget = True
 	w2.attinfo.clast = False
 
 #renew classes button
@@ -218,7 +227,7 @@ def main(lang, d, top=False, i=0):
 	w2.ren.config(cmd=renC)
 	'''
 	
-	w2.attinfo.editwidget=False
+	w2.attinfo.editwidget=True
 	w2.attinfo.canvas.config(width=700, height=520)
 
 	#reset portrait

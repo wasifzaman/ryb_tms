@@ -159,7 +159,10 @@ languages = \
 		"Database Backup Successful": "Database Backup Successful",
 		"Student Information": "Teacher Information",
 		"Attendance Table": "Sign-in Table",
-		"Manual Entry": "Manual Entry"
+		"Manual Entry": "Manual Entry",
+		"Save Attendance": "Save Attendance",
+		"Check-in": "Check-in",
+		"Check-in date": "Check-in date"
 		},
 
 	"chinese": {
@@ -320,7 +323,10 @@ languages = \
 		"Database Backup Successful": "报告完成",
 		"Student Information": "Teacher Information",
 		"Attendance Table": "Sign-in Table",
-		"Manual Entry": "登錄教师"
+		"Manual Entry": "登錄教师",
+		"Save Attendance": "Save Attendance",
+		"Check-in": "Check-in",
+		"Check-in date": "Check-in date"
 		}
 		
 }

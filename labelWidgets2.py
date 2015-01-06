@@ -500,6 +500,8 @@ class Buttonbox(Textbox):
 			else:
 				self.button.bind('<ButtonRelease-1>', lambda e: self.cmd())
 				self.button.bind('<space>', lambda e: self.cmd())
+			if hasattr(self, 'timeslot_'):
+				self.timeslot_.bind('<ButtonRelease-1>', self.cmd)
 		except:
 			pass
 
@@ -533,14 +535,7 @@ class Buttonbox(Textbox):
 
 
 	def place(self, **kwargs):
-
-		#5C85FF
-
-		try:
-			self.trytoplace(**kwargs)
-		except:
-			pass
-			#print("widget could not be placed")
+		self.trytoplace(**kwargs)
 
 		self.selfframe = Frame(self.parent, bg=self.idleborder, bd=1)
 		#self.innerf = Frame(self.selfframe, bg='#708DE6', bd=1)

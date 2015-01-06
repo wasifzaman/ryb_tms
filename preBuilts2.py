@@ -6,6 +6,7 @@ from mbox2 import *
 from tkinter import filedialog
 from Crypto.Cipher import AES
 import pickle
+from datetime import datetime
 
 language = languages["english"]
 
@@ -530,6 +531,69 @@ def no_checkin_today(lang):
 	bok.config(cmd=t.dw, lang=lang)
 
 	t.root.wait_window()
+
+def confirm_check_in_time(lang, database):
+
+	def d(z):
+		t.z = z
+		t.dw()
+
+	t = Mbox()
+
+	t.newFrame("First Frame", (0, 0))
+	t.newFrame("Second Frame", (1, 0))
+
+	cstext = Labelbox(text='Check out prompt', lang=lang, repr='creset')
+
+	dt = datetime.now()
+
+	timeslot = database.findTimeSlot(dt)
+
+	byes_current_time = Buttonbox(text='Check-in', lang=lang, repr='bok')
+	byes_enter_time = Buttonbox(text='Yes, enter time', lang=lang, repr='bnok')
+
+
+	byes_current_time.width = 20
+	byes_enter_time.width = 20
+
+	t.frames["First Frame"].addWidget(hs, (1, 0))
+	t.frames["First Frame"].addWidget(cstext, (2, 0))
+	t.frames["Second Frame"].addWidget(byes_current_time, (0, 0))
+	t.frames["Second Frame"].addWidget(byes_enter_time, (0, 1))
+	t.frames["Second Frame"].addWidget(bcancel, (0, 2))
+
+	byes_current_time.selfframe.grid(sticky=E+W, padx=5)
+	byes_enter_time.selfframe.grid(sticky=E+W, padx=5)
+	bcancel.selfframe.grid(sticky=E+W, padx=5)
+	byes_enter_time.config(cmd=lambda: d(False), lang=lang)
+	bcancel.config(cmd=lambda: d('cancel'), lang=lang)
+	byes_current_time.button.config(width=8, padx=0)
+	byes_current_time.button.pack(side=LEFT, padx=(2, 0))
+	byes_current_time.timeslot_ = Label(byes_current_time.selfframe,
+		text=timeslot, font='Verdana 11', pady=3)
+	byes_current_time.timeslot_.pack(side=LEFT, padx=(0, 2))
+	byes_current_time.timeslot_.config(bg=byes_current_time.idlebg, fg=byes_current_time.fg)
+
+	def enter(event):
+		byes_current_time.button.config(bg=byes_current_time.hoverbg, fg=byes_current_time.hoverfg)
+		byes_current_time.timeslot_.config(bg=byes_current_time.hoverbg, fg=byes_current_time.hoverfg)
+		byes_current_time.selfframe.config(bg=byes_current_time.hoverborder)
+
+	def leave(event):
+		byes_current_time.button.config(bg=byes_current_time.idlebg, fg=byes_current_time.fg)
+		byes_current_time.timeslot_.config(bg=byes_current_time.idlebg, fg=byes_current_time.fg)
+		byes_current_time.selfframe.config(bg=byes_current_time.idleborder)
+
+	byes_current_time.enter = enter
+	byes_current_time.leave = leave
+	byes_current_time.selfframe.bind('<Enter>', byes_current_time.enter)
+	byes_current_time.selfframe.bind('<Leave>', byes_current_time.leave)
+
+	byes_current_time.config(cmd=lambda: d(True), lang=lang)
+
+	t.root.wait_window()
+
+	return t.z
 
 def confirm_overwrite_checkout(s, lang):
 
