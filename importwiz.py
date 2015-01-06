@@ -25,45 +25,52 @@ def main(lang, d):
 		w.frames["Sixth Frame"].grid_forget()
 
 	def pvdb():
-		try:
-			w.randfile = 'temp' + str(randrange(0, 10000)) + '.rybdb'
-			nd = StudentDB(file=w.randfile, cfile='')
-			nd.importxlsx(fpath.getData())
+		#try:
+		rand_int = str(randrange(0, 100000))
+		w.randfile = 'temp' + rand_int + '.rybdb'
+		w.randpwfile = 'temp_pw_file' + rand_int + '.rybdb'
+		nd = StudentDB(file=w.randfile, cfile='', pwfile=w.randpwfile)
+		nd.importxlsx(fpath.getData())
 
-			w.sL = []
-			for s in nd.studentList.values():
-				dp = s.datapoints
-				w.sL.append([dp['bCode'], dp['firstName'], dp['lastName'], dp['chineseName'], dp['dob']])
+		w.sL = []
+		for s in nd.studentList.values():
+			dp = s.datapoints
+			w.sL.append([dp['bCode'], dp['firstName'], dp['lastName'], dp['chineseName'], dp['dob']])
 
-			w.sL.sort()
+		w.sL.sort()
 
 
-			w.frames["First Frame"].grid_forget()
-			w.frames["Second Frame"].grid_forget()
-			w.frames["Third Frame"].grid_forget()
+		w.frames["First Frame"].grid_forget()
+		w.frames["Second Frame"].grid_forget()
+		w.frames["Third Frame"].grid_forget()
 
-			w.frames["Fourth Frame"].grid()
-			w.frames["Fifth Frame"].grid()
-			w.frames["Sixth Frame"].grid()
+		w.frames["Fourth Frame"].grid()
+		w.frames["Fifth Frame"].grid()
+		w.frames["Sixth Frame"].grid()
 
-			
-			w.stable.setData((w.stableh, w.sL))
-			w.stable.canvas.config(width=700)
-		except:
-			noimp(w.lang)
+		
+		w.stable.setData((w.stableh, w.sL))
+		w.stable.canvas.config(width=700)
+		#except:
+		#	noimp(w.lang)
 
 	def pdb():
 		try:
 			fpath2.setData(filedialog.asksaveasfilename())
 		except:
 			pass
+	def pw_path():
+		try:
+			pw_fpath.setData(filedialog.asksaveasfilename() + '.rybdb')
+		except:
+
+			pass
 
 	def sav():
 		#f = fpath2.getData().split('/')[-1] + '.db'
 		f = fpath2.getData() + '.rybdb'
-		nd = StudentDB(file=f, cfile='')
-		
-		if f == '.rybdb':
+		nd = StudentDB(file=f, cfile='', pwfile=pw_fpath.getData())
+		if f == '.db':
 			pchoosefile(w.lang)
 			return
 
@@ -114,6 +121,8 @@ def main(lang, d):
 #intialize widgets
 	w.bsav = bsav
 
+	pw_fpath = Textbox(text='Password File', lang=w.lang, repr='pwfilepath')
+	pw_fpath_brw = Buttonbox(text='browse', lang=language, repr='pwfilebrw')
 	w.frames["Second Frame"].addWidget(w.fpath, (0, 0))
 	#w.frames["Second Frame"].addWidget(sepr, (2, 0))
 	w.frames["Second Frame"].addWidget(brw, (0, 2))
@@ -121,6 +130,8 @@ def main(lang, d):
 	w.frames["Fourth Frame"].addWidget(w.stable, (0, 0))
 	w.frames["Fifth Frame"].addWidget(fpath2, (0, 0))
 	w.frames["Fifth Frame"].addWidget(brw2, (0, 3))
+	w.frames["Fifth Frame"].addWidget(pw_fpath, (1, 0))
+	w.frames["Fifth Frame"].addWidget(pw_fpath_brw, (1, 3))
 	w.frames["Fifth Frame"].addWidget(sepr, (2, 0))
 	w.frames["Sixth Frame"].addWidget(bk, (3, 0))
 	w.frames["Sixth Frame"].addWidget(w.bsav, (3, 1))
@@ -133,6 +144,7 @@ def main(lang, d):
 
 	brw.config(cmd=odb)
 	brw2.config(cmd=pdb)
+	pw_fpath_brw.config(cmd=pw_path)
 	bk.config(cmd=sp)
 	nxt.config(cmd=pvdb)
 	w.bsav.config(cmd=sav)
@@ -144,6 +156,8 @@ def main(lang, d):
 	brw.selfframe.grid(padx=10, columnspan=2)
 	brw2.button.config(width=12, pady=1)
 	brw2.selfframe.grid(padx=10)
+	pw_fpath_brw.button.config(width=12, pady=1)
+	pw_fpath_brw.selfframe.grid(padx=10)
 	bk.button.config(width=10)
 	bk.selfframe.grid(padx=10)
 	nxt.button.config(width=10)

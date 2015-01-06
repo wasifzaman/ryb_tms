@@ -438,7 +438,7 @@ class StudentDB:
                 newS.datapoints['tp'] = 0
 
             #error-zone: set for school code
-            if newS.datapoints['bCode'][:3] != 'FLU' and newS.datapoints['bCode'][:3] != 'BRK': continue
+            if newS.datapoints['bCode'][:3] != 'RYB': continue
             self.addStudent(newS.datapoints['bCode'], newS)
 
         self.saveData()
