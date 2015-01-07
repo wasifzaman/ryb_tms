@@ -138,7 +138,12 @@ class Datebox(IntTextbox):
 		self.yEntry.config(validate="all", validatecommand=vcmd)
 
 	def getData(self):
-		return self.mEntry.get() + '/' + self.dEntry.get() + '/' + self.yEntry.get()
+		try:
+			date = self.mEntry.get() + '/' + self.dEntry.get() + '/' + self.yEntry.get()
+			dt = datetime.strptime(date, '%m/%d/%Y')
+			return datetime.strftime(dt, '%m/%d/%Y')
+		except ValueError:
+			return '01/01/1900'
 
 	def setData(self, data):
 		date = data.split('/')

@@ -155,14 +155,11 @@ def main():
 			database_backup_successful(w.lang)
 		except:
 			return
-
+			
 #main window and starting language
 	w = AppWindow(t.mainFrame)
 	w.lang = languages['english']
-
-#title
 	t.wintitle.config(text=w.lang['RYB Student Management'])
-
 
 #load current database
 	w.k = keeper.Keeper('keeper.db')
@@ -238,11 +235,6 @@ def main():
 	w.mmbuttoncol = '#E3E9F9'
 	w.mmbuttonfg = 'black'
 
-	#bchoose_school.idlebg = w.mmbuttoncol
-	#bchoose_school.fg = w.mmbuttonfg
-	#bchoose_school.hoverfg = 'white'
-	#bchoose_school.button.config(bg=bchoose_school.idlebg, fg=bchoose_school.fg)
-
 	bsbmm.idlebg = w.mmbuttoncol
 	bsbmm.fg = w.mmbuttonfg
 	bsbmm.hoverfg = 'white'
@@ -295,7 +287,6 @@ def main():
 
 	t.iconbitmap('RYB_Attendance.ico')
 	t.mainloop()
-
 
 if __name__ == '__main__':
 	main()

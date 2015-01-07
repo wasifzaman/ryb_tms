@@ -101,8 +101,7 @@ class StudentDB:
         self.school = ''
         
         #last barcode
-        self.setLast()
-        
+        self.setLast()        
     
     def setLast(self):
         #set the last barcode
@@ -116,7 +115,6 @@ class StudentDB:
             self.last = 0
             pass  
 
-
     def formatCode(self):
         #format the new last code
         t = str(self.last)
@@ -125,7 +123,6 @@ class StudentDB:
         t = self.pre + '-' + t[:3] + '-' + t[3:]
 
         return t
-
 
     def checkDate(self, barcode):
         #check if student was checked in today
@@ -141,51 +138,25 @@ class StudentDB:
         if checkedInToday > 0: return checkedInToday
         return True
 
-
     def findTimeSlot(self, time):
-        h, m, p = '{:%I}'.format(time), '{:%M}'.format(time), '{:%p}'.format(time)
+        new_time = ''
+        hour = time.hour
+        minute = time.minute
+        if minute <= 10:
+            new_time = time - timedelta(minutes=time.minute)
+        elif minute > 10 and minute <= 40:
+            new_time = time + timedelta(minutes=30-time.minute)
+        elif minute > 40:
+            new_time = time + timedelta(minutes=60)
 
-        x = int(m)
-        if x <= 10:
-            x = 0
-        elif x > 10 and x <= 40:
-            x = 30
-        elif x > 40:
-            x = 60
-        #elif x > 40 and x <= 55:
-        #    x = 45
-        #elif x > 55:
-        #    x = 60
-
-        '''
-        if x % 15 >= 7:
-            x = 15 * (x // 15) + 15
-        elif x % 15 < 7:
-            x = (x - x % 15)
-        '''
-
-        if x >= 60:
-            x = 0
-            h = str(int(h) + 1)
-        m = str(x) if x >= 10 else '0' + str(x)
-
-        return h + ':' + m + ' ' + p
-
+        return datetime.strftime(new_time, '%I:%M %p')
 
     def calcAge(self, dob):
-        #calculate the age using the birthdate
-        try:
-            age = datetime.now() - datetime.strptime(dob, "%m/%d/%Y")
-        except:
-            age = datetime.now() - datetime.strptime(dob, "%m/%d/%y")
+        age = datetime.now() - datetime.strptime(dob, "%m/%d/%Y")
         return int(age.total_seconds() / 60 / 60 / 24 / 365)
 
-
     def calcExpir(self, start, rem):
-        #calculate expiration of classes
-        #currently, each class can be completed with 14 days
         return start + timedelta(days=rem*14)
-
 
     def calcInRow(self, barcode):
         cdt = datetime.now()
@@ -223,7 +194,7 @@ class StudentDB:
         return False
 
 
-    def scanStudent(self, barcode, xtra=False):
+    def scanStudent(self, barcode):
         #try:
         #scan the current student in
         cdt = datetime.now()
@@ -245,7 +216,7 @@ class StudentDB:
         self.calcInRow(barcode)
 
 
-    def scanOutTeacher(self, barcode, confirmed_time, xtra=False):
+    def scanOutTeacher(self, barcode, confirmed_time):
         cdt = datetime.now()
 
         timeslot = self.findTimeSlot(datetime.strptime(confirmed_time, '%I:%M %p'))

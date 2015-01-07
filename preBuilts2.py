@@ -534,8 +534,8 @@ def no_checkin_today(lang):
 
 def confirm_check_in_time(lang, database):
 
-	def d(z):
-		t.z = z
+	def return_(value):
+		t.value = value
 		t.dw()
 
 	t = Mbox()
@@ -552,7 +552,6 @@ def confirm_check_in_time(lang, database):
 	byes_current_time = Buttonbox(text='Check-in', lang=lang, repr='bok')
 	byes_enter_time = Buttonbox(text='Yes, enter time', lang=lang, repr='bnok')
 
-
 	byes_current_time.width = 20
 	byes_enter_time.width = 20
 
@@ -565,40 +564,21 @@ def confirm_check_in_time(lang, database):
 	byes_current_time.selfframe.grid(sticky=E+W, padx=5)
 	byes_enter_time.selfframe.grid(sticky=E+W, padx=5)
 	bcancel.selfframe.grid(sticky=E+W, padx=5)
-	byes_enter_time.config(cmd=lambda: d(False), lang=lang)
-	bcancel.config(cmd=lambda: d('cancel'), lang=lang)
-	byes_current_time.button.config(width=8, padx=0)
-	byes_current_time.button.pack(side=LEFT, padx=(2, 0))
-	byes_current_time.timeslot_ = Label(byes_current_time.selfframe,
-		text=timeslot, font='Verdana 11', pady=3)
-	byes_current_time.timeslot_.pack(side=LEFT, padx=(0, 2))
-	byes_current_time.timeslot_.config(bg=byes_current_time.idlebg, fg=byes_current_time.fg)
-
-	def enter(event):
-		byes_current_time.button.config(bg=byes_current_time.hoverbg, fg=byes_current_time.hoverfg)
-		byes_current_time.timeslot_.config(bg=byes_current_time.hoverbg, fg=byes_current_time.hoverfg)
-		byes_current_time.selfframe.config(bg=byes_current_time.hoverborder)
-
-	def leave(event):
-		byes_current_time.button.config(bg=byes_current_time.idlebg, fg=byes_current_time.fg)
-		byes_current_time.timeslot_.config(bg=byes_current_time.idlebg, fg=byes_current_time.fg)
-		byes_current_time.selfframe.config(bg=byes_current_time.idleborder)
-
-	byes_current_time.enter = enter
-	byes_current_time.leave = leave
-	byes_current_time.selfframe.bind('<Enter>', byes_current_time.enter)
-	byes_current_time.selfframe.bind('<Leave>', byes_current_time.leave)
-
-	byes_current_time.config(cmd=lambda event: d(True), lang=lang)
-
+	byes_current_time.config(cmd=lambda: return_(True))
+	byes_enter_time.config(cmd=lambda: return_(False))
+	bcancel.config(cmd=lambda: return_(False))
+	byes_current_time_text = byes_current_time.button.cget('text')
+	byes_current_time.button.config(
+		text=byes_current_time_text + ' ' + timeslot)
+	
 	t.root.wait_window()
 
-	return t.z
+	return t.value
 
-def confirm_overwrite_checkout(s, lang):
+def confirm_overwrite_checkout(lang):
 
-	def d(z):
-		t.z = z
+	def return_(value):
+		t.value = value
 		t.dw()
 
 	t = Mbox()
@@ -615,13 +595,41 @@ def confirm_overwrite_checkout(s, lang):
 
 	byes.selfframe.grid(sticky=E+W, padx=5)
 	bno.selfframe.grid(sticky=E+W, padx=5)
-	byes.config(cmd=lambda: d(True), lang=lang)
-	bno.config(cmd=lambda: d(False), lang=lang)
+	byes.config(cmd=lambda: return_(True), lang=lang)
+	bno.config(cmd=lambda: return_(False), lang=lang)
 	byes.button.focus_set()
 
 	t.root.wait_window()
 
-	return t.z
+	return t.value
+
+def confirm_overwrite_checkin(lang):
+
+	def return_(value):
+		t.value = value
+		t.dw()
+
+	t = Mbox()
+
+	t.newFrame("First Frame", (0, 0))
+	t.newFrame("Second Frame", (1, 0))
+
+	cstext = Labelbox(text='Overwrite Checkout', lang=lang, repr='cprint')
+
+	t.frames["First Frame"].addWidget(hs, (1, 0))
+	t.frames["First Frame"].addWidget(cstext, (2, 0))
+	t.frames["Second Frame"].addWidget(byes, (0, 0))
+	t.frames["Second Frame"].addWidget(bno, (0, 1))
+
+	byes.selfframe.grid(sticky=E+W, padx=5)
+	bno.selfframe.grid(sticky=E+W, padx=5)
+	byes.config(cmd=lambda: return_(True), lang=lang)
+	bno.config(cmd=lambda: return_(False), lang=lang)
+	byes.button.focus_set()
+
+	t.root.wait_window()
+
+	return t.value
 
 def confirm_check_out_time(lang):
 
