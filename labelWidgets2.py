@@ -4,57 +4,32 @@ import inspect
 from tkinter.scrolledtext import ScrolledText
 from datetime import time, date, datetime
 
-
 class Textbox(Widget):
-
-	def __init__(self, **kwargs):
-		try:			
-			self.text = kwargs['text']
-			self.repr = kwargs['repr']
-			self.lang = kwargs['lang']
-		except:
-			pass
-			#print("widget could not be loaded")
-
+	def __init__(self, **kwargs):			
+		self.text = kwargs['text']
+		self.repr = kwargs['repr']
+		self.lang = kwargs['lang']
 		self.height = 1
 		self.width = 2
 
-
 	def config(self, **kwargs):
 
-		try:
+		if 'text' in kwargs:
 			s = StringVar()
 			s.set(kwargs['text'])
 			self.entry.config(textvariable=s)
-		except:
-			pass
-			#print("the widget could not be configured")
-
-		try:
+		if 'lang' in kwargs:
 			self.lang = kwargs['lang']
 			self.label.config(text=self.lang[self.text].strip())
-		except:
-			pass
 
-
-	#helpers
 	def OnValidate(self, d, i, P, s, S, v, V, W):
-		#all formats are allowed in textbox
 		return True
-
-	def trytoplace(self, **kwargs):
-		self.parent = kwargs['parent']
-		self.row = kwargs['row']
-		self.column = kwargs['column']
-
 
 	def place(self, **kwargs):
 
-		try:
-			self.trytoplace(**kwargs)
-		except:
-			pass
-			#print("widget could not be placed")
+		self.parent = kwargs['parent']
+		self.row = kwargs['row']
+		self.column = kwargs['column']
 
 		self.label = Label(self.parent, text=self.lang[self.text].strip(), width=15, anchor=E)
 		self.entry = Entry(self.parent, relief=SOLID)
@@ -64,19 +39,15 @@ class Textbox(Widget):
 
 		self.bind()
 
-
 	def bind(self):
 		vcmd = (self.parent.register(self.OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
 		self.entry.config(validate="all", validatecommand=vcmd)
 
-
 	def getData(self):
 		return self.entry.get()
 
-
 	def setData(self, data):
 		self.config(text=data)
-
 
 	def hide(self):
 		self.label.grid_forget()
@@ -87,21 +58,25 @@ class IntTextbox(Textbox):
 
 	#helpers
 	def OnValidate(self, d, i, P, s, S, v, V, W):
-		try:
-			int(S)
+		if S.isdigit():
 			return True
-		except ValueError:
-			return False
 		return False
 
-
 	def getData(self):
+		entry_ = self.entry.get()
+		if not entry_.isdigit() or len(entry_.strip()) == 0:
+			return 0
+		else:
+			return int(entry_)
+
+		'''
 		e = self.entry.get()
 		if e == '': return 0
 		try:
 			return int(e)
 		except:
 			return 0
+		'''
 
 
 class Datebox(IntTextbox):
@@ -126,14 +101,11 @@ class Datebox(IntTextbox):
 		except:
 			pass
 
-
 	def place(self, **kwargs):
 
-		try:
-			self.trytoplace(**kwargs)
-		except:
-			pass
-			#print("widget could not be placed")
+		self.parent = kwargs['parent']
+		self.row = kwargs['row']
+		self.column = kwargs['column']
 
 		self.selfframe = Frame(self.parent)
 		self.label = Label(self.parent, text=self.text, width=15, anchor=E)
@@ -159,17 +131,14 @@ class Datebox(IntTextbox):
 
 		self.bind()
 
-
 	def bind(self):
 		vcmd = (self.parent.register(self.OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
 		self.mEntry.config(validate="all", validatecommand=vcmd)
 		self.dEntry.config(validate="all", validatecommand=vcmd)
 		self.yEntry.config(validate="all", validatecommand=vcmd)
 
-
 	def getData(self):
 		return self.mEntry.get() + '/' + self.dEntry.get() + '/' + self.yEntry.get()
-
 
 	def setData(self, data):
 		date = data.split('/')
@@ -190,10 +159,8 @@ class MoneyTextbox(IntTextbox):
 			return S == '.' and '.' not in self.entry.get()# or False
 		return False
 
-
 	#def config(self, **kwargs):
 		#return
-
 
 	def getData(self):
 		e = self.entry.get()
@@ -218,25 +185,14 @@ class Separator(Widget):
 		#self.relief = SUNKEN
 		#self.sticky = W+E
 
-
 	def config(self, **kwargs):
 		pass
 
+	def place(self, **kwargs):
 
-	def trytoplace(self, **kwargs):
 		self.parent = kwargs['parent']
 		self.row = kwargs['row']
 		self.column = kwargs['column']
-
-
-	def place(self, **kwargs):
-
-		try:
-			self.trytoplace(**kwargs)
-		except:
-			pass
-			#print("widget could not be placed")
-
 
 		self.fr = Frame(self.parent, height=2, bd=1, relief=SUNKEN)
 		self.fr.grid(row=self.row, column=self.column, sticky=W+E, columnspan=100, pady=10)
@@ -253,7 +209,6 @@ class Picker(Textbox):
 			pass
 			#print("widget could not be loaded")
 
-
 	def config(self, **kwargs):
 
 		try:
@@ -266,14 +221,11 @@ class Picker(Textbox):
 		except:
 			pass
 
-
 	def place(self, **kwargs):
 
-		try:
-			self.trytoplace(**kwargs)
-		except:
-			pass
-			#print("widget could not be placed")
+		self.parent = kwargs['parent']
+		self.row = kwargs['row']
+		self.column = kwargs['column']
 
 		self.selfframe = Frame(self.parent)
 		self.label = Label(self.selfframe, text=self.text)
@@ -292,7 +244,6 @@ class Picker(Textbox):
 		self.entry.pack()
 		for rad in self.brads:
 			rad.pack(side=LEFT, padx=2)
-
 
 	def getData(self):
 		return self.b.get(), self.entry.get()
@@ -328,20 +279,11 @@ class LongTextbox(Textbox):
 		except:
 			pass
 
+	def place(self, **kwargs):
 
-	def trytoplace(self, **kwargs):
 		self.parent = kwargs['parent']
 		self.row = kwargs['row']
 		self.column = kwargs['column']
-
-
-	def place(self, **kwargs):
-
-		try:
-			self.trytoplace(**kwargs)
-		except:
-			pass
-			#print("widget could not be placed")
 
 		self.label = Label(self.parent, text=self.lang[self.text])
 		self.sentry = ScrolledText(self.parent, relief=SOLID)
@@ -349,10 +291,8 @@ class LongTextbox(Textbox):
 		self.label.grid(row=self.row, column=self.column)
 		self.sentry.grid(row=self.row, column=self.column+1, sticky=E)
 
-
 	def getData(self):
 		return self.sentry.get('1.0', END + '-1c')
-
 
 	def setData(self, data):
 		self.sentry.delete('1.0', END)
@@ -386,18 +326,14 @@ class Labelbox(Textbox):
 			#print('error translating', self.repr)
 			pass
 
-
 	def getData(self):
 		return self.text
 
-
 	def place(self, **kwargs):
 
-		try:
-			self.trytoplace(**kwargs)
-		except:
-			pass
-			#print("widget could not be placed")
+		self.parent = kwargs['parent']
+		self.row = kwargs['row']
+		self.column = kwargs['column']
 
 		self.label = Label(self.parent, text=self.lang[self.text])
 		self.label.grid(row=self.row, column=self.column)
@@ -405,10 +341,8 @@ class Labelbox(Textbox):
 		if self.bold:
 			self.label.config(font=('Verdana', 11, 'bold'))
 
-
 	def hide(self):
 		self.label.grid_forget()
-
 
 	def show(self):
 		self.label.grid()
@@ -427,7 +361,6 @@ class Buttonbox2(Textbox):
 
 		self.width = 30
 
-
 	def config(self, **kwargs):
 
 		try:
@@ -442,18 +375,14 @@ class Buttonbox2(Textbox):
 		except:
 			pass
 
-
 	def setData(self, data):
 		self.config(text=data)
 
-
 	def place(self, **kwargs):
 
-		try:
-			self.trytoplace(**kwargs)
-		except:
-			pass
-			#print("widget could not be placed")
+		self.parent = kwargs['parent']
+		self.row = kwargs['row']
+		self.column = kwargs['column']
 
 		self.button = Button(self.parent, text=self.lang[self.text], width=self.width)
 		self.button.bind('<Enter>', self.config(bg='blue'))
@@ -480,7 +409,6 @@ class Buttonbox(Textbox):
 		self.hoverborder = '#5C7DBD'
 		self.fg = 'white'
 		self.hoverfg = 'white'
-
 
 	def config(self, **kwargs):
 		
@@ -511,7 +439,6 @@ class Buttonbox(Textbox):
 		except:
 			pass
 
-
 	def enter(self, event):
 
 		try:
@@ -519,7 +446,6 @@ class Buttonbox(Textbox):
 			self.selfframe.config(bg=self.hoverborder)
 		except:
 			pass
-
 
 	def leave(self, event):
 
@@ -529,13 +455,13 @@ class Buttonbox(Textbox):
 		except:
 			pass
 
-
 	def setData(self, data):
 		self.config(text=data)
 
-
 	def place(self, **kwargs):
-		self.trytoplace(**kwargs)
+		self.parent = kwargs['parent']
+		self.row = kwargs['row']
+		self.column = kwargs['column']
 
 		self.selfframe = Frame(self.parent, bg=self.idleborder, bd=1)
 		#self.innerf = Frame(self.selfframe, bg='#708DE6', bd=1)
@@ -572,11 +498,9 @@ class TextboxNoEdit(Textbox):
 
 	def place(self, **kwargs):
 
-		try:
-			self.trytoplace(**kwargs)
-		except:
-			pass
-			#print("widget could not be placed")
+		self.parent = kwargs['parent']
+		self.row = kwargs['row']
+		self.column = kwargs['column']
 
 		self.label = Label(self.parent, text=self.lang[self.text].strip(), width=15, anchor=E)
 		self.entry = Entry(self.parent, relief=SOLID, state=DISABLED)

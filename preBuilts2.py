@@ -589,7 +589,7 @@ def confirm_check_in_time(lang, database):
 	byes_current_time.selfframe.bind('<Enter>', byes_current_time.enter)
 	byes_current_time.selfframe.bind('<Leave>', byes_current_time.leave)
 
-	byes_current_time.config(cmd=lambda: d(True), lang=lang)
+	byes_current_time.config(cmd=lambda event: d(True), lang=lang)
 
 	t.root.wait_window()
 

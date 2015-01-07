@@ -14,7 +14,7 @@ def main(t, lang, d):
 	w.lang = lang
 
 #attendance table
-	w.attinfo = Table(repr='attinfo', edit=True)
+	w.attinfo = Table(repr='attinfox', edit=True)
 	w.attinfoh = [language['Date'], language['Check-In Time'], language['Class Time'], language['Check-Out Time']]
 	w.attinfo.build(headers=w.attinfoh, data=[[]])
 	w.attinfo.clast = '#FF99FF'
@@ -112,35 +112,6 @@ def main(t, lang, d):
 	w.frames["Eleventh Frame"].addWidget(w.attinfo, (0, 0))
 	w.frames["Eleventh Frame"].grid(rowspan=4, sticky=W)
 
-#renew classes button
-	'''
-	def renC():
-		try:
-			d.studentList[w.s]
-		except:
-			return
-
-		r = renew(w.lang)
-		if r == 0: return
-		dp = d.studentList[w.s].datapoints
-		dp['cRemaining'] = dp['cRemaining'] + r
-		dp['cAwarded'] = dp['cAwarded'] + r
-		dp['expire'] = d.calcExpir(datetime.now().date(), r)
-		spec.setData("")
-		#w2.spec2.setData("")
-		cRemaining.setData(dp['cRemaining'])
-		cAwarded.setData(dp['cAwarded'])
-		tpa.setData(0)
-		tpo.setData(0)
-		tp.setData(0)
-
-	w.ren = Buttonbox(text='Renew classes', lang=w.lang, repr='ren')
-	w.frames["Fourth Frame"].addWidget(w.ren, (10, 1))
-	w.ren.selfframe.grid(sticky=S)
-	w.ren.button.config(width=20)
-	w.ren.config(cmd=renC)
-	'''
-
 	w.attinfo.editwidget=False
 	w.attinfo.canvas.config(width=696, height=300)
 
@@ -214,6 +185,9 @@ def main(t, lang, d):
 
 		w.populate(dp)
 
+		print('lastt attendance', dp['attinfo'][1][-1])
+		w.attinfo.setData([dp['attinfo'][0], [dp['attinfo'][1][-1]]])
+
 		for cell_id, cell_val in w.attinfo.cells.items():
 			if cell_id[0] == 0:
 				cur_text = cell_val.label.cget('text')
@@ -236,7 +210,10 @@ def main(t, lang, d):
 				#d.studentList[w.s].datapoints['attinfo'][1][-1][2] = "09:15 AM"
 		d.saveData()
 
-		w.frames['Eleventh Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
+		att_info = d.studentList[w.s].datapoints['attinfo']
+		headers = att_info[0]
+		last_check_in = [att_info[1][-1]]
+		w.frames['Eleventh Frame'].widgets['attinfox'].setData([headers, last_check_in])
 		
 
 		sby.b.set(sby.rads[0][1]) #reset Scan By to Barcode
@@ -250,6 +227,7 @@ def main(t, lang, d):
 		def out():
 			time_input = str(hour_input.getData()) + ':' + str(minute_input.getData()) + ' ' + am_pm_input.getData()
 			w.time_input_confirmed = time_input
+			w.date_input = date_input.getData()
 			confirm_time.destroy()
 
 		confirm_time = Window(top=True)
@@ -295,7 +273,7 @@ def main(t, lang, d):
 		try:
 			cdt = datetime.now()
 			time = '{:%I:%M %p}'.format(cdt)
-			date = '{:%m/%d/%Y}'.format(cdt)
+			date = w.date_input
 			data = [date, time, w.time_input_confirmed, '', '', d.school]
 			print(data)
 
@@ -308,8 +286,11 @@ def main(t, lang, d):
 		print('out', w.time_input_confirmed)
 		d.saveData()
 
-		w.frames['Eleventh Frame'].widgets['attinfo'].setData(d.studentList[w.s].datapoints['attinfo'])
-		
+		att_info = d.studentList[w.s].datapoints['attinfo']
+		headers = att_info[0]
+		last_check_in = [att_info[1][-1]]
+		print(last_check_in)
+		w.frames['Eleventh Frame'].widgets['attinfox'].setData([headers, last_check_in])	
 
 		sby.b.set(sby.rads[0][1]) #reset Scan By to Barcode
 		w.attinfo.canvas.yview_moveto(1.0) #scroll to bottom

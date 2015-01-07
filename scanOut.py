@@ -14,7 +14,7 @@ def main(t, lang, d):
 	w.lang = lang
 
 #attendance table
-	w.attinfo = Table(repr='attinfo', edit=True)
+	w.attinfo = Table(repr='attinfox', edit=True)
 	w.attinfoh = [language['Date'], language['Check-In Time'], language['Class Time'], language['Check-Out Time']]
 	w.attinfo.build(headers=w.attinfoh, data=[[]])
 	w.attinfo.clast = '#FF99FF'
@@ -450,6 +450,93 @@ def main(t, lang, d):
 		#reset Scan By to Barcode
 		sby.b.set(sby.rads[0][1])
 
+	def manual_scan():
+
+		print(bCodeNE.getData())
+		if (len(bCodeNE.getData())) == 0: return
+
+		def out():
+			time_input = str(hour_input.getData()) + ':' + str(minute_input.getData()) + ' ' + am_pm_input.getData()
+			w.time_input_confirmed = time_input
+			w.date_input = date_input.getData()
+			confirm_time.destroy()
+
+		confirm_time = Window(top=True)
+		confirm_time.attributes('-fullscreen', False)
+		confirm_time.resizable(0, 0)
+		confirm_time.geometry('400x200+200+200')
+		confirm_time.grab_set()
+		confirm_time.focus_set()
+
+		confirm_window = AppWindow(confirm_time.mainFrame)
+
+		date_input = Datebox(text='Check-in date', lang=w.lang, repr='dateinput')
+		hour_input = IntTextbox(text='Hour', lang=w.lang, repr='h_input')
+		minute_input = IntTextbox(text='Minute', lang=w.lang, repr='m_input')
+		am_pm_input = Textbox(text='AM/PM', lang=w.lang, repr='am_pm')
+		rbutton = Buttonbox(text='Confirm', lang=w.lang, repr='rbutton')
+
+		confirm_window.newFrame("First Frame", (0, 0))
+
+		confirm_window.frames["First Frame"].addWidget(date_input, (0, 0))
+		confirm_window.frames["First Frame"].addWidget(hour_input, (1, 0))
+		confirm_window.frames["First Frame"].addWidget(minute_input, (1, 2))
+		confirm_window.frames["First Frame"].addWidget(am_pm_input, (1, 4))
+		confirm_window.frames["First Frame"].addWidget(rbutton, (2, 0))
+
+		hour_input.label.config(width=4)
+		minute_input.label.config(width=6)
+		am_pm_input.label.config(width=6)
+		hour_input.entry.config(width=3)
+		minute_input.entry.config(width=3)
+		am_pm_input.entry.config(width=3)
+		hour_input.label.grid(sticky=E)
+		rbutton.selfframe.grid(columnspan=6, pady=20)
+		date_input.label.config(width=11)
+		date_input.selfframe.grid(columnspan=7, pady=15)
+
+		rbutton.config(cmd=out)
+
+		confirm_time.titleFrame.pack_forget()
+
+		confirm_time.wait_window()
+
+		try:
+			cdt = datetime.now()
+			time = '{:%I:%M %p}'.format(cdt)
+			date = w.date_input
+			data = [date, time, w.time_input_confirmed, '', '', d.school]
+			#print(data)
+
+			s = d.studentList[bCodeNE.getData()].datapoints
+			
+			slot = []
+			for slot_ in s['attinfo'][1]:
+				if slot_[0] == date:
+					slot.append(slot_)
+					break
+
+			print(slot)
+			if len(slot) == 0: return
+
+			s['attinfo'] = list(s['attinfo'])
+			s['attinfo'][0] = ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time']
+			slot[0][3] = time
+			slot[0][4] = w.time_input_confirmed
+		except AttributeError:
+			return
+		print('out', w.time_input_confirmed)
+		d.saveData()
+
+		att_info = d.studentList[w.s].datapoints['attinfo']
+		headers = att_info[0]
+		last_check_in = [att_info[1][-1]]
+		print(last_check_in)
+		w.frames['Eleventh Frame'].widgets['attinfox'].setData([headers, last_check_in])	
+		
+
+		sby.b.set(sby.rads[0][1]) #reset Scan By to Barcode
+		w.attinfo.canvas.yview_moveto(1.0) #scroll to bottom
 
 	def z(mode=False):
 		try:
@@ -529,6 +616,10 @@ def main(t, lang, d):
 	sstudent.config(cmd=collect)
 	sstudent.selfframe.grid(padx=5)
 
+	manual_entry_button = Buttonbox(text='Manual Entry', lang=language, repr='manualentrybutton')
+	w.frames["Fifth Frame"].addWidget(manual_entry_button, (0, 1))
+	manual_entry_button.config(cmd=lambda: manual_scan())
+
 	#bcheck = Buttonbox(text='Scan Out Teacher', lang=language, repr='bcheck')
 	#w.frames["Fifth Frame"].addWidget(bcheck, (0, 1))
 	#bcheck.config(cmd=lambda: z(True))
@@ -604,9 +695,3 @@ def main(t, lang, d):
 	for frame in w.frames.values():
 		for widget in frame.widgets.values():
 			widget.config(lang=w.lang)
-
-#	for frame in #w2.frames.values():
-#		for widget in frame.widgets.values():
-#			widget.config(lang=w.lang)
-
-	#return t2
