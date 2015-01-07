@@ -565,7 +565,7 @@ def confirm_check_in_time(lang, database):
 	byes_enter_time.selfframe.grid(sticky=E+W, padx=5)
 	bcancel.selfframe.grid(sticky=E+W, padx=5)
 	byes_current_time.config(cmd=lambda: return_(True))
-	byes_enter_time.config(cmd=lambda: return_(False))
+	byes_enter_time.config(cmd=lambda: return_('manual'))
 	bcancel.config(cmd=lambda: return_(False))
 	byes_current_time_text = byes_current_time.button.cget('text')
 	byes_current_time.button.config(
@@ -574,6 +574,58 @@ def confirm_check_in_time(lang, database):
 	t.root.wait_window()
 
 	return t.value
+
+def time_entry(lang):
+
+	def return_():
+		time_input = hour_input_stringvar.get() + ':' + minute_input_stringvar.get() + ' ' + am_pm_stringvar.get()
+		dt = datetime.strftime(datetime.strptime(time_input, '%I:%M %p'), '%I:%M %p')
+		confirm_time.time_input_confirmed = dt
+		confirm_time.destroy()
+
+	confirm_time = Window(top=True)
+	confirm_time.attributes('-fullscreen', False)
+	confirm_time.resizable(0, 0)
+	confirm_time.geometry('400x200+200+200')
+	confirm_time.grab_set()
+	confirm_time.focus_set()
+
+	confirm_window = AppWindow(confirm_time.mainFrame)
+
+	hour_input_stringvar = StringVar()
+	minute_input_stringvar = StringVar()
+	am_pm_stringvar = StringVar()
+	hour_input_stringvar.set(datetime.strftime(datetime.now(), '%I'))
+	minute_input_stringvar.set('00')
+	am_pm_stringvar.set(datetime.strftime(datetime.now(), '%p'))
+	return_button = Buttonbox(text='Confirm', lang=lang, repr='rbutton')
+
+	confirm_window.newFrame("First Frame", (0, 0))
+
+	Label(confirm_window.frames["First Frame"], text='HH').grid(row=0, column=0)
+	hour_input = OptionMenu(
+		confirm_window.frames["First Frame"],
+		hour_input_stringvar, '01', '02', '03', '04', '05', '06', '07',\
+						'08', '09', '10', '11', '12')
+	hour_input.grid(row=0, column=1)
+	Label(confirm_window.frames["First Frame"], text='MM').grid(row=0, column=2)
+	minute_input = OptionMenu(
+		confirm_window.frames["First Frame"],
+		minute_input_stringvar, '00', '30')
+	minute_input.grid(row=0, column=3)
+	am_pm_input = OptionMenu(
+		confirm_window.frames["First Frame"],
+		am_pm_stringvar, 'AM', 'PM')
+	am_pm_input.grid(row=0, column=4)
+	confirm_window.frames["First Frame"].addWidget(return_button, (1, 0))
+
+	return_button.selfframe.grid(columnspan=6, pady=20)
+
+	return_button.config(cmd=return_)
+
+	confirm_time.wait_window()
+
+	return confirm_time.time_input_confirmed
 
 def confirm_overwrite_checkout(lang):
 
@@ -633,8 +685,8 @@ def confirm_overwrite_checkin(lang):
 
 def confirm_check_out_time(lang):
 
-	def d(z):
-		t.z = z
+	def return_(value):
+		t.value = value
 		t.dw()
 
 	t = Mbox()
@@ -659,13 +711,13 @@ def confirm_check_out_time(lang):
 	byes_current_time.selfframe.grid(sticky=E+W, padx=5)
 	byes_enter_time.selfframe.grid(sticky=E+W, padx=5)
 	bcancel.selfframe.grid(sticky=E+W, padx=5)
-	byes_current_time.config(cmd=lambda: d(True), lang=lang)
-	byes_enter_time.config(cmd=lambda: d(False), lang=lang)
-	bcancel.config(cmd=lambda: d('cancel'), lang=lang)
+	byes_current_time.config(cmd=lambda: return_(True), lang=lang)
+	byes_enter_time.config(cmd=lambda: return_('manual'), lang=lang)
+	bcancel.config(cmd=lambda: return_(False), lang=lang)
 
 	t.root.wait_window()
 
-	return t.z
+	return t.value
 
 def confirm_print(s, lang):
 

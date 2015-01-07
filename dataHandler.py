@@ -145,9 +145,9 @@ class StudentDB:
         if minute <= 10:
             new_time = time - timedelta(minutes=time.minute)
         elif minute > 10 and minute <= 40:
-            new_time = time + timedelta(minutes=30-time.minute)
+            new_time = time + timedelta(minutes=-time.minute+30)
         elif minute > 40:
-            new_time = time + timedelta(minutes=60)
+            new_time = time + timedelta(minutes=-time.minute+60)
 
         return datetime.strftime(new_time, '%I:%M %p')
 

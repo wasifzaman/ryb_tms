@@ -150,12 +150,39 @@ def main(t, lang, database):
 		window_.tdp = dict(window_.collect(database.studentList[window_.student_id].datapoints))
 		sby.entry.delete(0, END)
 
-		date = datetime.strftime(datetime.now(), '%m/%d/%Y')
+		dt = datetime.now()
+		date = datetime.strftime(dt, '%m/%d/%Y')
+		time = datetime.strftime(dt, '%I:%M %p')
+		timeslot = database.findTimeSlot(dt)
+		overwrite = False
 		if date in [row[0] for row in data_points['attinfo'][1]]:
-			confirm_overwrite_checkin(window_.lang)
+			if not confirm_overwrite_checkin(window_.lang):
+				return
+			else: overwrite = True
 
-		if confirm_check_in_time(window_.lang, database): scan_student()
-		window_.attinfo.setData([data_points['attinfo'][0], [data_points['attinfo'][1][-1]]])
+		confirm_status = confirm_check_in_time(window_.lang, database)
+		data = [date, time, timeslot, '', '', database.school]
+		if confirm_status == 'manual':
+			time_ = time_entry(window_.lang)
+			data[1] = ''
+			data[2] = time_
+			if overwrite:
+				data_points['attinfo'][1][-1] = data
+			else:
+				data_points['attinfo'][1].append(data)
+		elif confirm_status:
+			if overwrite:
+				data_points['attinfo'][1][-1] = data
+			else:
+				database.scanStudent(window_.student_id)
+		else:
+			return
+
+		database.saveData()
+		window_.attinfo.setData(
+		[data_points['attinfo'][0], [data_points['attinfo'][1][-1]]]) #display last entry
+		sby.b.set(sby.rads[0][1]) #reset search bar
+		window_.attinfo.canvas.yview_moveto(1.0) #scroll to bottom of table
 
 #scan student
 	def scan_student():
@@ -204,7 +231,7 @@ def main(t, lang, database):
 		hour_input = IntTextbox(text='Hour', lang=window_.lang, repr='h_input')
 		minute_input = IntTextbox(text='Minute', lang=window_.lang, repr='m_input')
 		am_pm_input = Textbox(text='AM/PM', lang=window_.lang, repr='am_pm')
-		rbutton = Buttonbox(text='Confirm', lang=window_.lang, repr='rbutton')
+		return_button = Buttonbox(text='Confirm', lang=window_.lang, repr='rbutton')
 
 		confirm_window.newFrame("First Frame", (0, 0))
 
@@ -212,7 +239,7 @@ def main(t, lang, database):
 		confirm_window.frames["First Frame"].addWidget(hour_input, (1, 0))
 		confirm_window.frames["First Frame"].addWidget(minute_input, (1, 2))
 		confirm_window.frames["First Frame"].addWidget(am_pm_input, (1, 4))
-		confirm_window.frames["First Frame"].addWidget(rbutton, (2, 0))
+		confirm_window.frames["First Frame"].addWidget(return_button, (2, 0))
 
 		hour_input.label.config(width=4)
 		minute_input.label.config(width=6)
@@ -221,11 +248,11 @@ def main(t, lang, database):
 		minute_input.entry.config(width=3)
 		am_pm_input.entry.config(width=3)
 		hour_input.label.grid(sticky=E)
-		rbutton.selfframe.grid(columnspan=6, pady=20)
+		return_button.selfframe.grid(columnspan=6, pady=20)
 		date_input.label.config(width=11)
 		date_input.selfframe.grid(columnspan=7, pady=15)
 
-		rbutton.config(cmd=out)
+		return_button.config(cmd=out)
 
 		confirm_time.titleFrame.pack_forget()
 

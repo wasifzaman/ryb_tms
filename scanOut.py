@@ -94,24 +94,24 @@ def main(t, lang, database):
 
 
 		if sby.getData()[0] != 'bCode':
-			sty = sby.getData()[0]
-			sdp = sby.getData()[1]
+			scan_type = sby.getData()[0]
+			scan_value = sby.getData()[1]
 
 			sl = []
 
 			for s in database.studentList:
-				dp = False
-				if sty == 'phoneNumber':
-					if database.studentList[s].datapoints['hPhone'] == sdp or \
-						database.studentList[s].datapoints['cPhone'] == sdp or \
-						database.studentList[s].datapoints['cPhone2'] == sdp:
-						dp = database.studentList[s].datapoints
+				data_points = False
+				if scan_type == 'phoneNumber':
+					if database.studentList[s].datapoints['hPhone'] == scan_value or \
+						database.studentList[s].datapoints['cPhone'] == scan_value or \
+						database.studentList[s].datapoints['cPhone2'] == scan_value:
+						data_points = database.studentList[s].datapoints
 
-				elif database.studentList[s].datapoints[sty] == sdp:
-					dp = database.studentList[s].datapoints
+				elif database.studentList[s].datapoints[scan_type] == scan_value:
+					data_points = database.studentList[s].datapoints
 				
-				if dp:
-					sl.append([dp['bCode'], dp['firstName'], dp['lastName'], dp['chineseName']])
+				if data_points:
+					sl.append([data_points['bCode'], data_points['firstName'], data_points['lastName'], data_points['chineseName']])
 
 
 			if len(sl) == 0:
@@ -139,10 +139,10 @@ def main(t, lang, database):
 		window_.attinfo.editwidget=False
 		window_.attinfo.canvas.config(width=695, height=300)
 
-		dp = database.studentList[window_.student_id].datapoints
+		data_points = database.studentList[window_.student_id].datapoints
 
-		window_.populate(dp)
-		#w2.populate(dp)
+		window_.populate(data_points)
+		#w2.populate(data_points)
 
 		for cell_id, cell_val in window_.attinfo.cells.items():
 			if cell_id[0] == 0:
@@ -150,47 +150,45 @@ def main(t, lang, database):
 				cell_val.label.config(text=lang[cur_text])
 
 		window_.tdp = dict(window_.collect(database.studentList[window_.student_id].datapoints))
-
 		sby.entry.delete(0, END)
 
-		conf_check_out_method = confirm_check_out_time(window_.lang)
-		if conf_check_out_method == True and conf_check_out_method != 'cancel':
-			last_entry = database.studentList[window_.student_id].datapoints['attinfo'][1][-1]
-			last_entry_date = last_entry[0]
-			last_entry_checkout = False if last_entry[-2] == '' else True
-			print(last_entry_checkout)
+		dt = datetime.now()
+		date = datetime.strftime(dt, '%m/%d/%Y')
+		time = datetime.strftime(dt, '%I:%M %p')
+		timeslot = database.findTimeSlot(dt)
+		overwrite = False
+		data = False
+		for row in data_points['attinfo'][1]:
+			if row[0] == date:
+				data = row
+				#break
 
-			if datetime.strptime(last_entry_date, '%m/%d/%Y').date() != datetime.now().today().date():
-				no_checkin_today(window_.lang)
+		if not data: return
+		if len(data[4]) != 0:
+			if confirm_overwrite_checkout(window_.lang):
+				overwrite = True
+			else:
 				return
-			if last_entry_checkout and not confirm_overwrite_checkout(window_.lang): return
 
-			window_.time_input_confirmed = datetime.now().strftime('%I:%M %p')
-			try:
-				database.scanOutTeacher(window_.student_id, window_.time_input_confirmed)
-			except AttributeError:
-				return
-
-			data_points = database.studentList[window_.student_id].datapoints
-			window_.attinfo.setData([data_points['attinfo'][0], [data_points['attinfo'][1][-1]]])		
-
-			#auto scroll to last position
-			window_.attinfo.canvas.yview_moveto(1.0)
-			#w2.attinfo.canvas.yview_moveto(1.0)
-
-			#reset Scan By to Barcode
-			sby.b.set(sby.rads[0][1])
-
-			database.saveData()
-
-			return
-		elif conf_check_out_method == 'cancel': return
+		confirm_status = confirm_check_out_time(window_.lang)
+		if confirm_status == 'manual':
+			time_ = time_entry(window_.lang)
+			data[3] = ''
+			data[4] = time_
+		elif confirm_status:
+			database.scanOutTeacher(window_.student_id, time)
 		else:
-			scan_student()
+			return
+
+
+		database.saveData()
+		window_.attinfo.setData(
+		[data_points['attinfo'][0], [data]]) #display entry being scanned out
+		sby.b.set(sby.rads[0][1]) #reset search bar
+		window_.attinfo.canvas.yview_moveto(1.0)
 
 #scan student
 	def scan_student():
-		#print report prompt
 		last_entry = database.studentList[window_.student_id].datapoints['attinfo'][1][-1]
 		last_entry_date = last_entry[0]
 		last_entry_checkout = False if last_entry[-2] == '' else True
@@ -343,6 +341,9 @@ def main(t, lang, database):
 		sby.b.set(sby.rads[0][1]) #reset Scan By to Barcode
 		window_.attinfo.canvas.yview_moveto(1.0) #scroll to bottom
 
+	
+	'''
+	** obsolete? **
 	def z():
 		try:
 			conf_check_out_method = confirm_check_out_time(window_.lang)
@@ -364,12 +365,13 @@ def main(t, lang, database):
 				window_.frames['Eleventh Frame'].widgets['attinfo'].setData(database.studentList[window_.student_id].datapoints['attinfo'])
 				#w2.frames['Third Frame'].widgets['attinfo'].setData(database.studentList[window_.student_id].datapoints['attinfo'])
 
-				'''
+	'''
+	'''
 				checkin25.setData(database.studentList[window_.student_id].datapoints['25s'])
 				checkin50.setData(database.studentList[window_.student_id].datapoints['50s'])
 				checkin100.setData(database.studentList[window_.student_id].datapoints['100s'])
-				'''
-
+	'''
+	'''
 				#auto scroll to last position
 				window_.attinfo.canvas.yview_moveto(1.0)
 				#w2.attinfo.canvas.yview_moveto(1.0)
@@ -390,6 +392,7 @@ def main(t, lang, database):
 		
 
 		print(sby.getData())
+	'''
 
 	window_.frames["Tenth Frame"].widgets['sby'].entry.bind("<Return>", lambda x: search_student())
 
