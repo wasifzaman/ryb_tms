@@ -18,11 +18,11 @@ class StudentInfo:
         self.datapoints = {
             "lastName": 'N/A', "firstName": 'N/A', "chineseName": 'N/A',
             "schoolLoc": 'N/A', "bCode": 'N/A', "sid": 0,
-            "dob": '1/1/1900', "age": 0, "parentName": 'N/A',
+            "dob": '01/01/1900', "age": 0, "parentName": 'N/A',
             "hPhone": 0, "cPhone": 0, "cPhone2": 0, "pup": 'N/A',
             "addr": 'N/A', "state": 'N/A', "city": 'N/A', "zip": 0,
             "wkdwknd": 'N/A',
-            "tpd": '1/1/1900', "tpa": 0, "tpo": 0, "tp": 0,
+            "tpd": '01/01/1900', "tpa": 0, "tpo": 0, "tp": 0,
             "email": 'N/A',
             "sType": 'N/A',
             "cAwarded": 0, "cRemaining": 0,
