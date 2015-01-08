@@ -79,10 +79,7 @@ class AppWindow(Frame):
 		for frame in self.frames.values():
 			for widget in frame.widgets.values():
 				if widget.repr in info:
-					try:
-						widget.setData(info[widget.repr])
-					except:
-						continue
+					widget.setData(info[widget.repr])
 
 	def dw(self):
 		self.destroy()

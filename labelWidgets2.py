@@ -56,7 +56,6 @@ class Textbox(Widget):
 
 class IntTextbox(Textbox):
 
-	#helpers
 	def OnValidate(self, d, i, P, s, S, v, V, W):
 		if S.isdigit():
 			return True
@@ -69,21 +68,12 @@ class IntTextbox(Textbox):
 		else:
 			return int(entry_)
 
-		'''
-		e = self.entry.get()
-		if e == '': return 0
-		try:
-			return int(e)
-		except:
-			return 0
-		'''
-
 
 class Datebox(IntTextbox):
 
 	def config(self, **kwargs):
 
-		try:
+		if 'm' in kwargs and 'd' in kwargs and 'y' in kwargs:
 			m, d, y = StringVar(), StringVar(), StringVar()
 			m.set(kwargs['m'])
 			d.set(kwargs['d'])
@@ -91,15 +81,9 @@ class Datebox(IntTextbox):
 			self.mEntry.config(textvariable=m)
 			self.dEntry.config(textvariable=d)
 			self.yEntry.config(textvariable=y)
-		except:
-			pass
-			#print("the widget could not be configured")
-
-		try:
+		if 'lang' in kwargs:
 			self.lang = kwargs['lang']
 			self.label.config(text=self.lang[self.text])
-		except:
-			pass
 
 	def place(self, **kwargs):
 
@@ -107,35 +91,44 @@ class Datebox(IntTextbox):
 		self.row = kwargs['row']
 		self.column = kwargs['column']
 
-		self.selfframe = Frame(self.parent)
+		self.selfframe = Frame(self.parent, bg='black')
+		self.mdy_frame = Frame(self.selfframe, relief=FLAT, bg='white')
+		self.mdy_continaer = Frame(self.mdy_frame, relief=FLAT, bg='white')
 		self.label = Label(self.parent, text=self.text, width=15, anchor=E)
-		self.mLabel = Label(self.selfframe, text='MM')
-		self.dLabel = Label(self.selfframe, text='DD')
-		self.yLable = Label(self.selfframe, text='YY')
+		self.dLabel = Label(self.mdy_continaer, text='/', bg='white')
+		self.yLable = Label(self.mdy_continaer, text='/', bg='white')
 
-		self.mEntry = Entry(self.selfframe, relief=SOLID, width=3)
-		self.dEntry = Entry(self.selfframe, relief=SOLID, width=3)
-		self.yEntry = Entry(self.selfframe, relief=SOLID, width=5)
+		self.mEntry = Entry(self.mdy_continaer, relief=FLAT, width=4, justify=CENTER)
+		self.dEntry = Entry(self.mdy_continaer, relief=FLAT, width=4, justify=CENTER)
+		self.yEntry = Entry(self.mdy_continaer, relief=FLAT, width=7, justify=CENTER)
 
-
-		self.selfframe.grid(row=self.row, column=self.column+1)
+		self.mdy_frame.pack(padx=1, pady=1, fill=X)
+		self.mdy_continaer.pack()
+		self.selfframe.grid(row=self.row, column=self.column+1, stick=E+W)
 
 		self.label.grid(row=self.row, column=self.column)
-		self.mLabel.grid(row=1, column=0)
 		self.dLabel.grid(row=1, column=2)
 		self.yLable.grid(row=1, column=4)
 
-		self.mEntry.grid(row=1, column=1)
+		self.mEntry.grid(row=1, column=1, padx=(1, 0))
 		self.dEntry.grid(row=1, column=3)
-		self.yEntry.grid(row=1, column=5)
+		self.yEntry.grid(row=1, column=5, padx=(0, 1))
 
 		self.bind()
 
+	def OnValidate(self, d, i, P, s, S, v, V, W, digit_type):
+		if d == '0': return True
+		if not S.isdigit(): return False
+		if digit_type == 'date' or digit_type == 'month':
+			if len(s) == 2: return False
+		elif digit_type == 'year':
+			if len(s) == 4: return False
+		return True
+
 	def bind(self):
-		vcmd = (self.parent.register(self.OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
-		self.mEntry.config(validate="all", validatecommand=vcmd)
-		self.dEntry.config(validate="all", validatecommand=vcmd)
-		self.yEntry.config(validate="all", validatecommand=vcmd)
+		self.mEntry.config(validate="all", validatecommand=(self.parent.register(self.OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W', 'date'))
+		self.dEntry.config(validate="all", validatecommand=(self.parent.register(self.OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W', 'month'))
+		self.yEntry.config(validate="all", validatecommand=(self.parent.register(self.OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W', 'year'))
 
 	def getData(self):
 		try:
@@ -156,16 +149,11 @@ class MoneyTextbox(IntTextbox):
 
 	#helpers
 	def OnValidate(self, d, i, P, s, S, v, V, W):
-		try:
-			int(S)
+		if S.isdigit():
 			return True
-		except ValueError:
-			#print(self.getData())
+		else:
 			return S == '.' and '.' not in self.entry.get()# or False
 		return False
-
-	#def config(self, **kwargs):
-		#return
 
 	def getData(self):
 		e = self.entry.get()
@@ -179,22 +167,9 @@ class MoneyTextbox(IntTextbox):
 class Separator(Widget):
 
 	def __init__(self, **kwargs):
-		try:
-			self.repr = kwargs['repr']
-		except:
-			pass
-			#print("widget could not be loaded")
-
-		#self.height = 2
-		#self.bd = 1
-		#self.relief = SUNKEN
-		#self.sticky = W+E
-
-	def config(self, **kwargs):
-		pass
+		self.repr = kwargs['repr']
 
 	def place(self, **kwargs):
-
 		self.parent = kwargs['parent']
 		self.row = kwargs['row']
 		self.column = kwargs['column']
@@ -206,25 +181,17 @@ class Separator(Widget):
 class Picker(Textbox):
 
 	def __init__(self, **kwargs):
-		try:
-			self.repr = kwargs['repr']
-			self.text = kwargs['text']
-			self.rads = kwargs['rads']
-		except:
-			pass
-			#print("widget could not be loaded")
+		self.repr = kwargs['repr']
+		self.text = kwargs['text']
+		self.rads = kwargs['rads']
 
 	def config(self, **kwargs):
-
-		try:
-			self.lang = kwargs['lang']
-			self.label.config(text=self.lang[self.text])
-			i = 0
-			for rad in self.brads:
-				rad.config(text=self.lang[self.rads[i][0]])
-				i += 1
-		except:
-			pass
+		self.lang = kwargs['lang']
+		self.label.config(text=self.lang[self.text])
+		i = 0
+		for rad in self.brads:
+			rad.config(text=self.lang[self.rads[i][0]])
+			i += 1
 
 	def place(self, **kwargs):
 
@@ -240,7 +207,7 @@ class Picker(Textbox):
 		self.b.set(self.rads[0][1])
 		for rad in self.rads:
 			r.append(Radiobutton(self.selfframe, text=rad[0], variable=self.b, \
-				value=rad[1], indicatoron=1, offrelief=RIDGE, overrelief=SOLID, bd=1))
+				value=rad[1], indicatoron=10))#, offrelief=GROOVE, overrelief=SOLID))
 
 		self.brads = r
 
@@ -248,7 +215,7 @@ class Picker(Textbox):
 		self.label.pack()
 		self.entry.pack()
 		for rad in self.brads:
-			rad.pack(side=LEFT, padx=2)
+			rad.pack(side=LEFT)
 
 	def getData(self):
 		return self.b.get(), self.entry.get()
@@ -257,35 +224,17 @@ class Picker(Textbox):
 class LongTextbox(Textbox):
 
 	def config(self, **kwargs):
-
-		try:
+		if 'height' in kwargs:
 			self.sentry.config(height=kwargs['height'])
-		except:
-			pass
-			#print("the widget could not be configured")
-
-		try:
+		if 'width' in kwargs:
 			self.sentry.config(width=kwargs['width'])
-		except:
-			pass
-			#print("the widget could not be configured")
-
-		try:
-			#self.text = kwargs['text']
-			#self.sentry.delete(1.0, END)
+		if 'text' in kwargs:	
 			self.sentry.insert(END, kwargs['text'])
-		except:
-			pass
-			#print("the widget could not be configured")
-			
-		try:
+		if 'lang' in kwargs:
 			self.lang = kwargs['lang']
 			self.label.config(text=self.lang[self.text])
-		except:
-			pass
-
+		
 	def place(self, **kwargs):
-
 		self.parent = kwargs['parent']
 		self.row = kwargs['row']
 		self.column = kwargs['column']
@@ -311,25 +260,16 @@ class Labelbox(Textbox):
 		Textbox.__init__(self, **kwargs)
 
 		self.bold = False
-		try:
-			self.bold = kwargs['bold']
-		except:
-			pass
+		if 'bold' in kwargs: self.bold = kwargs['bold']
 
 	def config(self, **kwargs):
 
-		try:
+		if 'text' in kwargs:
 			self.text=kwargs['text']
 			self.label.config(text=self.text)
-		except:
-			pass
-
-		try:
+		if 'lang' in kwargs:
 			self.lang = kwargs['lang']
 			self.label.config(text=self.lang[self.text])
-		except:
-			#print('error translating', self.repr)
-			pass
 
 	def getData(self):
 		return self.text
@@ -356,29 +296,18 @@ class Labelbox(Textbox):
 class Buttonbox2(Textbox):
 
 	def __init__(self, **kwargs):
-		try:			
-			self.text = kwargs['text']
-			self.repr = kwargs['repr']
-			self.lang = kwargs['lang']
-		except:
-			pass
-			#print("widget could not be loaded")
-
+		self.text = kwargs['text']
+		self.repr = kwargs['repr']
+		self.lang = kwargs['lang']
 		self.width = 30
 
 	def config(self, **kwargs):
-
-		try:
+		if 'lang' in kwargs:
 			self.lang = kwargs['lang']
 			self.button.config(text=self.lang[self.text])
-		except:
-			pass
-
-		try:
+		if 'cmd' in kwargs:
 			self.cmd = kwargs['cmd']
 			self.button.config(command=self.cmd)
-		except:
-			pass
 
 	def setData(self, data):
 		self.config(text=data)
@@ -397,16 +326,9 @@ class Buttonbox2(Textbox):
 class Buttonbox(Textbox):
 
 	def __init__(self, **kwargs):
-		try:
-			self.text = kwargs['text']
-			self.repr = kwargs['repr']
-			self.lang = kwargs['lang']
-		except:
-			pass
-			#print("widget could not be loaded")
-
-		#7D9DFF
-
+		self.text = kwargs['text']
+		self.repr = kwargs['repr']
+		self.lang = kwargs['lang']
 		self.width = 30
 		self.idlebg = '#657FCF'
 		self.hoverbg = '#405DB2'
@@ -416,14 +338,10 @@ class Buttonbox(Textbox):
 		self.hoverfg = 'white'
 
 	def config(self, **kwargs):
-		
-		try:
+		if 'lang' in kwargs:
 			self.lang = kwargs['lang']
 			self.button.config(text=self.lang[self.text])
-		except:
-			pass
-
-		try:
+		if 'cmd' in kwargs:
 			self.cmd = kwargs['cmd']
 			self.args = inspect.getargspec(kwargs['cmd']).args
 			if len(self.args) > 0 and self.args[0] != 'self':
@@ -435,31 +353,18 @@ class Buttonbox(Textbox):
 				self.button.bind('<space>', lambda e: self.cmd())
 			if hasattr(self, 'timeslot_'):
 				self.timeslot_.bind('<ButtonRelease-1>', self.cmd)
-		except:
-			pass
-
-		try:
+		if 'width' in kwargs:
 			self.width = kwargs['width']
 			self.button.config(width=self.width)
-		except:
-			pass
 
 	def enter(self, event):
-
-		try:
-			self.button.config(bg=self.hoverbg, fg=self.hoverfg)
-			self.selfframe.config(bg=self.hoverborder)
-		except:
-			pass
+		self.button.config(bg=self.hoverbg, fg=self.hoverfg)
+		self.selfframe.config(bg=self.hoverborder)
 
 	def leave(self, event):
-
-		try:
-			self.button.config(bg=self.idlebg, fg=self.fg)
-			self.selfframe.config(bg=self.idleborder)
-		except:
-			pass
-
+		self.button.config(bg=self.idlebg, fg=self.fg)
+		self.selfframe.config(bg=self.idleborder)
+		
 	def setData(self, data):
 		self.config(text=data)
 
@@ -469,7 +374,6 @@ class Buttonbox(Textbox):
 		self.column = kwargs['column']
 
 		self.selfframe = Frame(self.parent, bg=self.idleborder, bd=1)
-		#self.innerf = Frame(self.selfframe, bg='#708DE6', bd=1)
 		self.button = Label(self.selfframe, text=self.lang[self.text], width=self.width, bg=self.idlebg, fg=self.fg, \
 			font=('Verdana', 11), pady=3)
 
@@ -477,30 +381,22 @@ class Buttonbox(Textbox):
 		self.button.bind('<Leave>', self.leave)
 
 		self.selfframe.grid(row=self.row, column=self.column, pady=2)
-		#self.innerf.pack()
 		self.button.pack()
 
 
 class TextboxNoEdit(Textbox):
 
 	def config(self, **kwargs):
-
-		try:
+		if 'text' in kwargs:
 			s = StringVar()
 			s.set(kwargs['text'])
 			self.entry.config(state=NORMAL)
 			self.entry.config(textvariable=s)
 			self.entry.config(state=DISABLED)
-		except:
-			pass
-			#print("the widget could not be configured")
-
-		try:
+		if 'lang' in kwargs:			
 			self.lang = kwargs['lang']
 			self.label.config(text=self.lang[self.text].strip())
-		except:
-			pass
-
+		
 	def place(self, **kwargs):
 
 		self.parent = kwargs['parent']

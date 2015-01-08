@@ -30,6 +30,7 @@ languages = \
 		"Classes Awarded": "Classes Awarded",
 		"Classes Remaining": "Classes Remaining",
 		"Date": "Date",
+		"Time": "Time",
 		"Check-In Time": "Check-In Time",
 		"Check-Out Time": "Check-Out Time",
 		"Start Time": "Start Time",
@@ -162,7 +163,11 @@ languages = \
 		"Manual Entry": "Manual Entry",
 		"Save Attendance": "Save Attendance",
 		"Check-in": "Check-in",
-		"Check-in date": "Check-in date"
+		"Check-out": "Check-out",
+		"Check-in date": "Check-in date",
+		"School": "School",
+		"Invalid Date": "Invalid Date",
+		"Return": "Return"
 		},
 
 	"chinese": {
@@ -194,6 +199,7 @@ languages = \
 		"Classes Awarded": "学生课程总数",
 		"Classes Remaining": "剩下的课程",
 		"Date": "日期",
+		"Time": "Time",
 		"Check-In Time": "到达时间",
 		"Check-Out Time": "注销时间",
 		"Start Time": "工作开始",
@@ -326,7 +332,11 @@ languages = \
 		"Manual Entry": "登錄教师",
 		"Save Attendance": "Save Attendance",
 		"Check-in": "Check-in",
-		"Check-in date": "Check-in date"
+		"Check-out": "Check-out",
+		"Check-in date": "Check-in date",
+		"School": "School",
+		"Invalid Date": "Invalid Date",
+		"Return": "Return"
 		}
 		
 }

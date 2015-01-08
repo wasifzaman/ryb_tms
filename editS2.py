@@ -61,113 +61,44 @@ def main(lang, d, top=False, i=0):
 	w2.frames["First Frame"].addWidget(dob, (4, 0))
 	#w2.frames["First Frame"].addWidget(age, (5, 0))
 	#w2.frames["First Frame"].addWidget(parentName, (6, 0))
-	w2.frames["First Frame"].addWidget(cp, (7, 0))
+	w2.frames["First Frame"].addWidget(cp, (5, 0))
 
 #address widgets
-	w2.frames["First Frame"].addWidget(ainfo, (8, 0))
+	w2.frames["Second Frame"].addWidget(ainfo, (0, 3))
 	ainfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
 	ainfo.label.grid(columnspan=2, sticky=E+W, pady=3)
-	w2.frames["First Frame"].addWidget(city, (9, 0))
-	w2.frames["First Frame"].addWidget(state, (10, 0))
-	w2.frames["First Frame"].addWidget(zip, (11, 0))
-	w2.frames["First Frame"].addWidget(email, (12, 0))
-	w2.frames["First Frame"].addWidget(cPhone, (13, 0))
-	w2.frames["First Frame"].addWidget(cPhone2, (14, 0))
-
-#contact widgets
-	'''
-	w2.frames["Third Frame"].addWidget(cinfo, (0, 0))
-	cinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
-	cinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
-	w2.frames["Third Frame"].addWidget(pup, (1, 0))
-	w2.frames["Third Frame"].addWidget(hPhone, (2, 0))
-	w2.frames["Third Frame"].addWidget(cPhone, (3, 0))
-	w2.frames["Third Frame"].addWidget(cPhone2, (4, 0))
-	'''
+	w2.frames["Second Frame"].addWidget(city, (1, 3))
+	w2.frames["Second Frame"].addWidget(state, (2, 3))
+	w2.frames["Second Frame"].addWidget(zip, (3, 3))
+	w2.frames["Second Frame"].addWidget(email, (4, 3))
+	w2.frames["Second Frame"].addWidget(cPhone, (5, 3))
+	w2.frames["Second Frame"].addWidget(cPhone2, (6, 3))
 
 #database info widgets
-	w2.frames["First Frame"].addWidget(pinfo, (15, 0))
+	w2.frames["Second Frame"].addWidget(pinfo, (7, 3))
 	pinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
 	pinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
-	w2.frames["First Frame"].addWidget(bCode, (16, 0))
+	w2.frames["Second Frame"].addWidget(bCode, (8, 3))
+	bCode.label.grid(sticky=N)
+	bCode.entry.grid(sticky=N)
 	#w2.frames["Fourth Frame"].addWidget(sid, (2, 0))
-	
-#payment widgets
-	'''
-	w2.frames["Fourth Frame"].addWidget(tpd, (6, 0))
-	w2.frames["Fourth Frame"].addWidget(tpa, (7, 0))
-	w2.frames["Fourth Frame"].addWidget(tp, (8, 0))
-	w2.frames["Fourth Frame"].addWidget(tpo, (9, 0))
-	'''
-
-#class widget
-	'''
-	w2.frames["Sixth Frame"].addWidget(sType, (4, 0))
-	w2.frames["Sixth Frame"].addWidget(cAwarded, (5, 0))
-	w2.frames["Sixth Frame"].addWidget(cRemaining, (6, 0))
-	w2.frames["Sixth Frame"].addWidget(ctime, (7, 0))
-	'''
 
 #notes widget
-	w2.frames["First Frame"].addWidget(ninfo, (17, 0))
+	w2.frames["First Frame"].addWidget(ninfo, (7, 0))
 	ninfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
 	ninfo.label.grid(columnspan=2, sticky=E+W, pady=3)
-	w2.frames["First Frame"].addWidget(notes, (18, 0))
+	w2.frames["First Frame"].addWidget(notes, (8, 0))
 	notes.label.grid_forget()
 	notes.sentry.grid(column=0, columnspan=2)
 	notes.config(height=8, width=32)
 
-	'''
-
-	w2.frames["Fourth Frame"].addWidget(checkin25, (0, 2))
-	w2.frames["Fourth Frame"].addWidget(checkin50, (0, 4))
-	w2.frames["Fourth Frame"].addWidget(checkin100, (0, 6))
-
-	checkin25.label.config(width=4)
-	checkin50.label.config(width=4)
-	checkin100.label.config(width=4)
-
-	checkin25.entry.config(width=3)
-	checkin50.entry.config(width=3)
-	checkin100.entry.config(width=3)
-
-	checkin25.setData(d.studentList[w2.s].datapoints['25s'])
-	checkin50.setData(d.studentList[w2.s].datapoints['50s'])
-	checkin100.setData(d.studentList[w2.s].datapoints['100s'])
-	'''
-
 	w2.frames["Fourth Frame"].addWidget(early_checkin, (0, 0))
-
-	'''
-	baclass = Buttonbox(text='awardclass', lang=w2.lang, repr='aclass')
-	baoclass = Buttonbox(text='awardoneclass', lang=w2.lang, repr='aoclass')
-	baac = Buttonbox(text='awardaddclass', lang=w2.lang, repr='baaclasses')
-	bgold = Buttonbox(text='gold60', lang=lang, repr='bgold')
-	bbasic = Buttonbox(text='basic15', lang=lang, repr='bbasic')
-
-	w2.frames["Eigth Frame"].addWidget(bgold, (1, 0))
-	w2.frames["Eigth Frame"].addWidget(bbasic, (1, 1))
-	w2.frames["Eigth Frame"].addWidget(baoclass, (1, 2))
-
-	baoclass.config(cmd=caddone, width=12)
-	bgold.config(cmd=lambda: caddmorex(60), width=12)
-	bbasic.config(cmd=lambda: caddmorex(15), width=12)
-
-	baoclass.selfframe.grid(padx=2)
-	bgold.selfframe.grid(padx=2)
-	bbasic.selfframe.grid(padx=2)
-	
-	
-	#w2.frames["Sixth Frame"].addWidget(baclass, (0, 0))
-	#w2.frames["Sixth Frame"].addWidget(baac, (2, 0))
-	#baclass.config(cmd=lambda: cpicker(w2.lang))
-	#baac.config(cmd=cadd)
-	'''
 
 	switch_frame_button = Buttonbox(text='Attendance Table', lang=w2.lang, repr='showstudentinfo')
 	#show_table = Buttonbox(text='Attendance Table', lang=w2.lang, repr='showtable')
 
 	w.frames["Seventh Frame"].addWidget(switch_frame_button, (2, 0))
+	switch_frame_button.selfframe.grid_forget()
 	#w2.frames["Seventh Frame"].addWidget(show_table, (3, 0))
 
 	t.current_shown = 'w2'
@@ -202,32 +133,8 @@ def main(lang, d, top=False, i=0):
 	#save_attendance = Buttonbox(text='Save Attendance', lang=w2.lang, repr='saveattendance')
 	#save_attendance.config(cmd=save_attendance_)
 	w2.attinfo.canvas.config(width=720)
-	w2.attinfo.editwidget = True
+	w2.attinfo.editwidget = False
 	w2.attinfo.clast = False
-
-#renew classes button
-	'''
-	def renC():
-		try:
-			d.studentList[w2.s]
-		except:
-			return
-
-		r = renew(w2.lang)
-		dp = d.studentList[w2.s].datapoints
-		dp['cRemaining'] = dp['cRemaining'] + r
-		dp['cAwarded'] = dp['cAwarded'] + r
-		dp['expire'] = d.calcExpir(datetime.now().date(), r)
-		cRemaining.setData(dp['cRemaining'])
-		cAwarded.setData(dp['cAwarded'])
-
-	w2.ren = Buttonbox(text='Renew classes', lang=w2.lang, repr='ren')
-	w2.frames["Twelfth Frame"].addWidget(w2.ren, (1, 0))
-	w2.ren.selfframe.grid(sticky=S)
-	w2.ren.config(cmd=renC)
-	'''
-	
-	w2.attinfo.editwidget=True
 	w2.attinfo.canvas.config(width=700, height=520)
 
 	#reset portrait
@@ -303,7 +210,8 @@ def main(lang, d, top=False, i=0):
 	#set starting lang
 	for frame in w2.frames.values():
 		for widget in frame.widgets.values():
-			widget.config(lang=w2.lang)
+			if hasattr(widget, 'config'):
+				widget.config(lang=w2.lang)
 
 	brwp.config(lang=w2.lang)
 	switch_frame_button.config(lang=w2.lang)

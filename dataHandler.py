@@ -28,11 +28,12 @@ class StudentInfo:
             "cAwarded": 0, "cRemaining": 0,
             "findSchool": 'N/A',
             "notes": 'N/A',
-            "attinfo": [['Date', 'Check-In Time', 'Start Time', 'Check-Out Time'], []],
+            "attinfo": [['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time', 'School'], []],
             "portr": '',
             "ctime": 'N/A', "expire": 'N/A', "cp": "N",
             "paid_entries": {},
-            "last_payment": False
+            "last_payment": False,
+            'inrow': 0
             #"25s": 0, "50s": 0, "100s": 0, "inrow": 0,
             }
 
@@ -159,13 +160,14 @@ class StudentDB:
         return start + timedelta(days=rem*14)
 
     def calcInRow(self, barcode):
-        cdt = datetime.now()
+        return
+        #cdt = datetime.now()
+        #todaysearly = datetime(cdt.year, cdt.month, cdt.day, 9, 15)
+        #s = self.studentList[barcode].datapoints
+        #s['inrow'] += 1
 
-        todaysearly = datetime(cdt.year, cdt.month, cdt.day, 9, 15)
 
-        s = self.studentList[barcode].datapoints
 
-        s['inrow'] += 1
         
         '''
         if cdt < todaysearly:
@@ -180,7 +182,6 @@ class StudentDB:
             s['inrow'] = 0
         '''
 
-
     def reset_checkin(self, barcode, value):
         if value == True:
             s = self.studentList[barcode].datapoints
@@ -192,7 +193,6 @@ class StudentDB:
             return True
 
         return False
-
 
     def scanStudent(self, barcode):
         #try:
@@ -209,12 +209,11 @@ class StudentDB:
 
         s = self.studentList[barcode].datapoints
         s['attinfo'] = list(s['attinfo'])
-        s['attinfo'][0] = ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time']
+        s['attinfo'][0] = ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time', 'School']
         s['attinfo'][1].append(data)
 
         self.studentList[barcode].timesheet.clocktimein()
         self.calcInRow(barcode)
-
 
     def scanOutTeacher(self, barcode, confirmed_time):
         cdt = datetime.now()
@@ -226,38 +225,37 @@ class StudentDB:
 
         s = self.studentList[barcode].datapoints
         s['attinfo'] = list(s['attinfo'])
-        s['attinfo'][0] = ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time']
+        s['attinfo'][0] = ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time', 'School']
         s['attinfo'][1][-1][3] = time
         s['attinfo'][1][-1][4] = timeslot
 
         self.studentList[barcode].timesheet.clocktimeout()
         #print(self.studentList[barcode].timesheet.printtimesheet())
 
+    def sort_attendance(self, barcode):
+        attendance_table = self.studentList[barcode].datapoints['attinfo'][1]
+
+        for row in attendance_table:
+            row[0] = datetime.strptime(row[0], '%m/%d/%Y')
+
+        attendance_table.sort()
+
+        for row in attendance_table:
+            row[0] = datetime.strftime(row[0], '%m/%d/%Y')
 
     def checkCode(self, barcode):
         return barcode in self.studentList
 
-
     def addStudent(self, barcode, student):
-        #add a student to the database by the barcode
         self.studentList[barcode] = student
         dp = self.studentList[barcode].datapoints
         
         try:
-            #calculate the age
             dp['age'] = self.calcAge(dp['dob'])
         except:
             dp['age'] = 0
-        
-        try:
-            #calculate the expiration
-            dp['expire'] = self.calcExpir(datetime.now().date(), dp['cAwarded'])
-        except:
-            pass
 
-        #increment the last barcode
         self.last += 1
-
 
     def saveData(self):
         if not hasattr(self, 'key'):
@@ -276,9 +274,6 @@ class StudentDB:
         f.write(bytearray(encrypted))
         f.close()
 
-        #print('encrypted', encrypted)
-
-
     def loadData(self):
         #key = b'=5<(M8R_P8CJx);^'
         cipher = AES.new(self.key, AES.MODE_CFB, self.iv)
@@ -294,14 +289,7 @@ class StudentDB:
         decrypted = cipher.decrypt(f.read())
         self.studentList = pickle.loads(decrypted)
 
-        #print('student_list', self.studentList)
-
-        #self.studentList = pickle.loads(cipher.decrypt(f.read()))
-
-        #print(self.studentList)
-
         self.setLast()
-
 
     def format(self, ctype, value):
         #format cell for import
@@ -311,7 +299,6 @@ class StudentDB:
             return
             if ctype == 0: print("cell is empty, not added to database")
             else: print("cell could not be formatted")
-
 
     def exportxlsx(self, filename):
         if len(self.studentList) == 0: return
@@ -335,7 +322,6 @@ class StudentDB:
             r += 1
 
         workbook.close()
-
 
     def exporttxlsx(self, filename):
         if len(self.studentList) == 0: return
@@ -377,7 +363,6 @@ class StudentDB:
 
         workbook.close()
 
-
     def importxlsx(self, filename):        
         #import database from xlsx or xls file
         workbook = xlrd.open_workbook(filename)
@@ -413,7 +398,6 @@ class StudentDB:
             self.addStudent(newS.datapoints['bCode'], newS)
 
         self.saveData()
-
 
     def importtimexlsx(self, filename):
         #import time data from xlsx or xls
@@ -485,10 +469,8 @@ class StudentDB:
         #return the amount of students and amount time data added
         return ns, nt
 
-
     def exportdb(self, dst):
         shutil.copyfile(self.file, dst)
-
 
     def exportreport(self, fpath, sdate):
 
@@ -551,8 +533,8 @@ class StudentDB:
         r, c = 5, 0
 
         for row in row_sorted:
-            worksheet.write(r, 0, row[0])
-            worksheet.write(r, 1, row[1])
+            worksheet.write(r, 0, 'Arrived') #check-in
+            worksheet.write(r, 1, 'Departed') #check-out
             worksheet.write(r, 2, row[2])
             worksheet.write(r, 3, row[3])
             worksheet.write(r, 4, row[4])
@@ -563,7 +545,6 @@ class StudentDB:
     def stringtime_to_decimal(self, string_time):
         (h, m, s) = string_time.split(':')
         return (int(h) * 3600 + int(m) * 60 + int(s)) / 3600
-
 
     def print_pay_entries(self, fpath, employee_id, pay_entries, pay_per_hour=1.00, max_hours=False):
         workbook = xlsxwriter.Workbook(fpath + '.xlsx')

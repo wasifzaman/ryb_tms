@@ -99,42 +99,9 @@ def main():
 
 #print report prompt
 	def printPrompt():
-
-		def out():
-			try:
-				p = filedialog.askdirectory()
-			except:
-				return
-
-			try:
-				w.d.exportreport(p, rdate.getData())
-				print_succesful(w.lang)
-			except:
-				pass
-
-			pt.destroy()
-
-		pt = Window(top=True)
-		pt.attributes('-fullscreen', False)
-		pt.resizable(0, 0)
-		pt.geometry('400x200+200+200')
-		pt.grab_set()
-		pt.focus_set()
-
-		wpt = AppWindow(pt.mainFrame)
-
-		rdate = Datebox(text=w.lang['sdate'], lang=w.lang, repr='rdate')
-		rbutton = Buttonbox(text='Select Folder', lang=w.lang, repr='rbutton')
-
-		wpt.newFrame("First Frame", (0, 0))
-
-		wpt.frames["First Frame"].addWidget(rdate, (0, 0))
-		wpt.frames["First Frame"].addWidget(rbutton, (1, 0))
-
-		rdate.label.destroy()
-		rbutton.selfframe.grid(columnspan=2, pady=20)
-
-		rbutton.config(cmd=out)
+		output_path = filedialog.askdirectory()
+		if output_path != None:
+			w.d.exportreport(output_path, datetime.strftime(datetime.now(), '%m/%d/%Y'))
 
 	def choose_school(event):
 		

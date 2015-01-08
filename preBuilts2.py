@@ -7,11 +7,11 @@ from tkinter import filedialog
 from Crypto.Cipher import AES
 import pickle
 from datetime import datetime
+import tkinter.ttk as ttk
 
 language = languages["english"]
 
 #duplicates of these widgets cannot exist if duplicates are desired, they have to be created by user
-
 
 #strings
 firstName = Textbox(text="First Name", lang=language, repr='firstName')
@@ -35,7 +35,6 @@ cPhone = Textbox(text="Cell Phone", lang=language, repr='cPhone')
 cPhone2 = Textbox(text="Cell Phone 2", lang=language, repr='cPhone2')
 cp = Textbox(text="Card Printed", lang=language, repr='cp')
 
-
 #integers
 age = IntTextbox(text="Age", lang=language, repr='age')
 sid = IntTextbox(text="Old Student ID", lang=language, repr='sid')
@@ -43,17 +42,14 @@ zip = IntTextbox(text="Zipcode", lang=language, repr='zip')
 cAwarded = IntTextbox(text="Classes Awarded", lang=language, repr='cAwarded')
 cRemaining = IntTextbox(text="Classes Remaining", lang=language, repr='cRemaining')
 
-
 #date
 dob = Datebox(text="Date of Birth", lang=language, repr='dob')
 tpd = Datebox(text="Tuition Paid Day", lang=language, repr='tpd')
-
 
 #money
 tpa = MoneyTextbox(text="Tuition Pay Amount", lang=language, repr='tpa')
 tpo = MoneyTextbox(text="Amount Owed", lang=language, repr='tpo')
 tp = MoneyTextbox(text="Already Paid", lang=language, repr='tp')
-
 
 #attendance table
 attinfo = Table(repr='attinfo', edit=True)
@@ -61,8 +57,6 @@ attinfoh = [language['Date'], language['Check-In Time'], language['Class Time']]
 attinfo.build(headers=attinfoh, data=[[]])
 attinfo.clast = '#FF99FF'
 
-
-#student table
 stable = Table(repr='stable', edit=False)
 stableh = [language['Barcode'], language['First Name'], \
 	language['Last Name'], language['Chinese Name'], language['Date of Birth']]
@@ -82,22 +76,14 @@ def sbind(f):
 		print("cells could not be bound")
 
 
-
-#photo
 portr = Photo(repr='portr', path='monet_sm.jpg')
 
-
-#separator
 sepr = Separator(repr='sepr')
-
-
-#scan
 sby = Picker(repr='sby', text=language['Search By'], rads=[(language['Barcode'], 'bCode'), \
 	(language['First Name'], 'firstName'), \
 	(language['Last Name'], 'lastName'), \
 	(language['Chinese Name'], 'chineseName'), \
 	(language['Phone Number'], 'phoneNumber')])
-
 
 #info titles
 sinfo = Labelbox(text='Student information', lang=language, repr='sinfo')
@@ -105,7 +91,6 @@ ainfo = Labelbox(text='Address information', lang=language, repr='ainfo')
 cinfo = Labelbox(text='Contact information', lang=language, repr='cinfo')
 pinfo = Labelbox(text='Payment information', lang=language, repr='pinfo')
 ninfo = Labelbox(text='Notes', lang=language, repr='ninfo')
-
 
 #early checkin
 checkin25 = TextboxNoEdit(text='25s', lang=language, repr='25s')
@@ -115,7 +100,7 @@ early_checkin = TextboxNoEdit(text='Early Check-in', lang=language, repr='inrow'
 
 
 
-#spicker
+
 def spicker(d):
 
 	def sets(i):
@@ -148,8 +133,6 @@ def spicker(d):
 	#return s
 	return stable.s
 
-
-#spicker
 def cward(lang):
 
 	def sel(c):
@@ -532,6 +515,89 @@ def no_checkin_today(lang):
 
 	t.root.wait_window()
 
+def date_error(lang):
+
+	def d(z):
+		t.z = z
+		t.dw()
+
+	t = Mbox()
+	
+	t.newFrame("First Frame", (0, 0))
+	t.newFrame("Second Frame", (1, 0))
+
+	nostext = Labelbox(text='Invalid Date', lang=lang, repr='invaliddate')
+	breturn = Buttonbox(text='Return', lang=lang, repr='ok_')
+
+	t.frames["First Frame"].addWidget(ws, (0, 0))
+	t.frames["First Frame"].addWidget(nostext, (1, 0))
+	t.frames["Second Frame"].addWidget(breturn, (2, 0))
+	
+	breturn.config(cmd=lambda: d(True), lang=lang)
+
+	t.root.wait_window()
+
+def invalid_path(lang):
+
+	def d(z):
+		t.z = z
+		t.dw()
+
+	t = Mbox()
+	
+	t.newFrame("First Frame", (0, 0))
+	t.newFrame("Second Frame", (1, 0))
+
+	nostext = Labelbox(text='Invalid Path', lang={'Invalid Path': 'Invalid Path'}, repr='invaliddate')
+	breturn = Buttonbox(text='Return', lang=lang, repr='ok_')
+
+	t.frames["First Frame"].addWidget(ws, (0, 0))
+	t.frames["First Frame"].addWidget(nostext, (1, 0))
+	t.frames["Second Frame"].addWidget(breturn, (2, 0))
+	
+	breturn.config(cmd=lambda: d(True), lang=lang)
+
+	t.root.wait_window()
+
+def checkout_earlier_checkin(lang):
+
+	t = Mbox()
+	
+	t.newFrame("First Frame", (0, 0))
+	t.newFrame("Second Frame", (1, 0))
+
+	checkout_earlier_checkin_ = Labelbox(text='Check-out cannot be earlier than check-in!',
+		lang={'Check-out cannot be earlier than check-in!': 'Check-out cannot be earlier than check-in!'}, 
+		repr='fimport')
+
+	t.frames["First Frame"].addWidget(ws, (0, 0))
+	t.frames["First Frame"].addWidget(checkout_earlier_checkin_, (1, 0))
+	t.frames["Second Frame"].addWidget(bok, (2, 0))
+
+	bok.config(cmd=t.dw, lang=lang)
+
+	t.root.wait_window()
+
+def entry_not_found(lang, date):
+
+	t = Mbox()
+	
+	t.newFrame("First Frame", (0, 0))
+	t.newFrame("Second Frame", (1, 0))
+
+	entry_not_found_ = Labelbox(text='No entry was found for',
+		lang={'No entry was found for': 'No entry was found for'}, 
+		repr='fimport')
+
+	t.frames["First Frame"].addWidget(ws, (0, 0))
+	t.frames["First Frame"].addWidget(entry_not_found_, (1, 0))
+	t.frames["Second Frame"].addWidget(bok, (2, 0))
+	entry_not_found_.label.config(text=entry_not_found_.label.cget('text') + ' ' + date)
+
+	bok.config(cmd=t.dw, lang=lang)
+
+	t.root.wait_window()
+
 def confirm_check_in_time(lang, database):
 
 	def return_(value):
@@ -545,9 +611,7 @@ def confirm_check_in_time(lang, database):
 
 	cstext = Labelbox(text='Check out prompt', lang=lang, repr='creset')
 
-	dt = datetime.now()
-
-	timeslot = database.findTimeSlot(dt)
+	timeslot = database.findTimeSlot(datetime.now())
 
 	byes_current_time = Buttonbox(text='Check-in', lang=lang, repr='bok')
 	byes_enter_time = Buttonbox(text='Yes, enter time', lang=lang, repr='bnok')
@@ -589,6 +653,8 @@ def time_entry(lang):
 	confirm_time.geometry('400x200+200+200')
 	confirm_time.grab_set()
 	confirm_time.focus_set()
+	confirm_time.titleFrame.pack_forget()
+	confirm_time.time_input_confirmed = False
 
 	confirm_window = AppWindow(confirm_time.mainFrame)
 
@@ -599,29 +665,35 @@ def time_entry(lang):
 	minute_input_stringvar.set('00')
 	am_pm_stringvar.set(datetime.strftime(datetime.now(), '%p'))
 	return_button = Buttonbox(text='Confirm', lang=lang, repr='rbutton')
+	cancel_button = Buttonbox(text='Cancel', lang=lang, repr='cancelbutton')
 
 	confirm_window.newFrame("First Frame", (0, 0))
 
-	Label(confirm_window.frames["First Frame"], text='HH').grid(row=0, column=0)
-	hour_input = OptionMenu(
+	Label(confirm_window.frames["First Frame"], text=lang['Time']).grid(row=0, column=0, sticky=E)
+	hour_input = ttk.Combobox(
 		confirm_window.frames["First Frame"],
-		hour_input_stringvar, '01', '02', '03', '04', '05', '06', '07',\
-						'08', '09', '10', '11', '12')
+		textvariable=hour_input_stringvar, width=3, state='readonly')
 	hour_input.grid(row=0, column=1)
-	Label(confirm_window.frames["First Frame"], text='MM').grid(row=0, column=2)
-	minute_input = OptionMenu(
+	minute_input = ttk.Combobox(
 		confirm_window.frames["First Frame"],
-		minute_input_stringvar, '00', '30')
-	minute_input.grid(row=0, column=3)
-	am_pm_input = OptionMenu(
+		textvariable=minute_input_stringvar, width=3, state='readonly')
+	minute_input.grid(row=0, column=2)
+	am_pm_input = ttk.Combobox(
 		confirm_window.frames["First Frame"],
-		am_pm_stringvar, 'AM', 'PM')
-	am_pm_input.grid(row=0, column=4)
+		textvariable=am_pm_stringvar, width=3, state='readonly')
+	am_pm_input.grid(row=0, column=3)
 	confirm_window.frames["First Frame"].addWidget(return_button, (1, 0))
+	confirm_window.frames["First Frame"].addWidget(cancel_button, (2, 0))
 
-	return_button.selfframe.grid(columnspan=6, pady=20)
+	hour_input['values'] = ('01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12')
+	minute_input['values'] = ('00', '30')
+	am_pm_input['values'] = ('AM', 'PM')
+
+	return_button.selfframe.grid(columnspan=6, pady=(20, 0))
+	cancel_button.selfframe.grid(columnspan=6)
 
 	return_button.config(cmd=return_)
+	cancel_button.config(cmd=confirm_time.destroy)
 
 	confirm_time.wait_window()
 
@@ -683,7 +755,7 @@ def confirm_overwrite_checkin(lang):
 
 	return t.value
 
-def confirm_check_out_time(lang):
+def confirm_check_out_time(lang, database):
 
 	def return_(value):
 		t.value = value
@@ -695,8 +767,10 @@ def confirm_check_out_time(lang):
 	t.newFrame("Second Frame", (1, 0))
 
 	cstext = Labelbox(text='Check out prompt', lang=lang, repr='creset')
+	
+	timeslot = database.findTimeSlot(datetime.now())
 
-	byes_current_time = Buttonbox(text='Yes, use current time', lang=lang, repr='bok')
+	byes_current_time = Buttonbox(text='Check-out', lang=lang, repr='bok')
 	byes_enter_time = Buttonbox(text='Yes, enter time', lang=lang, repr='bnok')
 
 	byes_current_time.width = 20
@@ -714,10 +788,123 @@ def confirm_check_out_time(lang):
 	byes_current_time.config(cmd=lambda: return_(True), lang=lang)
 	byes_enter_time.config(cmd=lambda: return_('manual'), lang=lang)
 	bcancel.config(cmd=lambda: return_(False), lang=lang)
+	byes_current_time_text = byes_current_time.button.cget('text')
+	byes_current_time.button.config(
+		text=byes_current_time_text + ' ' + timeslot)
 
 	t.root.wait_window()
 
 	return t.value
+
+def date_time_entry(lang):
+
+	def return_():
+		if date_input.getData() == '01/01/1900':
+			date_error(lang)
+			return
+		time_input = hour_input_stringvar.get() + ':' + minute_input_stringvar.get() + ' ' + am_pm_stringvar.get()
+		dt = datetime.strftime(datetime.strptime(time_input, '%I:%M %p'), '%I:%M %p')
+		confirm_time.time_input_confirmed = dt
+		confirm_time.date_input = date_input.getData()
+		confirm_time.destroy()
+
+	confirm_time = Window(top=True)
+	confirm_time.attributes('-fullscreen', False)
+	confirm_time.resizable(0, 0)
+	confirm_time.geometry('400x200+200+200')
+	confirm_time.grab_set()
+	confirm_time.focus_set()
+	confirm_time.titleFrame.pack_forget()
+	confirm_time.date_input = False
+	confirm_time.time_input_confirmed = False
+
+	confirm_window = AppWindow(confirm_time.mainFrame)
+
+	date_input = Datebox(text='Date', lang=lang, repr='dateinput')
+	hour_input_stringvar = StringVar()
+	minute_input_stringvar = StringVar()
+	am_pm_stringvar = StringVar()
+	hour_input_stringvar.set(datetime.strftime(datetime.now(), '%I'))
+	minute_input_stringvar.set('00')
+	am_pm_stringvar.set(datetime.strftime(datetime.now(), '%p'))
+	return_button = Buttonbox(text='Confirm', lang=lang, repr='rbutton')
+	cancel_button = Buttonbox(text='Cancel', lang=lang, repr='cancelbutton')
+
+	confirm_window.newFrame("First Frame", (0, 0))
+
+	confirm_window.frames["First Frame"].addWidget(date_input, (0, 0))
+	Label(confirm_window.frames["First Frame"], text=lang['Time']).grid(row=1, column=0, sticky=E)
+	hour_input = ttk.Combobox(
+		confirm_window.frames["First Frame"],
+		textvariable=hour_input_stringvar, width=2, state='readonly')
+	hour_input.grid(row=1, column=1)
+	minute_input = ttk.Combobox(
+		confirm_window.frames["First Frame"],
+		textvariable=minute_input_stringvar, width=2, state='readonly')
+	minute_input.grid(row=1, column=2)
+	am_pm_input = ttk.Combobox(
+		confirm_window.frames["First Frame"],
+		textvariable=am_pm_stringvar, width=3, state='readonly')
+	am_pm_input.grid(row=1, column=3, padx=(2, 0))
+	confirm_window.frames["First Frame"].addWidget(return_button, (2, 0))
+	confirm_window.frames["First Frame"].addWidget(cancel_button, (3, 0))
+
+	hour_input['values'] = ('01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12')
+	minute_input['values'] = ('00', '30')
+	am_pm_input['values'] = ('AM', 'PM')
+
+	return_button.selfframe.grid(columnspan=6, pady=(20, 0))
+	cancel_button.selfframe.grid(columnspan=6)
+	date_input.label.config(width=11)
+	date_input.selfframe.grid(columnspan=7, pady=15)
+
+	return_button.config(cmd=return_)
+	cancel_button.config(cmd=confirm_time.destroy)
+
+	confirm_time.titleFrame.pack_forget()
+
+	confirm_time.wait_window()
+
+	return confirm_time.date_input, confirm_time.time_input_confirmed
+
+	'''
+	try:
+		cdt = datetime.now()
+		time = '{:%I:%M %p}'.format(cdt)
+		date = window_.date_input
+		data = [date, time, window_.time_input_confirmed, '', '', database.school]
+		#print(data)
+
+		s = database.studentList[bCodeNE.getData()].datapoints
+		
+		slot = []
+		for slot_ in s['attinfo'][1]:
+			if slot_[0] == date:
+				slot.append(slot_)
+				break
+
+		print(slot)
+		if len(slot) == 0: return
+
+		s['attinfo'] = list(s['attinfo'])
+		s['attinfo'][0] = ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time']
+		slot[0][3] = time
+		slot[0][4] = window_.time_input_confirmed
+	except AttributeError:
+		return
+	print('out', window_.time_input_confirmed)
+	database.saveData()
+
+	att_info = database.studentList[window_.student_id].datapoints['attinfo']
+	headers = att_info[0]
+	last_check_in = [att_info[1][-1]]
+	print(last_check_in)
+	data_points = database.studentList[window_.student_id].datapoints
+	window_.attinfo.setData([data_points['attinfo'][0], [data_points['attinfo'][1][-1]]])
+
+	sby.b.set(sby.rads[0][1]) #reset Scan By to Barcode
+	window_.attinfo.canvas.yview_moveto(1.0) #scroll to bottom
+	'''
 
 def confirm_print(s, lang):
 

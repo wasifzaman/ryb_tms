@@ -186,7 +186,7 @@ def main(t, lang, d, sM):
 	sadd.config(cmd=collect)
 
 	w.frames["Seventh Frame"].addWidget(brwp, (1, 0))
-	brwp.config(cmd=ppicker, width=14)
+	brwp.config(cmd=ppicker)#, width=14)
 
 #set starting lang
 	for frame in w.frames.values():

@@ -67,7 +67,45 @@ def main(t, lang, d, k):
 		k.files['markerfile'] = open_f.name
 		k.save()
 
+	def print_report_by_date():
+		def out():
+			p = filedialog.askdirectory()
+			if rdate.getData() == '01/01/1900':
+				date_error(w.lang)
+			elif p != None:
+				d.exportreport(p, rdate.getData())
+				print_succesful(w.lang)
+				pt.destroy()
+			else:
+				invalid_path(w.lang)
+				return
 
+		pt = Window(top=True)
+		pt.attributes('-fullscreen', False)
+		pt.resizable(0, 0)
+		pt.geometry('400x200+200+200')
+		pt.grab_set()
+		pt.focus_set()
+		pt.titleFrame.pack_forget()
+
+		wpt = AppWindow(pt.mainFrame)
+
+		rdate = Datebox(text='Date', lang=w.lang, repr='rdate')
+		rbutton = Buttonbox(text='Select Folder', lang=w.lang, repr='rbutton')
+		cancel_button = Buttonbox(text='Cancel', lang=w.lang, repr='cancelbutton')
+
+		wpt.newFrame("First Frame", (0, 0))
+
+		wpt.frames["First Frame"].addWidget(rdate, (0, 0))
+		wpt.frames["First Frame"].addWidget(rbutton, (1, 0))
+		wpt.frames["First Frame"].addWidget(cancel_button, (2, 0))
+
+		rdate.label.config(width=5)
+		rbutton.selfframe.grid(columnspan=2, pady=(20, 0))
+		cancel_button.selfframe.grid(columnspan=2)
+
+		rbutton.config(cmd=out)
+		cancel_button.config(cmd=pt.destroy)
 
 
 	def expf():
@@ -139,6 +177,7 @@ def main(t, lang, d, k):
 
 	bchoose_school = Buttonbox(text='Choose School', lang=w.lang, repr='bcschool')
 	reset_db_manager_pw = Buttonbox(text='Reset DB Manager PW', lang=w.lang, repr='resetdbmanagerpw')
+	print_report_button = Buttonbox(text='print report', lang=w.lang, repr='printreport')
 
 #title
 	#w.frames["Title Frame"].grid(columnspan=4, sticky=E+W)
@@ -157,10 +196,11 @@ def main(t, lang, d, k):
 
 	#salary report
 	w.frames["First Frame"].addWidget(bsalrep, (3, 0))
+	w.frames["First Frame"].addWidget(print_report_button, (4, 0))
 
 	#choose school
-	w.frames["First Frame"].addWidget(bchoose_school, (4, 0))
-	w.frames["First Frame"].addWidget(reset_db_manager_pw, (5, 0))
+	w.frames["First Frame"].addWidget(bchoose_school, (5, 0))
+	w.frames["First Frame"].addWidget(reset_db_manager_pw, (6, 0))
 
 	curdb = Label(w.frames['Third Frame'], text=d.file, wraplength=200, bg='#DBDBDB')
 	w.frames["Third Frame"].addWidget(curfile, (0, 0))
@@ -178,13 +218,14 @@ def main(t, lang, d, k):
 	create_markerfile = Buttonbox(text='Create new Markerfile', lang=w.lang, repr='createmfile')
 	convert_db = Buttonbox(text='Convert to Encrypted DB', lang=w.lang, repr='convertdb')
 
+
 	w.frames["Third Frame"].addWidget(bcdb, (2, 0))
 	w.frames["Third Frame"].addWidget(choose_pwfile, (4, 0))
 	w.frames["Third Frame"].addWidget(create_db, (1, 0))
 	w.frames["Third Frame"].addWidget(create_markerfile, (6, 0))
 	w.frames["Third Frame"].addWidget(choose_markerfile, (7, 0))
 
-	w.frames["First Frame"].addWidget(convert_db, (6, 0))
+	w.frames["First Frame"].addWidget(convert_db, (7, 0))
 
 	#w.frames['Fourth Frame'].addWidget(bsav, (0, 0))
 
@@ -201,6 +242,7 @@ def main(t, lang, d, k):
 	create_markerfile.config(cmd=lambda: create_new_markerfile(w.lang))
 	choose_markerfile.config(cmd=lambda: set_markerfile(curmarkerfile))
 	reset_db_manager_pw.config(cmd=lambda: reset_dbmanager_pw(w.lang))
+	print_report_button.config(cmd=print_report_by_date)
 	#curdb.config(text=s.config['dbFile'])
 	#exp.config(cmd=importwiz.main)
 

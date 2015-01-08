@@ -168,18 +168,25 @@ def main(t, lang, database):
 			if confirm_overwrite_checkout(window_.lang):
 				overwrite = True
 			else:
+				sby.b.set(sby.rads[0][1]) #reset search bar
 				return
 
-		confirm_status = confirm_check_out_time(window_.lang)
+		confirm_status = confirm_check_out_time(window_.lang, database)
 		if confirm_status == 'manual':
 			time_ = time_entry(window_.lang)
+			if not time_: return
 			data[3] = ''
 			data[4] = time_
 		elif confirm_status:
-			database.scanOutTeacher(window_.student_id, time)
+			data[3] = time
+			data[4] = timeslot
 		else:
+			sby.b.set(sby.rads[0][1]) #reset search bar
 			return
 
+		if datetime.strptime(date + ' ' + data[4], '%m/%d/%Y %I:%M %p') < datetime.strptime(date + ' ' + data[2], '%m/%d/%Y %I:%M %p'):
+			checkout_earlier_checkin(window_.lang)
+			return
 
 		database.saveData()
 		window_.attinfo.setData(
@@ -187,7 +194,8 @@ def main(t, lang, database):
 		sby.b.set(sby.rads[0][1]) #reset search bar
 		window_.attinfo.canvas.yview_moveto(1.0)
 
-#scan student
+	''' 
+	** obsolete? **
 	def scan_student():
 		last_entry = database.studentList[window_.student_id].datapoints['attinfo'][1][-1]
 		last_entry_date = last_entry[0]
@@ -251,148 +259,36 @@ def main(t, lang, database):
 
 		#reset Scan By to Barcode
 		sby.b.set(sby.rads[0][1])
+	'''
 
 	def manual_scan():
 
 		print(bCodeNE.getData())
 		if (len(bCodeNE.getData())) == 0: return
 
-		def out():
-			time_input = str(hour_input.getData()) + ':' + str(minute_input.getData()) + ' ' + am_pm_input.getData()
-			dt = datetime.strptime(datetime.strftime(time_input, '%I:%H %p'), '%I:%H %p')
-			window_.time_input_confirmed = dt
-			window_.date_input = date_input.getData()
-			confirm_time.destroy()
+		dt = date_time_entry(window_.lang)
+		if not dt[0]: return
+		date = dt[0]
+		time = dt[1]
 
-		confirm_time = Window(top=True)
-		confirm_time.attributes('-fullscreen', False)
-		confirm_time.resizable(0, 0)
-		confirm_time.geometry('400x200+200+200')
-		confirm_time.grab_set()
-		confirm_time.focus_set()
+		print(date, time)
 
-		confirm_window = AppWindow(confirm_time.mainFrame)
+		data_points = database.studentList[bCodeNE.getData()].datapoints
 
-		date_input = Datebox(text='Check-in date', lang=window_.lang, repr='dateinput')
-		hour_input = IntTextbox(text='Hour', lang=window_.lang, repr='h_input')
-		minute_input = IntTextbox(text='Minute', lang=window_.lang, repr='m_input')
-		am_pm_input = Textbox(text='AM/PM', lang=window_.lang, repr='am_pm')
-		rbutton = Buttonbox(text='Confirm', lang=window_.lang, repr='rbutton')
-
-		confirm_window.newFrame("First Frame", (0, 0))
-
-		confirm_window.frames["First Frame"].addWidget(date_input, (0, 0))
-		confirm_window.frames["First Frame"].addWidget(hour_input, (1, 0))
-		confirm_window.frames["First Frame"].addWidget(minute_input, (1, 2))
-		confirm_window.frames["First Frame"].addWidget(am_pm_input, (1, 4))
-		confirm_window.frames["First Frame"].addWidget(rbutton, (2, 0))
-
-		hour_input.label.config(width=4)
-		minute_input.label.config(width=6)
-		am_pm_input.label.config(width=6)
-		hour_input.entry.config(width=3)
-		minute_input.entry.config(width=3)
-		am_pm_input.entry.config(width=3)
-		hour_input.label.grid(sticky=E)
-		rbutton.selfframe.grid(columnspan=6, pady=20)
-		date_input.label.config(width=11)
-		date_input.selfframe.grid(columnspan=7, pady=15)
-
-		rbutton.config(cmd=out)
-
-		confirm_time.titleFrame.pack_forget()
-
-		confirm_time.wait_window()
-
-		try:
-			cdt = datetime.now()
-			time = '{:%I:%M %p}'.format(cdt)
-			date = window_.date_input
-			data = [date, time, window_.time_input_confirmed, '', '', database.school]
-			#print(data)
-
-			s = database.studentList[bCodeNE.getData()].datapoints
-			
-			slot = []
-			for slot_ in s['attinfo'][1]:
-				if slot_[0] == date:
-					slot.append(slot_)
-					break
-
-			print(slot)
-			if len(slot) == 0: return
-
-			s['attinfo'] = list(s['attinfo'])
-			s['attinfo'][0] = ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time']
-			slot[0][3] = time
-			slot[0][4] = window_.time_input_confirmed
-		except AttributeError:
-			return
-		print('out', window_.time_input_confirmed)
-		database.saveData()
-
-		att_info = database.studentList[window_.student_id].datapoints['attinfo']
-		headers = att_info[0]
-		last_check_in = [att_info[1][-1]]
-		print(last_check_in)
-		data_points = database.studentList[window_.student_id].datapoints
-		window_.attinfo.setData([data_points['attinfo'][0], [data_points['attinfo'][1][-1]]])
-
-		sby.b.set(sby.rads[0][1]) #reset Scan By to Barcode
-		window_.attinfo.canvas.yview_moveto(1.0) #scroll to bottom
-
-	
-	'''
-	** obsolete? **
-	def z():
-		try:
-			conf_check_out_method = confirm_check_out_time(window_.lang)
-			if conf_check_out_method == True and conf_check_out_method != 'cancel':
-
-				last_entry = database.studentList[window_.student_id].datapoints['attinfo'][1][-1]
-				last_entry_date = last_entry[0]
-				last_entry_checkout = False if last_entry[-2] == '' else True
-				print(last_entry_checkout)
-
-				if datetime.strptime(last_entry_date, '%m/%d/%Y').date() != datetime.now().today().date():
-					no_checkin_today(window_.lang)
-					return
-				if last_entry_checkout and not confirm_overwrite_checkout(window_.lang): return
-				
-				window_.time_input_confirmed = datetime.now().strftime('%I:%M %p')
-				database.scanOutTeacher(window_.student_id, window_.time_input_confirmed)
-
-				window_.frames['Eleventh Frame'].widgets['attinfo'].setData(database.studentList[window_.student_id].datapoints['attinfo'])
-				#w2.frames['Third Frame'].widgets['attinfo'].setData(database.studentList[window_.student_id].datapoints['attinfo'])
-
-	'''
-	'''
-				checkin25.setData(database.studentList[window_.student_id].datapoints['25s'])
-				checkin50.setData(database.studentList[window_.student_id].datapoints['50s'])
-				checkin100.setData(database.studentList[window_.student_id].datapoints['100s'])
-	'''
-	'''
-				#auto scroll to last position
-				window_.attinfo.canvas.yview_moveto(1.0)
-				#w2.attinfo.canvas.yview_moveto(1.0)
-
-				#reset Scan By to Barcode
-				sby.b.set(sby.rads[0][1])
-
-				database.saveData()
-
+		for row in data_points['attinfo'][1]:
+			if row[0] == date:
+				if len(row[4]) == 0 or confirm_overwrite_checkout(window_.lang):
+					if datetime.strptime(date + ' ' + time, '%m/%d/%Y %I:%M %p') < datetime.strptime(date + ' ' + row[2], '%m/%d/%Y %I:%M %p'):
+						checkout_earlier_checkin(window_.lang)
+						return
+					row[3] = ''
+					row[4] = time
+					database.saveData()
+					window_.attinfo.setData(
+					[data_points['attinfo'][0], [[date, row[1], row[2], row[3], row[4], row[5]]]])
 				return
-			elif conf_check_out_method == 'cancel': return
-			else:
-				scan_student()
-		except:
-			print("error-105")
 
-
-		
-
-		print(sby.getData())
-	'''
+		entry_not_found(window_.lang, date)
 
 	window_.frames["Tenth Frame"].widgets['sby'].entry.bind("<Return>", lambda x: search_student())
 
@@ -454,4 +350,5 @@ def main(t, lang, database):
 #set starting lang
 	for frame in window_.frames.values():
 		for widget in frame.widgets.values():
-			widget.config(lang=window_.lang)
+			if hasattr(widget, 'config'):
+				widget.config(lang=window_.lang)

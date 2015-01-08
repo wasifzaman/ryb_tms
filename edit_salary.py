@@ -15,6 +15,7 @@ def main(lang, d, markerfile=False, top=False, i=0): #i is the id of the student
 	t.resizable(0, 0)
 	t.grab_set()
 	t.focus_set()
+	t.titleFrame.pack_forget()
 
 	w = AppWindow(t.mainFrame)
 
@@ -28,14 +29,14 @@ def main(lang, d, markerfile=False, top=False, i=0): #i is the id of the student
 #frame initialization
 	w.newFrame("First Frame", (1, 1))
 	w.newFrame("Fifth Frame", (5, 0))
-	w.newFrame("Ninth Frame", (3, 1)) #notes
+	w.newFrame("Ninth Frame", (2, 1)) #notes
 	w.newFrame("Eleventh Frame", (1, 2))
 
 
 #frame configurations
 	w.frames["Fifth Frame"].grid(columnspan=5, sticky=S)
-	w.frames["Ninth Frame"].grid(rowspan=2, sticky=E)
-	w.frames["Eleventh Frame"].grid(sticky=N)
+	w.frames["Ninth Frame"].grid(sticky=N+E)
+	w.frames["Eleventh Frame"].grid(rowspan=2, sticky=N)
 	w.frames["Eleventh Frame"].columnconfigure(0, weight=5, minsize=720)
 
 
@@ -83,7 +84,7 @@ def main(lang, d, markerfile=False, top=False, i=0): #i is the id of the student
 	w.attinfo = attinfo
 	w.frames["Eleventh Frame"].addWidget(w.attinfo, (0, 0))
 	w.frames["Eleventh Frame"].grid(rowspan=3, sticky=W)
-	w.attinfo.canvas.config(width=720)
+	w.attinfo.canvas.config(width=720, height=500)
 	w.attinfo.editwidget = False
 	w.attinfo.clast = False
 
@@ -248,7 +249,8 @@ def main(lang, d, markerfile=False, top=False, i=0): #i is the id of the student
 	#set starting lang
 	for frame in w.frames.values():
 		for widget in frame.widgets.values():
-			widget.config(lang=w.lang)
+			if hasattr(widget, 'config'):
+				widget.config(lang=w.lang)
 
 	
 	t.mainloop()
