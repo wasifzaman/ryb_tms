@@ -156,27 +156,39 @@ def main(t, lang, database):
 		timeslot = database.findTimeSlot(dt)
 		overwrite = False
 		data_points['attinfo'][0] = ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time', 'School']
-		if date in [row[0] for row in data_points['attinfo'][1]]:
-			if not confirm_overwrite_checkin(window_.lang):
-				sby.b.set(sby.rads[0][1]) #reset search bar
-				return
-			else: overwrite = True
+		
+		for row in data_points['attinfo'][1]:
+			if date == row[0]:
+				if not confirm_overwrite_checkin(window_.lang):
+					sby.b.set(sby.rads[0][1]) #reset search bar
+					return
+				else:
+					overwrite = row
+
+		#if date in [row[0] for row in data_points['attinfo'][1]]:
+		#	if not confirm_overwrite_checkin(window_.lang):
+		#		sby.b.set(sby.rads[0][1]) #reset search bar
+		#		return
+		#	else: overwrite = True
 
 		confirm_status = confirm_check_in_time(window_.lang, database)
 		data = [date, time, timeslot, '', '', database.school]
 		if confirm_status == 'manual':
 			time_ = time_entry(window_.lang)
 			if not time_: return
-			data[1] = ''
+			data[1] = time
 			data[2] = time_
 			if overwrite:
-				data_points['attinfo'][1][-1][1] = ''
-				data_points['attinfo'][1][-1][2] = time_
+				overwrite[1] = time
+				overwrite[2] = time_
+				#data_points['attinfo'][1][-1][1] = ''
+				#data_points['attinfo'][1][-1][2] = time_
 			else:
 				data_points['attinfo'][1].append(data)
 		elif confirm_status:
 			if overwrite:
-				data_points['attinfo'][1][-1] = data
+				overwrite = data
+				#data_points['attinfo'][1][-1] = data
 			else:
 				database.scanStudent(window_.student_id)
 		else:
@@ -185,7 +197,7 @@ def main(t, lang, database):
 
 		database.saveData()
 		window_.attinfo.setData(
-		[data_points['attinfo'][0], [data_points['attinfo'][1][-1]]]) #display last entry
+		[data_points['attinfo'][0], [overwrite]]) #display last entry
 		sby.b.set(sby.rads[0][1]) #reset search bar
 		window_.attinfo.canvas.yview_moveto(1.0) #scroll to bottom of table
 
@@ -221,6 +233,7 @@ def main(t, lang, database):
 		if not dt[0]: return
 		date = dt[0]
 		time = dt[1]
+		time_entry = '' if datetime.strptime(date, '%m/%d/%Y').date() != datetime.now().date() else datetime.strftime(datetime.now(), '%I:%M %p') 
 
 		print(date, time)
 
@@ -232,18 +245,18 @@ def main(t, lang, database):
 				if len(row[4]) != 0 and datetime.strptime(date + ' ' + row[4], '%m/%d/%Y %I:%M %p') < datetime.strptime(date + ' ' + time, '%m/%d/%Y %I:%M %p'):
 					checkout_earlier_checkin(window_.lang)
 					return
-				row[1] = ''
+				row[1] = time_entry 
 				row[2] = time
 				database.saveData()
 				window_.attinfo.setData(
-				[data_points['attinfo'][0], [[date, '', time, '', '', database.school]]])
+				[data_points['attinfo'][0], [[date, time_entry, time, '', '', database.school]]])
 				return
 
-		data_points['attinfo'][1].append([date, '', time, '', '', database.school])
+		data_points['attinfo'][1].append([date, time_entry, time, '', '', database.school])
 		database.sort_attendance(bCodeNE.getData())
 		database.saveData()
 		window_.attinfo.setData(
-		[data_points['attinfo'][0], [[date, '', time, '', '', database.school]]])
+		[data_points['attinfo'][0], [[date, time_entry, time, '', '', database.school]]])
 
 	window_.frames["Tenth Frame"].widgets['sby'].entry.bind("<Return>", lambda x: search_student())
 

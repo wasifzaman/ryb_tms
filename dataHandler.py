@@ -533,8 +533,8 @@ class StudentDB:
         r, c = 5, 0
 
         for row in row_sorted:
-            worksheet.write(r, 0, 'Arrived') #check-in
-            worksheet.write(r, 1, 'Departed') #check-out
+            worksheet.write(r, 0, '老师到达') #check-in
+            worksheet.write(r, 1, '老师离开') #check-out
             worksheet.write(r, 2, row[2])
             worksheet.write(r, 3, row[3])
             worksheet.write(r, 4, row[4])

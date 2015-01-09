@@ -4,7 +4,7 @@ from dataHandler import *
 from languages import *
 from labelWidgets2 import *
 from photoWidget2 import *
-from preBuilts2 import ret, titlePic, bexp, password_prompt, wrong_password, pw_reset_confirm, print_succesful, database_backup_successful
+from preBuilts2 import ret, titlePic, bexp, password_prompt, wrong_password, pw_reset_confirm, print_succesful, database_backup_successful, teacher_report_print_successful
 from tkinter import filedialog
 import addS3
 import scanS22
@@ -100,11 +100,14 @@ def main():
 #print report prompt
 	def printPrompt():
 		output_path = filedialog.askdirectory()
+		print(type(output_path))
 		if output_path != None:
 			w.d.exportreport(output_path, datetime.strftime(datetime.now(), '%m/%d/%Y'))
+		else:
+			return
+		teacher_report_print_successful(w.lang)
 
 	def choose_school(event):
-		
 		school = preBuilts2.choose_school(w.lang)
 		w.k.files['school'] = 'Flushing' if school == 'cancel' else school
 		w.d.school = w.k.files['school']
@@ -125,7 +128,7 @@ def main():
 			
 #main window and starting language
 	w = AppWindow(t.mainFrame)
-	w.lang = languages['english']
+	w.lang = languages['chinese']
 	t.wintitle.config(text=w.lang['RYB Student Management'])
 
 #load current database

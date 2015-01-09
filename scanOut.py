@@ -175,7 +175,7 @@ def main(t, lang, database):
 		if confirm_status == 'manual':
 			time_ = time_entry(window_.lang)
 			if not time_: return
-			data[3] = ''
+			data[3] = time
 			data[4] = time_
 		elif confirm_status:
 			data[3] = time
@@ -194,73 +194,6 @@ def main(t, lang, database):
 		sby.b.set(sby.rads[0][1]) #reset search bar
 		window_.attinfo.canvas.yview_moveto(1.0)
 
-	''' 
-	** obsolete? **
-	def scan_student():
-		last_entry = database.studentList[window_.student_id].datapoints['attinfo'][1][-1]
-		last_entry_date = last_entry[0]
-		last_entry_checkout = False if last_entry[-2] == '' else True
-		print(last_entry_checkout)
-
-		if datetime.strptime(last_entry_date, '%m/%d/%Y').date() != datetime.now().today().date():
-			no_checkin_today(window_.lang)
-			return
-		if last_entry_checkout and not confirm_overwrite_checkout(window_.lang): return
-
-		def out():
-			time_input = str(hour_input.getData()) + ':' + str(minute_input.getData()) + ' ' + am_pm_input.getData()
-			dt = datetime.strptime(datetime.strftime(time_input, '%I:%H %p'), '%I:%H %p')
-			window_.time_input_confirmed = dt
-			confirm_time.destroy()
-
-		confirm_time = Window(top=True)
-		confirm_time.attributes('-fullscreen', False)
-		confirm_time.resizable(0, 0)
-		confirm_time.geometry('400x200+200+200')
-		confirm_time.grab_set()
-		confirm_time.focus_set()
-
-		confirm_window = AppWindow(confirm_time.mainFrame)
-
-		hour_input = IntTextbox(text='Hour', lang=window_.lang, repr='h_input')
-		minute_input = IntTextbox(text='Minute', lang=window_.lang, repr='m_input')
-		am_pm_input = Textbox(text='AM/PM', lang=window_.lang, repr='am_pm')
-		rbutton = Buttonbox(text='Confirm', lang=window_.lang, repr='rbutton')
-
-		confirm_window.newFrame("First Frame", (0, 0))
-
-		confirm_window.frames["First Frame"].addWidget(hour_input, (0, 0))
-		confirm_window.frames["First Frame"].addWidget(minute_input, (0, 2))
-		confirm_window.frames["First Frame"].addWidget(am_pm_input, (0, 4))
-		confirm_window.frames["First Frame"].addWidget(rbutton, (1, 0))
-
-		hour_input.label.config(width=4)
-		minute_input.label.config(width=6)
-		am_pm_input.label.config(width=6)
-		hour_input.entry.config(width=3)
-		minute_input.entry.config(width=3)
-		am_pm_input.entry.config(width=3)
-		rbutton.selfframe.grid(columnspan=6, pady=20)
-
-		rbutton.config(cmd=out)
-
-		confirm_time.wait_window()
-
-		try:
-			database.scanOutTeacher(window_.student_id, window_.time_input_confirmed)
-		except AttributeError:
-			return
-		print('out', window_.time_input_confirmed)
-		database.saveData()
-		
-		data_points = database.studentList[window_.student_id].datapoints
-		window_.attinfo.setData([data_points['attinfo'][0], [data_points['attinfo'][1][-1]]])
-		window_.attinfo.canvas.yview_moveto(1.0)
-
-		#reset Scan By to Barcode
-		sby.b.set(sby.rads[0][1])
-	'''
-
 	def manual_scan():
 
 		print(bCodeNE.getData())
@@ -270,6 +203,7 @@ def main(t, lang, database):
 		if not dt[0]: return
 		date = dt[0]
 		time = dt[1]
+		time_entry = '' if datetime.strptime(date, '%m/%d/%Y').date() != datetime.now().date() else datetime.strftime(datetime.now(), '%I:%M %p') 
 
 		print(date, time)
 
@@ -281,7 +215,7 @@ def main(t, lang, database):
 					if datetime.strptime(date + ' ' + time, '%m/%d/%Y %I:%M %p') < datetime.strptime(date + ' ' + row[2], '%m/%d/%Y %I:%M %p'):
 						checkout_earlier_checkin(window_.lang)
 						return
-					row[3] = ''
+					row[3] = time_entry
 					row[4] = time
 					database.saveData()
 					window_.attinfo.setData(
