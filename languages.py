@@ -47,6 +47,7 @@ languages = \
 		"No classes": "\Teacher does not have any more classes!",
 		"Con print": "\nYou sure to print file?",
 		"Overwrite Checkout": "\nTeacher checked-out today.\nOverwrite current check-out?",
+		"Overwrite Check-in": "Overwrite Check-in",
 		"No Check-in today": "\nTeacher has not checked-in today",
 		"Confirm late check-in": "\nDo you want to count this Check-In as 9:15AM?",
 		"ok": "    Ok    ",
@@ -168,7 +169,10 @@ languages = \
 		"School": "School",
 		"Invalid Date": "Invalid Date",
 		"Return": "Return",
-		"Teacher Print Successful": "Teacher Print Successful"
+		"Teacher Print Successful": "Teacher Print Successful",
+		"Check-Out Cannot be earlier than Check-In": "Check-Out Cannot be earlier than Check-In",
+		"No Check-In on that Date": "No Check-In on that Date",
+		"Cannot Check-In a future time": "Cannot Check-In a future time"
 		},
 
 	"chinese": {
@@ -215,7 +219,8 @@ languages = \
 		"Check out prompt": "\n签出这个教师?",
 		"No classes": "\n这名学生没有课程",
 		"Con print": "\n你想做报告吗？",
-		"Overwrite Checkout": "\n教师今天已经签出, 覆写目前签出",
+		"Overwrite Checkout": "\n改写签出",
+		"Overwrite Check-In": "\n改写入住",
 		"No Check-in today": "\nTeacher has not checked-in today",
 		"Confirm late check-in": "\nDo you want to count this Check-In as 9:15AM?",
 		"ok": "    确认    ",
@@ -338,7 +343,10 @@ languages = \
 		"School": "School",
 		"Invalid Date": "Invalid Date",
 		"Return": "Return",
-		"Teacher Print Successful": "教师报告成功"
+		"Teacher Print Successful": "教师报告成功",
+		"Check-Out Cannot be earlier than Check-In": "不能签出在签入前",
+		"No Check-In on that Date": "老师没有入住在这日期",
+		"Cannot Check-In a future time": "不能登记未来时间"
 		}
 		
 }

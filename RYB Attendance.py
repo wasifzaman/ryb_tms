@@ -100,8 +100,7 @@ def main():
 #print report prompt
 	def printPrompt():
 		output_path = filedialog.askdirectory()
-		print(type(output_path))
-		if output_path != None:
+		if output_path != '':
 			w.d.exportreport(output_path, datetime.strftime(datetime.now(), '%m/%d/%Y'))
 		else:
 			return

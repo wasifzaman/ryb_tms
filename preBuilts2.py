@@ -566,8 +566,8 @@ def checkout_earlier_checkin(lang):
 	t.newFrame("First Frame", (0, 0))
 	t.newFrame("Second Frame", (1, 0))
 
-	checkout_earlier_checkin_ = Labelbox(text='Check-out cannot be earlier than check-in!',
-		lang={'Check-out cannot be earlier than check-in!': 'Check-out cannot be earlier than check-in!'}, 
+	checkout_earlier_checkin_ = Labelbox(text='Check-Out Cannot be earlier than Check-In',
+		lang=lang, 
 		repr='fimport')
 
 	t.frames["First Frame"].addWidget(ws, (0, 0))
@@ -585,8 +585,28 @@ def entry_not_found(lang, date):
 	t.newFrame("First Frame", (0, 0))
 	t.newFrame("Second Frame", (1, 0))
 
-	entry_not_found_ = Labelbox(text='No entry was found for',
-		lang={'No entry was found for': 'No entry was found for'}, 
+	entry_not_found_ = Labelbox(text='No Check-In on that Date',
+		lang=lang, 
+		repr='fimport')
+
+	t.frames["First Frame"].addWidget(ws, (0, 0))
+	t.frames["First Frame"].addWidget(entry_not_found_, (1, 0))
+	t.frames["Second Frame"].addWidget(bok, (2, 0))
+	entry_not_found_.label.config(text=entry_not_found_.label.cget('text') + ' ' + date)
+
+	bok.config(cmd=t.dw, lang=lang)
+
+	t.root.wait_window()
+
+def deny_checkout_future(lang, date):
+
+	t = Mbox()
+	
+	t.newFrame("First Frame", (0, 0))
+	t.newFrame("Second Frame", (1, 0))
+
+	entry_not_found_ = Labelbox(text='Cannot Check-In a future time',
+		lang=lang, 
 		repr='fimport')
 
 	t.frames["First Frame"].addWidget(ws, (0, 0))
@@ -738,7 +758,7 @@ def confirm_overwrite_checkin(lang):
 	t.newFrame("First Frame", (0, 0))
 	t.newFrame("Second Frame", (1, 0))
 
-	cstext = Labelbox(text='Overwrite Checkout', lang=lang, repr='cprint')
+	cstext = Labelbox(text='Overwrite Check-In', lang=lang, repr='cprint')
 
 	t.frames["First Frame"].addWidget(hs, (1, 0))
 	t.frames["First Frame"].addWidget(cstext, (2, 0))

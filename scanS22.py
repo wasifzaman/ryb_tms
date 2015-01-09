@@ -156,20 +156,11 @@ def main(t, lang, database):
 		timeslot = database.findTimeSlot(dt)
 		overwrite = False
 		data_points['attinfo'][0] = ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time', 'School']
-		
-		for row in data_points['attinfo'][1]:
-			if date == row[0]:
-				if not confirm_overwrite_checkin(window_.lang):
-					sby.b.set(sby.rads[0][1]) #reset search bar
-					return
-				else:
-					overwrite = row
-
-		#if date in [row[0] for row in data_points['attinfo'][1]]:
-		#	if not confirm_overwrite_checkin(window_.lang):
-		#		sby.b.set(sby.rads[0][1]) #reset search bar
-		#		return
-		#	else: overwrite = True
+		if date in [row[0] for row in data_points['attinfo'][1]]:
+			if not confirm_overwrite_checkin(window_.lang):
+				sby.b.set(sby.rads[0][1]) #reset search bar
+				return
+			else: overwrite = True
 
 		confirm_status = confirm_check_in_time(window_.lang, database)
 		data = [date, time, timeslot, '', '', database.school]
@@ -179,16 +170,13 @@ def main(t, lang, database):
 			data[1] = time
 			data[2] = time_
 			if overwrite:
-				overwrite[1] = time
-				overwrite[2] = time_
-				#data_points['attinfo'][1][-1][1] = ''
-				#data_points['attinfo'][1][-1][2] = time_
+				data_points['attinfo'][1][-1][1] = ''
+				data_points['attinfo'][1][-1][2] = time_
 			else:
 				data_points['attinfo'][1].append(data)
 		elif confirm_status:
 			if overwrite:
-				overwrite = data
-				#data_points['attinfo'][1][-1] = data
+				data_points['attinfo'][1][-1] = data
 			else:
 				database.scanStudent(window_.student_id)
 		else:
@@ -197,7 +185,7 @@ def main(t, lang, database):
 
 		database.saveData()
 		window_.attinfo.setData(
-		[data_points['attinfo'][0], [overwrite]]) #display last entry
+		[data_points['attinfo'][0], [data_points['attinfo'][1][-1]]]) #display last entry
 		sby.b.set(sby.rads[0][1]) #reset search bar
 		window_.attinfo.canvas.yview_moveto(1.0) #scroll to bottom of table
 
@@ -230,6 +218,10 @@ def main(t, lang, database):
 		if (len(bCodeNE.getData())) == 0: return
 
 		dt = date_time_entry(window_.lang)
+		if not dt: return
+		if datetime.strptime(dt[0], '%m/%d/%Y') > datetime.now():
+			deny_checkout_future(window_.lang, dt[0])
+			return
 		if not dt[0]: return
 		date = dt[0]
 		time = dt[1]
