@@ -1,6 +1,6 @@
 import sys, os
-sys.path.append('widgets')
-sys.path.append('messages windows')
+sys.path.append(os.path.abspath(os.pardir) + '\widgets')
+sys.path.append(os.path.abspath(os.pardir) + '\messages windows')
 
 from textbox import Textbox, TextboxNoEdit, IntTextbox, MoneyTextbox
 from date_textbox import Datebox
@@ -53,6 +53,7 @@ tpa = MoneyTextbox(text="Tuition Pay Amount", lang=language, repr='tpa')
 tpo = MoneyTextbox(text="Amount Owed", lang=language, repr='tpo')
 tp = MoneyTextbox(text="Already Paid", lang=language, repr='tp')
 attinfo = Table(repr='attinfo', edit=True)
+portr = Photo(repr='portr', path=os.path.abspath(os.pardir + '\images\\' + 'monet_sm.jpg'))
 
 
 attinfoh = [language['Date'], language['Check-In Time'], language['Class Time']]

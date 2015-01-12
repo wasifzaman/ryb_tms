@@ -14,8 +14,6 @@ from languages import languages
 
 language = languages["english"]
 
-hs = Photo(repr='hs', path='halt_sm.png')
-ws = Photo(repr='ws', path='ws_sm.png')
 byes = Buttonbox(text='yes', lang=language, repr='byes')
 bno = Buttonbox(text='no', lang=language, repr='bno')
 bcancel = Buttonbox(text='Cancel', lang=language, repr='bcancel')

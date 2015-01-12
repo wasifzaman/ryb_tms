@@ -1,6 +1,10 @@
 import sys, os
-sys.path.append('windows')
-sys.path.append('widgets')
+sys.path.append(os.path.abspath(os.pardir) + '\windows')
+sys.path.append(os.path.abspath(os.pardir) + '\widgets')
+sys.path.append(os.path.abspath(os.pardir) + '\database')
+sys.path.append(os.path.abspath(os.pardir) + '\miscellaneous')
+sys.path.append(os.path.abspath(os.pardir))
+images = os.path.abspath(os.pardir) + '\images\\' #image directory
 
 from tkinter import *
 from uiHandler22 import *
@@ -153,7 +157,7 @@ def main():
 	bprint = Buttonbox(text='print report', lang=window_.lang, repr='bprint') #Print end of day report
 	bexp = Buttonbox(text='expxls', lang=window_.lang, repr='bexp')
 
-	window_.p = Photo(repr='splash', path='background_IMG.jpg')
+	window_.p = Photo(repr='splash', path=os.path.abspath(os.pardir + '\images\\' + 'background_IMG.jpg'))
 
 	window_.frames["First Frame"].addWidget(bsadd, (1, 0))
 	window_.frames["First Frame"].addWidget(bsscan, (2, 0))
@@ -242,7 +246,7 @@ def main():
 	bexp.hoverfg = 'white'
 	bexp.button.config(bg=bexp.idlebg, fg=bexp.fg)
 
-	main_window_.iconbitmap('RYB_Attendance.ico')
+	main_window_.iconbitmap(os.path.abspath(os.pardir + '\images\\' + 'RYB_Attendance.ico'))
 	main_window_.mainloop()
 
 main()

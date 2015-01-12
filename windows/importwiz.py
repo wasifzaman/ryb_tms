@@ -1,5 +1,6 @@
 import sys, os, shutil
 sys.path.append(os.path.abspath(os.pardir) + '\messages windows')
+temp = os.path.abspath(os.pardir) + '\\temp\\'
 
 from uiHandler22 import *
 from dataHandler import *
@@ -23,8 +24,8 @@ def main(lang, database):
 		if len(source_path.getData()) == 0: return
 
 		rand_int = str(randrange(0, 100000))
-		window_.randfile = 'temp\\temp' + rand_int + '.rybdb'
-		window_.randpwfile = 'temp\\temp_pw_file' + rand_int + '.rybdb'
+		window_.randfile = temp + '\\temp' + rand_int + '.rybdb'
+		window_.randpwfile = temp + '\\temp_pw_file' + rand_int + '.rybdb'
 		new_database = StudentDB(file=window_.randfile, cfile='', pwfile=window_.randpwfile)
 		
 		try:
@@ -58,10 +59,10 @@ def main(lang, database):
 			not hasattr(window_, 'randfile'):
 			return
 		out_file = dest_path.getData().split('/')
-		file_name = 'temp\\' + out_file[-1]
+		file_name = temp + out_file[-1]
 		dest_path_ = '/'.join(out_file[:-1])
 		pw_out_file = pw_fpath.getData().split('/')
-		pw_file_name = 'temp\\' + pw_out_file[-1]
+		pw_file_name = temp + pw_out_file[-1]
 		pw_dest_path = '/'.join(out_file[:-1])
 
 		os.rename(window_.randfile, file_name)
@@ -91,7 +92,7 @@ def main(lang, database):
 	window_ = AppWindow(top_window_.mainFrame)
 	window_.lang = lang
 
-	window_.student_table = stable
+	window_.student_table = Table(repr='stable', edit=False)
 	window_.student_table_headers = [window_.lang['Barcode'], window_.lang['First Name'], \
 		window_.lang['Last Name'], window_.lang['Chinese Name'], window_.lang['Date of Birth']]
 	window_.student_table.build(headers=window_.student_table_headers, data=[[]])

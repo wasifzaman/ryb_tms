@@ -1,6 +1,10 @@
+import sys, os
+images = os.path.abspath(os.pardir) + '\images\\' #image directory
+
 from tkinter import *
 import os.path
 from PIL import Image, ImageTk
+
 
 
 
@@ -89,7 +93,7 @@ class Window(Tk):
 
 		self.attributes('-fullscreen', True)
 
-		self.pic = Image.open('bigbl.jpg')
+		self.pic = Image.open(images + 'bigbl.jpg')
 		self.img = ImageTk.PhotoImage(self.pic)
 
 
@@ -117,14 +121,3 @@ class Window(Tk):
 		#
 		self.update_idletasks()
 		self.after_idle(lambda: self.minsize(self.winfo_width(), self.winfo_height()))	
-
-		
-	
-
-		
-		
-if __name__ == "__main__":
-
-	w = Window()
-
-	w.mainloop()

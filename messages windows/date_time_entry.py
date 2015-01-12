@@ -1,6 +1,7 @@
 import sys, os
 sys.path.append(os.path.abspath(os.pardir))
 sys.path.append(os.path.abspath(os.pardir) + '\widgets')
+images = os.path.abspath(os.pardir) + '\images\\'
 
 from tkinter import *
 from datetime import datetime
@@ -15,8 +16,8 @@ from languages import languages
 
 language = languages["english"]
 
-hs = Photo(repr='hs', path='halt_sm.png')
-ws = Photo(repr='ws', path='ws_sm.png')
+hs = Photo(repr='hs', path=os.path.abspath(os.pardir) + '\images\\' + 'halt_sm.png')
+ws = Photo(repr='ws', path=os.path.abspath(os.pardir) + '\images\\' + 'ws_sm.png')
 byes = Buttonbox(text='yes', lang=language, repr='byes')
 bno = Buttonbox(text='no', lang=language, repr='bno')
 bcancel = Buttonbox(text='Cancel', lang=language, repr='bcancel')

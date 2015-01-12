@@ -62,7 +62,7 @@ def main(t, lang, database):
 	notes.config(height=6, width=32)
 	window_.frames["Fourth Frame"].addWidget(early_checkin, (0, 0))
 
-	window_.portr = portr = Photo(repr='portr', path='monet_sm.jpg')
+	window_.portr = portr
 	window_.frames["Third Frame"].addWidget(window_.portr, (0, 0))
 	window_.portr.hide()
 

@@ -1,5 +1,4 @@
-import sys, os
-sys.path.append('database')
+import os
 
 from datetime import datetime, time, timedelta
 from Crypto.Cipher import AES
@@ -43,6 +42,8 @@ class StudentDB:
     def setLast(self):
         config = configparser.ConfigParser()
         config.read('config.ini', encoding='utf-8')
+
+        print(os.path.exists(os.path.abspath('config.ini')))
         
         self.last = 0
         if len(self.studentList) != 0:
