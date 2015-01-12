@@ -6,12 +6,12 @@ class Keeper:
 
 	def __init__(self, fname):
 		self.fname = fname
-		self.files = {'cfilepath': 'temp1234.rybdb', 'pwfile': 'printer.rybdb', 'markerfile': 'sal_marker.rybdb',
+		self.files = {'cfilepath': 'temp\\temp1234.rybdb', 'pwfile': 'temp\\temp1234_pw.rybdb', 'markerfile': 'sal_marker.rybdb',
 						'dbpw': self.hashpw("Quel'danas2007"), 'resetpw': True}
 		
-		try:
+		if os.path.exists(self.fname):
 			self.load()
-		except:
+		else:
 			self.save()
 
 	def hashpw(self, pw):
@@ -24,5 +24,3 @@ class Keeper:
 
 	def save(self):
 		pickle.dump(self.files, open(self.fname, "wb"))
-
-#Keeper('keeper.db')

@@ -37,7 +37,7 @@ languages = \
 		"Class Time": "Class Time",
 		"How did you hear about the school?": "How did you hear\nabout this school?",
 		"Notes": "Notes",
-		"No student": "\nTeacher was not found!\nType in the correct name or\ncontact your system administrator.",
+		"No student": "\nTeacher was not found!\nPlease try again!",
 		"Con student": "\nAre you sure you would like\nto add this to the Database?",
 		"Con S student": "\nAre you sure you would like\nto save this teacher's information to the Database?",
 		"Ase student": "\nTeacher with this barcode exists in the database\nAdding this teacher will overwrite the existing student.\nOverwrite current student?",
@@ -47,7 +47,7 @@ languages = \
 		"No classes": "\Teacher does not have any more classes!",
 		"Con print": "\nYou sure to print file?",
 		"Overwrite Checkout": "\nTeacher checked-out today.\nOverwrite current check-out?",
-		"Overwrite Check-in": "Overwrite Check-in",
+		"Overwrite Check-In": "Overwrite Check-in",
 		"No Check-in today": "\nTeacher has not checked-in today",
 		"Confirm late check-in": "\nDo you want to count this Check-In as 9:15AM?",
 		"ok": "    Ok    ",
@@ -83,7 +83,7 @@ languages = \
 		"Search": "Search",
 		"cinstudent": "Check-In Teacher",
 		"Search By": "Search By",
-		"savestudent": "Save Teacher to Database",
+		"savestudent": "Save Teacher",
 		"Database succesfully updated!": "Database succesfully updated!",
 		"File could not be imported": "File could not be imported",
 		"Cancel": "Cancel",
@@ -122,7 +122,7 @@ languages = \
 		"print to file": "Make Report",
 		"today's date": "Today's date",
 		"last payment": "Last Payment",
-		"dollar per hour": "Dollars per hour",
+		"dollar per hour": "Dollars/hour",
 		"Hour": "Hour",
 		"Minute": "Minute",
 		"AM/PM": "AM/PM",
@@ -172,7 +172,12 @@ languages = \
 		"Teacher Print Successful": "Teacher Print Successful",
 		"Check-Out Cannot be earlier than Check-In": "Check-Out Cannot be earlier than Check-In",
 		"No Check-In on that Date": "No Check-In on that Date",
-		"Cannot Check-In a future time": "Cannot Check-In a future time"
+		"Cannot Check-In a future time": "Cannot Check-In a future time",
+		"Password File": "Password File",
+		"Preview": "Preview",
+		"Output File": "Output File",
+		"Source Excel": "Source Excel",
+		"Invalid File Type": "Invalid File Type"
 		},
 
 	"chinese": {
@@ -226,7 +231,7 @@ languages = \
 		"ok": "    确认    ",
 		"yes": "    确认    ",
 		"no": "    拒绝    ",
-		"changelanguage": "English Language Display",
+		"changelanguage": "E",
 		"awardclass": "奖类",
 		"awardoneclass": "添加一课 (+1)",
 		"awardaddclass": "奖其他类",
@@ -346,7 +351,12 @@ languages = \
 		"Teacher Print Successful": "教师报告成功",
 		"Check-Out Cannot be earlier than Check-In": "不能签出在签入前",
 		"No Check-In on that Date": "老师没有入住在这日期",
-		"Cannot Check-In a future time": "不能登记未来时间"
+		"Cannot Check-In a future time": "不能登记未来时间",
+		"Password File": "Password File",
+		"Preview": "Preview",
+		"Output File": "Output File",
+		"Source Excel": "Source Excel",
+		"Invalid File Type": "Invalid File Type"
 		}
 		
 }

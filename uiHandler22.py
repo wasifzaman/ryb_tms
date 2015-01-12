@@ -9,12 +9,8 @@ class AppFrame(Frame):
 	def __init__(self, parent, *args, **kwargs):
 		Frame.__init__(self, parent, *args, **kwargs)
 		self.parent = parent
-
 		self.curRow = 0
 		self.curColumn = 0
-		#self.config(bg='grey') #debugger
-
-		#widgets
 		self.widgets = {}
 
 	def addWidget(self, widget, pos):
@@ -24,7 +20,6 @@ class AppFrame(Frame):
 class AppWindow(Frame):
 
 	def __init__(self, parent, *args, **kwargs):
-		
 		Frame.__init__(self, parent, *args, **kwargs)
 		self.parent = parent
 
@@ -50,7 +45,6 @@ class AppWindow(Frame):
 		self.pack(side=LEFT)
 		self.oframe.grid()
 		self.mainFrame.grid()
-
 
 	def newFrame(self, frameName, gridpos=(0,0)):
 		gridRow = gridpos[0]
@@ -113,11 +107,6 @@ class Window(Tk):
 		self.wintitle = Label(self.titleFrame, bg='#000000', fg='white', font=('Jumbo', 15, 'bold'))
 		self.wintitle.place(in_=self.titleFrame, anchor="c", relx=.5, rely=.5)
 
-		#self.exit = Label(self.titleFrame, bg='#B20000', fg='white', text='  ×  ', font=('Arial', 12, 'bold'))
-		#self.exit.place(in_=self.titleFrame, anchor='c', relx=.987, rely=.48)
-
-		#self.exit.bind('<Enter>', lambda e: self.exit.config(bg='red'))
-		#self.exit.bind('<Leave>', lambda e: self.exit.config(bg='#B20000'))
 #title frame and x button END
 
 		self.oframe.pack(fill="both", expand=True)#, padx=20, pady=20)
