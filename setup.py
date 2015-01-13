@@ -1,27 +1,32 @@
-import sys
+import sys, os, shutil
 from cx_Freeze import setup, Executable
+sys.path.append(os.path.abspath('windows'))
+sys.path.append(os.path.abspath('widgets'))
+sys.path.append(os.path.abspath('database'))
+sys.path.append(os.path.abspath('miscellaneous'))
+sys.path.append(os.path.abspath('messages windows'))
 
-build_exe_options = {}
+build_exe_options = {
+                    'build_exe': 'build\\bin',
+                    'create_shared_zip':False
+                    }
 
-base = None
-if sys.platform == "win32":
-    base = "Win32GUI"
+setup(name = "rybsms",
+    version = "0.1",
+    description = "RYB SMS",
+    options = {"build_exe": build_exe_options},
+    executables = [Executable("windows\\ryb_attendance.py",
+    	targetName="RYB Teacher Attendance.exe",
+    	base="Win32GUI",
+    	icon = "images\\RYB_Attendance.ico")])
 
-includefiles = ['check_mark_sm.png',
-				'halt_sm.png',
-				'monet_sm.jpg',
-				'ws_sm.png',
-				'background_IMG.jpg',
-				'bigbl.jpg',
-				'RYB_Attendance.ico']
+os.mkdir('build\\images')
+os.mkdir('build\\temp')
 
-build_exe_options = {'include_files':includefiles, 'create_shared_zip': False}
+for file_ in os.listdir('images'):
+    shutil.copy('images\\' + file_, 'build\\images\\' + file_)
+for file_ in os.listdir('temp'):
+    shutil.copy('temp\\' + file_, 'build\\temp\\' + file_)
+shutil.copy('config.ini', 'build\\config.ini')
 
-setup(  name = "rybsms",
-        version = "0.1",
-        description = "RYB SMS",
-        options = {"build_exe": build_exe_options},
-        executables = [Executable("RYB Attendance.py",
-        	targetName="RYB Teacher Attendance.exe",
-        	base=base,
-        	icon = "RYB_Attendance.ico")])
+print('\n\n****\nbuild successful\n****')

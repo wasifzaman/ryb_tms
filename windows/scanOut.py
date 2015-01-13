@@ -176,6 +176,7 @@ def main(t, lang, database):
 		confirm_status = confirm_check_out_time(window_.lang, database)
 		if confirm_status == 'manual':
 			time_ = time_entry(window_.lang)
+			print(time_, type(time_))
 			if not time_: return
 			data[3] = time
 			data[4] = time_
@@ -188,6 +189,9 @@ def main(t, lang, database):
 
 		if datetime.strptime(date + ' ' + data[4], '%m/%d/%Y %I:%M %p') < datetime.strptime(date + ' ' + data[2], '%m/%d/%Y %I:%M %p'):
 			checkout_earlier_checkin(window_.lang)
+			sby.b.set(sby.rads[0][1]) #reset search bar
+			data[3] = ''
+			data[4] = ''
 			return
 
 		database.saveData()

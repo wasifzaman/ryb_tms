@@ -1,5 +1,7 @@
 import sys, os
-sys.path.append('database')
+sys.path.append(os.path.abspath(os.pardir) + '\database')
+sys.path.append(os.path.abspath(os.pardir) + '\miscellaneous')
+
 from uiHandler22 import *
 from dataHandler import *
 from preBuilts2 import *

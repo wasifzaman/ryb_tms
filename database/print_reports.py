@@ -1,6 +1,3 @@
-import sys, os
-sys.path.append(os.path.abspath(os.pardir))
-
 import xlsxwriter
 from datetime import datetime
 
@@ -12,7 +9,7 @@ def exportreport(database, dest_path, sdate):
     if len(database.studentList) == 0: return
 
     sdates = [sdate]
-    sdsplit = [sdate].split('/')
+    sdsplit = sdate.split('/')
     sdates.append(str(int(sdsplit[0])) + '/' + str(int(sdsplit[1])) + '/' + (sdsplit[2][2:] if len(sdsplit[2]) > 2 else sdsplit[2]))
 
     date = sdates[1].replace('/', '.')
@@ -55,7 +52,8 @@ def exportreport(database, dest_path, sdate):
 
     for row in row_sorted:
         worksheet.write(r, 0, '老师到达') #check-in
-        worksheet.write(r, 1, '老师离开') #check-out
+        if len(row[1]) != 0:
+            worksheet.write(r, 1, '老师离开') #check-out
         worksheet.write(r, 2, row[2])
         worksheet.write(r, 3, row[3])
         worksheet.write(r, 4, row[4])

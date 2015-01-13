@@ -1,6 +1,6 @@
 import sys, os
-sys.path.append(os.path.abspath(os.pardir))
 sys.path.append(os.path.abspath(os.pardir) + '\widgets')
+sys.path.append(os.path.abspath(os.pardir) + '\miscellaneous')
 images = os.path.abspath(os.pardir) + '\images\\'
 
 from tkinter import *
@@ -13,9 +13,9 @@ from languages import languages
 
 language = languages["english"]
 
-ws = Photo(repr='ws', path=os.path.abspath(os.pardir) + '\images\\' + 'ws_sm.png')
-hs = Photo(repr='hs', path=os.path.abspath(os.pardir) + '\images\\' + 'halt_sm.png')
-cm = Photo(repr='cm', path=os.path.abspath(os.pardir) + '\images\\' + 'check_mark_sm.png')
+ws = Photo(repr='ws', path=images + 'ws_sm.png')
+hs = Photo(repr='hs', path=images + 'halt_sm.png')
+cm = Photo(repr='cm', path=images + 'check_mark_sm.png')
 bok = Buttonbox(text='ok', lang=language, repr='bok')
 
 def sa(s, lang):

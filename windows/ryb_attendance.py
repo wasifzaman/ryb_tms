@@ -7,12 +7,18 @@ sys.path.append(os.path.abspath(os.pardir))
 images = os.path.abspath(os.pardir) + '\images\\' #image directory
 
 from tkinter import *
-from uiHandler22 import *
-from dataHandler import *
-from languages import *
-from photoWidget2 import *
-from preBuilts2 import *
 from tkinter import filedialog
+from tkinter.scrolledtext import ScrolledText
+import tkinter.ttk as ttk
+from PIL import Image, ImageTk
+from Crypto.Cipher import AES
+from datetime import datetime, time, timedelta
+import hashlib
+import configparser
+import pickle
+import xlrd, xlsxwriter
+import shutil, copy
+import inspect
 
 import addS3
 import scanS22
@@ -23,6 +29,12 @@ import sdb_salrep
 import preBuilts2
 from choose_school import choose_school
 from password_prompt import password_prompt
+import print_reports
+from uiHandler22 import *
+from dataHandler import *
+from photoWidget2 import *
+from preBuilts2 import *
+from languages import *
 
 def main():
 
@@ -107,7 +119,7 @@ def main():
 	def printPrompt():
 		output_path = filedialog.askdirectory()
 		if output_path != '':
-			window_.d.exportreport(output_path, datetime.strftime(datetime.now(), '%m/%d/%Y'))
+			print_reports.exportreport(window_.d, output_path, datetime.strftime(datetime.now(), '%m/%d/%Y'))
 		else:
 			return
 		teacher_report_print_successful(window_.lang)
@@ -157,7 +169,7 @@ def main():
 	bprint = Buttonbox(text='print report', lang=window_.lang, repr='bprint') #Print end of day report
 	bexp = Buttonbox(text='expxls', lang=window_.lang, repr='bexp')
 
-	window_.p = Photo(repr='splash', path=os.path.abspath(os.pardir + '\images\\' + 'background_IMG.jpg'))
+	window_.p = Photo(repr='splash', path=os.path.abspath(images + 'background_IMG.jpg'))
 
 	window_.frames["First Frame"].addWidget(bsadd, (1, 0))
 	window_.frames["First Frame"].addWidget(bsscan, (2, 0))
@@ -246,7 +258,7 @@ def main():
 	bexp.hoverfg = 'white'
 	bexp.button.config(bg=bexp.idlebg, fg=bexp.fg)
 
-	main_window_.iconbitmap(os.path.abspath(os.pardir + '\images\\' + 'RYB_Attendance.ico'))
+	main_window_.iconbitmap(os.path.abspath(images + 'RYB_Attendance.ico'))
 	main_window_.mainloop()
 
 main()

@@ -1,4 +1,3 @@
-import os.path
 from tkinter import Label, N
 from widget import Widget
 from PIL import Image, ImageTk

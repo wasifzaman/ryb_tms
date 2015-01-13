@@ -7,7 +7,6 @@ import pickle
 import xlrd
 import xlsxwriter
 import shutil
-import math
 
 import keeper
 from student import StudentInfo
@@ -41,9 +40,7 @@ class StudentDB:
     
     def setLast(self):
         config = configparser.ConfigParser()
-        config.read('config.ini', encoding='utf-8')
-
-        print(os.path.exists(os.path.abspath('config.ini')))
+        config.read(os.path.abspath(os.pardir) + '\config.ini', encoding='utf-8')
         
         self.last = 0
         if len(self.studentList) != 0:

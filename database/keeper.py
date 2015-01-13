@@ -8,8 +8,8 @@ class Keeper:
 
 	def __init__(self, fname):
 		self.fname = fname
-		self.files = {'cfilepath': temp + '\\temp1234.rybdb',
-						'pwfile': temp + '\\temp1234_pw.rybdb',
+		self.files = {'cfilepath': temp + 'temp1234.rybdb',
+						'pwfile': temp + 'temp1234_pw.rybdb',
 						'markerfile': 'sal_marker.rybdb',
 						'dbpw': self.hashpw("Quel'danas2007"),
 						'resetpw': True}

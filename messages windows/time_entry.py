@@ -1,6 +1,8 @@
 import sys, os
-sys.path.append(os.path.abspath(os.pardir))
 sys.path.append(os.path.abspath(os.pardir) + '\widgets')
+sys.path.append(os.path.abspath(os.pardir) + '\miscellaneous')
+sys.path.append(os.path.abspath(os.pardir) + '\windows')
+images = os.path.abspath(os.pardir) + '\images\\'
 
 from tkinter import *
 from datetime import datetime

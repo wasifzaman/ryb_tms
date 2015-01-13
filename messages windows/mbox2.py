@@ -1,3 +1,6 @@
+import sys, os
+sys.path.append(os.path.abspath(os.pardir) + '\windows')
+
 from uiHandler22 import *
 
 class Mbox(AppWindow):

@@ -1,6 +1,7 @@
 import sys, os
 sys.path.append(os.path.abspath(os.pardir) + '\widgets')
 sys.path.append(os.path.abspath(os.pardir) + '\messages windows')
+images = os.path.abspath(os.pardir) + '\images\\' #image directory
 
 from textbox import Textbox, TextboxNoEdit, IntTextbox, MoneyTextbox
 from date_textbox import Datebox
@@ -53,7 +54,7 @@ tpa = MoneyTextbox(text="Tuition Pay Amount", lang=language, repr='tpa')
 tpo = MoneyTextbox(text="Amount Owed", lang=language, repr='tpo')
 tp = MoneyTextbox(text="Already Paid", lang=language, repr='tp')
 attinfo = Table(repr='attinfo', edit=True)
-portr = Photo(repr='portr', path=os.path.abspath(os.pardir + '\images\\' + 'monet_sm.jpg'))
+portr = Photo(repr='portr', path=images + 'monet_sm.jpg')
 
 
 attinfoh = [language['Date'], language['Check-In Time'], language['Class Time']]
@@ -96,9 +97,9 @@ def ppicker():
 	except:
 		return
 
-ws = Photo(repr='ws', path='ws_sm.png')
-hs = Photo(repr='hs', path='halt_sm.png')
-cm = Photo(repr='cm', path='check_mark_sm.png')
+ws = Photo(repr='ws', path=images + 'ws_sm.png')
+hs = Photo(repr='hs', path=images + 'halt_sm.png')
+cm = Photo(repr='cm', path=images + 'check_mark_sm.png')
 bok = Buttonbox(text='ok', lang=language, repr='bok')
 byes = Buttonbox(text='yes', lang=language, repr='byes')
 bno = Buttonbox(text='no', lang=language, repr='bno')
