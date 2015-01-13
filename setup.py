@@ -8,7 +8,8 @@ sys.path.append(os.path.abspath('messages windows'))
 
 build_exe_options = {
                     'build_exe': 'build\\bin',
-                    'create_shared_zip':False
+                    'create_shared_zip':False,
+                    'silent': True
                     }
 
 setup(name = "rybsms",

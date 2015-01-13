@@ -11,156 +11,151 @@ from simple_label import Labelbox
 from photoWidget2 import Photo
 from languages import languages
 
-language = languages["english"]
 
-ws = Photo(repr='ws', path=images + 'ws_sm.png')
-hs = Photo(repr='hs', path=images + 'halt_sm.png')
-cm = Photo(repr='cm', path=images + 'check_mark_sm.png')
-bok = Buttonbox(text='ok', lang=language, repr='bok')
+def teacher_added(lang):
+	message_box = Mbox()
 
-def sa(s, lang):
+	message_box.newFrame("First Frame", (0, 0))
+	message_box.newFrame("Second Frame", (1, 0))
 
-
-	t = Mbox()
-
-	t.newFrame("First Frame", (0, 0))
-	t.newFrame("Second Frame", (1, 0))
-
-	t.frames["First Frame"].addWidget(cm, (0, 0))
-	t.frames["Second Frame"].addWidget(bok, (4, 0))
-
-	satext = Labelbox(text='Sa student', lang=lang, repr='satext')
+	teacher_added_text = Labelbox(text='Teacher has been added to the database', lang=lang, repr='tatext')
+	confirm_image = Photo(repr='confirm_image', path=images + 'check_mark_sm.png')
+	ok_button = Buttonbox(text='ok', lang=lang, repr='ok_button')
 	
-	t.frames["First Frame"].addWidget(satext, (2, 0))
+	message_box.frames["First Frame"].addWidget(confirm_image, (0, 0))
+	message_box.frames["First Frame"].addWidget(teacher_added_text, (0, 1))
+	message_box.frames["Second Frame"].addWidget(ok_button, (0, 0))
 
-	bok.config(cmd=t.dw, lang=lang)
+	confirm_image.label.grid(padx=5, pady=5)
+	teacher_added_text.label.config(wraplength=200)
+	ok_button.config(cmd=message_box.dw, lang=lang, width=10)
 
-	t.root.wait_window()
+	message_box.root.wait_window()
 
 def print_succesful(lang):
+	def return_(value):
+		message_box.value = value
+		message_box.dw()
 
-	def d(z):
-		t.z = z
-		t.dw()
+	message_box = Mbox()
 
-	t = Mbox()
+	message_box.newFrame("First Frame", (0, 0))
+	message_box.newFrame("Second Frame", (1, 0))
+
+	print_succesful_text = Labelbox(text='Print Successful', lang=lang, repr='printsuccesful')
+	confirm_image = Photo(repr='confirm_image', path=images + 'check_mark_sm.png')
+	ok_button = Buttonbox(text='ok', lang=lang, repr='ok_button')
+
+	message_box.frames["First Frame"].addWidget(confirm_image, (0, 0))
+	message_box.frames["First Frame"].addWidget(print_succesful_text, (1, 0))
+	message_box.frames["Second Frame"].addWidget(ok_button, (2, 0))
 	
-	t.newFrame("First Frame", (0, 0))
-	t.newFrame("Second Frame", (1, 0))
+	ok_button.config(cmd=lambda: return_(True), lang=lang)
 
-	nostext = Labelbox(text='Print Successful', lang=lang, repr='nostext')
+	message_box.root.wait_window()
 
-	t.frames["First Frame"].addWidget(ws, (0, 0))
-	t.frames["First Frame"].addWidget(nostext, (1, 0))
-	t.frames["Second Frame"].addWidget(bok, (2, 0))
-	
-	bok.config(cmd=lambda: d(True), lang=lang)
-
-	t.root.wait_window()
-
-	return t.z
+	return message_box.value
 
 def teacher_report_print_successful(lang):
+	def return_(value):
+		message_box.value = value
+		message_box.dw()
 
-	def d(z):
-		t.z = z
-		t.dw()
-
-	t = Mbox()
+	message_box = Mbox()
 	
-	t.newFrame("First Frame", (0, 0))
-	t.newFrame("Second Frame", (1, 0))
+	message_box.newFrame("First Frame", (0, 0))
+	message_box.newFrame("Second Frame", (1, 0))
 
-	nostext = Labelbox(text='Teacher Print Successful', lang=lang, repr='nostext')
+	teacher_report_printed_text = Labelbox(text='Teacher Print Successful', lang=lang, repr='teacherreportprinted')
+	confirm_image = Photo(repr='confirm_image', path=images + 'check_mark_sm.png')
+	ok_button = Buttonbox(text='ok', lang=lang, repr='ok_button')
 
-	t.frames["First Frame"].addWidget(ws, (0, 0))
-	t.frames["First Frame"].addWidget(nostext, (1, 0))
-	t.frames["Second Frame"].addWidget(bok, (2, 0))
+	message_box.frames["First Frame"].addWidget(confirm_image, (0, 0))
+	message_box.frames["First Frame"].addWidget(teacher_report_printed_text, (1, 0))
+	message_box.frames["Second Frame"].addWidget(ok_button, (2, 0))
 	
-	bok.config(cmd=lambda: d(True), lang=lang)
+	ok_button.config(cmd=lambda: return_(True), lang=lang)
 
-	t.root.wait_window()
+	message_box.root.wait_window()
 
-	return t.z
+	return message_box.value
 
 def pw_reset_confirm(lang):
-
-	t = Mbox()
-	t.root.overrideredirect(0)
+	message_box = Mbox()
+	message_box.root.overrideredirect(0)
 	
-	t.newFrame("First Frame", (0, 0))
+	message_box.newFrame("First Frame", (0, 0))
 
-	t.frames["First Frame"].addWidget(bok, (1, 0))
+	confirmed_reset_text = Labelbox(text='confirmed reset', lang=lang, repr='confirmedreset')
+	ok_button = Buttonbox(text='ok', lang=lang, repr='ok_button')
 
-	confirmed_reset = Labelbox(text='confirmed reset', lang=lang, repr='confirmedreset')
+	message_box.frames["First Frame"].addWidget(confirmed_reset_text, (0, 0))
+	message_box.frames["First Frame"].addWidget(ok_button, (1, 0))
 
-	t.frames["First Frame"].addWidget(confirmed_reset, (0, 0))
-	t.frames["First Frame"].addWidget(bok, (1, 0))
+	ok_button.config(cmd=message_box.dw)
 
-	bok.config(cmd=t.dw)
-
-	t.root.wait_window()
-
-	return
+	message_box.root.wait_window()
 
 def database_backup_successful(lang):
+	def return_(value):
+		message_box.value = value
+		message_box.dw()
 
-	def d(z):
-		t.z = z
-		t.dw()
-
-	t = Mbox()
+	message_box = Mbox()
 	
-	t.newFrame("First Frame", (0, 0))
-	t.newFrame("Second Frame", (1, 0))
+	message_box.newFrame("First Frame", (0, 0))
+	message_box.newFrame("Second Frame", (1, 0))
 
-	nostext = Labelbox(text='Database Backup Successful', lang=lang, repr='nostext')
+	db_backup_success_text = Labelbox(text='Database Backup Successful', lang=lang, repr='dbbackupsuccess')
+	confirm_image = Photo(repr='confirm_image', path=images + 'check_mark_sm.png')
+	ok_button = Buttonbox(text='ok', lang=lang, repr='ok_button')
 
-	t.frames["First Frame"].addWidget(ws, (0, 0))
-	t.frames["First Frame"].addWidget(nostext, (1, 0))
-	t.frames["Second Frame"].addWidget(bok, (2, 0))
+	message_box.frames["First Frame"].addWidget(confirm_image, (0, 0))
+	message_box.frames["First Frame"].addWidget(db_backup_success_text, (1, 0))
+	message_box.frames["Second Frame"].addWidget(ok_button, (2, 0))
 	
-	bok.config(cmd=lambda: d(True), lang=lang)
+	ok_button.config(cmd=lambda: return_(True), lang=lang)
 
-	t.root.wait_window()
+	message_box.root.wait_window()
 
-	return t.z
+	return message_box.value
 
 def reset_confirmation(lang, value):
-
 	if value != True: return
 
-	t = Mbox()
+	message_box = Mbox()
 	
-	t.newFrame("First Frame", (0, 0))
-	t.newFrame("Second Frame", (1, 0))
+	message_box.newFrame("First Frame", (0, 0))
+	message_box.newFrame("Second Frame", (1, 0))
 
-	dbupdate = Labelbox(text='Early Check-ins have been reset', lang=lang, repr='dbupdate')
+	early_checkin_reset_text = Labelbox(text='Early Check-ins have been reset', lang=lang, repr='earlycheckinreset')
+	confirm_image = Photo(repr='confirm_image', path=images + 'check_mark_sm.png')
+	ok_button = Buttonbox(text='ok', lang=lang, repr='ok_button')
 
-	t.frames["First Frame"].addWidget(ws, (0, 0))
-	t.frames["First Frame"].addWidget(dbupdate, (1, 0))
-	t.frames["Second Frame"].addWidget(bok, (2, 0))
+	message_box.frames["First Frame"].addWidget(confirm_image, (0, 0))
+	message_box.frames["First Frame"].addWidget(early_checkin_reset_text, (1, 0))
+	message_box.frames["Second Frame"].addWidget(ok_button, (2, 0))
 
-	bok.config(cmd=t.dw, lang=lang)
+	ok_button.config(cmd=message_box.dw, lang=lang)
 
-	t.root.wait_window()
+	message_box.root.wait_window()
 
 '''
 ** depreciated? **
 def dbs(lang):
 
-	t = Mbox()
+	message_box = Mbox()
 	
-	t.newFrame("First Frame", (0, 0))
-	t.newFrame("Second Frame", (1, 0))
+	message_box.newFrame("First Frame", (0, 0))
+	message_box.newFrame("Second Frame", (1, 0))
 
 	dbupdate = Labelbox(text='Database succesfully updated!', lang=lang, repr='dbupdate')
 
-	t.frames["First Frame"].addWidget(ws, (0, 0))
-	t.frames["First Frame"].addWidget(dbupdate, (1, 0))
-	t.frames["Second Frame"].addWidget(bok, (2, 0))
+	message_box.frames["First Frame"].addWidget(warning_image, (0, 0))
+	message_box.frames["First Frame"].addWidget(dbupdate, (1, 0))
+	message_box.frames["Second Frame"].addWidget(ok_button, (2, 0))
 
-	bok.config(cmd=t.dw, lang=lang)
+	ok_button.config(cmd=message_box.dw, lang=lang)
 
-	t.root.wait_window()
+	message_box.root.wait_window()
 '''

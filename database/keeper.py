@@ -7,7 +7,7 @@ import hashlib
 class Keeper:
 
 	def __init__(self, fname):
-		self.fname = fname
+		self.fname = os.path.abspath(os.pardir) + '\keeper.db'
 		self.files = {'cfilepath': temp + 'temp1234.rybdb',
 						'pwfile': temp + 'temp1234_pw.rybdb',
 						'markerfile': 'sal_marker.rybdb',
@@ -17,6 +17,7 @@ class Keeper:
 		if os.path.exists(self.fname):
 			self.load()
 		else:
+			self.fname = os.path.abspath(os.pardir) + '\keeper.db'
 			self.save()
 
 	def hashpw(self, pw):

@@ -79,7 +79,7 @@ def main(parent_frame, lang, database, return_to_main):
 		database.addStudent(new_student.datapoints['bCode'], new_student)
 		database.saveData()
 
-		sa(new_student.datapoints['firstName'], window_.lang)
+		teacher_added(window_.lang)
 		portr.setData('monet_sm.jpg')
 
 		return_to_main(False)

@@ -20,12 +20,8 @@ language = languages["english"]
 
 hs = Photo(repr='hs', path=images + 'halt_sm.png')
 ws = Photo(repr='ws', path=images + 'ws_sm.png')
-byes = Buttonbox(text='yes', lang=language, repr='byes')
-bno = Buttonbox(text='no', lang=language, repr='bno')
-bcancel = Buttonbox(text='Cancel', lang=language, repr='bcancel')
 
 def date_time_entry(lang):
-
 	def return_():
 		if date_input.getData() == '01/01/1900':
 			date_error(lang)
