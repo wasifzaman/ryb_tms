@@ -130,7 +130,7 @@ def main(parent_frame, lang, database, k):
 
 		dest_path = filedialog.askdirectory()
 		if dest_path == None: return
-
+		
 		print_reports.print_teacher_attendance(database, dest_path, start_date, end_date)
 
 	def print_report_by_range_simple():

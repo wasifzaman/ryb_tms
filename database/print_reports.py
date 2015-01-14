@@ -68,12 +68,12 @@ def print_teacher_attendance(database, dest_path, start_date, end_date):
 
     for student in database.studentList.values():
         for att in student.datapoints['attinfo'][1]:
-            date_ = datetime.strptime(att[0], '%m/%d/%Y').date()
-            if date_ >= start_date.date() and date_ <= end_date.date():
+            date_ = datetime.strptime(att[0], '%m/%d/%Y')
+            if date_.date() >= start_date.date() and date_.date() <= end_date.date():
                 first_name = student.datapoints['firstName']
                 last_name = student.datapoints['lastName']
                 barcode_ = student.datapoints['bCode']
-                to_append = (date_, att[2], att[4], first_name, last_name, barcode_)
+                rows.append((date_, att[2], att[4], first_name, last_name, barcode_))
 
     rows.sort()
 
@@ -89,26 +89,28 @@ def print_teacher_attendance(database, dest_path, start_date, end_date):
     title_format = workbook.add_format({'bold': True})
 
     #to excel
-    worksheet.set_column(0, 4, 15)
+    worksheet.set_column(0, 5, 15)
     worksheet.write(0, 0, 'RYB Teacher Attendance Report', title_format)
     worksheet.write(1, 0, 'Total check-ins: ' + str(len(rows)), title_format)
     worksheet.write(2, 0, 'From: ' + datetime.strftime(start_date, '%m/%d/%Y'), title_format)
     worksheet.write(3, 0, 'To: ' + datetime.strftime(end_date, '%m/%d/%Y'), title_format)
-    worksheet.write(5, 0, '到达时间', tformat) #check-in
-    worksheet.write(5, 1, '注销时间', tformat) #check-out
-    worksheet.write(5, 2, '名字', tformat) #first_name
-    worksheet.write(5, 3, '姓', tformat) #last_name
-    worksheet.write(5, 4, '条码号', tformat) #barcode
+    worksheet.write(5, 0, 'Date', tformat)
+    worksheet.write(5, 1, '到达时间', tformat) #check-in
+    worksheet.write(5, 2, '注销时间', tformat) #check-out
+    worksheet.write(5, 3, '名字', tformat) #first_name
+    worksheet.write(5, 4, '姓', tformat) #last_name
+    worksheet.write(5, 5, '条码号', tformat) #barcode
 
     r, c = 6, 0
 
     for row in rows:
-        worksheet.write(r, 0, '老师到达') #check-in
-        if len(row[1]) != 0:
-            worksheet.write(r, 1, '老师离开') #check-out
-        worksheet.write(r, 2, row[2])
+        worksheet.write(r, 0, datetime.strftime(row[0], '%m/%d/%Y'))
+        worksheet.write(r, 1, '老师到达') #check-in
+        if len(row[2]) != 0:
+            worksheet.write(r, 2, '老师离开') #check-out
         worksheet.write(r, 3, row[3])
         worksheet.write(r, 4, row[4])
+        worksheet.write(r, 5, row[5])
         r += 1
 
 def print_teacher_attendance_simple(database, dest_path, start_date, end_date):
