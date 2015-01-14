@@ -135,9 +135,12 @@ def main():
 			database_backup_successful(window_.lang)
 		except:
 			return
-			
+	
+	config = configparser.ConfigParser()
+	config.read(os.path.abspath(os.pardir) + '\config.ini', encoding='utf-8')
+
 	window_ = AppWindow(main_window_.mainFrame)
-	window_.lang = languages['english']
+	window_.lang = languages[config['DEFAULT']['DEFAULT_LANGUAGE']]
 	main_window_.wintitle.config(text=window_.lang['RYB Student Management'])
 
 	window_.k = keeper.Keeper('keeper.db')
