@@ -9,6 +9,7 @@ from tkinter import *
 from datetime import datetime
 import tkinter.ttk as ttk
 
+from mbox2 import Mbox
 from uiHandler22 import *
 from date_textbox import Datebox
 from button import Buttonbox
@@ -30,15 +31,12 @@ def date_time_entry(lang):
 		dt = datetime.strftime(datetime.strptime(time_input, '%I:%M %p'), '%I:%M %p')
 		confirm_time.time_input_confirmed = dt
 		confirm_time.date_input = date_input.getData()
-		confirm_time.destroy()
+		confirm_time.root.destroy()
 
-	confirm_time = Window(top=True)
-	confirm_time.attributes('-fullscreen', False)
-	confirm_time.resizable(0, 0)
-	confirm_time.geometry('400x200+200+200')
-	confirm_time.grab_set()
-	confirm_time.focus_set()
-	confirm_time.titleFrame.pack_forget()
+	confirm_time = Mbox()
+	confirm_time.root.resizable(0, 0)
+	confirm_time.root.grab_set()
+	confirm_time.root.focus_set()
 	confirm_time.date_input = False
 	confirm_time.time_input_confirmed = False
 
@@ -83,10 +81,8 @@ def date_time_entry(lang):
 	date_input.selfframe.grid(columnspan=7, pady=15)
 
 	return_button.config(cmd=return_)
-	cancel_button.config(cmd=confirm_time.destroy)
+	cancel_button.config(cmd=confirm_time.root.destroy)
 
-	confirm_time.titleFrame.pack_forget()
-
-	confirm_time.wait_window()
+	confirm_time.root.wait_window()
 
 	return confirm_time.date_input, confirm_time.time_input_confirmed

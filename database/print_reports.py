@@ -61,7 +61,106 @@ def exportreport(database, dest_path, sdate):
 
     return
 
+def print_teacher_attendance(database, dest_path, start_date, end_date):
+    if len(database.studentList) == 0: return
+
+    rows = []
+
+    for student in database.studentList.values():
+        for att in student.datapoints['attinfo'][1]:
+            date_ = datetime.strptime(att[0], '%m/%d/%Y').date()
+            if date_ >= start_date.date() and date_ <= end_date.date():
+                first_name = student.datapoints['firstName']
+                last_name = student.datapoints['lastName']
+                barcode_ = student.datapoints['bCode']
+                to_append = (date_, att[2], att[4], first_name, last_name, barcode_)
+
+    rows.sort()
+
+    workbook = xlsxwriter.Workbook(dest_path + '/Teacher Report - ' + database.school + ' ' + \
+                                    datetime.strftime(start_date, '%m.%d.%Y') + ' ' + \
+                                    datetime.strftime(end_date, '%m.%d.%Y') + '.xlsx')
+    worksheet = workbook.add_worksheet()
+
+    #format
+    tformat = workbook.add_format({'bold': True})
+    tformat.set_bg_color('#C2FFAD')
+
+    title_format = workbook.add_format({'bold': True})
+
+    #to excel
+    worksheet.set_column(0, 4, 15)
+    worksheet.write(0, 0, 'RYB Teacher Attendance Report', title_format)
+    worksheet.write(1, 0, 'Total check-ins: ' + str(len(rows)), title_format)
+    worksheet.write(2, 0, 'From: ' + datetime.strftime(start_date, '%m/%d/%Y'), title_format)
+    worksheet.write(3, 0, 'To: ' + datetime.strftime(end_date, '%m/%d/%Y'), title_format)
+    worksheet.write(5, 0, '到达时间', tformat) #check-in
+    worksheet.write(5, 1, '注销时间', tformat) #check-out
+    worksheet.write(5, 2, '名字', tformat) #first_name
+    worksheet.write(5, 3, '姓', tformat) #last_name
+    worksheet.write(5, 4, '条码号', tformat) #barcode
+
+    r, c = 6, 0
+
+    for row in rows:
+        worksheet.write(r, 0, '老师到达') #check-in
+        if len(row[1]) != 0:
+            worksheet.write(r, 1, '老师离开') #check-out
+        worksheet.write(r, 2, row[2])
+        worksheet.write(r, 3, row[3])
+        worksheet.write(r, 4, row[4])
+        r += 1
+
+def print_teacher_attendance_simple(database, dest_path, start_date, end_date):
+    if len(database.studentList) == 0: return
+
+    rows = []
+
+    for student in database.studentList.values():
+        for att in student.datapoints['attinfo'][1]:
+            date_ = datetime.strptime(att[0], '%m/%d/%Y').date()
+            if date_ >= start_date.date() and date_ <= end_date.date():
+                first_name = student.datapoints['firstName']
+                last_name = student.datapoints['lastName']
+                barcode_ = student.datapoints['bCode']
+                to_append = (first_name, last_name, barcode_)
+                if to_append not in rows:
+                    rows.append(to_append)
+
+    rows.sort()
+
+    workbook = xlsxwriter.Workbook(dest_path + '/Teacher Report - ' + database.school + ' ' + \
+                                    datetime.strftime(start_date, '%m.%d.%Y') + ' ' + \
+                                    datetime.strftime(end_date, '%m.%d.%Y') + '.xlsx')
+    worksheet = workbook.add_worksheet()
+
+    #format
+    tformat = workbook.add_format({'bold': True})
+    tformat.set_bg_color('#C2FFAD')
+
+    title_format = workbook.add_format({'bold': True})
+
+    #to excel
+    worksheet.set_column(0, 4, 15)
+    worksheet.write(0, 0, 'RYB Teacher Attendance Report (simple)', title_format)
+    worksheet.write(1, 0, 'Total teachers: ' + str(len(rows)), title_format)
+    worksheet.write(2, 0, 'From: ' + datetime.strftime(start_date, '%m/%d/%Y'), title_format)
+    worksheet.write(3, 0, 'To: ' + datetime.strftime(end_date, '%m/%d/%Y'), title_format)
+    worksheet.write(5, 0, '名字', tformat) #first_name
+    worksheet.write(5, 1, '姓', tformat) #last_name
+    worksheet.write(5, 2, '条码号', tformat) #barcode
+
+    r, c = 6, 0
+
+    for row in rows:
+        worksheet.write(r, 0, row[0])
+        worksheet.write(r, 1, row[1])
+        worksheet.write(r, 2, row[2])
+        r += 1
+
 def print_pay_entries(database, dest_path, employee_id, pay_entries, pay_per_hour=1.00, max_hours=False):
+    if len(database.studentList) == 0: return
+
     workbook = xlsxwriter.Workbook(dest_path + '.xlsx')
     worksheet = workbook.add_worksheet()
 
@@ -115,7 +214,6 @@ def print_pay_entries(database, dest_path, employee_id, pay_entries, pay_per_hou
 
     r = 4
     for entry in pay_entries.values():
-
         date = entry[0]
         checkin = datetime.strptime(date + ' ' + entry[2], '%m/%d/%Y %I:%M %p')
         checkout = datetime.strptime(date + ' ' + entry[4], '%m/%d/%Y %I:%M %p')
@@ -133,9 +231,7 @@ def print_pay_entries(database, dest_path, employee_id, pay_entries, pay_per_hou
 
         r += 1
 
-
     r += 1
-
     
     for row in range(r, r+8):
         for cell in range(0, 5):

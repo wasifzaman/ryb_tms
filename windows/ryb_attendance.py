@@ -36,6 +36,7 @@ from photoWidget2 import *
 from preBuilts2 import *
 from languages import *
 
+
 def main():
 
 	def switch_language():
@@ -144,6 +145,7 @@ def main():
 
 	if 'school' not in window_.k.files:
 		window_.k.files['school'] = choose_school(window_.lang)
+		if window_.k.files['school'] == 'cancel': window_.k.files['school'] = 'Flushing'
 		window_.d.school = window_.k.files['school']
 		window_.k.save()
 	else:
@@ -178,17 +180,20 @@ def main():
 	window_.frames["First Frame"].addWidget(bstools, (5, 0))
 	window_.frames["First Frame"].addWidget(bexp, (6, 0))
 	window_.frames["Third Frame"].addWidget(bsbmm, (0, 0))
-	#window_.frames["First Frame"].addWidget(bclang, (7, 0))
+	window_.frames["First Frame"].addWidget(bclang, (7, 0))
 	window_.frames["First Frame"].addWidget(bprint, (8, 0))
 	window_.frames["First Frame"].addWidget(bsexit, (9, 0))
 	window_.frames["First Frame"].addWidget(window_.p, (0, 2))
 	Label(window_.frames["First Frame"], text='  ').grid(column=1) #separator between buttons and background image
 	
+	'''
 	dock_frame = AppFrame(window_.frames["First Frame"], bg='#C2DAFF', padx=10, pady=5)
 	dock_frame.grid(column=0, row=10, sticky=SE+W, rowspan=100)
+	bclang = Buttonbox(text='changelanguage_alt', lang=window_.lang, repr='bclang') #Change Language
 	dock_frame.addWidget(bclang, (0, 0))
 	window_.frames["First Frame"].grid(sticky=N+W)
 	bclang.button.config(width=3)
+	'''
 	
 	bsadd.config(cmd=lambda: showWindow(addS3.main))
 	bsscan.config(cmd=lambda: showWindow(scanS22.main))

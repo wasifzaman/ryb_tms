@@ -40,7 +40,7 @@ class AppWindow(Frame):
 
 		#frames
 		self.frames = {}
-		self.framePadding = (5, 1)
+		self.framePadding = (1, 1)
 
 		#
 		#self.update_idletasks()

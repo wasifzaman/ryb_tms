@@ -8,33 +8,24 @@ from tkinter import *
 from datetime import datetime
 import tkinter.ttk as ttk
 
+from mbox2 import Mbox
 from uiHandler22 import *
 from button import Buttonbox
 from simple_label import Labelbox
 from photoWidget2 import Photo
-from languages import languages
 
-language = languages["english"]
-
-byes = Buttonbox(text='yes', lang=language, repr='byes')
-bno = Buttonbox(text='no', lang=language, repr='bno')
-bcancel = Buttonbox(text='Cancel', lang=language, repr='bcancel')
 
 def time_entry(lang):
-
 	def return_():
 		time_input = hour_input_stringvar.get() + ':' + minute_input_stringvar.get() + ' ' + am_pm_stringvar.get()
 		dt = datetime.strftime(datetime.strptime(time_input, '%I:%M %p'), '%I:%M %p')
 		confirm_time.time_input_confirmed = dt
-		confirm_time.destroy()
+		confirm_time.root.destroy()
 
-	confirm_time = Window(top=True)
-	confirm_time.attributes('-fullscreen', False)
-	confirm_time.resizable(0, 0)
-	confirm_time.geometry('400x200+200+200')
-	confirm_time.grab_set()
-	confirm_time.focus_set()
-	confirm_time.titleFrame.pack_forget()
+	confirm_time = Mbox()
+	confirm_time.root.resizable(0, 0)
+	confirm_time.root.grab_set()
+	confirm_time.root.focus_set()
 	confirm_time.time_input_confirmed = False
 
 	confirm_window = AppWindow(confirm_time.mainFrame)
@@ -74,8 +65,8 @@ def time_entry(lang):
 	cancel_button.selfframe.grid(columnspan=6)
 
 	return_button.config(cmd=return_)
-	cancel_button.config(cmd=confirm_time.destroy)
+	cancel_button.config(cmd=confirm_time.root.destroy)
 
-	confirm_time.wait_window()
+	confirm_time.root.wait_window()
 
 	return confirm_time.time_input_confirmed

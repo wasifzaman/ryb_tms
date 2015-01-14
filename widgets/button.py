@@ -57,8 +57,9 @@ class Buttonbox(Textbox):
 		self.button = Label(self.selfframe, text=self.lang[self.text], width=self.width, bg=self.idlebg, fg=self.fg, \
 			font=('Verdana', 11), pady=3)
 
+		self.button.pack()
+		
 		self.button.bind('<Enter>', self.enter)
 		self.button.bind('<Leave>', self.leave)
 
 		self.selfframe.grid(row=self.row, column=self.column, pady=2)
-		self.button.pack()

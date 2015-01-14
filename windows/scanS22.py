@@ -218,7 +218,7 @@ def main(t, lang, database):
 		if (len(bCodeNE.getData())) == 0: return
 
 		dt = date_time_entry(window_.lang)
-		if not dt: return
+		if not dt[0]: return
 		if datetime.strptime(dt[0], '%m/%d/%Y') > datetime.now():
 			deny_checkout_future(window_.lang, dt[0])
 			return

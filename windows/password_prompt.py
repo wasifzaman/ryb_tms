@@ -26,7 +26,6 @@ def password_prompt(lang, reset_pw):
 		t.dw()
 
 	t = Mbox()
-	#t.root.overrideredirect(0)
 
 	t.newFrame("Top Frame", (0, 0))
 	t.newFrame("First Frame", (1, 0))
@@ -49,6 +48,7 @@ def password_prompt(lang, reset_pw):
 		old_pw_textbox.label.config(width=19)
 		new_pw_textbox.label.config(width=19)
 		retype_new_pw_textbox.label.config(width=19)
+		no_pw_detected.label.config(wraplength=250, justify=LEFT)
 	else:
 		t.frames["First Frame"].addWidget(pw_textbox, (0, 0))
 		t.frames["Second Frame"].addWidget(bok, (0, 1))
@@ -57,6 +57,7 @@ def password_prompt(lang, reset_pw):
 
 	t.frames["Second Frame"].addWidget(bcancel, (0, 0))
 
+	
 	bcancel.button.config(width=10)
 	
 	bcancel.config(cmd=lambda: get_return('cancel'))

@@ -6,7 +6,7 @@ from uiHandler22 import *
 class Mbox(AppWindow):
 
 	def __init__(self, title=''):
-		self.root = Toplevel(bd=2)
+		self.root = Toplevel()
 		self.root.resizable(0, 0)
 		self.root.grab_set()
 		self.root.focus_set()
@@ -20,13 +20,29 @@ class Mbox(AppWindow):
 
 		self.root.title(title)
 		self.root.geometry('+' + str(w) + '+' + str(h))
-		self.root.config(bg="#9FB6CD")
+		self.root.config(bg="#000066")
 
-		self.mainFrame = Frame(self.root)#, bg='grey', bd=10)
-		self.mainFrame.pack(fill=Y, expand=1, anchor=S)
+		self.title_ = Label(self.root, bg='#000066', fg='white')
+		self.mainFrame = Frame(self.root)
+		self.title_.pack(padx=1, pady=1, fill=X)
+		self.mainFrame.pack(padx=1, pady=1)
 
 		self.frames = {}
-		self.framePadding = (0, 0)
+		self.framePadding = (10, 15)
+
+		def start_move(event):
+			self.drag_x = event.x
+			self.drag_y = event.y
+
+		def in_motion(event):
+			delta_x = event.x - self.drag_x
+			delta_y = event.y - self.drag_y
+			x = self.root.winfo_x() + delta_x
+			y = self.root.winfo_y() + delta_y
+			self.root.geometry("+%s+%s" % (x, y))
+
+		self.title_.bind('<ButtonPress-1>', start_move)
+		self.title_.bind('<B1-Motion>', in_motion)
 
 	def config(self, **kwargs):
 		if 'bg' in kwargs:

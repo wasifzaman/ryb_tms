@@ -1,6 +1,7 @@
 import sys, os
 sys.path.append(os.path.abspath(os.pardir) + '\database')
 sys.path.append(os.path.abspath(os.pardir) + '\widgets')
+sys.path.append(os.path.abspath(os.pardir) + '\miscellaneous')
 sys.path.append(os.path.abspath(os.pardir) + '\messages windows')
 sys.path.append(os.path.abspath(os.pardir))
 
@@ -19,6 +20,7 @@ from create_new_db import create_new_db
 from convert_to_encrypted import convert_to_encrypted
 from password_prompt import password_prompt
 from create_new_markerfile import create_new_markerfile
+from date_to_date import date_to_date
 
 
 def main(parent_frame, lang, database, k):
@@ -120,6 +122,27 @@ def main(parent_frame, lang, database, k):
 		rbutton.config(cmd=out)
 		cancel_button.config(cmd=pt.destroy)
 
+	def print_report_by_range():
+		start_date, end_date = date_to_date(w.lang)
+		print(start_date, end_date)
+
+		if not start_date: return
+
+		dest_path = filedialog.askdirectory()
+		if dest_path == None: return
+
+		print_reports.print_teacher_attendance(database, dest_path, start_date, end_date)
+
+	def print_report_by_range_simple():
+		start_date, end_date = date_to_date(w.lang)
+		print(start_date, end_date)
+
+		if not start_date: return
+
+		dest_path = filedialog.askdirectory()
+		if dest_path == None: return
+
+		print_reports.print_teacher_attendance_simple(database, dest_path, start_date, end_date)
 
 	def expf():
 		try:
@@ -209,8 +232,8 @@ def main(parent_frame, lang, database, k):
 	w.frames["First Frame"].addWidget(print_report_button, (4, 0))
 
 	#choose school
-	w.frames["First Frame"].addWidget(bchoose_school, (5, 0))
-	w.frames["First Frame"].addWidget(reset_db_manager_pw, (6, 0))
+	w.frames["First Frame"].addWidget(bchoose_school, (6, 0))
+	w.frames["First Frame"].addWidget(reset_db_manager_pw, (7, 0))
 
 	curdb = Label(w.frames['Third Frame'], text=database.file, wraplength=200, bg='#DBDBDB')
 	w.frames["Third Frame"].addWidget(curfile, (0, 0))
@@ -227,6 +250,7 @@ def main(parent_frame, lang, database, k):
 	create_db = Buttonbox(text='Create new Database', lang=w.lang, repr='createdb')
 	create_markerfile = Buttonbox(text='Create new Markerfile', lang=w.lang, repr='createmfile')
 	convert_db = Buttonbox(text='Convert to Encrypted DB', lang=w.lang, repr='convertdb')
+	print_simple_attendance = Buttonbox(text='Print Simple Report', lang=w.lang, repr='simplereport')
 
 
 	w.frames["Third Frame"].addWidget(bcdb, (2, 0))
@@ -235,7 +259,8 @@ def main(parent_frame, lang, database, k):
 	w.frames["Third Frame"].addWidget(create_markerfile, (6, 0))
 	w.frames["Third Frame"].addWidget(choose_markerfile, (7, 0))
 
-	w.frames["First Frame"].addWidget(convert_db, (7, 0))
+	w.frames["First Frame"].addWidget(print_simple_attendance, (5, 0))
+	w.frames["First Frame"].addWidget(convert_db, (8, 0))
 
 	#w.frames['Fourth Frame'].addWidget(bsav, (0, 0))
 
@@ -252,7 +277,8 @@ def main(parent_frame, lang, database, k):
 	create_markerfile.config(cmd=lambda: create_new_markerfile(w.lang))
 	choose_markerfile.config(cmd=lambda: set_markerfile(curmarkerfile))
 	reset_db_manager_pw.config(cmd=lambda: reset_dbmanager_pw(w.lang))
-	print_report_button.config(cmd=print_report_by_date)
+	print_report_button.config(cmd=print_report_by_range)
+	print_simple_attendance.config(cmd=print_report_by_range_simple)
 	#curdb.config(text=s.config['dbFile'])
 	#exp.config(cmd=importwiz.main)
 

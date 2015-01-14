@@ -13,499 +13,439 @@ from simple_label import Labelbox
 from photoWidget2 import Photo
 from languages import languages
 
-language = languages["english"]
-
-hs = Photo(repr='hs', path=images + 'halt_sm.png')
-ws = Photo(repr='ws', path=images + 'ws_sm.png')
-byes = Buttonbox(text='yes', lang=language, repr='byes')
-bno = Buttonbox(text='no', lang=language, repr='bno')
-bcancel = Buttonbox(text='Cancel', lang=language, repr='bcancel')
 
 def con(s, lang):
+	def return_(value):
+		message_box.value = value
+		message_box.dw()
 
-	def d(z):
-		t.z = z
-		t.dw()
+	message_box = Mbox()
 
-	t = Mbox()
+	message_box.title_.config(text='TEST')
 
-	t.newFrame("First Frame", (0, 0))
-	t.newFrame("Second Frame", (1, 0))
+	message_box.newFrame("First Frame", (0, 0))
+	message_box.newFrame("Second Frame", (1, 0))
 
 	context = Labelbox(text='Con student', lang=lang, repr='context')
+	yes_button = Buttonbox(text='yes', lang=lang, repr='yes_button')
+	no_button = Buttonbox(text='no', lang=lang, repr='no_button')
+	verify_image = Photo(repr='verify_image', path=images + 'halt_sm.png')
 
-	t.frames["First Frame"].addWidget(hs, (1, 0))
-	t.frames["First Frame"].addWidget(context, (2, 0))
-	t.frames["Second Frame"].addWidget(byes, (0, 0))
-	t.frames["Second Frame"].addWidget(bno, (0, 1))
+	message_box.frames["First Frame"].addWidget(context, (0, 1))
+	message_box.frames["Second Frame"].addWidget(yes_button, (0, 0))
+	message_box.frames["Second Frame"].addWidget(no_button, (0, 1))
+	message_box.frames["First Frame"].addWidget(verify_image, (0, 0))
 
-	byes.selfframe.grid(sticky=E+W, padx=5)
-	bno.selfframe.grid(sticky=E+W, padx=5)
-	byes.config(cmd=lambda: d(True), lang=lang)
-	bno.config(cmd=lambda: d(False), lang=lang)
-	bno.button.focus_set()
+	yes_button.selfframe.grid(sticky=E+W, padx=5)
+	no_button.selfframe.grid(sticky=E+W, padx=5)
+	yes_button.config(cmd=lambda: return_(True), width=10)
+	no_button.config(cmd=lambda: return_(False), width=10)
+	no_button.button.focus_set()
 
-	t.root.wait_window()
+	verify_image.label.config(width=80)
+	context.label.config(wraplength=200, justify=LEFT)
+	message_box.root.wait_window()
 
-	return t.z
+	return message_box.value
 
 def conS(s, lang):
+	def return_(value):
+		message_box.value = value
+		message_box.dw()
 
-	def d(z):
-		t.z = z
-		t.dw()
+	message_box = Mbox()
 
-	t = Mbox()
-
-	t.newFrame("First Frame", (0, 0))
-	t.newFrame("Second Frame", (1, 0))
+	message_box.newFrame("First Frame", (0, 0))
+	message_box.newFrame("Second Frame", (1, 0))
 
 	constext = Labelbox(text='Con S student', lang=lang, repr='constext')
+	yes_button = Buttonbox(text='yes', lang=lang, repr='yes_button')
+	no_button = Buttonbox(text='no', lang=lang, repr='no_button')
+	verify_image = Photo(repr='verify_image', path=images + 'halt_sm.png')
 
-	t.frames["First Frame"].addWidget(hs, (1, 0))
-	t.frames["First Frame"].addWidget(constext, (2, 0))
-	t.frames["Second Frame"].addWidget(byes, (0, 0))
-	t.frames["Second Frame"].addWidget(bno, (0, 1))
+	message_box.frames["First Frame"].addWidget(constext, (0, 1))
+	message_box.frames["Second Frame"].addWidget(yes_button, (0, 0))
+	message_box.frames["Second Frame"].addWidget(no_button, (0, 1))
+	message_box.frames["First Frame"].addWidget(verify_image, (0, 0))
 
-	byes.selfframe.grid(sticky=E+W, padx=5)
-	bno.selfframe.grid(sticky=E+W, padx=5)
-	byes.config(cmd=lambda: d(True), lang=lang)
-	bno.config(cmd=lambda: d(False), lang=lang)
+	yes_button.selfframe.grid(sticky=E+W, padx=5)
+	no_button.selfframe.grid(sticky=E+W, padx=5)
+	yes_button.config(cmd=lambda: return_(True), width=10)
+	no_button.config(cmd=lambda: return_(False), width=10)
 
-	t.root.wait_window()
+	verify_image.label.config(width=80)
+	constext.label.config(wraplength=200, justify=LEFT)
+	message_box.root.wait_window()
 
-	return t.z
+	return message_box.value
 
 def ase(s, lang):
+	def return_(value):
+		message_box.value = value
+		message_box.dw()
 
-	def d(z):
-		t.z = z
-		t.dw()
+	message_box = Mbox()
 
-	t = Mbox()
-
-	t.newFrame("First Frame", (0, 0))
-	t.newFrame("Second Frame", (1, 0))
-	t.frames["Second Frame"].addWidget(byes, (0, 0))
-	t.frames["Second Frame"].addWidget(bno, (0, 1))
+	message_box.newFrame("First Frame", (0, 0))
+	message_box.newFrame("Second Frame", (1, 0))
 
 	asetext = Labelbox(text='Ase student', lang=lang, repr='asetext')
+	yes_button = Buttonbox(text='yes', lang=lang, repr='yes_button')
+	no_button = Buttonbox(text='no', lang=lang, repr='no_button')
+	verify_image = Photo(repr='verify_image', path=images + 'halt_sm.png')
 
-	t.frames["First Frame"].addWidget(ws, (0, 0))
-	t.frames["First Frame"].addWidget(asetext, (2, 0))
+	message_box.frames["First Frame"].addWidget(asetext, (0, 1))
+	message_box.frames["First Frame"].addWidget(verify_image, (0, 0))
+	message_box.frames["Second Frame"].addWidget(yes_button, (0, 0))
+	message_box.frames["Second Frame"].addWidget(no_button, (0, 1))
 
-	byes.selfframe.grid(sticky=E+W, padx=5)
-	bno.selfframe.grid(sticky=E+W, padx=5)
-	byes.config(cmd=lambda: d(True), lang=lang)
-	bno.config(cmd=lambda: d(False), lang=lang)
-	bno.button.focus_set()
+	yes_button.selfframe.grid(sticky=E+W, padx=5)
+	no_button.selfframe.grid(sticky=E+W, padx=5)
+	yes_button.config(cmd=lambda: return_(True), width=10)
+	no_button.config(cmd=lambda: return_(False), width=10)
+	no_button.button.focus_set()
 
-	t.root.wait_window()
+	verify_image.label.config(width=80)
+	asetext.label.config(wraplength=200, justify=LEFT)
+	message_box.root.wait_window()
 
-	return t.z
+	return message_box.value
 
 def cs(s, lang):
+	def return_(value):
+		message_box.value = value
+		message_box.dw()
 
-	def d(z):
-		t.z = z
-		t.dw()
+	message_box = Mbox()
 
-	t = Mbox()
-
-	t.newFrame("First Frame", (0, 0))
-	t.newFrame("Second Frame", (1, 0))
+	message_box.newFrame("First Frame", (0, 0))
+	message_box.newFrame("Second Frame", (1, 0))
 
 	cstext = Labelbox(text='Cs student', lang=lang, repr='cstext')
+	yes_button = Buttonbox(text='yes', lang=lang, repr='yes_button')
+	no_button = Buttonbox(text='no', lang=lang, repr='no_button')
+	verify_image = Photo(repr='verify_image', path=images + 'halt_sm.png')
 
-	t.frames["First Frame"].addWidget(hs, (1, 0))
-	t.frames["First Frame"].addWidget(cstext, (2, 0))
-	t.frames["Second Frame"].addWidget(byes, (0, 0))
-	t.frames["Second Frame"].addWidget(bno, (0, 1))
+	message_box.frames["First Frame"].addWidget(cstext, (0, 1))
+	message_box.frames["Second Frame"].addWidget(yes_button, (0, 0))
+	message_box.frames["Second Frame"].addWidget(no_button, (0, 1))
+	message_box.frames["First Frame"].addWidget(verify_image, (0, 0))
 
-	byes.selfframe.grid(sticky=E+W, padx=5)
-	bno.selfframe.grid(sticky=E+W, padx=5)
-	byes.config(cmd=lambda: d(True), lang=lang)
-	bno.config(cmd=lambda: d(False), lang=lang)
-	byes.button.focus_set()
+	yes_button.selfframe.grid(sticky=E+W, padx=5)
+	no_button.selfframe.grid(sticky=E+W, padx=5)
+	yes_button.config(cmd=lambda: return_(True), width=10)
+	no_button.config(cmd=lambda: return_(False), width=10)
+	yes_button.button.focus_set()
 
-	t.root.wait_window()
+	verify_image.label.config(width=80)
+	cstext.label.config(wraplength=200, justify=LEFT)
+	message_box.root.wait_window()
 
-	return t.z
+	return message_box.value
 
 def csout(s, lang):
+	def return_(value):
+		message_box.value = value
+		message_box.dw()
 
-	def d(z):
-		t.z = z
-		t.dw()
+	message_box = Mbox()
 
-	t = Mbox()
-
-	t.newFrame("First Frame", (0, 0))
-	t.newFrame("Second Frame", (1, 0))
+	message_box.newFrame("First Frame", (0, 0))
+	message_box.newFrame("Second Frame", (1, 0))
 
 	cstext = Labelbox(text='Check out prompt', lang=lang, repr='cstext')
+	yes_button = Buttonbox(text='yes', lang=lang, repr='yes_button')
+	no_button = Buttonbox(text='no', lang=lang, repr='no_button')
+	verify_image = Photo(repr='verify_image', path=images + 'halt_sm.png')
 
-	t.frames["First Frame"].addWidget(hs, (1, 0))
-	t.frames["First Frame"].addWidget(cstext, (2, 0))
-	t.frames["Second Frame"].addWidget(byes, (0, 0))
-	t.frames["Second Frame"].addWidget(bno, (0, 1))
+	message_box.frames["First Frame"].addWidget(cstext, (0, 1))
+	message_box.frames["Second Frame"].addWidget(yes_button, (0, 0))
+	message_box.frames["Second Frame"].addWidget(no_button, (0, 1))
+	message_box.frames["First Frame"].addWidget(verify_image, (0, 0))
 
-	byes.selfframe.grid(sticky=E+W, padx=5)
-	bno.selfframe.grid(sticky=E+W, padx=5)
-	byes.config(cmd=lambda: d(True), lang=lang)
-	bno.config(cmd=lambda: d(False), lang=lang)
-	byes.button.focus_set()
+	yes_button.selfframe.grid(sticky=E+W, padx=5)
+	no_button.selfframe.grid(sticky=E+W, padx=5)
+	yes_button.config(cmd=lambda: return_(True), width=10)
+	no_button.config(cmd=lambda: return_(False), width=10)
+	yes_button.button.focus_set()
 
-	t.root.wait_window()
+	verify_image.label.config(width=80)
+	cstext.label.config(wraplength=200, justify=LEFT)
+	message_box.root.wait_window()
 
-	return t.z
+	return message_box.value
 
 def confirm_check_in_time(lang, database):
-
 	def return_(value):
-		t.value = value
-		t.dw()
+		message_box.value = value
+		message_box.dw()
 
-	t = Mbox()
+	message_box = Mbox()
 
-	t.newFrame("First Frame", (0, 0))
-	t.newFrame("Second Frame", (1, 0))
-
-	cstext = Labelbox(text='Check out prompt', lang=lang, repr='creset')
+	message_box.newFrame("First Frame", (0, 0))
+	message_box.newFrame("Second Frame", (1, 0))
 
 	timeslot = database.findTimeSlot(datetime.now())
 
-	byes_current_time = Buttonbox(text='Check-in', lang=lang, repr='bok')
-	byes_enter_time = Buttonbox(text='Yes, enter time', lang=lang, repr='bnok')
+	cstext = Labelbox(text='Check out prompt', lang=lang, repr='creset')
+	yes_button_current_time = Buttonbox(text='Check-in', lang=lang, repr='bok')
+	yes_button_enter_time = Buttonbox(text='Yes, enter time', lang=lang, repr='no_buttonk')
+	cancel_button = Buttonbox(text='Cancel', lang=lang, repr='cancel_button')
+	verify_image = Photo(repr='verify_image', path=images + 'halt_sm.png')
 
-	byes_current_time.width = 20
-	byes_enter_time.width = 20
+	yes_button_current_time.width = 20
+	yes_button_enter_time.width = 20
 
-	t.frames["First Frame"].addWidget(hs, (1, 0))
-	t.frames["First Frame"].addWidget(cstext, (2, 0))
-	t.frames["Second Frame"].addWidget(byes_current_time, (0, 0))
-	t.frames["Second Frame"].addWidget(byes_enter_time, (0, 1))
-	t.frames["Second Frame"].addWidget(bcancel, (0, 2))
+	message_box.frames["First Frame"].addWidget(cstext, (0, 1))
+	message_box.frames["Second Frame"].addWidget(yes_button_current_time, (0, 0))
+	message_box.frames["Second Frame"].addWidget(yes_button_enter_time, (1, 0))
+	message_box.frames["Second Frame"].addWidget(cancel_button, (2, 0))
+	message_box.frames["First Frame"].addWidget(verify_image, (0, 0))
 
-	byes_current_time.selfframe.grid(sticky=E+W, padx=5)
-	byes_enter_time.selfframe.grid(sticky=E+W, padx=5)
-	bcancel.selfframe.grid(sticky=E+W, padx=5)
-	byes_current_time.config(cmd=lambda: return_(True))
-	byes_enter_time.config(cmd=lambda: return_('manual'))
-	bcancel.config(cmd=lambda: return_(False))
-	byes_current_time_text = byes_current_time.button.cget('text')
-	byes_current_time.button.config(
-		text=byes_current_time_text + ' ' + timeslot)
+	yes_button_current_time.selfframe.grid(sticky=E+W)
+	yes_button_enter_time.selfframe.grid(sticky=E+W)
+	cancel_button.selfframe.grid(sticky=E+W)
+	yes_button_current_time.button.pack(fill=X)
+	yes_button_enter_time.button.pack(fill=X)
+	cancel_button.button.pack(fill=X)
+	yes_button_current_time.config(cmd=lambda: return_(True))
+	yes_button_enter_time.config(cmd=lambda: return_('manual'))
+	cancel_button.config(cmd=lambda: return_(False))
+	yes_button_current_time_text = yes_button_current_time.button.cget('text')
+	yes_button_current_time.button.config(
+		text=yes_button_current_time_text + ' ' + timeslot)
 	
-	t.root.wait_window()
+	verify_image.label.config(width=80)
+	cstext.label.config(wraplength=200, justify=LEFT)
+	message_box.root.wait_window()
 
-	return t.value
-
-def confirm_overwrite_checkout(lang):
-
-	def return_(value):
-		t.value = value
-		t.dw()
-
-	t = Mbox()
-
-	t.newFrame("First Frame", (0, 0))
-	t.newFrame("Second Frame", (1, 0))
-
-	cstext = Labelbox(text='Overwrite Checkout', lang=lang, repr='cprint')
-
-	t.frames["First Frame"].addWidget(hs, (1, 0))
-	t.frames["First Frame"].addWidget(cstext, (2, 0))
-	t.frames["Second Frame"].addWidget(byes, (0, 0))
-	t.frames["Second Frame"].addWidget(bno, (0, 1))
-
-	byes.selfframe.grid(sticky=E+W, padx=5)
-	bno.selfframe.grid(sticky=E+W, padx=5)
-	byes.config(cmd=lambda: return_(True), lang=lang)
-	bno.config(cmd=lambda: return_(False), lang=lang)
-	byes.button.focus_set()
-
-	t.root.wait_window()
-
-	return t.value
+	return message_box.value
 
 def confirm_check_out_time(lang, database):
 	def return_(value):
-		t.value = value
-		t.dw()
+		message_box.value = value
+		message_box.dw()
 
-	t = Mbox()
+	message_box = Mbox()
 
-	t.newFrame("First Frame", (0, 0))
-	t.newFrame("Second Frame", (1, 0))
-
-	cstext = Labelbox(text='Check out prompt', lang=lang, repr='creset')
-	
-	timeslot = database.findTimeSlot(datetime.now())
-
-	byes_current_time = Buttonbox(text='Check-out', lang=lang, repr='bok')
-	byes_enter_time = Buttonbox(text='Yes, enter time', lang=lang, repr='bnok')
-
-	byes_current_time.width = 20
-	byes_enter_time.width = 20
-
-	t.frames["First Frame"].addWidget(hs, (1, 0))
-	t.frames["First Frame"].addWidget(cstext, (2, 0))
-	t.frames["Second Frame"].addWidget(byes_current_time, (0, 0))
-	t.frames["Second Frame"].addWidget(byes_enter_time, (0, 1))
-	t.frames["Second Frame"].addWidget(bcancel, (0, 2))
-
-	byes_current_time.selfframe.grid(sticky=E+W, padx=5)
-	byes_enter_time.selfframe.grid(sticky=E+W, padx=5)
-	bcancel.selfframe.grid(sticky=E+W, padx=5)
-	byes_current_time.config(cmd=lambda: return_(True), lang=lang)
-	byes_enter_time.config(cmd=lambda: return_('manual'), lang=lang)
-	bcancel.config(cmd=lambda: return_(False), lang=lang)
-	byes_current_time_text = byes_current_time.button.cget('text')
-	byes_current_time.button.config(
-		text=byes_current_time_text + ' ' + timeslot)
-
-	t.root.wait_window()
-
-	return t.value
-
-def confirm_print(lang):
-
-	def d(z):
-		t.z = z
-		t.dw()
-
-	t = Mbox()
-
-	t.newFrame("First Frame", (0, 0))
-	t.newFrame("Second Frame", (1, 0))
-
-	cstext = Labelbox(text='Con print', lang=lang, repr='cprint')
-
-	t.frames["First Frame"].addWidget(hs, (1, 0))
-	t.frames["First Frame"].addWidget(cstext, (2, 0))
-	t.frames["Second Frame"].addWidget(byes, (0, 0))
-	t.frames["Second Frame"].addWidget(bno, (0, 1))
-
-	byes.selfframe.grid(sticky=E+W, padx=5)
-	bno.selfframe.grid(sticky=E+W, padx=5)
-	byes.config(cmd=lambda: d(True), lang=lang)
-	bno.config(cmd=lambda: d(False), lang=lang)
-	byes.button.focus_set()
-
-	t.root.wait_window()
-
-	return t.z
-
-def confirm_reset(lang):
-
-	def d(z):
-		t.z = z
-		t.dw()
-
-	t = Mbox()
-
-	t.newFrame("First Frame", (0, 0))
-	t.newFrame("Second Frame", (1, 0))
-
-	cstext = Labelbox(text='Confirm Reset', lang=lang, repr='creset')
-
-	t.frames["First Frame"].addWidget(hs, (1, 0))
-	t.frames["First Frame"].addWidget(cstext, (2, 0))
-	t.frames["Second Frame"].addWidget(byes, (0, 0))
-	t.frames["Second Frame"].addWidget(bno, (0, 1))
-	t.frames["Second Frame"].addWidget(bcancel, (0, 2))
-
-	byes.selfframe.grid(sticky=E+W, padx=5)
-	bno.selfframe.grid(sticky=E+W, padx=5)
-	bcancel.selfframe.grid(sticky=E+W, padx=5)
-	byes.config(cmd=lambda: d(True), lang=lang)
-	bno.config(cmd=lambda: d(False), lang=lang)
-	bcancel.config(cmd=lambda: d('cancel'), lang=lang)
-
-	t.root.wait_window()
-
-	return t.z
-
-def ret(lang):
-
-	def d(z):
-		t.z = z
-		t.dw()
-
-	t = Mbox()
-
-	t.newFrame("First Frame", (0, 0))
-	t.newFrame("Second Frame", (1, 0))
-
-	rettext = Labelbox(text='Ret to Main', lang=lang, repr='rettext')
-
-	t.frames["First Frame"].addWidget(hs, (1, 0))
-	t.frames["First Frame"].addWidget(rettext, (2, 0))
-	t.frames["Second Frame"].addWidget(byes, (0, 0))
-	t.frames["Second Frame"].addWidget(bno, (0, 1))
-
-	byes.selfframe.grid(sticky=E+W, padx=5)
-	bno.selfframe.grid(sticky=E+W, padx=5)
-	byes.config(cmd=lambda: d(True), lang=lang)
-	bno.config(cmd=lambda: d(False), lang=lang)
-	bno.button.focus_set()
-
-	t.root.wait_window()
-
-	return t.z
-
-def confirm_check_in_time(lang, database):
-	def return_(value):
-		t.value = value
-		t.dw()
-
-	t = Mbox()
-
-	t.newFrame("First Frame", (0, 0))
-	t.newFrame("Second Frame", (1, 0))
-
-	cstext = Labelbox(text='Check out prompt', lang=lang, repr='creset')
+	message_box.newFrame("First Frame", (0, 0))
+	message_box.newFrame("Second Frame", (1, 0))
 
 	timeslot = database.findTimeSlot(datetime.now())
 
-	byes_current_time = Buttonbox(text='Check-in', lang=lang, repr='bok')
-	byes_enter_time = Buttonbox(text='Yes, enter time', lang=lang, repr='bnok')
+	cstext = Labelbox(text='Check out prompt', lang=lang, repr='creset')
+	yes_button_current_time = Buttonbox(text='Check-out', lang=lang, repr='bok')
+	yes_button_enter_time = Buttonbox(text='Yes, enter time', lang=lang, repr='no_buttonk')
+	cancel_button = Buttonbox(text='Cancel', lang=lang, repr='cancel_button')
+	verify_image = Photo(repr='verify_image', path=images + 'halt_sm.png')
 
-	byes_current_time.width = 20
-	byes_enter_time.width = 20
+	yes_button_current_time.width = 20
+	yes_button_enter_time.width = 20
 
-	t.frames["First Frame"].addWidget(hs, (1, 0))
-	t.frames["First Frame"].addWidget(cstext, (2, 0))
-	t.frames["Second Frame"].addWidget(byes_current_time, (0, 0))
-	t.frames["Second Frame"].addWidget(byes_enter_time, (0, 1))
-	t.frames["Second Frame"].addWidget(bcancel, (0, 2))
+	message_box.frames["First Frame"].addWidget(cstext, (0, 1))
+	message_box.frames["Second Frame"].addWidget(yes_button_current_time, (0, 0))
+	message_box.frames["Second Frame"].addWidget(yes_button_enter_time, (1, 0))
+	message_box.frames["Second Frame"].addWidget(cancel_button, (2, 0))
+	message_box.frames["First Frame"].addWidget(verify_image, (0, 0))
 
-	byes_current_time.selfframe.grid(sticky=E+W, padx=5)
-	byes_enter_time.selfframe.grid(sticky=E+W, padx=5)
-	bcancel.selfframe.grid(sticky=E+W, padx=5)
-	byes_current_time.config(cmd=lambda: return_(True))
-	byes_enter_time.config(cmd=lambda: return_('manual'))
-	bcancel.config(cmd=lambda: return_(False))
-	byes_current_time_text = byes_current_time.button.cget('text')
-	byes_current_time.button.config(
-		text=byes_current_time_text + ' ' + timeslot)
-	
-	t.root.wait_window()
+	yes_button_current_time.selfframe.grid(sticky=E+W)
+	yes_button_enter_time.selfframe.grid(sticky=E+W)
+	cancel_button.selfframe.grid(sticky=E+W)
+	yes_button_current_time.button.pack(fill=X)
+	yes_button_enter_time.button.pack(fill=X)
+	cancel_button.button.pack(fill=X)
+	yes_button_current_time.config(cmd=lambda: return_(True), lang=lang)
+	yes_button_enter_time.config(cmd=lambda: return_('manual'), lang=lang)
+	cancel_button.config(cmd=lambda: return_(False))
+	yes_button_current_time_text = yes_button_current_time.button.cget('text')
+	yes_button_current_time.button.config(
+		text=yes_button_current_time_text + ' ' + timeslot)
 
-	return t.value
+	verify_image.label.config(width=80)
+	cstext.label.config(wraplength=200, justify=LEFT)
+	message_box.root.wait_window()
+
+	return message_box.value
 
 def confirm_overwrite_checkout(lang):
-
 	def return_(value):
-		t.value = value
-		t.dw()
+		message_box.value = value
+		message_box.dw()
 
-	t = Mbox()
+	message_box = Mbox()
 
-	t.newFrame("First Frame", (0, 0))
-	t.newFrame("Second Frame", (1, 0))
+	message_box.newFrame("First Frame", (0, 0))
+	message_box.newFrame("Second Frame", (1, 0))
 
 	cstext = Labelbox(text='Overwrite Checkout', lang=lang, repr='cprint')
+	yes_button = Buttonbox(text='yes', lang=lang, repr='yes_button')
+	no_button = Buttonbox(text='no', lang=lang, repr='no_button')
+	verify_image = Photo(repr='verify_image', path=images + 'halt_sm.png')
 
-	t.frames["First Frame"].addWidget(hs, (1, 0))
-	t.frames["First Frame"].addWidget(cstext, (2, 0))
-	t.frames["Second Frame"].addWidget(byes, (0, 0))
-	t.frames["Second Frame"].addWidget(bno, (0, 1))
+	message_box.frames["First Frame"].addWidget(cstext, (0, 1))
+	message_box.frames["Second Frame"].addWidget(yes_button, (0, 0))
+	message_box.frames["Second Frame"].addWidget(no_button, (0, 1))
+	message_box.frames["First Frame"].addWidget(verify_image, (0, 0))
 
-	byes.selfframe.grid(sticky=E+W, padx=5)
-	bno.selfframe.grid(sticky=E+W, padx=5)
-	byes.config(cmd=lambda: return_(True), lang=lang)
-	bno.config(cmd=lambda: return_(False), lang=lang)
-	byes.button.focus_set()
+	yes_button.selfframe.grid(sticky=E+W, padx=5)
+	no_button.selfframe.grid(sticky=E+W, padx=5)
+	yes_button.config(cmd=lambda: return_(True), width=10)
+	no_button.config(cmd=lambda: return_(False), width=10)
+	yes_button.button.focus_set()
 
-	t.root.wait_window()
+	verify_image.label.config(width=80)
+	cstext.label.config(wraplength=200, justify=LEFT)
+	message_box.root.wait_window()
 
-	return t.value
+	return message_box.value
+
+def confirm_print(lang):
+	def return_(value):
+		message_box.value = value
+		message_box.dw()
+
+	message_box = Mbox()
+
+	message_box.newFrame("First Frame", (0, 0))
+	message_box.newFrame("Second Frame", (1, 0))
+
+	cstext = Labelbox(text='Con print', lang=lang, repr='cprint')
+	yes_button = Buttonbox(text='yes', lang=lang, repr='yes_button')
+	no_button = Buttonbox(text='no', lang=lang, repr='no_button')
+	verify_image = Photo(repr='verify_image', path=images + 'halt_sm.png')
+
+	message_box.frames["First Frame"].addWidget(cstext, (0, 1))
+	message_box.frames["Second Frame"].addWidget(yes_button, (0, 0))
+	message_box.frames["Second Frame"].addWidget(no_button, (0, 1))
+	message_box.frames["First Frame"].addWidget(verify_image, (0, 0))
+
+	yes_button.selfframe.grid(sticky=E+W, padx=5)
+	no_button.selfframe.grid(sticky=E+W, padx=5)
+	yes_button.config(cmd=lambda: return_(True), width=10)
+	no_button.config(cmd=lambda: return_(False), width=10)
+	yes_button.button.focus_set()
+
+	verify_image.label.config(width=80)
+	cstext.label.config(wraplength=200, justify=LEFT)
+	message_box.root.wait_window()
+
+	return message_box.value
+
+def confirm_reset(lang):
+	def return_(value):
+		message_box.value = value
+		message_box.dw()
+
+	message_box = Mbox()
+
+	message_box.newFrame("First Frame", (0, 0))
+	message_box.newFrame("Second Frame", (1, 0))
+
+	cstext = Labelbox(text='Confirm Reset', lang=lang, repr='creset')
+	yes_button = Buttonbox(text='yes', lang=lang, repr='yes_button')
+	no_button = Buttonbox(text='no', lang=lang, repr='no_button')
+	cancel_button = Buttonbox(text='Cancel', lang=lang, repr='cancel_button')
+	verify_image = Photo(repr='verify_image', path=images + 'halt_sm.png')
+
+	message_box.frames["First Frame"].addWidget(cstext, (0, 1))
+	message_box.frames["Second Frame"].addWidget(yes_button, (0, 0))
+	message_box.frames["Second Frame"].addWidget(no_button, (0, 1))
+	message_box.frames["Second Frame"].addWidget(cancel_button, (0, 2))
+	message_box.frames["First Frame"].addWidget(verify_image, (0, 0))
+
+	yes_button.selfframe.grid(sticky=E+W, padx=5)
+	no_button.selfframe.grid(sticky=E+W, padx=5)
+	cancel_button.selfframe.grid(sticky=E+W, padx=5)
+	yes_button.config(cmd=lambda: return_(True), width=10)
+	no_button.config(cmd=lambda: return_(False), width=10)
+	cancel_button.config(cmd=lambda: d('cancel'), width=10)
+
+	verify_image.label.config(width=80)
+	cstext.label.config(wraplength=200, justify=LEFT)
+	message_box.root.wait_window()
+
+	return message_box.value
+
+def ret(lang):
+	def return_(value):
+		message_box.value = value
+		message_box.dw()
+
+	message_box = Mbox()
+
+	message_box.newFrame("First Frame", (0, 0))
+	message_box.newFrame("Second Frame", (1, 0))
+
+	rettext = Labelbox(text='Ret to Main', lang=lang, repr='rettext')
+	yes_button = Buttonbox(text='yes', lang=lang, repr='yes_button')
+	no_button = Buttonbox(text='no', lang=lang, repr='no_button')
+	verify_image = Photo(repr='verify_image', path=images + 'halt_sm.png')
+
+	message_box.frames["First Frame"].addWidget(rettext, (0, 1))
+	message_box.frames["Second Frame"].addWidget(yes_button, (0, 0))
+	message_box.frames["Second Frame"].addWidget(no_button, (0, 1))
+	message_box.frames["First Frame"].addWidget(verify_image, (0, 0))
+
+	yes_button.selfframe.grid(sticky=E+W, padx=5)
+	no_button.selfframe.grid(sticky=E+W, padx=5)
+	yes_button.config(cmd=lambda: return_(True), width=10)
+	no_button.config(cmd=lambda: return_(False), width=10)
+	no_button.button.focus_set()
+
+	verify_image.label.config(width=80)
+	rettext.label.config(wraplength=200, justify=LEFT)
+	message_box.root.wait_window()
+
+	return message_box.value
 
 def confirm_overwrite_checkin(lang):
 	def return_(value):
-		t.value = value
-		t.dw()
+		message_box.value = value
+		message_box.dw()
 
-	t = Mbox()
+	message_box = Mbox()
 
-	t.newFrame("First Frame", (0, 0))
-	t.newFrame("Second Frame", (1, 0))
+	message_box.newFrame("First Frame", (0, 0))
+	message_box.newFrame("Second Frame", (1, 0))
 
 	cstext = Labelbox(text='Overwrite Check-In', lang=lang, repr='cprint')
+	yes_button = Buttonbox(text='yes', lang=lang, repr='yes_button')
+	no_button = Buttonbox(text='no', lang=lang, repr='no_button')
+	verify_image = Photo(repr='verify_image', path=images + 'halt_sm.png')
 
-	t.frames["First Frame"].addWidget(hs, (1, 0))
-	t.frames["First Frame"].addWidget(cstext, (2, 0))
-	t.frames["Second Frame"].addWidget(byes, (0, 0))
-	t.frames["Second Frame"].addWidget(bno, (0, 1))
+	message_box.frames["First Frame"].addWidget(cstext, (0, 1))
+	message_box.frames["Second Frame"].addWidget(yes_button, (0, 0))
+	message_box.frames["Second Frame"].addWidget(no_button, (0, 1))
+	message_box.frames["First Frame"].addWidget(verify_image, (0, 0))
 
-	byes.selfframe.grid(sticky=E+W, padx=5)
-	bno.selfframe.grid(sticky=E+W, padx=5)
-	byes.config(cmd=lambda: return_(True), lang=lang)
-	bno.config(cmd=lambda: return_(False), lang=lang)
-	byes.button.focus_set()
+	yes_button.selfframe.grid(sticky=E+W, padx=5)
+	no_button.selfframe.grid(sticky=E+W, padx=5)
+	yes_button.config(cmd=lambda: return_(True), width=10)
+	no_button.config(cmd=lambda: return_(False), width=10)
+	yes_button.button.focus_set()
 
-	t.root.wait_window()
+	verify_image.label.config(width=80)
+	cstext.label.config(wraplength=200, justify=LEFT)
+	message_box.root.wait_window()
 
-	return t.value
-
-def confirm_check_out_time(lang, database):
-	def return_(value):
-		t.value = value
-		t.dw()
-
-	t = Mbox()
-
-	t.newFrame("First Frame", (0, 0))
-	t.newFrame("Second Frame", (1, 0))
-
-	cstext = Labelbox(text='Check out prompt', lang=lang, repr='creset')
-	
-	timeslot = database.findTimeSlot(datetime.now())
-
-	byes_current_time = Buttonbox(text='Check-out', lang=lang, repr='bok')
-	byes_enter_time = Buttonbox(text='Yes, enter time', lang=lang, repr='bnok')
-
-	byes_current_time.width = 20
-	byes_enter_time.width = 20
-
-	t.frames["First Frame"].addWidget(hs, (1, 0))
-	t.frames["First Frame"].addWidget(cstext, (2, 0))
-	t.frames["Second Frame"].addWidget(byes_current_time, (0, 0))
-	t.frames["Second Frame"].addWidget(byes_enter_time, (0, 1))
-	t.frames["Second Frame"].addWidget(bcancel, (0, 2))
-
-	byes_current_time.selfframe.grid(sticky=E+W, padx=5)
-	byes_enter_time.selfframe.grid(sticky=E+W, padx=5)
-	bcancel.selfframe.grid(sticky=E+W, padx=5)
-	byes_current_time.config(cmd=lambda: return_(True), lang=lang)
-	byes_enter_time.config(cmd=lambda: return_('manual'), lang=lang)
-	bcancel.config(cmd=lambda: return_(False), lang=lang)
-	byes_current_time_text = byes_current_time.button.cget('text')
-	byes_current_time.button.config(
-		text=byes_current_time_text + ' ' + timeslot)
-
-	t.root.wait_window()
-
-	return t.value
+	return message_box.value
 
 '''
 ** depreciated?? **
 def pchoosefile(lang):
 
-	t = Mbox()
+	message_box = Mbox()
 	
-	t.newFrame("First Frame", (0, 0))
-	t.newFrame("Second Frame", (1, 0))
+	message_box.newFrame("First Frame", (0, 0))
+	message_box.newFrame("Second Frame", (1, 0))
 
 	pchoosefiletext = Labelbox(text='Please choose a file', lang=lang, repr='pchoosefiletext')
 
-	t.frames["First Frame"].addWidget(ws, (0, 0))
-	t.frames["First Frame"].addWidget(pchoosefiletext, (1, 0))
-	t.frames["Second Frame"].addWidget(bok, (2, 0))
+	message_box.frames["First Frame"].addWidget(ws, (0, 0))
+	message_box.frames["First Frame"].addWidget(pchoosefiletext, (1, 0))
+	message_box.frames["Second Frame"].addWidget(bok, (2, 0))
 
-	bok.config(cmd=t.dw, lang=lang)
+	bok.config(cmd=message_box.dw, lang=lang)
 
-	t.root.wait_window()
+	message_box.root.wait_window()
 '''

@@ -1,6 +1,7 @@
 from uiHandler22 import *
 from dataHandler import *
 from preBuilts2 import *
+from student_picker import spicker
 
 
 def main(t, lang, database):
@@ -165,6 +166,7 @@ def main(t, lang, database):
 
 		if not data:
 			no_checkin_today(window_.lang)
+			sby.b.set(sby.rads[0][1]) #reset search bar
 			return
 		if len(data[4]) != 0:
 			if confirm_overwrite_checkout(window_.lang):

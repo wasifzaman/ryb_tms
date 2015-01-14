@@ -155,7 +155,7 @@ class StudentDB:
         
     def importxlsx(self, filename):
         config = configparser.ConfigParser()
-        config.read('config.ini', encoding='utf-8')
+        config.read(os.path.abspath(os.pardir) + '\config.ini', encoding='utf-8')
         workbook = xlrd.open_workbook(filename)
         worksheet = workbook.sheet_by_index(0)
 

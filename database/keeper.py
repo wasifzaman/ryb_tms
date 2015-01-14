@@ -27,6 +27,11 @@ class Keeper:
 
 	def load(self):
 		self.files = pickle.load(open(self.fname, "rb"))
+		if not os.path.exists(self.files['cfilepath']) or \
+			not os.path.exists(self.files['pwfile']):
+			self.files['cfilepath'] = temp + 'temp1234.rybdb'
+			self.files['pwfile'] = temp + 'temp1234_pw.rybdb'
+			self.save()
 
 	def save(self):
 		pickle.dump(self.files, open(self.fname, "wb"))
