@@ -150,23 +150,3 @@ def reset_confirmation(lang, value):
 	ok_button.config(cmd=message_box.dw, width=10)
 
 	message_box.root.wait_window()
-
-'''
-** depreciated? **
-def dbs(lang):
-
-	message_box = Mbox()
-	
-	message_box.newFrame("First Frame", (0, 0))
-	message_box.newFrame("Second Frame", (1, 0))
-
-	dbupdate = Labelbox(text='Database succesfully updated!', lang=lang, repr='dbupdate')
-
-	message_box.frames["First Frame"].addWidget(warning_image, (0, 0))
-	message_box.frames["First Frame"].addWidget(dbupdate, (1, 0))
-	message_box.frames["Second Frame"].addWidget(ok_button, (2, 0))
-
-	ok_button.config(cmd=message_box.dw, lang=lang)
-
-	message_box.root.wait_window()
-'''

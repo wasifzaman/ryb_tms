@@ -164,7 +164,7 @@ def main(t, lang, d):
 
 
 				if len(sl) == 0:
-					nos(w.lang)
+					student_does_not_exist(w.lang)
 					return
 
 				w.s = sl[0][0]
@@ -175,7 +175,7 @@ def main(t, lang, d):
 
 			editS2.main(w.lang, d=d, top=True, i=w.s)
 		except:
-			nos(w.lang)
+			student_does_not_exist(w.lang)
 			return
 
 

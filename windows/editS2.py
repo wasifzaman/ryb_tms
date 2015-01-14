@@ -40,6 +40,7 @@ def main(lang, database, top=False, i=0):
 
 	sstudent = Buttonbox(text='savestudent', lang=window_1.lang, repr='sstudent')
 	bclose = Buttonbox(text='close', lang=window_1.lang, repr='bclose')
+	window_1.bCode = TextboxNoEdit(text="Barcode", lang=language, repr='bCode')
 	window_1.attinfo = attinfo
 	#switch_frame_button = Buttonbox(text='Attendance Table', lang=window_1.lang, repr='showstudentinfo')
 	
@@ -121,11 +122,11 @@ def main(lang, database, top=False, i=0):
 		if not changed():
 			top_window_.destroy()
 			return
-		if not conS(s.datapoints['firstName'] + ' ' + s.datapoints['lastName'], window_1.lang): return
+		if not confirm_save_teacher_data(window_1.lang): return
 
 		cbcode = bCode.getData()
 		if s.datapoints['bCode'] != cbcode:
-			if not ase(database.studentList[cbcode].datapoints['firstName'], window_1.lang):
+			if not confirm_overwrite_teacher(database.studentList[cbcode].datapoints['firstName'], window_1.lang):
 				return
 			else:
 				dbcode = s.datapoints['bCode']
@@ -146,7 +147,7 @@ def main(lang, database, top=False, i=0):
 	def quit():
 		if not changed():
 			top_window_.destroy()
-		elif ret(window_1.lang):
+		elif return_to_main_window(window_1.lang):
 			top_window_.destroy()
 	
 	sstudent.config(cmd=collect)

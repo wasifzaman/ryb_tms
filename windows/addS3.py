@@ -71,8 +71,8 @@ def main(parent_frame, lang, database, return_to_main):
 
 		new_student_id = new_student.datapoints['bCode']
 		if (database.checkCode(new_student_id) and \
-			(not ase(database.studentList[new_student_id].datapoints['firstName'], window_.lang))) \
-			or not con(new_student.datapoints['firstName'], window_.lang):
+			(not confirm_overwrite_teacher(database.studentList[new_student_id].datapoints['firstName'], window_.lang))) \
+			or not confirm_teacher_addition(window_.lang):
 			return
  
 		new_student.datapoints['attinfo'] = [['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time', 'School'], []]

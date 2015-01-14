@@ -11,7 +11,7 @@ from simple_label import Labelbox
 from photoWidget2 import Photo
 
 
-def nos(lang):
+def student_does_not_exist(lang):
 	message_box = Mbox()
 	
 	message_box.newFrame("First Frame", (0, 0))

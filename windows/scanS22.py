@@ -86,7 +86,7 @@ def main(t, lang, database):
 
 		if len(window_.student_id) == 0: return
 		if sby.getData()[0] == 'bCode' and window_.student_id not in database.studentList:
-			nos(window_.lang)
+			student_does_not_exist(window_.lang)
 			return
 
 		window_.tdp = dict()
@@ -115,7 +115,7 @@ def main(t, lang, database):
 					student_list.append([data_points['bCode'], data_points['firstName'], data_points['lastName'], data_points['chineseName']])
 
 			if len(student_list) == 0:
-				nos(window_.lang)
+				student_does_not_exist(window_.lang)
 				return
 
 			window_.student_id = student_list[0][0]
@@ -261,7 +261,7 @@ def main(t, lang, database):
 		try:
 			if not changed(): return
 			s = database.studentList[window_.student_id]
-			if not conS(s.datapoints['firstName'] + ' ' + s.datapoints['lastName'], window_.lang): return
+			if not confirm_save_teacher_data(window_.lang): return
 			s.datapoints = dict(list(s.datapoints.items()) + list(window_.collect(s.datapoints).items()))
 			database.saveData()
 		except:
@@ -287,7 +287,7 @@ def main(t, lang, database):
 	firstName2 = Textbox(text="First Name", lang=language, repr='firstName')
 	lastName2 = Textbox(text="Last Name", lang=language, repr='lastName')
 	#chineseName2 = Textbox(text="Chinese Name", lang=language, repr='chineseName')
-	bCode2 = Textbox(text="Barcode", lang=language, repr='bCode')
+	bCode2 = TextboxNoEdit(text="Barcode", lang=language, repr='bCode')
 	#sid2 = IntTextbox(text="Old Student ID", lang=language, repr='sid')
 	dob2 = Datebox(text="Date of Birth", lang=language, repr='dob')
 	portr2 = Photo(repr='portr', path='monet_sm.jpg')

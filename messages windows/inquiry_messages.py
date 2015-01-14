@@ -14,7 +14,7 @@ from photoWidget2 import Photo
 from languages import languages
 
 
-def con(s, lang):
+def confirm_teacher_addition(lang):
 	def return_(value):
 		message_box.value = value
 		message_box.dw()
@@ -26,7 +26,7 @@ def con(s, lang):
 	message_box.newFrame("First Frame", (0, 0))
 	message_box.newFrame("Second Frame", (1, 0))
 
-	context = Labelbox(text='Con student', lang=lang, repr='context')
+	context = Labelbox(text='Confirm Teacher Addition', lang=lang, repr='context')
 	yes_button = Buttonbox(text='yes', lang=lang, repr='yes_button')
 	no_button = Buttonbox(text='no', lang=lang, repr='no_button')
 	verify_image = Photo(repr='verify_image', path=images + 'halt_sm.png')
@@ -48,7 +48,7 @@ def con(s, lang):
 
 	return message_box.value
 
-def conS(s, lang):
+def confirm_save_teacher_data(lang):
 	def return_(value):
 		message_box.value = value
 		message_box.dw()
@@ -58,7 +58,7 @@ def conS(s, lang):
 	message_box.newFrame("First Frame", (0, 0))
 	message_box.newFrame("Second Frame", (1, 0))
 
-	constext = Labelbox(text='Con S student', lang=lang, repr='constext')
+	constext = Labelbox(text='Confirm Save Teacher Data', lang=lang, repr='constext')
 	yes_button = Buttonbox(text='yes', lang=lang, repr='yes_button')
 	no_button = Buttonbox(text='no', lang=lang, repr='no_button')
 	verify_image = Photo(repr='verify_image', path=images + 'halt_sm.png')
@@ -79,7 +79,7 @@ def conS(s, lang):
 
 	return message_box.value
 
-def ase(s, lang):
+def confirm_overwrite_teacher(lang):
 	def return_(value):
 		message_box.value = value
 		message_box.dw()
@@ -89,7 +89,7 @@ def ase(s, lang):
 	message_box.newFrame("First Frame", (0, 0))
 	message_box.newFrame("Second Frame", (1, 0))
 
-	asetext = Labelbox(text='Ase student', lang=lang, repr='asetext')
+	asetext = Labelbox(text='Confirm Overwrite Teacher', lang=lang, repr='asetext')
 	yes_button = Buttonbox(text='yes', lang=lang, repr='yes_button')
 	no_button = Buttonbox(text='no', lang=lang, repr='no_button')
 	verify_image = Photo(repr='verify_image', path=images + 'halt_sm.png')
@@ -111,7 +111,8 @@ def ase(s, lang):
 
 	return message_box.value
 
-def cs(s, lang):
+def confirm_check_in_teacher(lang):
+	''' **depreciated??** '''
 	def return_(value):
 		message_box.value = value
 		message_box.dw()
@@ -121,7 +122,7 @@ def cs(s, lang):
 	message_box.newFrame("First Frame", (0, 0))
 	message_box.newFrame("Second Frame", (1, 0))
 
-	cstext = Labelbox(text='Cs student', lang=lang, repr='cstext')
+	cstext = Labelbox(text='Confirm Check-in Teacher', lang=lang, repr='cstext')
 	yes_button = Buttonbox(text='yes', lang=lang, repr='yes_button')
 	no_button = Buttonbox(text='no', lang=lang, repr='no_button')
 	verify_image = Photo(repr='verify_image', path=images + 'halt_sm.png')
@@ -144,6 +145,7 @@ def cs(s, lang):
 	return message_box.value
 
 def csout(s, lang):
+	''' ** depreciated? '''
 	def return_(value):
 		message_box.value = value
 		message_box.dw()
@@ -366,7 +368,7 @@ def confirm_reset(lang):
 
 	return message_box.value
 
-def ret(lang):
+def return_to_main_window(lang):
 	def return_(value):
 		message_box.value = value
 		message_box.dw()
@@ -376,7 +378,7 @@ def ret(lang):
 	message_box.newFrame("First Frame", (0, 0))
 	message_box.newFrame("Second Frame", (1, 0))
 
-	rettext = Labelbox(text='Ret to Main', lang=lang, repr='rettext')
+	rettext = Labelbox(text='Return to Main Window', lang=lang, repr='rettext')
 	yes_button = Buttonbox(text='yes', lang=lang, repr='yes_button')
 	no_button = Buttonbox(text='no', lang=lang, repr='no_button')
 	verify_image = Photo(repr='verify_image', path=images + 'halt_sm.png')

@@ -91,7 +91,7 @@ def main():
 
 	def return_to_main(con):
 		if con:
-			if not ret(window_.lang): return
+			if not return_to_main_window(window_.lang): return
 
 		window_.frames['Second Frame'].grid_forget()
 		main_window_.titleFrame.config(height=60)
