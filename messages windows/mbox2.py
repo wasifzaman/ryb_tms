@@ -44,14 +44,5 @@ class Mbox(AppWindow):
 		self.title_.bind('<ButtonPress-1>', start_move)
 		self.title_.bind('<B1-Motion>', in_motion)
 
-	def config(self, **kwargs):
-		if 'bg' in kwargs:
-			self.bgc = kwargs['bg']
-			for frame in self.frames.values():
-				frame.config(bg=self.bgc)
-
-				for widget in frame.widgets.values():
-					widget.config(bg=kwargs['bg'])
-
 	def dw(self):
 		self.root.destroy()

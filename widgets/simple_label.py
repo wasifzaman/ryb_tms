@@ -2,6 +2,7 @@ from tkinter import *
 
 from textbox import Textbox
 
+
 class Labelbox(Textbox):
 	def __init__(self, **kwargs):
 		Textbox.__init__(self, **kwargs)

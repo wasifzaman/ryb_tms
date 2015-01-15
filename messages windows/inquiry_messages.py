@@ -21,8 +21,6 @@ def confirm_teacher_addition(lang):
 
 	message_box = Mbox()
 
-	message_box.title_.config(text='TEST')
-
 	message_box.newFrame("First Frame", (0, 0))
 	message_box.newFrame("Second Frame", (1, 0))
 
@@ -107,72 +105,6 @@ def confirm_overwrite_teacher(lang):
 
 	verify_image.label.config(width=80)
 	asetext.label.config(wraplength=200, justify=LEFT)
-	message_box.root.wait_window()
-
-	return message_box.value
-
-def confirm_check_in_teacher(lang):
-	''' **depreciated??** '''
-	def return_(value):
-		message_box.value = value
-		message_box.dw()
-
-	message_box = Mbox()
-
-	message_box.newFrame("First Frame", (0, 0))
-	message_box.newFrame("Second Frame", (1, 0))
-
-	cstext = Labelbox(text='Confirm Check-in Teacher', lang=lang, repr='cstext')
-	yes_button = Buttonbox(text='yes', lang=lang, repr='yes_button')
-	no_button = Buttonbox(text='no', lang=lang, repr='no_button')
-	verify_image = Photo(repr='verify_image', path=images + 'halt_sm.png')
-
-	message_box.frames["First Frame"].addWidget(cstext, (0, 1))
-	message_box.frames["Second Frame"].addWidget(yes_button, (0, 0))
-	message_box.frames["Second Frame"].addWidget(no_button, (0, 1))
-	message_box.frames["First Frame"].addWidget(verify_image, (0, 0))
-
-	yes_button.selfframe.grid(sticky=E+W, padx=5)
-	no_button.selfframe.grid(sticky=E+W, padx=5)
-	yes_button.config(cmd=lambda: return_(True), width=10)
-	no_button.config(cmd=lambda: return_(False), width=10)
-	yes_button.button.focus_set()
-
-	verify_image.label.config(width=80)
-	cstext.label.config(wraplength=200, justify=LEFT)
-	message_box.root.wait_window()
-
-	return message_box.value
-
-def csout(s, lang):
-	''' ** depreciated? '''
-	def return_(value):
-		message_box.value = value
-		message_box.dw()
-
-	message_box = Mbox()
-
-	message_box.newFrame("First Frame", (0, 0))
-	message_box.newFrame("Second Frame", (1, 0))
-
-	cstext = Labelbox(text='Check out prompt', lang=lang, repr='cstext')
-	yes_button = Buttonbox(text='yes', lang=lang, repr='yes_button')
-	no_button = Buttonbox(text='no', lang=lang, repr='no_button')
-	verify_image = Photo(repr='verify_image', path=images + 'halt_sm.png')
-
-	message_box.frames["First Frame"].addWidget(cstext, (0, 1))
-	message_box.frames["Second Frame"].addWidget(yes_button, (0, 0))
-	message_box.frames["Second Frame"].addWidget(no_button, (0, 1))
-	message_box.frames["First Frame"].addWidget(verify_image, (0, 0))
-
-	yes_button.selfframe.grid(sticky=E+W, padx=5)
-	no_button.selfframe.grid(sticky=E+W, padx=5)
-	yes_button.config(cmd=lambda: return_(True), width=10)
-	no_button.config(cmd=lambda: return_(False), width=10)
-	yes_button.button.focus_set()
-
-	verify_image.label.config(width=80)
-	cstext.label.config(wraplength=200, justify=LEFT)
 	message_box.root.wait_window()
 
 	return message_box.value
@@ -431,23 +363,3 @@ def confirm_overwrite_checkin(lang):
 	message_box.root.wait_window()
 
 	return message_box.value
-
-'''
-** depreciated?? **
-def pchoosefile(lang):
-
-	message_box = Mbox()
-	
-	message_box.newFrame("First Frame", (0, 0))
-	message_box.newFrame("Second Frame", (1, 0))
-
-	pchoosefiletext = Labelbox(text='Please choose a file', lang=lang, repr='pchoosefiletext')
-
-	message_box.frames["First Frame"].addWidget(ws, (0, 0))
-	message_box.frames["First Frame"].addWidget(pchoosefiletext, (1, 0))
-	message_box.frames["Second Frame"].addWidget(bok, (2, 0))
-
-	bok.config(cmd=message_box.dw, lang=lang)
-
-	message_box.root.wait_window()
-'''

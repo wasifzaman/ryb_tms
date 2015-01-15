@@ -2,6 +2,7 @@ from tkinter import *
 
 from textbox import Textbox
 
+
 class Picker(Textbox):
 	def __init__(self, **kwargs):
 		self.repr = kwargs['repr']

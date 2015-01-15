@@ -41,11 +41,10 @@ def main(lang, database, top=False, i=0):
 	sstudent = Buttonbox(text='savestudent', lang=window_1.lang, repr='sstudent')
 	bclose = Buttonbox(text='close', lang=window_1.lang, repr='bclose')
 	window_1.bCode = TextboxNoEdit(text="Barcode", lang=language, repr='bCode')
-	window_1.attinfo = attinfo
+	window_1.attinfo = Table(repr='attinfox', edit=False)
 	#switch_frame_button = Buttonbox(text='Attendance Table', lang=window_1.lang, repr='showstudentinfo')
 	
 	window_main.frames["Seventh Frame"].addWidget(portr, (0, 0))
-	window_main.frames["Seventh Frame"].addWidget(brwp, (1, 0))
 	window_1.frames["First Frame"].addWidget(sinfo, (0, 0))
 	window_1.frames["First Frame"].addWidget(firstName, (1, 0))
 	window_1.frames["First Frame"].addWidget(lastName, (2, 0))
@@ -88,7 +87,6 @@ def main(lang, database, top=False, i=0):
 	notes.label.grid_forget()
 	notes.sentry.grid(column=0, columnspan=2)
 	notes.config(height=8, width=32)
-	brwp.config(lang=window_1.lang)
 	window_1.attinfo.config(lang=window_1.lang)
 	window_1.attinfo.canvas.config(width=720)
 	window_1.attinfo.editwidget = False
@@ -153,7 +151,6 @@ def main(lang, database, top=False, i=0):
 	sstudent.config(cmd=collect)
 	sstudent.selfframe.grid(padx=5)
 	bclose.config(cmd=quit)
-	brwp.config(cmd=ppicker)
 	#switch_frame_button.config(cmd=switch_frame)
 
 	for frame in window_1.frames.values():

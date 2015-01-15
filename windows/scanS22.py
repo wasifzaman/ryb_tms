@@ -12,8 +12,8 @@ def main(t, lang, database):
 
 #attendance table
 	window_.attinfo = Table(repr='attinfox', edit=True)
-	window_.attinfoh = [language['Date'], language['Check-In Time'], language['Class Time'], language['Check-Out Time']]
-	window_.attinfo.build(headers=window_.attinfoh, data=[[]])
+	window_.attinfoh = [lang[text] for text in ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time']]#, 'School']]
+	#window_.attinfo.build(headers=window_.attinfoh, data=[[]])
 	window_.attinfo.clast = '#FF99FF'
 
 #frame initialization
@@ -128,13 +128,6 @@ def main(t, lang, database):
 		window_.portr.setData('monet_sm.jpg')
 		portr2.setData('monet_sm.jpg')
 
-		for child in window_.frames["Eleventh Frame"].winfo_children():
-			child.destroy()
-
-		window_.attinfo.build(headers=window_.attinfoh, data=[[]])
-		window_.frames["Eleventh Frame"].addWidget(window_.attinfo, (0, 0))
-		window_.frames["Eleventh Frame"].grid(rowspan=4, sticky=W)
-
 		window_.attinfo.editwidget=False
 		window_.attinfo.canvas.config(width=696, height=300)
 
@@ -155,7 +148,6 @@ def main(t, lang, database):
 		time = datetime.strftime(dt, '%I:%M %p')
 		timeslot = database.findTimeSlot(dt)
 		overwrite = False
-		data_points['attinfo'][0] = ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time', 'School']
 		if date in [row[0] for row in data_points['attinfo'][1]]:
 			if not confirm_overwrite_checkin(window_.lang):
 				sby.b.set(sby.rads[0][1]) #reset search bar
@@ -185,7 +177,9 @@ def main(t, lang, database):
 
 		database.saveData()
 		window_.attinfo.setData(
-		[data_points['attinfo'][0], [data_points['attinfo'][1][-1]]]) #display last entry
+			headers=window_.attinfoh,
+			data=[data_points['attinfo'][1][-1][:5]]) #display last entry
+		window_.attinfo.set_width(2, 5, 14)
 		sby.b.set(sby.rads[0][1]) #reset search bar
 		window_.attinfo.canvas.yview_moveto(1.0) #scroll to bottom of table
 
@@ -237,18 +231,22 @@ def main(t, lang, database):
 				if len(row[4]) != 0 and datetime.strptime(date + ' ' + row[4], '%m/%d/%Y %I:%M %p') < datetime.strptime(date + ' ' + time, '%m/%d/%Y %I:%M %p'):
 					checkout_earlier_checkin(window_.lang)
 					return
-				row[1] = time_entry 
+				row[1] = time_entry
 				row[2] = time
 				database.saveData()
 				window_.attinfo.setData(
-				[data_points['attinfo'][0], [[date, time_entry, time, '', '', database.school]]])
+					headers=window_.attinfoh,
+					data=[[date, time_entry, time, '', '']])
+				window_.attinfo.set_width(2, 5, 14)
 				return
 
 		data_points['attinfo'][1].append([date, time_entry, time, '', '', database.school])
 		database.sort_attendance(bCodeNE.getData())
 		database.saveData()
 		window_.attinfo.setData(
-		[data_points['attinfo'][0], [[date, time_entry, time, '', '', database.school]]])
+			headers=window_.attinfoh,
+			data=[[date, time_entry, time, '', '']])
+		window_.attinfo.set_width(2, 5, 14)
 
 	window_.frames["Tenth Frame"].widgets['sby'].entry.bind("<Return>", lambda x: search_student())
 

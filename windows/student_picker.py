@@ -15,7 +15,7 @@ portr = Photo(repr='portr', path='monet_sm.jpg')
 stableh = [language['Barcode'], language['First Name'], \
 	language['Last Name'], language['Chinese Name'], language['Date of Birth']]
 
-stable.build(headers=stableh, data=[[]])
+#stable.build(headers=stableh, data=[[]])
 
 def sbind(f):
 	def fsb(p):

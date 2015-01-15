@@ -16,24 +16,15 @@ def main(t, lang, d):
 #sT
 	w.sT = Table(repr='stable', edit=False)
 	stableh = [w.lang['Barcode'], w.lang['First Name'], \
-	w.lang['Last Name'], w.lang['Chinese Name'], w.lang['Date of Birth']]
-	w.sT.build(headers=stableh, data=[[]])
+				w.lang['Last Name'], w.lang['Chinese Name'], w.lang['Date of Birth']]
 
 	def sTbind(f):
 		def fsb(p):
 			i = w.sT.data[p[0]-1][0]
-			#try:
 			f(i)
-			#except:
-				#pass
-				#print(w.sT.data[p[0]-1][0])
-
-		try:
-			for pos, cell in w.sT.cells.items():
-				cell.config(bind=('<Double-Button-1>', lambda event, pos=pos: fsb(pos)))
-		except:
-			pass
-			#print("cells could not be bound")
+		for pos, cell in w.sT.cells.items():
+			if pos[0] == 0: continue
+			cell.config(bind=('<Double-Button-1>', lambda event, pos=pos: fsb(pos)))
 
 #frame initialization
 	w.newFrame("First Frame", (1, 0))
@@ -51,9 +42,7 @@ def main(t, lang, d):
 	w.sby = Picker(repr='sby', text=w.lang['Search By'], rads=[(w.lang['Barcode'], 'bCode'), \
 		(w.lang['First Name'], 'firstName'), \
 		(w.lang['Last Name'], 'lastName'), \
-		(w.lang['Chinese Name'], 'chineseName'), \
-		(w.lang['Phone Number'], 'phoneNumber'), \
-		(w.lang['Date of Birth'], 'dob')])
+		(w.lang['Chinese Name'], 'chineseName')])
 
 	w.frames["First Frame"].addWidget(w.sby, (0, 0))
 	w.frames["First Frame"].addWidget(bsearch, (1, 0))
@@ -76,10 +65,6 @@ def main(t, lang, d):
 
 	w.frames["Second Frame"].addWidget(w.sT, (2, 0))
 	w.sT.canvas.config(width=700, height=480)
-
-	#sby.rads=[('Barcode', 'bCode'), ('First Name', 'firstName'), \
-	#	('Last Name', 'lastName'), ('Chinese Name', 'chineseName'), \
-	#	('Phone Number', 'phoneNumber')]
 
 	sL = [[]]
 	for s in d.studentList.values():
@@ -110,9 +95,10 @@ def main(t, lang, d):
 		for child in w.frames["Second Frame"].winfo_children():
 			child.destroy()
 
-		w.sT.build(headers=stableh, data=sL[p])
 		w.frames["Second Frame"].addWidget(w.sT, (2, 0))
+		w.sT.setData(headers=stableh, data=sL[p])
 		w.sT.canvas.config(width=700, height=450)
+		w.sT.set_width(2, 5, 14)
 		sTbind(lambda i: editS2.main(w.lang, d, top=True, i=i))
 
 	def f():

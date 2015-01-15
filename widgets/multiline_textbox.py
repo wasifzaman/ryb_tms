@@ -3,7 +3,9 @@ from tkinter.scrolledtext import ScrolledText
 
 from textbox import Textbox
 
+
 class LongTextbox(Textbox):
+
 	def config(self, **kwargs):
 		if 'height' in kwargs:
 			self.sentry.config(height=kwargs['height'])

@@ -41,7 +41,7 @@ def main(lang, database):
 			student_list.append([data_points['bCode'], data_points['firstName'], data_points['lastName'], data_points['chineseName'], data_points['dob']])
 
 		student_list.sort()
-		window_.student_table.setData((window_.student_table_headers, student_list))
+		window_.student_table.setData(student_list)
 		window_.student_table.canvas.config(width=700)
 
 	def set_file(textbox):

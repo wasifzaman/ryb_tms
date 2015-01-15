@@ -8,4 +8,8 @@ b2 = Button(text='test2', command=lambda: t.state('normal'))
 b.pack()
 b2.pack()
 
-t.mainloop()
+
+x = [1, 2, 3, 4]
+print(x[:3])
+
+#t.mainloop()

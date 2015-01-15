@@ -1,26 +1,20 @@
 from tkinter import Label, N
-from widget import Widget
 from PIL import Image, ImageTk
 
 
-class Photo(Widget):
+class Photo:
 
 	def __init__(self, **kwargs):
 		self.repr = kwargs['repr']
 		self.path = kwargs['path']
 
-
 	def config(self, **kwargs):
-
 		if 'path' in kwargs:
 			self.path = kwargs['path']
 			self.picture = Image.open(self.path)
 			self.picture = self.picture.resize((200, 200), Image.ANTIALIAS)
 			self.image = ImageTk.PhotoImage(self.picture)
 			self.label.config(image=self.image)
-		if 'bg' in kwargs:
-			self.bgc = kwargs['bg']
-			self.label.config(bg=self.bgc)
 
 	def place(self, **kwargs):
 		self.parent = kwargs['parent']

@@ -3,10 +3,10 @@ from datetime import time, date, datetime
 
 from textbox import IntTextbox
 
+
 class Datebox(IntTextbox):
 
 	def config(self, **kwargs):
-
 		if 'm' in kwargs and 'd' in kwargs and 'y' in kwargs:
 			m, d, y = StringVar(), StringVar(), StringVar()
 			m.set(kwargs['m'])
@@ -20,7 +20,6 @@ class Datebox(IntTextbox):
 			self.label.config(text=self.lang[self.text])
 
 	def place(self, **kwargs):
-
 		self.parent = kwargs['parent']
 		self.row = kwargs['row']
 		self.column = kwargs['column']

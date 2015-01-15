@@ -45,7 +45,6 @@ def main(parent_frame, lang, database, return_to_main):
 	window_.frames["Fourth Frame"].addWidget(bCode, (1, 0))
 	window_.frames["Fifth Frame"].addWidget(add_student_button, (0, 0))
 	window_.frames["Seventh Frame"].addWidget(portr, (0, 0))
-	window_.frames["Seventh Frame"].addWidget(brwp, (1, 0))
 	window_.frames["Ninth Frame"].addWidget(ninfo, (0, 0))
 	window_.frames["Ninth Frame"].addWidget(notes, (1, 0))
 
@@ -85,7 +84,6 @@ def main(parent_frame, lang, database, return_to_main):
 		return_to_main(False)
 
 	add_student_button.config(cmd=collect)
-	brwp.config(cmd=ppicker)
 
 	for frame in window_.frames.values():
 		for widget in frame.widgets.values():

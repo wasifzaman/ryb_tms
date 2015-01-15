@@ -1,8 +1,8 @@
 from tkinter import *
 
-from widget import Widget
 
-class Textbox(Widget):
+class Textbox:
+
 	def __init__(self, **kwargs):
 		self.text = kwargs['text']
 		self.repr = kwargs['repr']
@@ -33,9 +33,6 @@ class Textbox(Widget):
 		self.label.grid(row=self.row, column=self.column, sticky=E)
 		self.entry.grid(row=self.row, column=self.column+1)
 
-		self.bind()
-
-	def bind(self):
 		vcmd = (self.parent.register(self.OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
 		self.entry.config(validate="all", validatecommand=vcmd)
 
@@ -50,6 +47,7 @@ class Textbox(Widget):
 		self.entry.grid_forget()
 
 class TextboxNoEdit(Textbox):
+
 	def config(self, **kwargs):
 		if 'text' in kwargs:
 			s = StringVar()
@@ -73,9 +71,8 @@ class TextboxNoEdit(Textbox):
 		self.label.grid(row=self.row, column=self.column)
 		self.entry.grid(row=self.row, column=self.column+1)
 
-		self.bind()
-
 class IntTextbox(Textbox):
+
 	def OnValidate(self, d, i, P, s, S, v, V, W):
 		if S.isdigit():
 			return True
@@ -83,23 +80,26 @@ class IntTextbox(Textbox):
 
 	def getData(self):
 		entry_ = self.entry.get()
-		if not entry_.isdigit() or len(entry_.strip()) == 0:
+		if len(entry_) == 0:
 			return 0
 		else:
 			return int(entry_)
 
 class MoneyTextbox(IntTextbox):
+
 	def OnValidate(self, d, i, P, s, S, v, V, W):
-		if S.isdigit():
+		if d == '0': return True
+		if S == '.' and '.' not in s:
 			return True
-		else:
-			return S == '.' and '.' not in self.entry.get()# or False
+		if S.isdigit():
+			if '.' in s and len(s[s.index('.') + 1:]) == 2:
+				return False
+			return True
 		return False
 
 	def getData(self):
-		e = self.entry.get()
-		if e == '': return 0.00
-		try:
-			return float("%.2f" % float(e))
-		except:
-			return 0.00
+		entry_ = self.entry.get()
+		if len(entry_) == 0:
+			return 0.0
+		else:
+			return "%.2f" % float(entry_)

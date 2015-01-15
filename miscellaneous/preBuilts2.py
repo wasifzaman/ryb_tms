@@ -16,7 +16,6 @@ from master_list import *
 from languages import *
 from mbox2 import *
 from tkinter import filedialog
-from Crypto.Cipher import AES
 import pickle
 from datetime import datetime
 import tkinter.ttk as ttk
@@ -58,7 +57,7 @@ portr = Photo(repr='portr', path=images + 'monet_sm.jpg')
 
 
 attinfoh = [language['Date'], language['Check-In Time'], language['Class Time']]
-attinfo.build(headers=attinfoh, data=[[]])
+#attinfo.build(headers=attinfoh, data=[[]])
 attinfo.clast = '#FF99FF'
 
 
@@ -84,19 +83,7 @@ checkin100 = TextboxNoEdit(text='100s', lang=language, repr='100s')
 early_checkin = TextboxNoEdit(text='Early Check-in', lang=language, repr='inrow')
 
 
-
-
-
-
 notes = LongTextbox(text="Notes", lang=language, repr='notes')
-
-def ppicker():
-	try:
-		p = filedialog.askopenfile().name
-		portr.config(path=p)
-	except:
-		return
-
 ws = Photo(repr='ws', path=images + 'ws_sm.png')
 hs = Photo(repr='hs', path=images + 'halt_sm.png')
 cm = Photo(repr='cm', path=images + 'check_mark_sm.png')
