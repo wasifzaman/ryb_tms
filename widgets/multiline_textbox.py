@@ -14,6 +14,7 @@ class LongTextbox(Textbox):
 		if 'text' in kwargs:	
 			self.sentry.insert(END, kwargs['text'])
 		if 'lang' in kwargs:
+			return
 			self.lang = kwargs['lang']
 			self.label.config(text=self.lang[self.text])
 		
@@ -22,7 +23,7 @@ class LongTextbox(Textbox):
 		self.row = kwargs['row']
 		self.column = kwargs['column']
 
-		self.label = Label(self.parent, text=self.lang[self.text])
+		self.label = Label(self.parent, text=self.text)
 		self.sentry = ScrolledText(self.parent, relief=SOLID)
 
 		self.label.grid(row=self.row, column=self.column)

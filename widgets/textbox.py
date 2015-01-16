@@ -6,7 +6,6 @@ class Textbox:
 	def __init__(self, **kwargs):
 		self.text = kwargs['text']
 		self.repr = kwargs['repr']
-		self.lang = kwargs['lang']
 		self.height = 1
 		self.width = 2
 
@@ -16,6 +15,7 @@ class Textbox:
 			s.set(kwargs['text'])
 			self.entry.config(textvariable=s)
 		if 'lang' in kwargs:
+			return
 			self.lang = kwargs['lang']
 			self.label.config(text=self.lang[self.text].strip())
 
@@ -27,7 +27,7 @@ class Textbox:
 		self.row = kwargs['row']
 		self.column = kwargs['column']
 
-		self.label = Label(self.parent, text=self.lang[self.text].strip(), width=12, anchor=E)
+		self.label = Label(self.parent, text=self.text, width=12, anchor=W)
 		self.entry = Entry(self.parent, relief=SOLID)
 
 		self.label.grid(row=self.row, column=self.column, sticky=E)
@@ -55,7 +55,8 @@ class TextboxNoEdit(Textbox):
 			self.entry.config(state=NORMAL)
 			self.entry.config(textvariable=s)
 			self.entry.config(state=DISABLED)
-		if 'lang' in kwargs:			
+		if 'lang' in kwargs:
+			return		
 			self.lang = kwargs['lang']
 			self.label.config(text=self.lang[self.text].strip())
 		
@@ -64,7 +65,7 @@ class TextboxNoEdit(Textbox):
 		self.row = kwargs['row']
 		self.column = kwargs['column']
 
-		self.label = Label(self.parent, text=self.lang[self.text].strip(), width=15, anchor=E)
+		self.label = Label(self.parent, text=self.text, width=12, anchor=W)
 		self.entry = Entry(self.parent, relief=SOLID, state=DISABLED,
 			disabledbackground='white', disabledforeground='black')
 
