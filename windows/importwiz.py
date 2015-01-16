@@ -41,8 +41,11 @@ def main(lang, database):
 			student_list.append([data_points['bCode'], data_points['firstName'], data_points['lastName'], data_points['chineseName'], data_points['dob']])
 
 		student_list.sort()
-		window_.student_table.setData(student_list)
-		window_.student_table.canvas.config(width=700)
+		student_table.canvas.config(width=600, height=280)
+		student_table.setData(
+			headers=student_table_headers,
+			data=student_list)
+		student_table.canvas.yview_moveto(1.0)
 
 	def set_file(textbox):
 		out_file = filedialog.asksaveasfilename()
@@ -92,15 +95,16 @@ def main(lang, database):
 	window_ = AppWindow(top_window_.mainFrame)
 	window_.lang = lang
 
-	window_.student_table = Table(repr='stable', edit=False)
-	window_.student_table_headers = [window_.lang['Barcode'], window_.lang['First Name'], \
-		window_.lang['Last Name'], window_.lang['Chinese Name'], window_.lang['Date of Birth']]
-	window_.student_table.build(headers=window_.student_table_headers, data=[[]])
-
+	student_table = Table(repr='stable', edit=False)
+	student_table_headers = [lang[text] for text in ['Barcode', 'First Name', 'Last Name', 'Chinese Name', 'Date of Birth']]
+	
 	window_.newFrame("Open Excel Frame", (0, 0))
 	window_.newFrame("Table Frame", (1, 0))
 	window_.newFrame("Password File Frame", (2, 0))
 	window_.newFrame("Confirm Frame", (3, 0))
+
+	window_.frames["Table Frame"].config(bg='blue')
+	window_.frames["Table Frame"].grid(sticky=EW)
 
 	window_.bsav = bsav
 	source_path = TextboxNoEdit(text='Source Excel', lang=window_.lang, repr='sourceexcel')
@@ -113,7 +117,7 @@ def main(lang, database):
 	window_.frames["Open Excel Frame"].addWidget(source_path, (0, 0))
 	window_.frames["Open Excel Frame"].addWidget(brw, (0, 2))
 	window_.frames["Open Excel Frame"].addWidget(preview_button, (0, 3))
-	window_.frames["Table Frame"].addWidget(window_.student_table, (1, 0))
+	window_.frames["Table Frame"].addWidget(student_table, (1, 0))
 	window_.frames["Password File Frame"].addWidget(dest_path, (1, 0))
 	window_.frames["Password File Frame"].addWidget(brw2, (1, 3))
 	window_.frames["Password File Frame"].addWidget(pw_fpath, (2, 0))
@@ -128,6 +132,7 @@ def main(lang, database):
 	window_.bsav.config(cmd=save_)
 	bcancel1.config(cmd=exit_)
 
+	student_table.canvas.config(width=600, height=280)
 	brw.button.config(width=12, pady=1)
 	brw.selfframe.grid(padx=10)
 	brw2.button.config(width=12, pady=1)

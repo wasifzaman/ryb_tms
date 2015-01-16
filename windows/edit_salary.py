@@ -46,7 +46,8 @@ def main(lang, database, markerfile=False, top=False, i=0): #i is the id of the 
 	max_hours = IntTextbox(text="max hours", lang=window_.lang, repr='max_hours')
 	b_print_to_file = Buttonbox(text='print to file', lang=window_.lang, repr='print_to_file')
 	bclose = Buttonbox(text='close', lang=window_.lang, repr='bclose')
-	window_.attinfo = attinfo
+	attendance_table = Table(repr='attinfox', edit=True)
+	attendance_table_headers = [lang[text] for text in ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time']]#, 'School']]
 	#b_reset_checkin = Buttonbox(text='resetcheckin', lang=language, repr='bresetcheckin')
 
 	window_.frames["First Frame"].addWidget(today, (0, 0))
@@ -60,7 +61,7 @@ def main(lang, database, markerfile=False, top=False, i=0): #i is the id of the 
 	window_.frames["Fifth Frame"].addWidget(bclose, (1, 0))
 	window_.frames["Ninth Frame"].addWidget(ninfo, (0, 0))
 	window_.frames["Ninth Frame"].addWidget(notes, (1, 0))
-	window_.frames["Eleventh Frame"].addWidget(window_.attinfo, (0, 0))
+	window_.frames["Eleventh Frame"].addWidget(attendance_table, (0, 0))
 	window_.frames["Eleventh Frame"].grid(rowspan=3, sticky=W)
 	#window_.frames["Ninth Frame"].addWidget(b_reset_checkin, (2, 1))
 
@@ -75,24 +76,27 @@ def main(lang, database, markerfile=False, top=False, i=0): #i is the id of the 
 	if database.studentList[i].datapoints['last_payment']:
 		last_payment.config(text=datetime.strftime(database.studentList[i].datapoints['last_payment'], '%m/%d/%Y'))
 	
-	window_.attinfo.canvas.config(width=720, height=500)
-	window_.attinfo.editwidget = False
-	window_.attinfo.clast = False
+	attendance_table.canvas.config(width=720, height=500)
+	attendance_table.editwidget = False
+	attendance_table.clast = False
 
 	student_ = database.studentList[i]
 	window_.populate(student_.datapoints)
+	attendance_table.setData(
+		headers=attendance_table_headers,
+		data=student.datapoints['attinfo'][1])
 
 	def pick_cell(p, i):
-		first_cell = window_.attinfo.cells[p]
+		first_cell = attendance_table.cells[p]
 		if p[0] == 0: return
 		if marker and first_cell.bgcolor in marker[i]['color_set']:
 			print('already printed')
 			pickRow(p, True)
-			window_.picked[p[0]] = window_.attinfo.data[p[0]-1]
+			window_.picked[p[0]] = attendance_table.data[p[0]-1]
 		elif first_cell.bgcolor == first_cell.altbgcolor:
 			print('picked!')
 			pickRow(p)
-			window_.picked[p[0]] = window_.attinfo.data[p[0]-1]
+			window_.picked[p[0]] = attendance_table.data[p[0]-1]
 			print(window_.picked)
 		else:
 			print('unpicked!')
@@ -100,14 +104,14 @@ def main(lang, database, markerfile=False, top=False, i=0): #i is the id of the 
 			del window_.picked[p[0]]
 			print(window_.picked)
 
-	for pos, cell in window_.attinfo.cells.items():
+	for pos, cell in attendance_table.cells.items():
 		cell.config(bind=('<Button-1>', lambda event, pos=pos: pick_cell(pos, i)))
 		if marker and (pos[0] in marker[i]['paid_set']):
 			cell.config(bgcolor=marker[i]['row_color'][pos[0]])
 
 	def pickRow(entry, printed=False):
 		x, y = entry[0], entry[1]
-		for cell in window_.attinfo.cells.values():
+		for cell in attendance_table.cells.values():
 			if cell.pos[0] == x:
 				cell.altbgcolor = cell.bgcolor
 				if not printed:
@@ -117,7 +121,7 @@ def main(lang, database, markerfile=False, top=False, i=0): #i is the id of the 
 
 	def unpickRow(entry):
 		x, y = entry[0], entry[1]
-		for cell in window_.attinfo.cells.values():
+		for cell in attendance_table.cells.values():
 			if cell.pos[0] == x:
 				cell.config(bgcolor=cell.altbgcolor)
 

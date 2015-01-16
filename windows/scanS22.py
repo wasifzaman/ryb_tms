@@ -11,10 +11,9 @@ def main(t, lang, database):
 	window_.lang = lang
 
 #attendance table
-	window_.attinfo = Table(repr='attinfox', edit=True)
-	window_.attinfoh = [lang[text] for text in ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time']]#, 'School']]
-	#window_.attinfo.build(headers=window_.attinfoh, data=[[]])
-	window_.attinfo.clast = '#FF99FF'
+	attendance_table = Table(repr='attinfox', edit=True)
+	attendance_table_headers = [lang[text] for text in ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time']]#, 'School']]
+	attendance_table.clast = '#FF99FF'
 
 #frame initialization
 	window_.newFrame("First Frame", (1, 1))
@@ -35,8 +34,8 @@ def main(t, lang, database):
 	window_.frames["Tenth Frame"].grid(columnspan=5)
 	window_.frames["Eleventh Frame"].grid(sticky=N)
 	window_.frames["Eigth Frame"].grid(sticky=S, rowspan=2)
-	window_.frames["Eleventh Frame"].columnconfigure(0, weight=5, minsize=420)
-	window_.frames["Eigth Frame"].rowconfigure(0, weight=5, minsize=20)
+	window_.frames["Eleventh Frame"].columnconfigure(0, weight=5)#, minsize=420)
+	window_.frames["Eigth Frame"].rowconfigure(0, weight=5)#, minsize=20)
 
 #add widget to search for students
 	window_.frames["Tenth Frame"].addWidget(sby, (0, 0))
@@ -67,11 +66,11 @@ def main(t, lang, database):
 	window_.frames["Third Frame"].addWidget(window_.portr, (0, 0))
 	window_.portr.hide()
 
-	window_.frames["Eleventh Frame"].addWidget(window_.attinfo, (0, 0))
-	window_.frames["Eleventh Frame"].grid(rowspan=4, sticky=W)
+	window_.frames["Eleventh Frame"].addWidget(attendance_table, (0, 0))
+	window_.frames["Eleventh Frame"].grid(rowspan=4, sticky=NW)
 
-	window_.attinfo.editwidget=False
-	window_.attinfo.canvas.config(width=696, height=300)
+	attendance_table.editwidget=False
+	attendance_table.canvas.config(width=696, height=300)
 
 	sby.rads=[('Barcode', 'bCode'), ('First Name', 'firstName'), \
 		('Last Name', 'lastName'), ('Chinese Name', 'chineseName'), \
@@ -128,14 +127,14 @@ def main(t, lang, database):
 		window_.portr.setData('monet_sm.jpg')
 		portr2.setData('monet_sm.jpg')
 
-		window_.attinfo.editwidget=False
-		window_.attinfo.canvas.config(width=696, height=300)
+		attendance_table.editwidget=False
+		attendance_table.canvas.config(width=696, height=300)
 
 		data_points = database.studentList[window_.student_id].datapoints
 
 		window_.populate(data_points)
 
-		for cell_id, cell_val in window_.attinfo.cells.items():
+		for cell_id, cell_val in attendance_table.cells.items():
 			if cell_id[0] == 0:
 				cur_text = cell_val.label.cget('text')
 				cell_val.label.config(text=lang[cur_text])
@@ -176,35 +175,12 @@ def main(t, lang, database):
 			return
 
 		database.saveData()
-		window_.attinfo.setData(
-			headers=window_.attinfoh,
+		attendance_table.setData(
+			headers=attendance_table_headers,
 			data=[data_points['attinfo'][1][-1][:5]]) #display last entry
-		window_.attinfo.set_width(2, 5, 14)
+		attendance_table.set_width(2, 5, 14)
 		sby.b.set(sby.rads[0][1]) #reset search bar
-		window_.attinfo.canvas.yview_moveto(1.0) #scroll to bottom of table
-
-#scan student
-	def scan_student():
-		database.scanStudent(window_.student_id)
-		
-		'''
-		** early checkin code block **
-		cdt = datetime.now()
-		earlytime = datetime(cdt.year, cdt.month, cdt.day, 9, 15)
-		last_checkin = datetime(cdt.year, cdt.month, cdt.day, 9, 30)
-		if cdt > earlytime and cdt < last_checkin:
-			if confirm_check_in(window_.student_id, window_.lang):
-				database.studentList[window_.student_id].datapoints['attinfo'][1][-1][2] = "09:15 AM"
-		'''
-		database.saveData()
-
-		att_info = database.studentList[window_.student_id].datapoints['attinfo']
-		headers = att_info[0]
-		last_check_in = [att_info[1][-1]]
-		window_.frames['Eleventh Frame'].widgets['attinfox'].setData([headers, last_check_in])
-		
-		sby.b.set(sby.rads[0][1]) #reset Scan By to Barcode
-		window_.attinfo.canvas.yview_moveto(1.0) #scroll to bottom
+		attendance_table.canvas.yview_moveto(1.0) #scroll to bottom of table
 
 	def manual_scan():
 
@@ -234,19 +210,19 @@ def main(t, lang, database):
 				row[1] = time_entry
 				row[2] = time
 				database.saveData()
-				window_.attinfo.setData(
-					headers=window_.attinfoh,
+				attendance_table.setData(
+					headers=attendance_table_headers,
 					data=[[date, time_entry, time, '', '']])
-				window_.attinfo.set_width(2, 5, 14)
+				attendance_table.set_width(2, 5, 14)
 				return
 
 		data_points['attinfo'][1].append([date, time_entry, time, '', '', database.school])
 		database.sort_attendance(bCodeNE.getData())
 		database.saveData()
-		window_.attinfo.setData(
-			headers=window_.attinfoh,
+		attendance_table.setData(
+			headers=attendance_table_headers,
 			data=[[date, time_entry, time, '', '']])
-		window_.attinfo.set_width(2, 5, 14)
+		attendance_table.set_width(2, 5, 14)
 
 	window_.frames["Tenth Frame"].widgets['sby'].entry.bind("<Return>", lambda x: search_student())
 
@@ -295,7 +271,7 @@ def main(t, lang, database):
 #basic info widgets
 	sinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
 	sinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
-	window_.attinfo.canvas.config(width=696, height=300)
+	attendance_table.canvas.config(width=696, height=300)
 
 #set starting lang
 	for frame in window_.frames.values():
