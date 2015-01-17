@@ -11,7 +11,6 @@ from simple_label import Labelbox
 from button import Buttonbox
 from tableWidget2 import Table
 from photoWidget2 import Photo
-from master_list import *
 
 from languages import *
 from mbox2 import *

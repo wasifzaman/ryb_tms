@@ -1,6 +1,8 @@
 from uiHandler22 import *
 from dataHandler import *
 from preBuilts2 import *
+
+from master_list import *
 from student_picker import spicker
 
 
@@ -13,10 +15,9 @@ def main(t, lang, database):
 	window_.lang = lang
 
 #attendance table
-	window_.attinfo = Table(repr='attinfox', edit=True)
-	window_.attinfoh = [language['Date'], language['Check-In Time'], language['Class Time'], language['Check-Out Time']]
-	window_.attinfo.build(headers=window_.attinfoh, data=[[]])
-	window_.attinfo.clast = '#FF99FF'
+	attendance_table = Table(repr='attinfox', edit=True)
+	attendance_table_headers = ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time']
+	attendance_table.clast = '#FF99FF'
 
 #frame initialization
 	window_.newFrame("First Frame", (1, 1))
@@ -40,38 +41,33 @@ def main(t, lang, database):
 	window_.frames["Eleventh Frame"].columnconfigure(0, weight=5, minsize=420)
 	window_.frames["Eigth Frame"].rowconfigure(0, weight=5, minsize=20)
 
-#add widget to search for students
-	window_.frames["Tenth Frame"].addWidget(sby, (0, 0))
+	window_.portr = portr
 
-#student info widgets
+	window_.frames["Tenth Frame"].addWidget(sby, (0, 0))
 	window_.frames["First Frame"].addWidget(sinfo, (0, 0))
-	sinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'), text=window_.lang['Student information'])
-	sinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
 	window_.frames["First Frame"].addWidget(firstName, (1, 0))
 	window_.frames["First Frame"].addWidget(lastName, (2, 0))
 	window_.frames["First Frame"].addWidget(chineseName, (3, 0))
 	window_.frames["First Frame"].addWidget(dob, (4, 0))
 	window_.frames["First Frame"].addWidget(bCodeNE, (7, 0))
-
-#notes widget
 	window_.frames["First Frame"].addWidget(ninfo, (8, 0))
-	ninfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
-	ninfo.label.grid(columnspan=2, sticky=E+W, pady=3)
 	window_.frames["First Frame"].addWidget(notes, (9, 0))
-	notes.label.grid_forget()
-	notes.sentry.grid(column=0, columnspan=2)
-	notes.config(height=6, width=32)
 	window_.frames["Fourth Frame"].addWidget(early_checkin, (0, 0))
-
-	window_.portr = portr
 	window_.frames["Third Frame"].addWidget(window_.portr, (0, 0))
-	window_.portr.hide()
-
-	window_.frames["Eleventh Frame"].addWidget(window_.attinfo, (0, 0))
+	window_.frames["Eleventh Frame"].addWidget(attendance_table, (0, 0))
 	window_.frames["Eleventh Frame"].grid(rowspan=4, sticky=W)
 
-	window_.attinfo.editwidget=False
-	window_.attinfo.canvas.config(width=695, height=300)
+#notes widget
+	ninfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
+	ninfo.label.grid(columnspan=2, sticky=E+W, pady=3)
+	notes.label.grid_forget()
+	notes.entry.grid(column=0, columnspan=2)
+	notes.config(height=6, width=32)
+	sinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'), text=window_.lang['Student information'])
+	sinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
+	window_.portr.hide()
+
+	attendance_table.canvas.config(width=695, height=300)
 
 	sby.rads=[('Barcode', 'bCode'), ('First Name', 'firstName'), \
 		('Last Name', 'lastName'), ('Chinese Name', 'chineseName'), \
@@ -79,9 +75,7 @@ def main(t, lang, database):
 
 	window_.tdp = dict()
 
-#search
 	def search_student():
-		#try:
 		window_.student_id = sby.getData()[1]
 
 		if len(window_.student_id) == 0: return
@@ -133,19 +127,18 @@ def main(t, lang, database):
 		for child in window_.frames["Eleventh Frame"].winfo_children():
 			child.destroy()
 
-		window_.attinfo.build(headers=window_.attinfoh, data=[[]])
-		window_.frames["Eleventh Frame"].addWidget(window_.attinfo, (0, 0))
+		window_.frames["Eleventh Frame"].addWidget(attendance_table, (0, 0))
 		window_.frames["Eleventh Frame"].grid(rowspan=4, sticky=W)
 
-		window_.attinfo.editwidget=False
-		window_.attinfo.canvas.config(width=695, height=300)
+		attendance_table.editwidget=False
+		attendance_table.canvas.config(width=695, height=300)
 
 		data_points = database.studentList[window_.student_id].datapoints
 
 		window_.populate(data_points)
 		#w2.populate(data_points)
 
-		for cell_id, cell_val in window_.attinfo.cells.items():
+		for cell_id, cell_val in attendance_table.cells.items():
 			if cell_id[0] == 0:
 				cur_text = cell_val.label.cget('text')
 				cell_val.label.config(text=lang[cur_text])
@@ -197,10 +190,11 @@ def main(t, lang, database):
 			return
 
 		database.saveData()
-		window_.attinfo.setData(
-		[data_points['attinfo'][0], [data]]) #display entry being scanned out
+		attendance_table.setData(
+			headers=attendance_table_headers,
+			data=[data[:5]]) #display entry being scanned out
 		sby.b.set(sby.rads[0][1]) #reset search bar
-		window_.attinfo.canvas.yview_moveto(1.0)
+		attendance_table.canvas.yview_moveto(1.0)
 
 	def manual_scan():
 
@@ -226,8 +220,9 @@ def main(t, lang, database):
 					row[3] = time_entry
 					row[4] = time
 					database.saveData()
-					window_.attinfo.setData(
-					[data_points['attinfo'][0], [[date, row[1], row[2], row[3], row[4], row[5]]]])
+					attendance_table.setData(
+						headers=attendance_table_headers,
+						data=[data_points['attinfo'][0], [[date, row[1], row[2], row[3], row[4], row[5]]]])
 				return
 
 		entry_not_found(window_.lang, date)
@@ -235,7 +230,7 @@ def main(t, lang, database):
 	window_.frames["Tenth Frame"].widgets['sby'].entry.bind("<Return>", lambda x: search_student())
 
 	window_.frames["Tenth Frame"].addWidget(bsearch, (1, 0))
-	bsearch.button.config(width=20)
+	bsearch.label.config(width=20)
 	bsearch.config(cmd=search_student)
 
 #collect and check in button
@@ -287,7 +282,7 @@ def main(t, lang, database):
 	sinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
 	sinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
 
-	window_.attinfo.canvas.config(width=695, height=300)
+	attendance_table.canvas.config(width=695, height=300)
 
 #set starting lang
 	for frame in window_.frames.values():

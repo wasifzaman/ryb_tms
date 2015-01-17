@@ -17,6 +17,11 @@ class Labelbox(Textbox):
 			return
 			self.lang = kwargs['lang']
 			self.label.config(text=self.lang[self.text])
+		if 'bg' in kwargs:
+			self.widget_frame.config(bg=kwargs['bg'])
+			self.label.config(bg=kwargs['bg'])
+		if 'fg' in kwargs:
+			self.label.config(fg=kwargs['fg'])
 
 	def getData(self):
 		return self.text
@@ -26,11 +31,11 @@ class Labelbox(Textbox):
 		self.row = kwargs['row']
 		self.column = kwargs['column']
 
-		self.label = Label(self.parent, text=self.text)
-		self.label.grid(row=self.row, column=self.column)
-
-		if self.bold:
-			self.label.config(font=('Verdana', 11, 'bold'))
+		self.widget_frame = Frame(self.parent)
+		self.label = Label(self.widget_frame, text=self.text)
+		
+		self.widget_frame.grid(row=self.row, column=self.column)
+		self.label.pack()
 
 	def hide(self):
 		self.label.grid_forget()

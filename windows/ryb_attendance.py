@@ -3,6 +3,7 @@ sys.path.append(os.path.abspath(os.pardir) + '\windows')
 sys.path.append(os.path.abspath(os.pardir) + '\widgets')
 sys.path.append(os.path.abspath(os.pardir) + '\database')
 sys.path.append(os.path.abspath(os.pardir) + '\miscellaneous')
+sys.path.append(os.path.abspath(os.pardir) + '\messages windows')
 sys.path.append(os.path.abspath(os.pardir))
 images = os.path.abspath(os.pardir) + '\images\\' #image directory
 
@@ -20,6 +21,7 @@ import xlrd, xlsxwriter
 import shutil, copy
 import inspect
 
+from master_list import *
 import addS3
 import scanS22
 import scanOut
@@ -267,7 +269,7 @@ def main():
 	bexp.hoverfg = 'white'
 	bexp.label.config(bg=bexp.idlebg, fg=bexp.fg)
 
-	translate(window_, english_to_chinese)
+	#translate(window_, english_to_chinese)
 
 	main_window_.iconbitmap(os.path.abspath(images + 'RYB_Attendance.ico'))
 	main_window_.mainloop()

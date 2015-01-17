@@ -28,12 +28,13 @@ class AppWindow(Frame):
 		self.parent = parent
 
 		self.oframe = Frame(self)
-		self.mainFrame = Frame(self.oframe, bd=10)
+		self.mainFrame = Frame(self.oframe, bg='white')
 		self.oframe.pack(fill="both", expand=True)
 		self.mainFrame.place(in_=self.oframe, anchor="c", relx=.5, rely=.5)
 
 		#troubleshooter
-		#self.option_add("*Background", "lightgrey")
+		self.option_add("*Frame.Background", "white")
+		self.option_add("*Label.Background", "white")
 
 		#font-size
 		self.option_add("*Font", "Verdana 11")

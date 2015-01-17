@@ -38,7 +38,7 @@ def confirm_teacher_addition(lang):
 	no_button.selfframe.grid(sticky=E+W, padx=5)
 	yes_button.config(cmd=lambda: return_(True), width=10)
 	no_button.config(cmd=lambda: return_(False), width=10)
-	no_button.button.focus_set()
+	no_button.label.focus_set()
 
 	verify_image.label.config(width=80)
 	context.label.config(wraplength=200, justify=LEFT)
@@ -101,7 +101,7 @@ def confirm_overwrite_teacher(lang):
 	no_button.selfframe.grid(sticky=E+W, padx=5)
 	yes_button.config(cmd=lambda: return_(True), width=10)
 	no_button.config(cmd=lambda: return_(False), width=10)
-	no_button.button.focus_set()
+	no_button.label.focus_set()
 
 	verify_image.label.config(width=80)
 	asetext.label.config(wraplength=200, justify=LEFT)
@@ -127,26 +127,17 @@ def confirm_check_in_time(lang, database):
 	cancel_button = Buttonbox(text='Cancel', lang=lang, repr='cancel_button')
 	verify_image = Photo(repr='verify_image', path=images + 'halt_sm.png')
 
-	yes_button_current_time.width = 20
-	yes_button_enter_time.width = 20
-
 	message_box.frames["First Frame"].addWidget(cstext, (0, 1))
 	message_box.frames["Second Frame"].addWidget(yes_button_current_time, (0, 0))
 	message_box.frames["Second Frame"].addWidget(yes_button_enter_time, (1, 0))
 	message_box.frames["Second Frame"].addWidget(cancel_button, (2, 0))
 	message_box.frames["First Frame"].addWidget(verify_image, (0, 0))
 
-	yes_button_current_time.selfframe.grid(sticky=E+W)
-	yes_button_enter_time.selfframe.grid(sticky=E+W)
-	cancel_button.selfframe.grid(sticky=E+W)
-	yes_button_current_time.button.pack(fill=X)
-	yes_button_enter_time.button.pack(fill=X)
-	cancel_button.button.pack(fill=X)
 	yes_button_current_time.config(cmd=lambda: return_(True))
 	yes_button_enter_time.config(cmd=lambda: return_('manual'))
 	cancel_button.config(cmd=lambda: return_(False))
-	yes_button_current_time_text = yes_button_current_time.button.cget('text')
-	yes_button_current_time.button.config(
+	yes_button_current_time_text = yes_button_current_time.label.cget('text')
+	yes_button_current_time.label.config(
 		text=yes_button_current_time_text + ' ' + timeslot)
 	
 	verify_image.label.config(width=80)
@@ -168,13 +159,10 @@ def confirm_check_out_time(lang, database):
 	timeslot = database.findTimeSlot(datetime.now())
 
 	cstext = Labelbox(text='Check out prompt', lang=lang, repr='creset')
-	yes_button_current_time = Buttonbox(text='Check-out', lang=lang, repr='bok')
-	yes_button_enter_time = Buttonbox(text='Yes, enter time', lang=lang, repr='no_buttonk')
+	yes_button_current_time = Buttonbox(text='Check-out', lang=lang, repr='currenttimebutton')
+	yes_button_enter_time = Buttonbox(text='Yes, enter time', lang=lang, repr='entertimebutton')
 	cancel_button = Buttonbox(text='Cancel', lang=lang, repr='cancel_button')
 	verify_image = Photo(repr='verify_image', path=images + 'halt_sm.png')
-
-	yes_button_current_time.width = 20
-	yes_button_enter_time.width = 20
 
 	message_box.frames["First Frame"].addWidget(cstext, (0, 1))
 	message_box.frames["Second Frame"].addWidget(yes_button_current_time, (0, 0))
@@ -182,17 +170,11 @@ def confirm_check_out_time(lang, database):
 	message_box.frames["Second Frame"].addWidget(cancel_button, (2, 0))
 	message_box.frames["First Frame"].addWidget(verify_image, (0, 0))
 
-	yes_button_current_time.selfframe.grid(sticky=E+W)
-	yes_button_enter_time.selfframe.grid(sticky=E+W)
-	cancel_button.selfframe.grid(sticky=E+W)
-	yes_button_current_time.button.pack(fill=X)
-	yes_button_enter_time.button.pack(fill=X)
-	cancel_button.button.pack(fill=X)
-	yes_button_current_time.config(cmd=lambda: return_(True), lang=lang)
-	yes_button_enter_time.config(cmd=lambda: return_('manual'), lang=lang)
+	yes_button_current_time.config(cmd=lambda: return_(True))
+	yes_button_enter_time.config(cmd=lambda: return_('manual'))
 	cancel_button.config(cmd=lambda: return_(False))
-	yes_button_current_time_text = yes_button_current_time.button.cget('text')
-	yes_button_current_time.button.config(
+	yes_button_current_time_text = yes_button_current_time.label.cget('text')
+	yes_button_current_time.label.config(
 		text=yes_button_current_time_text + ' ' + timeslot)
 
 	verify_image.label.config(width=80)
@@ -225,7 +207,7 @@ def confirm_overwrite_checkout(lang):
 	no_button.selfframe.grid(sticky=E+W, padx=5)
 	yes_button.config(cmd=lambda: return_(True), width=10)
 	no_button.config(cmd=lambda: return_(False), width=10)
-	yes_button.button.focus_set()
+	yes_button.label.focus_set()
 
 	verify_image.label.config(width=80)
 	cstext.label.config(wraplength=200, justify=LEFT)
@@ -257,7 +239,7 @@ def confirm_print(lang):
 	no_button.selfframe.grid(sticky=E+W, padx=5)
 	yes_button.config(cmd=lambda: return_(True), width=10)
 	no_button.config(cmd=lambda: return_(False), width=10)
-	yes_button.button.focus_set()
+	yes_button.label.focus_set()
 
 	verify_image.label.config(width=80)
 	cstext.label.config(wraplength=200, justify=LEFT)
@@ -324,7 +306,7 @@ def return_to_main_window(lang):
 	no_button.selfframe.grid(sticky=E+W, padx=5)
 	yes_button.config(cmd=lambda: return_(True), width=10)
 	no_button.config(cmd=lambda: return_(False), width=10)
-	no_button.button.focus_set()
+	no_button.label.focus_set()
 
 	verify_image.label.config(width=80)
 	rettext.label.config(wraplength=200, justify=LEFT)
@@ -356,7 +338,7 @@ def confirm_overwrite_checkin(lang):
 	no_button.selfframe.grid(sticky=E+W, padx=5)
 	yes_button.config(cmd=lambda: return_(True), width=10)
 	no_button.config(cmd=lambda: return_(False), width=10)
-	yes_button.button.focus_set()
+	yes_button.label.focus_set()
 
 	verify_image.label.config(width=80)
 	cstext.label.config(wraplength=200, justify=LEFT)

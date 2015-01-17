@@ -8,7 +8,7 @@ from preBuilts2 import *
 import print_reports
 
 
-def main(lang, database, markerfile=False, top=False, i=0): #i is the id of the student passed in
+def main(lang, database, markerfile=False, i=0): #i is the id of the student passed in
 
 	database.loadData()
 
@@ -38,38 +38,39 @@ def main(lang, database, markerfile=False, top=False, i=0): #i is the id of the 
 	window_.frames["Eleventh Frame"].columnconfigure(0, weight=5, minsize=720)
 
 	today = TextboxNoEdit(text="today's date", lang=window_.lang, repr='today_date')
-	firstName_noedit = TextboxNoEdit(text="First Name", lang=language, repr='firstName')
-	lastName_noedit = TextboxNoEdit(text="Last Name", lang=language, repr='lastName')
-	chineseName_noedit = TextboxNoEdit(text="Chinese Name", lang=language, repr='chineseName')
 	last_payment = TextboxNoEdit(text="last payment", lang=window_.lang, repr='last_pay_date')
 	dollar_per_hour = MoneyTextbox(text="dollar per hour", lang=window_.lang, repr='dollar_p_hour')
+	general_header = Labelbox(text='Student information', lang=lang, repr='general_header')
+	firstName_noedit = TextboxNoEdit(text="First Name", lang=lang, repr='firstName')
+	lastName_noedit = TextboxNoEdit(text="Last Name", lang=lang, repr='lastName')
+	chineseName_noedit = TextboxNoEdit(text="Chinese Name", lang=lang, repr='chineseName')
 	max_hours = IntTextbox(text="max hours", lang=window_.lang, repr='max_hours')
 	b_print_to_file = Buttonbox(text='print to file', lang=window_.lang, repr='print_to_file')
-	bclose = Buttonbox(text='close', lang=window_.lang, repr='bclose')
+	close_button = Buttonbox(text='close', lang=window_.lang, repr='close_button')
+	notes_header = Labelbox(text='Notes', lang=language, repr='notes_header')
 	attendance_table = Table(repr='attinfox', edit=True)
 	attendance_table_headers = [lang[text] for text in ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time']]#, 'School']]
-	#b_reset_checkin = Buttonbox(text='resetcheckin', lang=language, repr='bresetcheckin')
+	#b_reset_checkin = Buttonbox(text='resetcheckin', lang=lang, repr='bresetcheckin')
 
 	window_.frames["First Frame"].addWidget(today, (0, 0))
 	window_.frames["First Frame"].addWidget(last_payment, (1, 0))
 	window_.frames["First Frame"].addWidget(dollar_per_hour, (2, 0))
-	window_.frames["First Frame"].addWidget(sinfo, (4, 0))
+	window_.frames["First Frame"].addWidget(general_header, (4, 0))
 	window_.frames["First Frame"].addWidget(firstName_noedit, (5, 0))
 	window_.frames["First Frame"].addWidget(lastName_noedit, (6, 0))
 	window_.frames["First Frame"].addWidget(chineseName_noedit, (7, 0))
 	window_.frames["Fifth Frame"].addWidget(b_print_to_file, (0, 0))
-	window_.frames["Fifth Frame"].addWidget(bclose, (1, 0))
-	window_.frames["Ninth Frame"].addWidget(ninfo, (0, 0))
+	window_.frames["Fifth Frame"].addWidget(close_button, (1, 0))
+	window_.frames["Ninth Frame"].addWidget(notes_header, (0, 0))
 	window_.frames["Ninth Frame"].addWidget(notes, (1, 0))
 	window_.frames["Eleventh Frame"].addWidget(attendance_table, (0, 0))
 	window_.frames["Eleventh Frame"].grid(rowspan=3, sticky=W)
-	#window_.frames["Ninth Frame"].addWidget(b_reset_checkin, (2, 1))
-
+	
 	today.config(text=str(datetime.strftime(datetime.now().date(), '%m/%d/%Y')))
-	sinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
-	sinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
-	ninfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
-	ninfo.label.grid(columnspan=2, sticky=E+W, pady=3)
+	general_header.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
+	general_header.label.grid(columnspan=2, sticky=E+W, pady=3)
+	notes_header.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
+	notes_header.label.grid(columnspan=2, sticky=E+W, pady=3)
 	notes.label.grid_forget()
 	notes.config(height=8, width=32)
 	b_print_to_file.selfframe.grid(padx=5)
@@ -160,7 +161,7 @@ def main(lang, database, markerfile=False, top=False, i=0): #i is the id of the 
 			widget.config(lang=window_.lang)
 
 	b_print_to_file.config(cmd=print_to_file)
-	bclose.config(cmd=top_window_.destroy)
+	close_button.config(cmd=top_window_.destroy)
 	#b_reset_checkin.config(cmd=reset_checkin)
 	
 	top_window_.mainloop()

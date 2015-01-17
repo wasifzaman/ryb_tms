@@ -8,30 +8,37 @@ class LongTextbox(Textbox):
 
 	def config(self, **kwargs):
 		if 'height' in kwargs:
-			self.sentry.config(height=kwargs['height'])
+			self.entry.config(height=kwargs['height'])
 		if 'width' in kwargs:
-			self.sentry.config(width=kwargs['width'])
+			self.entry.config(width=kwargs['width'])
 		if 'text' in kwargs:	
-			self.sentry.insert(END, kwargs['text'])
+			self.entry.insert(END, kwargs['text'])
 		if 'lang' in kwargs:
 			return
 			self.lang = kwargs['lang']
 			self.label.config(text=self.lang[self.text])
+		if 'bg' in kwargs:
+			self.widget_frame.config(bg=kwargs['bg'])
+			self.label.config(bg=kwargs['bg'])
 		
 	def place(self, **kwargs):
 		self.parent = kwargs['parent']
 		self.row = kwargs['row']
 		self.column = kwargs['column']
 
-		self.label = Label(self.parent, text=self.text)
-		self.sentry = ScrolledText(self.parent, relief=SOLID)
+		self.widget_frame = Frame(self.parent)
+		self.entry_container = Frame(self.widget_frame, bg='#ADD6FF')
+		self.label = Label(self.widget_frame, text=self.text)
+		self.entry = ScrolledText(self.entry_container, relief=FLAT)
 
-		self.label.grid(row=self.row, column=self.column)
-		self.sentry.grid(row=self.row, column=self.column+1, sticky=E)
+		self.widget_frame.grid(row=self.row, column=self.column, pady=(1, 0))
+		self.label.pack(side=LEFT)
+		self.entry_container.pack(side=LEFT)
+		self.entry.pack(padx=1, pady=1)
 
 	def getData(self):
-		return self.sentry.get('1.0', END + '-1c')
+		return self.entry.get('1.0', END + '-1c')
 
 	def setData(self, data):
-		self.sentry.delete('1.0', END)
+		self.entry.delete('1.0', END)
 		self.config(text=data)

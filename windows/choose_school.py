@@ -1,6 +1,6 @@
 import sys, os
 sys.path.append(os.path.abspath(os.pardir) + '\widgets')
-sys.path.append(os.path.abspath(os.pardir) + '\miscellaneous')
+sys.path.append(os.path.abspath(os.pardir) + '\messages windows')
 
 from tkinter import *
 
