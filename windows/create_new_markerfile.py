@@ -29,9 +29,9 @@ def create_new_markerfile(lang):
 	message_box.newFrame("First Frame", (0, 0))
 
 	marker_file_textbox = TextboxNoEdit(text='Marker File', lang={'Marker File': 'Marker File'}, repr='marker_file')
-	brw3 = Buttonbox(text='browse', lang=language, repr='brw3')
-	save_button = Buttonbox(text='Save', lang=language, repr='save_button')
-	cancel_button = Buttonbox(text='Cancel', lang=language, repr='cancel_button')
+	brw3 = Buttonbox(text='browse', lang=lang, repr='brw3')
+	save_button = Buttonbox(text='Save', lang=lang, repr='save_button')
+	cancel_button = Buttonbox(text='Cancel', lang=lang, repr='cancel_button')
 
 	message_box.frames["First Frame"].addWidget(marker_file_textbox,(2, 0))
 	message_box.frames["First Frame"].addWidget(brw3,(2, 2))
@@ -39,8 +39,8 @@ def create_new_markerfile(lang):
 	message_box.frames["First Frame"].addWidget(cancel_button, (5, 1))
 
 	marker_file_textbox.label.config(width=12)
-	brw3.button.config(width=7)
-	save_button.button.config(width=22)
+	#brw3.button.config(width=7)
+	#save_button.button.config(width=22)
 
 	brw3.config(cmd=lambda: set_file(marker_file_textbox))
 	save_button.config(cmd=lambda: get_return('success'))

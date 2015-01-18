@@ -50,9 +50,9 @@ def create_new_db(lang, d):
 	db_file_textbox.label.config(width=12)
 	pw_file_textbox.label.config(width=12)
 	pw_textbox.label.config(width=12)
-	brw1.button.config(width=7)
-	brw2.button.config(width=7)
-	save_button.button.config(width=22)
+#	brw1.button.config(width=7)
+	#brw2.button.config(width=7)
+	#save_button.button.config(width=22)
 
 	brw1.config(cmd=lambda: set_file(db_file_textbox))
 	brw2.config(cmd=lambda: set_file(pw_file_textbox))

@@ -44,7 +44,7 @@ def password_prompt(lang, reset_pw):
 		t.frames["First Frame"].addWidget(retype_new_pw_textbox, (3, 0))
 		t.frames["Second Frame"].addWidget(bsav, (0, 1))
 		bsav.config(cmd=lambda: get_return((old_pw_textbox.getData(), new_pw_textbox.getData())) if new_pw_textbox.getData() == retype_new_pw_textbox.getData() else get_return('pw_mismatch'))
-		bsav.button.config(width=10)
+		bsav.label.config(width=10)
 		old_pw_textbox.label.config(width=19)
 		new_pw_textbox.label.config(width=19)
 		retype_new_pw_textbox.label.config(width=19)
@@ -53,12 +53,12 @@ def password_prompt(lang, reset_pw):
 		t.frames["First Frame"].addWidget(pw_textbox, (0, 0))
 		t.frames["Second Frame"].addWidget(bok, (0, 1))
 		bok.config(cmd=lambda: get_return(pw_textbox.getData()))
-		bok.button.config(width=10)
+		bok.label.config(width=10)
 
 	t.frames["Second Frame"].addWidget(bcancel, (0, 0))
 
 	
-	bcancel.button.config(width=10)
+	bcancel.label.config(width=10)
 	
 	bcancel.config(cmd=lambda: get_return('cancel'))
 

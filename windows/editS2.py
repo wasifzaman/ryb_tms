@@ -80,12 +80,10 @@ def main(lang, database, top=False, i=0):
 	ainfo.label.grid(columnspan=2, sticky=E+W, pady=3)
 	pinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
 	pinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
-	bCode.label.grid(sticky=N)
-	bCode.entry.grid(sticky=N)
 	ninfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
 	ninfo.label.grid(columnspan=2, sticky=E+W, pady=3)
 	notes.label.grid_forget()
-	notes.sentry.grid(column=0, columnspan=2)
+	notes.entry.grid(column=0, columnspan=2)
 	notes.config(height=8, width=32)
 	window_1.attinfo.config(lang=window_1.lang)
 	window_1.attinfo.canvas.config(width=720)
@@ -102,12 +100,12 @@ def main(lang, database, top=False, i=0):
 			window_1.pack_forget()
 			window_2.pack(side=LEFT)
 			top_window_.current_shown = 'window_2'
-			switch_frame_button.button.config(text=window_1.lang['Student Information'])
+			switch_frame_button.label.config(text='Student Information')
 		elif top_window_.current_shown == 'window_2':
 			window_2.pack_forget()
 			window_1.pack(side=LEFT)
 			top_window_.current_shown = 'window_1'
-			switch_frame_button.button.config(text=window_1.lang['Attendance Table'])
+			switch_frame_button.label.config(text='Attendance Table')
 		return
 
 	s = database.studentList[i]

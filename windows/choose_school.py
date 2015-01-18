@@ -41,7 +41,7 @@ def choose_school(lang):
 	bcancel.fg = 'black'
 	bcancel.hoverfg = 'white'
 	bcancel.hoverbg = 'crimson'
-	bcancel.button.config(bg=bcancel.idlebg, fg=bcancel.fg)
+	#bcancel.button.config(bg=bcancel.idlebg, fg=bcancel.fg)
 
 	message_box.root.wait_window()
 	

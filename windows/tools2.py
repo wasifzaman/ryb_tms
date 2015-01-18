@@ -7,6 +7,7 @@ sys.path.append(os.path.abspath(os.pardir))
 
 from datetime import datetime
 
+from master_list import *
 from uiHandler22 import *
 from dataHandler import *
 from preBuilts2 import *
@@ -148,7 +149,7 @@ def main(parent_frame, lang, database, k):
 		p = filedialog.askdirectory()
 		database.exportdb(p + '/backup_' + str(datetime.now().date()) + '.rybdb')
 
-	def salrep(f):
+	def salrep():
 		for child in parent_frame.winfo_children():
 			child.destroy()
 		sdb_salrep.main(parent_frame, w.lang, database, k.files['markerfile'])
@@ -168,7 +169,8 @@ def main(parent_frame, lang, database, k):
 	def reset_dbmanager_pw(lang):
 
 		new_pw = password_prompt(lang, k.files['dbpw'])
-		if new_pw == 'cancel' or k.hashpw(new_pw[0]) != k.files['dbpw']:
+		if new_pw == 'cancel': return
+		if k.hashpw(new_pw[0]) != k.files['dbpw']:
 			wrong_password(w.lang)
 			return
 		k.files['dbpw'] = k.hashpw(new_pw[1])
@@ -281,13 +283,13 @@ def main(parent_frame, lang, database, k):
 	bsalrep.fg = w.mmbuttonfg
 	bsalrep.hoverfg = 'white'
 	bsalrep.hoverbg = 'crimson'
-	bsalrep.button.config(bg=bsalrep.idlebg, fg=bsalrep.fg)
+	bsalrep.label.config(bg=bsalrep.idlebg, fg=bsalrep.fg)
 
 	bcdb.idlebg = w.mmbuttoncol
 	bcdb.fg = w.mmbuttonfg
 	bcdb.hoverfg = 'white'
 	bcdb.hoverbg = 'crimson'
-	bcdb.button.config(bg=bcdb.idlebg, fg=bcdb.fg)
+	bcdb.label.config(bg=bcdb.idlebg, fg=bcdb.fg)
 
 
 #set starting lang
