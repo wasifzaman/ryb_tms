@@ -14,7 +14,7 @@ from simple_label import Labelbox
 
 
 def create_new_markerfile(lang):
-	def get_return(value):
+	def return_(value):
 		message_box.value = value
 		message_box.marker_file = marker_file_textbox.getData()
 		message_box.dw()
@@ -43,8 +43,8 @@ def create_new_markerfile(lang):
 	#save_button.button.config(width=22)
 
 	brw3.config(cmd=lambda: set_file(marker_file_textbox))
-	save_button.config(cmd=lambda: get_return('success'))
-	cancel_button.config(cmd=lambda: get_return('cancel'), lang=lang)
+	save_button.config(cmd=lambda: return_('success'))
+	cancel_button.config(cmd=lambda: return_('cancel'), lang=lang)
 
 	message_box.root.wait_window()
 

@@ -10,8 +10,8 @@ from simple_label import Labelbox
 
 
 def choose_school(lang):
-	def d(z):
-		message_box.z = z
+	def return_(value):
+		message_box.value = value
 		message_box.dw()
 
 	message_box = Mbox()
@@ -31,11 +31,11 @@ def choose_school(lang):
 	message_box.frames["First Frame"].addWidget(button_brooklyn, (3, 0))
 	message_box.frames["First Frame"].addWidget(bcancel, (4, 0))
 
-	button_brooklyn.config(cmd=lambda: d('Brooklyn'), lang=lang)
-	button_elmhurst.config(cmd=lambda: d('Elmhurst'), lang=lang)
-	button_flushing.config(cmd=lambda: d('Flushing'), lang=lang)
-	button_chinatown.config(cmd=lambda: d('Chinatown'), lang=lang)
-	bcancel.config(cmd=lambda: d('cancel'), lang=lang)
+	button_brooklyn.config(cmd=lambda: return_('Brooklyn'), lang=lang)
+	button_elmhurst.config(cmd=lambda: return_('Elmhurst'), lang=lang)
+	button_flushing.config(cmd=lambda: return_('Flushing'), lang=lang)
+	button_chinatown.config(cmd=lambda: return_('Chinatown'), lang=lang)
+	bcancel.config(cmd=lambda: return_('cancel'), lang=lang)
 
 	bcancel.idlebg = 'tomato'
 	bcancel.fg = 'black'
@@ -45,4 +45,4 @@ def choose_school(lang):
 
 	message_box.root.wait_window()
 	
-	return message_box.z
+	return message_box.value

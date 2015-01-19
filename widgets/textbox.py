@@ -15,9 +15,9 @@ class Textbox:
 			s.set(kwargs['text'])
 			self.entry.config(textvariable=s)
 		if 'lang' in kwargs:
-			return
-			self.lang = kwargs['lang']
-			self.label.config(text=self.lang[self.text].strip())
+			pass
+			#self.lang = kwargs['lang']
+			#self.label.config(text=self.lang[self.text].strip())
 		if 'bg' in kwargs:
 			self.widget_frame.config(bg=kwargs['bg'])
 			self.label.config(bg=kwargs['bg'])
@@ -66,8 +66,8 @@ class TextboxNoEdit(Textbox):
 			self.entry.config(state=DISABLED)
 		if 'lang' in kwargs:
 			return		
-			self.lang = kwargs['lang']
-			self.label.config(text=self.lang[self.text].strip())
+			#self.lang = kwargs['lang']
+			#self.label.config(text=self.lang[self.text].strip())
 		if 'bg' in kwargs:
 			self.widget_frame.config(bg=kwargs['bg'])
 			self.label.config(bg=kwargs['bg'])
@@ -121,4 +121,4 @@ class MoneyTextbox(IntTextbox):
 		if len(entry_) == 0:
 			return 0.0
 		else:
-			return "%.2f" % float(entry_)
+			return float("%.2f" % float(entry_))

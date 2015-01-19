@@ -24,8 +24,8 @@ from create_new_markerfile import create_new_markerfile
 from date_to_date import date_to_date
 
 
-def main(parent_frame, lang, database, k):
-	'''tools2'''
+def main(parent_frame, lang, database):
+	encr_config_file = keeper.Keeper('keeper.db')
 
 	def cdb(label):
 		try:
@@ -73,15 +73,15 @@ def main(parent_frame, lang, database, k):
 		database.key = f.read()
 		label.config(text=open_f.name)
 		database.pwfile = open_f.name
-		k.files['pwfile'] = open_f.name
-		k.save()
+		encr_config_file.files['pwfile'] = open_f.name
+		encr_config_file.save()
 
 	def set_markerfile(label):
 		open_f = filedialog.askopenfile()
 		if open_f == None: return
 		label.config(text=open_f.name)
-		k.files['markerfile'] = open_f.name
-		k.save()
+		encr_config_file.files['markerfile'] = open_f.name
+		encr_config_file.save()
 
 	def print_report_by_date():
 		def out():
@@ -152,7 +152,7 @@ def main(parent_frame, lang, database, k):
 	def salrep():
 		for child in parent_frame.winfo_children():
 			child.destroy()
-		sdb_salrep.main(parent_frame, w.lang, database, k.files['markerfile'])
+		sdb_salrep.main(parent_frame, w.lang, database, encr_config_file.files['markerfile'])
 
 	def choose_school_(event):
 		print(database.school)
@@ -160,22 +160,22 @@ def main(parent_frame, lang, database, k):
 		school = choose_school(w.lang)
 		if school == 'cancel': return
 
-		k.files['school'] = school
-		database.school = k.files['school']
-		k.save()
+		encr_config_file.files['school'] = school
+		database.school = encr_config_file.files['school']
+		encr_config_file.save()
 
 		return
 
 	def reset_dbmanager_pw(lang):
 
-		new_pw = password_prompt(lang, k.files['dbpw'])
+		new_pw = password_prompt(lang, encr_config_file.files['dbpw'])
 		if new_pw == 'cancel': return
-		if k.hashpw(new_pw[0]) != k.files['dbpw']:
+		if encr_config_file.hashpw(new_pw[0]) != encr_config_file.files['dbpw']:
 			wrong_password(w.lang)
 			return
-		k.files['dbpw'] = k.hashpw(new_pw[1])
-		k.files['resetpw'] = False
-		k.save()
+		encr_config_file.files['dbpw'] = encr_config_file.hashpw(new_pw[1])
+		encr_config_file.files['resetpw'] = False
+		encr_config_file.save()
 		pw_reset_confirm(w.lang)
 		
 	def choose_makerfile(lang):
@@ -236,7 +236,7 @@ def main(parent_frame, lang, database, k):
 
 	curpwfile = Label(w.frames['Third Frame'], text=database.pwfile, wraplength=200, bg='#DBDBDB')
 	curpwfile.grid(row=5, column=0, pady=10)
-	curmarkerfile = Label(w.frames['Third Frame'], text=k.files['markerfile'], wraplength=200, bg='#DBDBDB')
+	curmarkerfile = Label(w.frames['Third Frame'], text=encr_config_file.files['markerfile'], wraplength=200, bg='#DBDBDB')
 	curmarkerfile.grid(row=8, column=0, pady=10)
 
 	choose_pwfile = Buttonbox(text='Choose PW File', lang=w.lang, repr='cpwfile')
