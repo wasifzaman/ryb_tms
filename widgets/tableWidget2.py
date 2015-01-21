@@ -62,7 +62,6 @@ class Table:
 		self.row = kwargs['row']
 		self.column = kwargs['column']
 
-<<<<<<< HEAD
 		self.container = Frame(self.parent)
 		self.canvas = Canvas(self.container, bg='yellow')
 		self.outerframe = Frame(self.canvas)
@@ -75,54 +74,16 @@ class Table:
 		
 		for cell_id, cell in self.cells.items():
 			cell.place(parent=self.innerframe, pos=cell.pos)
-=======
-		self.canvas = Canvas(self.parent, bg='white')
-		self.table_frame = Frame(self.canvas, bg='black')
-
-		self.xscrollbar = Scrollbar(self.parent, orient="horizontal", command=self.canvas.xview)
-		self.yscrollbar = Scrollbar(self.parent, orient="vertical", command=self.canvas.yview)
-		self.canvas.create_window((0,0), window=self.table_frame, anchor=NW, tags="table_frame")
-		
-		for cell_id, cell in self.cells.items():
-			cell.place(parent=self.table_frame, pos=cell.pos)
->>>>>>> parent of 2e98c4e... Revert "upgr"
 			if cell_id[0] == 0:
 				cell.label.grid(padx=(0, 1), pady=(1, 0))
 			elif cell_id[1] == 0:
 				cell.label.grid(padx=1, pady=(0, 1))	
 
-<<<<<<< HEAD
 		self.container.grid(sticky=N)
 		self.innerframe.pack()
 		self.canvas.create_window((0,0), window=self.outerframe, anchor=NW)
 		self.parent.bind("<Configure>", self.makeScroll)
 
-=======
-		self.canvas.grid(row=0, column=0)
-		self.yscrollbar.grid(row=0, column=1, sticky=NS)
-		self.xscrollbar.grid(row=1, column=0, sticky=EW)
-		
-		self.parent.bind("<Configure>", self.makeScroll)
-
-		'''
-		** for custom scroll bar **
-		self.scroll_up_button = Button(self.parent, text='Up')
-		self.scroll_down_button = Button(self.parent, text='Down')
-		self.scroll_up_button.grid(row=0, column=1)
-		self.scroll_down_button.grid(row=0, column=2)
-		self.scroll_down_button.config(command=lambda: self.canvas.yview_scroll(1, UNITS))
-		self.scroll_up_button.config(command=lambda: self.canvas.yview_scroll(-1, UNITS))
-		'''
-
-		def print_coords(event):
-			canvas = event.widget
-			x = canvas.canvasx(event.x)
-			y = canvas.canvasy(event.y)
-			print(x,y)
-
-		self.canvas.bind('<Button-1>', print_coords)
-
->>>>>>> parent of 2e98c4e... Revert "upgr"
 	def setData(self, **kwargs):
 		olddata = self.data
 		newdata = kwargs['data']
@@ -141,22 +102,14 @@ class Table:
 			for text in row_:
 				if (row, col) not in self.cells:
 					self.cells[(row, col)] = Cell(text=text, pos=(row, col))
-<<<<<<< HEAD
 					self.cells[(row, col)].place(parent=self.innerframe, \
-=======
-					self.cells[(row, col)].place(parent=self.table_frame, \
->>>>>>> parent of 2e98c4e... Revert "upgr"
 													pos=self.cells[(row, col)].pos)
 					self.cells[(row, col)].label.grid(padx=(0, 1), pady=(0, 1))
 				else:
 					self.cells[(row, col)].label.config(text=text)
 				col += 1
 				self.cells[(row, 0)] = Cell(text=row, pos=(row, 0))
-<<<<<<< HEAD
 				self.cells[(row, 0)].place(parent=self.innerframe, \
-=======
-				self.cells[(row, 0)].place(parent=self.table_frame, \
->>>>>>> parent of 2e98c4e... Revert "upgr"
 													pos=self.cells[(row, 0)].pos)
 				self.cells[(row, 0)].label.grid(padx=1, pady=(0, 1))
 			row += 1
@@ -169,16 +122,11 @@ class Table:
 			row, col = 0, 1
 			for data in self.headers:
 				self.cells[(row, col)] = Cell(text=data, pos=(row, col))
-<<<<<<< HEAD
 				self.cells[(row, col)].place(parent=self.innerframe, \
-=======
-				self.cells[(row, col)].place(parent=self.table_frame, \
->>>>>>> parent of 2e98c4e... Revert "upgr"
 													pos=self.cells[(row, col)].pos)
 				self.cells[(row, col)].label.grid(padx=(0, 1), pady=1)
 				col += 1
 
-<<<<<<< HEAD
 		Label(self.innerframe, text='', bg='white', width=3).\
 			grid(row=0, column=0, padx=1, pady=1, sticky=E+W)
 
@@ -189,18 +137,6 @@ class Table:
 		self.xscrollbar.pack(side=BOTTOM, fill=X)
 		self.canvas.pack(side=LEFT)			
 		self.yscrollbar.pack(side=RIGHT, fill=Y)
-=======
-		Label(self.table_frame, text='', bg='white', width=3).\
-			grid(row=0, column=0, padx=1, pady=1, sticky=E+W)
-
-		self.table_frame.update_idletasks()
-		self.canvas.config(scrollregion=self.canvas.bbox(ALL))
-		self.canvas.config(xscrollcommand=self.xscrollbar.set)
-		self.canvas.config(yscrollcommand=self.yscrollbar.set)
-
-	def makeScroll(self, event):
-		self.canvas.config(scrollregion=self.canvas.bbox(ALL))
->>>>>>> parent of 2e98c4e... Revert "upgr"
 
 	def getData(self):
 		return self.headers, self.data
