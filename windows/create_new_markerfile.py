@@ -17,7 +17,6 @@ language = languages["english"]
 bsav = Buttonbox(text='Save', lang=language, repr='bsav')
 bcancel = Buttonbox(text='Cancel', lang=language, repr='bcancel')
 
-
 def create_new_markerfile(lang):
 	def get_return(z):
 		t.z = z

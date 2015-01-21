@@ -145,13 +145,21 @@ def main(parent_frame, lang, database, k):
 		print_reports.print_teacher_attendance_simple(database, dest_path, start_date, end_date)
 
 	def expf():
-		p = filedialog.askdirectory()
-		database.exportdb(p + '/backup_' + str(datetime.now().date()) + '.rybdb')
+		try:
+			p = filedialog.askdirectory()
+			database.exportdb(p + '/backup_' + str(datetime.now().date()) + '.rybdb')
+		except:
+			return
+
 
 	def salrep(f):
-		for child in parent_frame.winfo_children():
-			child.destroy()
-		sdb_salrep.main(parent_frame, w.lang, database, k.files['markerfile'])
+		try:
+			for child in parent_frame.winfo_children():
+				child.destroy()
+			sdb_salrep.main(parent_frame, w.lang, database, k.files['markerfile'])
+		except:
+			return
+
 
 	def choose_school_(event):
 		print(database.school)
