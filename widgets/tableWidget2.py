@@ -43,14 +43,11 @@ class Table:
 
 	def config(self, **kwargs):
 		if 'lang' in kwargs:
-			pass
-			'''
 			for cell_id, cell_val in self.cells.items():
 				if cell_id[0] == 0:
 					cur_text = cell_val.label.cget('text')
-					if cur_text in kwargs['lang']:
+					if cur_text in lang:
 						cell_val.label.config(text=lang[cur_text])
-			'''
 		if 'header_color' in kwargs:
 			return
 

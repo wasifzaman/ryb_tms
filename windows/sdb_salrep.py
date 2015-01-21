@@ -111,7 +111,7 @@ def main(t, lang, database, markerfile):
 			headers=teacher_table_headers,
 			data=sL[p])
 
-		sTbind(lambda i: edit_salary.main(w.lang, database=database, markerfile=markerfile, i=i))
+		sTbind(lambda i: edit_salary.main(w.lang, database=database, markerfile=markerfile, top=True, i=i))
 
 	def f():
 		if w.pNum == len(sL) - 1: return
@@ -179,7 +179,7 @@ def main(t, lang, database, markerfile):
 
 	w.frames["First Frame"].widgets['sby'].entry.bind("<Return>", lambda x: s())
 
-	#bsearch.button.config(width=20)
+	bsearch.button.config(width=20)
 	bsearch.config(cmd=s)
 
 	#button for scan

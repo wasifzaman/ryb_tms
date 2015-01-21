@@ -156,5 +156,5 @@ def main(t, lang, d):
 
 	w.frames["First Frame"].widgets['sby'].entry.bind("<Return>", lambda x: s())
 
-	#bsearch.button.config(width=20)
+	bsearch.button.config(width=20)
 	bsearch.config(cmd=s)

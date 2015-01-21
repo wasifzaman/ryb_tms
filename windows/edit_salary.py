@@ -12,7 +12,7 @@ def main(lang, database, markerfile=False, i=0): #i is the id of the student pas
 
 	database.loadData()
 
-	top_window_ = Window(top=True)
+	top_window_ = Window(top=top)
 	top_window_.attributes('-fullscreen', False)
 	top_window_.geometry('1280x720')
 	top_window_.resizable(0, 0)
@@ -49,7 +49,7 @@ def main(lang, database, markerfile=False, i=0): #i is the id of the student pas
 	close_button = Buttonbox(text='close', lang=window_.lang, repr='close_button')
 	notes_header = Labelbox(text='Notes', lang=language, repr='notes_header')
 	attendance_table = Table(repr='attinfox', edit=True)
-	attendance_table_headers = ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time']
+	attendance_table_headers = [lang[text] for text in ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time']]#, 'School']]
 	#b_reset_checkin = Buttonbox(text='resetcheckin', lang=lang, repr='bresetcheckin')
 
 	window_.frames["First Frame"].addWidget(today, (0, 0))
@@ -85,7 +85,7 @@ def main(lang, database, markerfile=False, i=0): #i is the id of the student pas
 	window_.populate(student_.datapoints)
 	attendance_table.setData(
 		headers=attendance_table_headers,
-		data=[row[:5] for row in student_.datapoints['attinfo'][1]])
+		data=student.datapoints['attinfo'][1])
 
 	def pick_cell(p, i):
 		first_cell = attendance_table.cells[p]

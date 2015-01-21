@@ -96,7 +96,7 @@ def main(lang, database):
 	window_.lang = lang
 
 	student_table = Table(repr='stable', edit=False)
-	student_table_headers = ['Barcode', 'First Name', 'Last Name', 'Chinese Name', 'Date of Birth']
+	student_table_headers = [lang[text] for text in ['Barcode', 'First Name', 'Last Name', 'Chinese Name', 'Date of Birth']]
 	
 	window_.newFrame("Open Excel Frame", (0, 0))
 	window_.newFrame("Table Frame", (1, 0))
@@ -133,16 +133,16 @@ def main(lang, database):
 	bcancel1.config(cmd=exit_)
 
 	student_table.canvas.config(width=600, height=280)
-	#brw.button.config(width=12, pady=1)
+	brw.button.config(width=12, pady=1)
 	brw.selfframe.grid(padx=10)
-	#brw2.button.config(width=12, pady=1)
+	brw2.button.config(width=12, pady=1)
 	brw2.selfframe.grid(padx=10)
-	#pw_fpath_brw.button.config(width=12, pady=1)
+	pw_fpath_brw.button.config(width=12, pady=1)
 	pw_fpath_brw.selfframe.grid(padx=10)
-	#preview_button.button.config(width=10, pady=1)
-	#window_.bsav.button.config(width=10)
+	preview_button.button.config(width=10, pady=1)
+	window_.bsav.button.config(width=10)
 	window_.bsav.selfframe.grid(padx=10)
-	#bcancel1.button.config(width=10)
+	bcancel1.button.config(width=10)
 	bcancel1.selfframe.grid(padx=10)
 	
 	for frame in window_.frames.values():
