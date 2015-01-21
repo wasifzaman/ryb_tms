@@ -94,15 +94,7 @@ class Table:
 		self.scroll_down_button.config(command=lambda: self.canvas.yview_scroll(1, UNITS))
 		self.scroll_up_button.config(command=lambda: self.canvas.yview_scroll(-1, UNITS))
 		'''
-
-		def print_coords(event):
-			canvas = event.widget
-			x = canvas.canvasx(event.x)
-			y = canvas.canvasy(event.y)
-			print(x,y)
-
-		self.canvas.bind('<Button-1>', print_coords)
-
+	
 	def setData(self, **kwargs):
 		olddata = self.data
 		newdata = kwargs['data']

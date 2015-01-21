@@ -8,125 +8,64 @@ sys.path.append(os.path.abspath(os.pardir))
 from datetime import datetime
 
 from master_list import *
-from uiHandler22 import *
-from dataHandler import *
+from uiHandler22 import Window, AppWindow
 from preBuilts2 import *
-import importwiz
-import sdb_salrep
-import preBuilts2
-import print_reports
-from textbox import Textbox, TextboxNoEdit, IntTextbox, MoneyTextbox
+from button import Buttonbox
+from simple_label import Labelbox
 from choose_school import choose_school
 from create_new_db import create_new_db
 from convert_to_encrypted import convert_to_encrypted
 from password_prompt import password_prompt
-from create_new_markerfile import create_new_markerfile
 from date_to_date import date_to_date
+from find_all import find_all
+from translations import english_to_chinese, chinese_to_english
+from translate_ import translate
+import keeper
+import importwiz
+import sdb_salrep
+import print_reports
 
 
 def main(parent_frame, lang, database):
 	encr_config_file = keeper.Keeper('keeper.db')
 
-	def cdb(label):
-		try:
-			p = filedialog.askopenfile(mode='r').name
-			y = os.path.abspath(p)
-			p = p.split('/')[-1]
-			if p[p.rfind('.'):]!= '.rybdb':
-				print("invalid file")
-				return
-			else:
-				label.config(text=y)
-				database.file = y
-				#database.loadData()
-		except:
-			print("error opening file.")
+	def change_database():
+		file_path = filedialog.askopenfilename(filetypes=[('RYB database file', '.rybdb')])
+		if len(file_path) == 0: return
 
+		curdb.config(text=file_path)
+		database.file = file_path
+		encr_config_file.files['cfilepath'] = file_path
+		encr_config_file.save()
 
 	def ctdb():
-		try:
-			p = filedialog.askopenfile(mode='r').name
-			l = p.split('/')[-1]
-			ext = l[l.rfind('.'):]
-			if ext != '.xls' and ext != '.xlsx':
-				print("invalid file")
-				return
-			else:
-				database.loadData()
-				ns, nt = database.importtimexlsx(p)
-				ctimp(w.lang, ns, nt)
-				#database.saveData()
-		except:
-			return
-			#print("error opening file.")
+		file_path = filedialog.askopenfilename(filetypes=[('Excel 97-2003 Workbook', '.xls'), ('Excel Workbook', '.xlsx')])
+		if len(file_path) == 0: return
 
+		database.loadData()
+		ns, nt = database.importtimexlsx(file_path)
+		ctimp(window_.lang, ns, nt)
 
-	def ss():
-		database.file = curdb.cget('text')
-		dbs(w.lang)
+	def set_pwfile():
+		file_path = filedialog.askopenfilename(filetypes=[('RYB database file', '.rybdb')])
+		if len(file_path) == 0: return
 
-
-	def set_pwfile(label):
-		open_f = filedialog.askopenfile()
-		if open_f == None: return
-		f = open(open_f.name)
-		database.key = f.read()
-		label.config(text=open_f.name)
-		database.pwfile = open_f.name
-		encr_config_file.files['pwfile'] = open_f.name
+		file_ = open(file_path, 'rb')
+		curpwfile.config(text=file_path)
+		database.pwfile = file_path
+		encr_config_file.files['pwfile'] = file_path
 		encr_config_file.save()
 
 	def set_markerfile(label):
-		open_f = filedialog.askopenfile()
-		if open_f == None: return
+		file_path = filedialog.askopenfilename(filetypes=[('RYB database file', '.rybdb')])
+		if len(file_path) == 0: return
+
 		label.config(text=open_f.name)
 		encr_config_file.files['markerfile'] = open_f.name
 		encr_config_file.save()
 
-	def print_report_by_date():
-		def out():
-			p = filedialog.askdirectory()
-			if rdate.getData() == '01/01/1900':
-				date_error(w.lang)
-			elif p != None:
-				print_reports.exportreport(database, p, rdate.getData())
-				print_succesful(w.lang)
-				pt.destroy()
-			else:
-				invalid_path(w.lang)
-				return
-
-		pt = Window(top=True)
-		pt.attributes('-fullscreen', False)
-		pt.resizable(0, 0)
-		pt.geometry('400x200+200+200')
-		pt.grab_set()
-		pt.focus_set()
-		pt.titleFrame.pack_forget()
-
-		wpt = AppWindow(pt.mainFrame)
-
-		rdate = Datebox(text='Date', lang=w.lang, repr='rdate')
-		rbutton = Buttonbox(text='Select Folder', lang=w.lang, repr='rbutton')
-		cancel_button = Buttonbox(text='Cancel', lang=w.lang, repr='cancelbutton')
-
-		wpt.newFrame("First Frame", (0, 0))
-
-		wpt.frames["First Frame"].addWidget(rdate, (0, 0))
-		wpt.frames["First Frame"].addWidget(rbutton, (1, 0))
-		wpt.frames["First Frame"].addWidget(cancel_button, (2, 0))
-
-		rdate.label.config(width=5)
-		rbutton.selfframe.grid(columnspan=2, pady=(20, 0))
-		cancel_button.selfframe.grid(columnspan=2)
-
-		rbutton.config(cmd=out)
-		cancel_button.config(cmd=pt.destroy)
-
 	def print_report_by_range():
-		start_date, end_date = date_to_date(w.lang)
-		print(start_date, end_date)
-
+		start_date, end_date = date_to_date(window_.lang)
 		if not start_date: return
 
 		dest_path = filedialog.askdirectory()
@@ -135,9 +74,7 @@ def main(parent_frame, lang, database):
 		print_reports.print_teacher_attendance(database, dest_path, start_date, end_date)
 
 	def print_report_by_range_simple():
-		start_date, end_date = date_to_date(w.lang)
-		print(start_date, end_date)
-
+		start_date, end_date = date_to_date(window_.lang)
 		if not start_date: return
 
 		dest_path = filedialog.askdirectory()
@@ -145,154 +82,167 @@ def main(parent_frame, lang, database):
 
 		print_reports.print_teacher_attendance_simple(database, dest_path, start_date, end_date)
 
-	def expf():
-		p = filedialog.askdirectory()
-		database.exportdb(p + '/backup_' + str(datetime.now().date()) + '.rybdb')
-
 	def salrep():
-		for child in parent_frame.winfo_children():
-			child.destroy()
-		sdb_salrep.main(parent_frame, w.lang, database, encr_config_file.files['markerfile'])
+		app_window_widgets = []
+		find_all(parent_frame, app_window_widgets, 'all')
+
+		for widget in app_window_widgets:
+			widget.destroy()
+
+		sdb_salrep.main(parent_frame, window_.lang, database, encr_config_file.files['markerfile'])
 
 	def choose_school_(event):
-		print(database.school)
-
-		school = choose_school(w.lang)
+		school = choose_school(window_.lang)
 		if school == 'cancel': return
 
 		encr_config_file.files['school'] = school
 		database.school = encr_config_file.files['school']
+		current_school.setData(database.school)
 		encr_config_file.save()
 
-		return
-
 	def reset_dbmanager_pw(lang):
-
 		new_pw = password_prompt(lang, encr_config_file.files['dbpw'])
 		if new_pw == 'cancel': return
 		if encr_config_file.hashpw(new_pw[0]) != encr_config_file.files['dbpw']:
-			wrong_password(w.lang)
+			wrong_password(window_.lang)
 			return
 		encr_config_file.files['dbpw'] = encr_config_file.hashpw(new_pw[1])
 		encr_config_file.files['resetpw'] = False
 		encr_config_file.save()
-		pw_reset_confirm(w.lang)
-		
-	def choose_makerfile(lang):
+		pw_reset_confirm(window_.lang)
 
-		return
+	def switch_frame(frame):
+		if hasattr(window_, 'current_frame'):
+			if frame == window_.current_frame: return
+			window_.frames[window_.current_frame].grid_forget()
 
-	def it():
-		return
+		window_.current_frame = frame		
+		window_.frames[window_.current_frame].grid(row=0, column=1, sticky=NW)
 
+	def create_new_markerfile():
+		out_file = filedialog.asksaveasfilename()
+		if len(out_file) == 0: return
+		pickle.dump({}, open(out_file + '.rybdb', "wb"))
 
-	#database.loadData()
+	window_ = AppWindow(parent_frame)
 
-	w = AppWindow(parent_frame)
+	window_.lang = lang
 
-	w.lang = lang
+	window_.newFrame("Toggle Frame", (0, 0))
+	window_.newFrame("Import/Export Frame", (0, 0))
+	window_.newFrame("Print Reports Frame", (0, 0))
+	window_.newFrame("School Frame", (0, 0))
+	window_.newFrame("Database Frame", (0, 0))
+	window_.newFrame("Password Frame", (0, 0))
 
-#frame initialization
-	#w.newFrame("Title Frame", (0, 0))
-	w.newFrame("First Frame", (1, 0))
-	#w.newFrame("Fifth Frame", (2, 0))
-	w.newFrame("Second Frame", (3, 0))
-	w.newFrame("Third Frame", (1, 1))
-	#w.newFrame("Fourth Frame", (4, 1))
+	window_.frames["Toggle Frame"].grid(padx=(0, 10))
+	window_.frames["Import/Export Frame"].grid_forget()
+	window_.frames["Print Reports Frame"].grid_forget()
+	window_.frames["School Frame"].grid_forget()
+	window_.frames["Database Frame"].grid_forget()
+	window_.frames["Password Frame"].grid_forget()
+	
+	import_export_toggle = Buttonbox(text='Import/export', repr=None)
+	print_reports_toggle = Buttonbox(text='Print reports', repr=None)
+	school_toggle = Buttonbox(text='School', repr=None)
+	database_toggle = Buttonbox(text='Database', repr=None)
+	password_toggle = Buttonbox(text='Passwords', repr=None)
+	bchoose_school = Buttonbox(text='Choose school', lang=window_.lang, repr='bcschool')
+	reset_db_manager_pw = Buttonbox(text='Reset DB manager PW', lang=window_.lang, repr='resetdbmanagerpw')
+	print_report_button = Buttonbox(text='Print report', lang=window_.lang, repr='printreport')
+	curdb = TextboxNoEdit(text='Database', repr=None)
+	curpwfile = TextboxNoEdit(text='PW file', repr=None)
+	curmarkerfile = TextboxNoEdit(text='Marker', repr=None)
+	current_school = TextboxNoEdit(text='School', repr=None)
+	choose_pwfile = Buttonbox(text='Choose PW file', lang=window_.lang, repr='cpwfile')
+	choose_markerfile = Buttonbox(text='Choose Marker File', lang=window_.lang, repr='cmarkerfile')
+	create_db = Buttonbox(text='Create new database', lang=window_.lang, repr='createdb')
+	create_markerfile = Buttonbox(text='Create new markerfile', lang=window_.lang, repr='createmfile')
+	convert_db = Buttonbox(text='Convert to encrypted DB', lang=window_.lang, repr='convertdb')
+	print_simple_attendance = Buttonbox(text='Print simple report', lang=window_.lang, repr='simplereport')
+	import_data_button = Buttonbox(text='Import data', repr=None)
+	import_time_data_button = Buttonbox(text='Import time data', repr=None)
+	salary_report_button = Buttonbox(text='Salary report', repr=None)
+	change_database_button = Buttonbox(text='Change database', repr=None)
 
-	w.frames["Third Frame"].config(bg='#DBDBDB')
-	w.frames["Third Frame"].grid(rowspan=3)
+	window_.frames["Toggle Frame"].addWidget(import_export_toggle, (0, 0))
+	window_.frames["Toggle Frame"].addWidget(print_reports_toggle, (1, 0))
+	window_.frames["Toggle Frame"].addWidget(school_toggle, (2, 0))
+	window_.frames["Toggle Frame"].addWidget(database_toggle, (3, 0))
+	window_.frames["Toggle Frame"].addWidget(password_toggle, (4, 0))
+	window_.frames["Import/Export Frame"].addWidget(import_data_button, (1, 0))
+	window_.frames["Import/Export Frame"].addWidget(import_time_data_button, (2, 0))
+	window_.frames["Print Reports Frame"].addWidget(salary_report_button, (3, 0))
+	window_.frames["Print Reports Frame"].addWidget(print_report_button, (4, 0))
+	window_.frames["Print Reports Frame"].addWidget(print_simple_attendance, (5, 0))
+	window_.frames["School Frame"].addWidget(current_school, (0, 0))
+	window_.frames["School Frame"].addWidget(bchoose_school, (1, 0))
+	window_.frames["Database Frame"].addWidget(curdb, (0, 0))
+	window_.frames["Database Frame"].addWidget(curpwfile, (1, 0))
+	window_.frames["Database Frame"].addWidget(curmarkerfile, (2, 0))
+	window_.frames["Database Frame"].addWidget(change_database_button, (3, 0))
+	window_.frames["Database Frame"].addWidget(choose_pwfile, (4, 0))
+	window_.frames["Database Frame"].addWidget(choose_markerfile, (5, 0))
+	window_.frames["Database Frame"].addWidget(create_db, (3, 1))
+	window_.frames["Database Frame"].addWidget(create_markerfile, (4, 1))
+	window_.frames["Database Frame"].addWidget(convert_db, (5, 1))
+	window_.frames["Password Frame"].addWidget(reset_db_manager_pw, (1, 0))
 
-	bchoose_school = Buttonbox(text='Choose School', lang=w.lang, repr='bcschool')
-	reset_db_manager_pw = Buttonbox(text='Reset DB Manager PW', lang=w.lang, repr='resetdbmanagerpw')
-	print_report_button = Buttonbox(text='print report', lang=w.lang, repr='printreport')
+	current_school.widget_frame.grid(pady=(0, 10))
+	curdb.widget_frame.grid(columnspan=2, sticky=NW)
+	curpwfile.widget_frame.grid(columnspan=2, sticky=NW)
+	curmarkerfile.widget_frame.grid(columnspan=2, sticky=NW, pady=(0, 10))
+	choose_pwfile.widget_frame.grid(padx=(0, 10))
+	change_database_button.widget_frame.grid(padx=(0, 10))
+	choose_markerfile.widget_frame.grid(padx=(0, 10))
+	current_school.label.config(width=7)
+	bchoose_school.widget_frame.grid(sticky=W)
+	window_.grid_propagate(False)
+	window_.config(width=850, height=300)
+	#window_.grid_columnconfigure(1, minsize=300)
+	#window_.grid_rowconfigure(0, minsize=500)
+	
+	curdb.setData(encr_config_file.files['cfilepath'])
+	curpwfile.setData(encr_config_file.files['pwfile'])
+	curmarkerfile.setData(encr_config_file.files['markerfile'])
+	current_school.setData(database.school)
+	switch_frame('Import/Export Frame')
 
-#title
-	#w.frames["Title Frame"].grid(columnspan=4, sticky=E+W)
-	#Label(w.frames["Title Frame"], text='Database Management', bg='#3B5C8D', fg='white', \
-	#	height=3, font=('Jumbo', '12', 'bold')).pack(fill='both', expand=True)
-
-	w.frames["First Frame"].addWidget(imp, (0, 0))
-	w.frames["First Frame"].addWidget(bimp, (1, 0))
-
-	#w.frames["Fifth Frame"].addWidget(impt, (0, 0))
-	w.frames["First Frame"].addWidget(bimpt, (2, 0))
-
-	#w.frames["Second Frame"].addWidget(exp, (0, 0))
-	#w.frames["Second Frame"].addWidget(bexp, (0, 0))
-
-	#salary report
-	w.frames["First Frame"].addWidget(bsalrep, (3, 0))
-	w.frames["First Frame"].addWidget(print_report_button, (4, 0))
-
-	#choose school
-	w.frames["First Frame"].addWidget(bchoose_school, (6, 0))
-	w.frames["First Frame"].addWidget(reset_db_manager_pw, (7, 0))
-
-	curdb = Label(w.frames['Third Frame'], text=database.file, wraplength=200, bg='#DBDBDB')
-	w.frames["Third Frame"].addWidget(curfile, (0, 0))
-	curfile.label.config(bg='#DBDBDB')
-	curdb.grid(row=3, column=0, pady=10)
-
-	curpwfile = Label(w.frames['Third Frame'], text=database.pwfile, wraplength=200, bg='#DBDBDB')
-	curpwfile.grid(row=5, column=0, pady=10)
-	curmarkerfile = Label(w.frames['Third Frame'], text=encr_config_file.files['markerfile'], wraplength=200, bg='#DBDBDB')
-	curmarkerfile.grid(row=8, column=0, pady=10)
-
-	choose_pwfile = Buttonbox(text='Choose PW File', lang=w.lang, repr='cpwfile')
-	choose_markerfile = Buttonbox(text='Choose Maker File', lang=w.lang, repr='cmarkerfile')
-	create_db = Buttonbox(text='Create new Database', lang=w.lang, repr='createdb')
-	create_markerfile = Buttonbox(text='Create new Markerfile', lang=w.lang, repr='createmfile')
-	convert_db = Buttonbox(text='Convert to Encrypted DB', lang=w.lang, repr='convertdb')
-	print_simple_attendance = Buttonbox(text='Print Simple Report', lang=w.lang, repr='simplereport')
-
-
-	w.frames["Third Frame"].addWidget(bcdb, (2, 0))
-	w.frames["Third Frame"].addWidget(choose_pwfile, (4, 0))
-	w.frames["Third Frame"].addWidget(create_db, (1, 0))
-	w.frames["Third Frame"].addWidget(create_markerfile, (6, 0))
-	w.frames["Third Frame"].addWidget(choose_markerfile, (7, 0))
-
-	w.frames["First Frame"].addWidget(print_simple_attendance, (5, 0))
-	w.frames["First Frame"].addWidget(convert_db, (8, 0))
-
-	#w.frames['Fourth Frame'].addWidget(bsav, (0, 0))
-
-	#bsav.config(cmd=ss)
-	bchoose_school.config(cmd=lambda: choose_school_(w.lang))
-	bimp.config(cmd=lambda: importwiz.main(w.lang, database))
-	bcdb.config(cmd=lambda: cdb(curdb))
-	bimpt.config(cmd=ctdb)
-	#bexp.config(cmd=expf)
-	bsalrep.config(cmd=salrep)
-	choose_pwfile.config(cmd=lambda: set_pwfile(curpwfile))
-	convert_db.config(cmd=lambda: convert_to_encrypted(w.lang, database))
-	create_db.config(cmd=lambda: create_new_db(w.lang, database))
-	create_markerfile.config(cmd=lambda: create_new_markerfile(w.lang))
+	import_export_toggle.config(cmd=lambda: switch_frame('Import/Export Frame'))
+	print_reports_toggle.config(cmd=lambda: switch_frame('Print Reports Frame'))
+	school_toggle.config(cmd=lambda: switch_frame('School Frame'))
+	database_toggle.config(cmd=lambda: switch_frame('Database Frame'))
+	password_toggle.config(cmd=lambda: switch_frame('Password Frame'))
+	bchoose_school.config(cmd=lambda: choose_school_(window_.lang))
+	import_data_button.config(cmd=lambda: importwiz.main(window_.lang, database))
+	change_database_button.config(cmd=lambda: change_database())
+	import_time_data_button.config(cmd=ctdb)
+	salary_report_button.config(cmd=salrep)
+	choose_pwfile.config(cmd=lambda: set_pwfile())
+	convert_db.config(cmd=lambda: convert_to_encrypted(window_.lang, database))
+	create_db.config(cmd=lambda: create_new_db(window_.lang, database))
+	create_markerfile.config(cmd=create_new_markerfile)
 	choose_markerfile.config(cmd=lambda: set_markerfile(curmarkerfile))
-	reset_db_manager_pw.config(cmd=lambda: reset_dbmanager_pw(w.lang))
+	reset_db_manager_pw.config(cmd=lambda: reset_dbmanager_pw(window_.lang))
 	print_report_button.config(cmd=print_report_by_range)
 	print_simple_attendance.config(cmd=print_report_by_range_simple)
-	#curdb.config(text=s.config['dbFile'])
-	#exp.config(cmd=importwiz.main)
+	
+	'''
+	window_.mmbuttoncol = 'tomato'
+	window_.mmbuttonfg = 'black'
 
-	w.mmbuttoncol = 'tomato'
-	w.mmbuttonfg = 'black'
-
-	bsalrep.idlebg = w.mmbuttoncol
-	bsalrep.fg = w.mmbuttonfg
+	bsalrep.idlebg = window_.mmbuttoncol
+	bsalrep.fg = window_.mmbuttonfg
 	bsalrep.hoverfg = 'white'
 	bsalrep.hoverbg = 'crimson'
 	bsalrep.label.config(bg=bsalrep.idlebg, fg=bsalrep.fg)
 
-	bcdb.idlebg = w.mmbuttoncol
-	bcdb.fg = w.mmbuttonfg
+	bcdb.idlebg = window_.mmbuttoncol
+	bcdb.fg = window_.mmbuttonfg
 	bcdb.hoverfg = 'white'
 	bcdb.hoverbg = 'crimson'
 	bcdb.label.config(bg=bcdb.idlebg, fg=bcdb.fg)
+	'''
 
-
-#set starting lang
-	for frame in w.frames.values():
-		for widget in frame.widgets.values():
-			widget.config(lang=w.lang)
+	if lang == 'chinese':
+		translate(window_, english_to_chinese)

@@ -49,8 +49,9 @@ def move_down():
 b1.config(command=move_up)
 b2.config(command=move_down)
 
-x = [1, 2, 3, 4]
-print(4 == x[-1])
+x = 'abcdef'
+x = str.encode(x)
+print(bytearray(x))
 
 
 #t.mainloop()

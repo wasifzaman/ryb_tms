@@ -47,6 +47,12 @@ class Toggle_option:
 		if 'width' in kwargs:
 			for label in self.labels:
 				label.config(width=kwargs['width'])
+		if 'height' in kwargs:
+			for label in self.labels:
+				label.config(height=kwargs['height'])
+		if 'fg' in kwargs:
+			for label in self.labels:
+				label.config(fg=kwargs['fg'])
 		if 'set_' in kwargs:
 			self.current_label.config(bg=self.inactive_bg)
 			self.current_label = self.labels[kwargs['set_']]

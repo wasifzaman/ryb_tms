@@ -1,10 +1,13 @@
 import sys, os, shutil
+sys.path.append(os.path.abspath(os.pardir) + '\widgets')
+sys.path.append(os.path.abspath(os.pardir) + '\database')
 sys.path.append(os.path.abspath(os.pardir) + '\messages windows')
 temp = os.path.abspath(os.pardir) + '\\temp\\'
 
-from uiHandler22 import *
-from dataHandler import *
-from preBuilts2 import *
+from dataHandler import StudentDB
+from uiHandler22 import Window, AppWindow
+from textbox import Textbox, TextboxNoEdit
+from tableWidget2 import Table
 from tkinter import filedialog
 from random import randrange
 from master_list import *
@@ -106,25 +109,25 @@ def main(lang, database):
 	window_.frames["Table Frame"].grid(sticky=EW)
 
 	save_button = Buttonbox(text='Save', lang=window_.lang, repr='savebutton')
-	source_path = TextboxNoEdit(text='Source Excel', lang=window_.lang, repr='sourceexcel')
-	source_path_browse_button = Buttonbox(text='browse', lang=window_.lang, repr='sourcefilebrw')
-	dest_path = TextboxNoEdit(text='Output File', lang=window_.lang, repr='outputfile')
-	dest_path_browse_button = Buttonbox(text='browse', lang=window_.lang, repr='outputfilebrw')
-	pw_file_path = TextboxNoEdit(text='Password File', lang=window_.lang, repr='pwfilepath')
-	pw_file_path_browse_button = Buttonbox(text='browse', lang=window_.lang, repr='pwfilebrw')
+	source_path = TextboxNoEdit(text='Source excel', lang=window_.lang, repr='sourceexcel')
+	source_path_browse_button = Buttonbox(text='Browse', lang=window_.lang, repr='sourcefilebrw')
+	dest_path = TextboxNoEdit(text='Output file', lang=window_.lang, repr='outputfile')
+	dest_path_browse_button = Buttonbox(text='Browse', lang=window_.lang, repr='outputfilebrw')
+	pw_file_path = TextboxNoEdit(text='Password file', lang=window_.lang, repr='pwfilepath')
+	pw_file_path_browse_button = Buttonbox(text='Browse', lang=window_.lang, repr='pwfilebrw')
 	preview_button = Buttonbox(text='Preview', lang=window_.lang, repr='previewbutton')
 	cancel_button = Buttonbox(text='Cancel', lang=window_.lang, repr='cancel')
 	
 	window_.frames["Open Excel Frame"].addWidget(source_path, (0, 0))
-	window_.frames["Open Excel Frame"].addWidget(source_path_browse_button, (0, 2))
-	window_.frames["Open Excel Frame"].addWidget(preview_button, (0, 3))
-	window_.frames["Table Frame"].addWidget(student_table, (1, 0))
-	window_.frames["Password File Frame"].addWidget(dest_path, (1, 0))
-	window_.frames["Password File Frame"].addWidget(dest_path_browse_button, (1, 3))
-	window_.frames["Password File Frame"].addWidget(pw_file_path, (2, 0))
-	window_.frames["Password File Frame"].addWidget(pw_file_path_browse_button, (2, 3))
-	window_.frames["Confirm Frame"].addWidget(save_button, (3, 1))
-	window_.frames["Confirm Frame"].addWidget(cancel_button, (3, 2))
+	window_.frames["Open Excel Frame"].addWidget(source_path_browse_button, (0, 1))
+	window_.frames["Open Excel Frame"].addWidget(preview_button, (0, 2))
+	window_.frames["Table Frame"].addWidget(student_table, (0, 0))
+	window_.frames["Password File Frame"].addWidget(dest_path, (0, 0))
+	window_.frames["Password File Frame"].addWidget(dest_path_browse_button, (0, 1))
+	window_.frames["Password File Frame"].addWidget(pw_file_path, (1, 0))
+	window_.frames["Password File Frame"].addWidget(pw_file_path_browse_button, (1, 1))
+	window_.frames["Confirm Frame"].addWidget(save_button, (0, 0))
+	window_.frames["Confirm Frame"].addWidget(cancel_button, (0, 1))
 
 	student_table.canvas.config(width=600, height=280)
 	
@@ -132,6 +135,22 @@ def main(lang, database):
 		for widget in frame.widgets.values():
 			widget.config(lang=window_.lang)
 	
+	source_path_browse_button.config(width=7)
+	dest_path_browse_button.config(width=7)
+	pw_file_path_browse_button.config(width=7)
+	preview_button.config(width=7)
+	source_path_browse_button.label.config(height=1)
+	dest_path_browse_button.label.config(height=1)
+	pw_file_path_browse_button.label.config(height=1)
+	preview_button.label.config(height=1)
+	source_path_browse_button.widget_frame.grid(padx=5)
+	dest_path_browse_button.widget_frame.grid(padx=5)
+	pw_file_path_browse_button.widget_frame.grid(padx=5)
+	preview_button.widget_frame.grid(padx=5)
+	save_button.widget_frame.grid(padx=5)
+	cancel_button.widget_frame.grid(padx=5)
+	window_.frames["Confirm Frame"].grid(pady=(10, 0))
+
 	source_path_browse_button.config(cmd=open_excel)
 	dest_path_browse_button.config(cmd=lambda: set_file(dest_path))
 	pw_file_path_browse_button.config(cmd=lambda: set_file(pw_file_path))
