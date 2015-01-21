@@ -1,12 +1,7 @@
-import sys, os
-sys.path.append(os.path.abspath(os.pardir) + '\messages windows')
-
 from uiHandler22 import *
 from dataHandler import *
 from preBuilts2 import *
 from student_picker import spicker
-
-from master_list import *
 
 def main(t, lang, database):
 
@@ -17,7 +12,7 @@ def main(t, lang, database):
 
 #attendance table
 	attendance_table = Table(repr='attinfox', edit=True)
-	attendance_table_headers = ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time']
+	attendance_table_headers = [lang[text] for text in ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time']]#, 'School']]
 	attendance_table.clast = '#FF99FF'
 
 #frame initialization
@@ -61,7 +56,7 @@ def main(t, lang, database):
 	ninfo.label.grid(columnspan=2, sticky=E+W, pady=3)
 	window_.frames["First Frame"].addWidget(notes, (9, 0))
 	notes.label.grid_forget()
-	#notes.sentry.grid(column=0, columnspan=2)
+	notes.sentry.grid(column=0, columnspan=2)
 	notes.config(height=6, width=32)
 
 #early checkin
@@ -75,7 +70,7 @@ def main(t, lang, database):
 	window_.frames["Eleventh Frame"].grid(rowspan=4, sticky=NW)
 
 	attendance_table.editwidget=False
-	attendance_table.canvas.config(width=695, height=300)
+	attendance_table.canvas.config(width=696, height=300)
 
 	sby.rads=[('Barcode', 'bCode'), ('First Name', 'firstName'), \
 		('Last Name', 'lastName'), ('Chinese Name', 'chineseName'), \
@@ -232,7 +227,7 @@ def main(t, lang, database):
 	window_.frames["Tenth Frame"].widgets['sby'].entry.bind("<Return>", lambda x: search_student())
 
 	window_.frames["Tenth Frame"].addWidget(bsearch, (1, 0))
-	#bsearch.button.config(width=20)
+	bsearch.button.config(width=20)
 	bsearch.config(cmd=search_student)
 
 #collect and check in button

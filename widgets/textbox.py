@@ -18,9 +18,6 @@ class Textbox:
 			return
 			self.lang = kwargs['lang']
 			self.label.config(text=self.lang[self.text].strip())
-		if 'bg' in kwargs:
-			self.widget_frame.config(bg=kwargs['bg'])
-			self.label.config(bg=kwargs['bg'])
 
 	def OnValidate(self, d, i, P, s, S, v, V, W):
 		return True
@@ -30,17 +27,11 @@ class Textbox:
 		self.row = kwargs['row']
 		self.column = kwargs['column']
 
-		self.widget_frame = Frame(self.parent)
-		self.entry_container = Frame(self.widget_frame, bg='#ADD6FF')
-		self.label = Label(self.widget_frame, text=self.text, width=12, anchor=W)
-		self.entry = Entry(self.entry_container, relief=FLAT)
-	
-		self.widget_frame.grid(row=self.row, column=self.column, pady=(1, 0))
-		self.label.pack(side=LEFT)
-		self.entry_container.pack(side=LEFT)
-		self.entry.pack(padx=1, pady=1)
-		#self.label.grid(row=self.row, column=self.column, sticky=E)
-		#self.entry.grid(row=self.row, column=self.column+1)
+		self.label = Label(self.parent, text=self.text, width=12, anchor=W)
+		self.entry = Entry(self.parent, relief=SOLID)
+
+		self.label.grid(row=self.row, column=self.column, sticky=E)
+		self.entry.grid(row=self.row, column=self.column+1)
 
 		vcmd = (self.parent.register(self.OnValidate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
 		self.entry.config(validate="all", validatecommand=vcmd)
@@ -68,27 +59,18 @@ class TextboxNoEdit(Textbox):
 			return		
 			self.lang = kwargs['lang']
 			self.label.config(text=self.lang[self.text].strip())
-		if 'bg' in kwargs:
-			self.widget_frame.config(bg=kwargs['bg'])
-			self.label.config(bg=kwargs['bg'])
 		
 	def place(self, **kwargs):
 		self.parent = kwargs['parent']
 		self.row = kwargs['row']
 		self.column = kwargs['column']
 
-		self.widget_frame = Frame(self.parent)
-		self.entry_container = Frame(self.widget_frame, bg='#ADD6FF')
-		self.label = Label(self.widget_frame, text=self.text, width=12, anchor=W)
-		self.entry = Entry(self.entry_container, relief=FLAT, state=DISABLED,
+		self.label = Label(self.parent, text=self.text, width=12, anchor=W)
+		self.entry = Entry(self.parent, relief=SOLID, state=DISABLED,
 			disabledbackground='white', disabledforeground='black')
 
-		self.widget_frame.grid(row=self.row, column=self.column, pady=(1, 0))
-		self.label.pack(side=LEFT)
-		self.entry_container.pack(side=LEFT)
-		self.entry.pack(padx=1, pady=1)
-		#self.label.grid(row=self.row, column=self.column)
-		#self.entry.grid(row=self.row, column=self.column+1)
+		self.label.grid(row=self.row, column=self.column)
+		self.entry.grid(row=self.row, column=self.column+1)
 
 class IntTextbox(Textbox):
 

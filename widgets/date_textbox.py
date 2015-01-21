@@ -18,39 +18,34 @@ class Datebox(IntTextbox):
 		if 'lang' in kwargs:
 			self.lang = kwargs['lang']
 			self.label.config(text=self.lang[self.text])
-		if 'bg' in kwargs:
-			self.widget_frame.config(bg=kwargs['bg'])
-			self.label.config(bg=kwargs['bg'])
 
 	def place(self, **kwargs):
 		self.parent = kwargs['parent']
 		self.row = kwargs['row']
 		self.column = kwargs['column']
 
-		self.widget_frame = Frame(self.parent)
-		self.mdy_frame = Frame(self.widget_frame, relief=FLAT)#, bg='#ADD6FF')
-		self.mdy_container = Frame(self.mdy_frame, relief=FLAT, bg='#ADD6FF')
-		self.label = Label(self.widget_frame, text=self.text, width=12, anchor=W)
-		self.dLabel = Entry(self.mdy_container, relief=FLAT, width=1, disabledbackground='white', disabledforeground='black')
-		self.yLable = Entry(self.mdy_container, relief=FLAT, width=1, disabledbackground='white', disabledforeground='black')
-		self.mEntry = Entry(self.mdy_container, relief=FLAT, width=4, justify=CENTER)
-		self.dEntry = Entry(self.mdy_container, relief=FLAT, width=4, justify=CENTER)
-		self.yEntry = Entry(self.mdy_container, relief=FLAT, width=8, justify=CENTER)
+		self.selfframe = Frame(self.parent, bg='black')
+		self.mdy_frame = Frame(self.selfframe, relief=FLAT, bg='white')
+		self.mdy_continaer = Frame(self.mdy_frame, relief=FLAT, bg='white')
+		self.label = Label(self.parent, text=self.text, width=12, anchor=W)
+		self.dLabel = Label(self.mdy_continaer, text='/', bg='white')
+		self.yLable = Label(self.mdy_continaer, text='/', bg='white')
 
-		self.dLabel.insert(0, '/')
-		self.dLabel.config(state=DISABLED)
-		self.yLable.insert(0, '/')
-		self.yLable.config(state=DISABLED)
+		self.mEntry = Entry(self.mdy_continaer, relief=FLAT, width=4, justify=CENTER)
+		self.dEntry = Entry(self.mdy_continaer, relief=FLAT, width=4, justify=CENTER)
+		self.yEntry = Entry(self.mdy_continaer, relief=FLAT, width=7, justify=CENTER)
 
-		self.widget_frame.grid(row=self.row, column=self.column, stick=E+W, pady=(1, 0))
-		self.label.pack(side=LEFT)
-		self.mdy_frame.pack(padx=1, pady=1, fill=X, side=LEFT)
-		self.mdy_container.pack(side=LEFT)
-		self.mEntry.pack(side=LEFT, padx=(1, 0), pady=1)
-		self.dLabel.pack(side=LEFT)
-		self.dEntry.pack(side=LEFT)
-		self.yLable.pack(side=LEFT)
-		self.yEntry.pack(side=LEFT, padx=(0, 1))
+		self.mdy_frame.pack(padx=1, pady=1, fill=X)
+		self.mdy_continaer.pack()
+		self.selfframe.grid(row=self.row, column=self.column+1, stick=E+W)
+
+		self.label.grid(row=self.row, column=self.column)
+		self.dLabel.grid(row=1, column=2)
+		self.yLable.grid(row=1, column=4)
+
+		self.mEntry.grid(row=1, column=1, padx=(1, 0))
+		self.dEntry.grid(row=1, column=3)
+		self.yEntry.grid(row=1, column=5, padx=(0, 1))
 
 		self.bind()
 

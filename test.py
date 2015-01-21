@@ -52,5 +52,7 @@ b2.config(command=move_down)
 
 
 
+for i in range(1, 4):
+	print(i)
 
-#t.mainloop()
+t.mainloop()

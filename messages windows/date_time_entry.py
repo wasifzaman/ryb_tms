@@ -78,7 +78,7 @@ def date_time_entry(lang):
 	return_button.selfframe.grid(columnspan=6, pady=(20, 0))
 	cancel_button.selfframe.grid(columnspan=6)
 	date_input.label.config(width=11)
-	date_input.widget_frame.grid(columnspan=7, pady=15)
+	date_input.selfframe.grid(columnspan=7, pady=15)
 
 	return_button.config(cmd=return_)
 	cancel_button.config(cmd=confirm_time.root.destroy)

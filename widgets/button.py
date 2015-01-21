@@ -19,12 +19,21 @@ class Buttonbox(Textbox):
 
 	def config(self, **kwargs):
 		if 'lang' in kwargs:
-			pass
+			return
 			self.lang = kwargs['lang']
 			self.label.config(text=self.lang[self.text])
 		if 'cmd' in kwargs:
-			self.command = kwargs['cmd']
-			self.label.bind('<Button-1>', lambda event: self.command())
+			self.cmd = kwargs['cmd']
+			self.args = inspect.getargspec(kwargs['cmd']).args
+			if len(self.args) > 0 and self.args[0] != 'self':
+				self.label.bind('<ButtonRelease-1>', self.cmd)
+				self.label.bind('<Button-1>', self.label.config(bg='#195CBF'))
+				self.label.bind('<space>', self.cmd)
+			else:
+				self.label.bind('<ButtonRelease-1>', lambda e: self.cmd())
+				self.label.bind('<space>', lambda e: self.cmd())
+			if hasattr(self, 'timeslot_'):
+				self.timeslot_.bind('<ButtonRelease-1>', self.cmd)
 		if 'width' in kwargs:
 			self.width = kwargs['width']
 			self.label.config(width=self.width)
