@@ -31,6 +31,7 @@ def main(t, lang, d):
 
 	w.frames["Second Frame"].rowconfigure(0, weight=5, minsize=350)
 	w.frames["Second Frame"].columnconfigure(0, weight=5, minsize=630)
+	w.frames["Second Frame"].config(bg='red')
 
 	w.frames["Fifth Frame"].grid(columnspan=3)
 

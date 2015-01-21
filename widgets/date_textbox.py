@@ -27,7 +27,7 @@ class Datebox(IntTextbox):
 		self.selfframe = Frame(self.parent, bg='black')
 		self.mdy_frame = Frame(self.selfframe, relief=FLAT, bg='white')
 		self.mdy_continaer = Frame(self.mdy_frame, relief=FLAT, bg='white')
-		self.label = Label(self.parent, text=self.text, width=12, anchor=W)
+		self.label = Label(self.parent, text=self.text, width=15, anchor=E)
 		self.dLabel = Label(self.mdy_continaer, text='/', bg='white')
 		self.yLable = Label(self.mdy_continaer, text='/', bg='white')
 

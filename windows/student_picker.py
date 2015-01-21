@@ -10,7 +10,7 @@ from languages import *
 
 language = languages["english"]
 
-stable = Table(repr='stable', edit=False, dimension=(0, 0, 100, 100))
+stable = Table(repr='stable', edit=False)
 portr = Photo(repr='portr', path='monet_sm.jpg')
 stableh = [language['Barcode'], language['First Name'], \
 	language['Last Name'], language['Chinese Name'], language['Date of Birth']]

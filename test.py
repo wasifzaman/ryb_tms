@@ -17,10 +17,8 @@ b2.pack()
 b.pack()
 '''
 
-tup = (0, 0, 5, 5)
 f = Frame(t)
 c = Canvas(f, bg='red', width=30, height=300)
-c.config(scrollregion=(0, 0, 0, 0))
 f2 = Frame(c)
 yscroll = Scrollbar(f, orient="vertical", command=c.yview)
 b1 = Button(f, text='Up')
@@ -48,8 +46,6 @@ def move_down():
 
 b1.config(command=move_up)
 b2.config(command=move_down)
-
-
 
 
 for i in range(1, 4):
