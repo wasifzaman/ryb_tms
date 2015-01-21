@@ -86,8 +86,6 @@ class AppWindow(Frame):
 class Window(Tk):
 
 	def __init__(self, top=False, *args, **kwargs):
-		#if top, Toplevel
-		#else: Tk
 		if top: Toplevel.__init__(self, *args, **kwargs)
 		else: Tk.__init__(self, *args, **kwargs)
 

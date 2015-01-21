@@ -35,7 +35,8 @@ from dataHandler import *
 from photoWidget2 import *
 from preBuilts2 import *
 from languages import *
-
+from translations import english_to_chinese, chinese_to_english
+from translate_ import translate
 
 def main():
 
@@ -64,7 +65,7 @@ def main():
 		print(f.__doc__)
 		if (f.__doc__) == 'addS3':
 			main_window_.con = True
-			window_.main_window_ = f(window_.frames["Second Frame"], window_.lang, window_.d, return_to_main)
+			window_.main_window_ = f(window_.frames["Second Frame"], english_to_chinese, window_.d, return_to_main)
 		elif (f.__doc__) == 'tools2':
 			if window_.k.files['resetpw'] == True:
 				new_pw = password_prompt(window_.lang, window_.k.files['dbpw'])
@@ -162,17 +163,17 @@ def main():
 	window_.frames['Second Frame'].grid_forget()
 	window_.frames['Third Frame'].grid_forget()
 
-	bchoose_school = Buttonbox(text='Choose School', lang=window_.lang, repr='bcschool')
-	bsadd = Buttonbox(text='Add Students', lang=window_.lang, repr='bsadd') #Add Student
-	bsscan = Buttonbox(text='Scan Students', lang=window_.lang, repr='bsscan') #Scan Student
-	bsscan2 = Buttonbox(text='Scan Out Teacher', lang=window_.lang, repr='bsscan2') #Scan Student
-	bssdb = Buttonbox(text='Student Database', lang=window_.lang, repr='bssdb') #Student Database
+	bchoose_school = Buttonbox(text='Choose school', lang=window_.lang, repr='bcschool')
+	bsadd = Buttonbox(text='Add Teacher', lang=window_.lang, repr='bsadd') #Add Student
+	bsscan = Buttonbox(text='Check-in teacher', lang=window_.lang, repr='bsscan') #Scan Student
+	bsscan2 = Buttonbox(text='Check-out teacher', lang=window_.lang, repr='bsscan2') #Scan Student
+	bssdb = Buttonbox(text='Teacher database', lang=window_.lang, repr='bssdb') #Student Database
 	bstools = Buttonbox(text='Tools', lang=window_.lang, repr='bstools') #Database Management
-	bsbmm = Buttonbox(text='Back to Main Menu', lang=window_.lang, repr='bsbmm') #Return to Main Menu
+	bsbmm = Buttonbox(text='Back to main menu', lang=window_.lang, repr='bsbmm') #Return to Main Menu
 	bsexit = Buttonbox(text='Exit', lang=window_.lang, repr='bsexit') #Exit
 	bclang = Buttonbox(text='changelanguage', lang=window_.lang, repr='bclang') #Change Language
-	bprint = Buttonbox(text='print report', lang=window_.lang, repr='bprint') #Print end of day report
-	bexp = Buttonbox(text='expxls', lang=window_.lang, repr='bexp')
+	bprint = Buttonbox(text='Print report', lang=window_.lang, repr='bprint') #Print end of day report
+	bexp = Buttonbox(text='Export database', lang=window_.lang, repr='bexp')
 
 	window_.p = Photo(repr='splash', path=os.path.abspath(images + 'background_IMG.jpg'))
 
@@ -195,7 +196,7 @@ def main():
 	bclang = Buttonbox(text='changelanguage_alt', lang=window_.lang, repr='bclang') #Change Language
 	dock_frame.addWidget(bclang, (0, 0))
 	window_.frames["First Frame"].grid(sticky=N+W)
-	bclang.button.config(width=3)
+	bclang.label.config(width=3)
 	#'''
 	
 	bsadd.config(cmd=lambda: showWindow(addS3.main))
@@ -219,52 +220,54 @@ def main():
 	bsbmm.idlebg = window_.mmbuttoncol
 	bsbmm.fg = window_.mmbuttonfg
 	bsbmm.hoverfg = 'white'
-	bsbmm.button.config(bg=bsbmm.idlebg, fg=bsbmm.fg)
+	bsbmm.label.config(bg=bsbmm.idlebg, fg=bsbmm.fg)
 
 	bsadd.idlebg = window_.mmbuttoncol
 	bsadd.fg = window_.mmbuttonfg
 	bsadd.hoverfg = 'white'
-	bsadd.button.config(bg=bsadd.idlebg, fg=bsadd.fg)
+	bsadd.label.config(bg=bsadd.idlebg, fg=bsadd.fg)
 
 	bsscan.idlebg = window_.mmbuttoncol
 	bsscan.fg = window_.mmbuttonfg
 	bsscan.hoverfg = 'white'
-	bsscan.button.config(bg=bsscan.idlebg, fg=bsscan.fg)
+	bsscan.label.config(bg=bsscan.idlebg, fg=bsscan.fg)
 
 	bsscan2.idlebg = window_.mmbuttoncol
 	bsscan2.fg = window_.mmbuttonfg
 	bsscan2.hoverfg = 'white'
-	bsscan2.button.config(bg=bsscan2.idlebg, fg=bsscan2.fg)
+	bsscan2.label.config(bg=bsscan2.idlebg, fg=bsscan2.fg)
 
 	bssdb.idlebg = window_.mmbuttoncol
 	bssdb.fg = window_.mmbuttonfg
 	bssdb.hoverfg = 'white'
-	bssdb.button.config(bg=bssdb.idlebg, fg=bssdb.fg)
+	bssdb.label.config(bg=bssdb.idlebg, fg=bssdb.fg)
 
 	bclang.idlebg = window_.mmbuttoncol
 	bclang.fg = window_.mmbuttonfg
 	bclang.hoverfg = 'white'
-	bclang.button.config(bg=bclang.idlebg, fg=bclang.fg)
+	bclang.label.config(bg=bclang.idlebg, fg=bclang.fg)
 
 	bsexit.idlebg = window_.mmbuttoncol
 	bsexit.fg = window_.mmbuttonfg
 	bsexit.hoverfg = 'white'
-	bsexit.button.config(bg=bsexit.idlebg, fg=bsexit.fg)
+	bsexit.label.config(bg=bsexit.idlebg, fg=bsexit.fg)
 
 	bprint.idlebg = window_.mmbuttoncol
 	bprint.fg = window_.mmbuttonfg
 	bprint.hoverfg = 'white'
-	bprint.button.config(bg=bprint.idlebg, fg=bprint.fg)
+	bprint.label.config(bg=bprint.idlebg, fg=bprint.fg)
 
 	bstools.idlebg = window_.mmbuttoncol
 	bstools.fg = window_.mmbuttonfg
 	bstools.hoverfg = 'white'
-	bstools.button.config(bg=bstools.idlebg, fg=bstools.fg)
+	bstools.label.config(bg=bstools.idlebg, fg=bstools.fg)
 
 	bexp.idlebg = window_.mmbuttoncol
 	bexp.fg = window_.mmbuttonfg
 	bexp.hoverfg = 'white'
-	bexp.button.config(bg=bexp.idlebg, fg=bexp.fg)
+	bexp.label.config(bg=bexp.idlebg, fg=bexp.fg)
+
+	translate(window_, english_to_chinese)
 
 	main_window_.iconbitmap(os.path.abspath(images + 'RYB_Attendance.ico'))
 	main_window_.mainloop()

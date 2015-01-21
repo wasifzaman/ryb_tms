@@ -14,6 +14,7 @@ class Labelbox(Textbox):
 			self.text=kwargs['text']
 			self.label.config(text=self.text)
 		if 'lang' in kwargs:
+			return
 			self.lang = kwargs['lang']
 			self.label.config(text=self.lang[self.text])
 
@@ -25,7 +26,7 @@ class Labelbox(Textbox):
 		self.row = kwargs['row']
 		self.column = kwargs['column']
 
-		self.label = Label(self.parent, text=self.lang[self.text])
+		self.label = Label(self.parent, text=self.text)
 		self.label.grid(row=self.row, column=self.column)
 
 		if self.bold:
