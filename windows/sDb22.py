@@ -5,15 +5,12 @@ from preBuilts2 import *
 
 
 def main(t, lang, d):
-
-#
 	d.loadData()
 
 	w = AppWindow(t)
 
 	w.lang = lang
 
-#sT
 	w.sT = Table(repr='stable', edit=False)
 	stableh = [w.lang['Barcode'], w.lang['First Name'], \
 				w.lang['Last Name'], w.lang['Chinese Name'], w.lang['Date of Birth']]
@@ -26,19 +23,18 @@ def main(t, lang, d):
 			if pos[0] == 0: continue
 			cell.config(bind=('<Double-Button-1>', lambda event, pos=pos: fsb(pos)))
 
-#frame initialization
 	w.newFrame("First Frame", (1, 0))
 	w.newFrame("Second Frame", (2, 0))
 	w.newFrame("Third Frame", (2, 1))
 	w.newFrame("Fourth Frame", (4, 1))
 	w.newFrame("Fifth Frame", (3, 0))
 
-	w.frames["Second Frame"].rowconfigure(0, weight=5, minsize=470)
+	w.frames["Second Frame"].rowconfigure(0, weight=5, minsize=350)
 	w.frames["Second Frame"].columnconfigure(0, weight=5, minsize=630)
+	w.frames["Second Frame"].config(bg='red')
 
 	w.frames["Fifth Frame"].grid(columnspan=3)
 
-#widget for scan
 	w.sby = Picker(repr='sby', text=w.lang['Search By'], rads=[(w.lang['Barcode'], 'bCode'), \
 		(w.lang['First Name'], 'firstName'), \
 		(w.lang['Last Name'], 'lastName'), \
@@ -47,7 +43,6 @@ def main(t, lang, d):
 	w.frames["First Frame"].addWidget(w.sby, (0, 0))
 	w.frames["First Frame"].addWidget(bsearch, (1, 0))
 	
-#buttons for scrolling db
 	fward = Buttonbox(text='>> Next 30 >>', lang=w.lang, repr='>>')
 	bward = Buttonbox(text='<< Previous 30 <<', lang=w.lang, repr='<<')
 	blast = Buttonbox(text='>>> Last Page >>>', lang=w.lang, repr='>>>')
@@ -64,7 +59,6 @@ def main(t, lang, d):
 	blast.selfframe.grid(padx=2)
 
 	w.frames["Second Frame"].addWidget(w.sT, (2, 0))
-	w.sT.canvas.config(width=700, height=480)
 
 	sL = [[]]
 	for s in d.studentList.values():
@@ -75,11 +69,11 @@ def main(t, lang, d):
 
 #create pages
 	#print(len(sL[0]))
-	if len(sL[0]) > 30:
+	if len(sL[0]) > 15:
 		l = []
 		for s in sL[0]:
 			l.append(s)
-			if len(l) >= 30:
+			if len(l) >= 15:
 				sL.append(l)
 				l = []
 		sL.append(l)
@@ -91,13 +85,9 @@ def main(t, lang, d):
 
 		
 	def toPage(p):
-		#temp workaround while table is fixed
-		for child in w.frames["Second Frame"].winfo_children():
-			child.destroy()
-
 		w.frames["Second Frame"].addWidget(w.sT, (2, 0))
 		w.sT.setData(headers=stableh, data=sL[p])
-		w.sT.canvas.config(width=700, height=450)
+		w.sT.canvas.config(width=700, height=350)
 		w.sT.set_width(2, 5, 14)
 		sTbind(lambda i: editS2.main(w.lang, d, top=True, i=i))
 
@@ -115,7 +105,7 @@ def main(t, lang, d):
 		w.pNum = len(sL) - 1
 		toPage(w.pNum)	
 
-	if len(sL[0]) > 30:
+	if len(sL[0]) > 15:
 		toPage(1)
 		fward.config(cmd=f)
 		bward.config(cmd=b)
@@ -169,6 +159,3 @@ def main(t, lang, d):
 
 	bsearch.button.config(width=20)
 	bsearch.config(cmd=s)
-
-	#button for scan
-	#Button(w.frames["First Frame"], text="try", command=s).grid()

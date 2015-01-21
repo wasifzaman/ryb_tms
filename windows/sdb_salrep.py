@@ -19,26 +19,16 @@ def main(t, lang, database, markerfile):
 	w.lang = lang
 
 #sT
-	w.sT = Table(repr='stable', edit=False)
-	stableh = [w.lang['Barcode'], w.lang['First Name'], \
-	w.lang['Last Name'], w.lang['Chinese Name'], w.lang['Date of Birth']]
-	w.sT.build(headers=stableh, data=[[]])
+	teacher_table = Table(repr='stable', edit=False)
+	teacher_table_headers = [lang[text] for text in ['Barcode', 'First Name', 'Last Name', 'Chinese Name', 'Date of Birth']]
 
 	def sTbind(func_pass):
 		def fsb(p):
-			i = w.sT.data[p[0]-1][0]
-			#try:
+			i = teacher_table.data[p[0]-1][0]
 			func_pass(i)
-			#except:
-			#	pass
-				#print(w.sT.data[p[0]-1][0])
-
-		#try:
-		for pos, cell in w.sT.cells.items():
+		for pos, cell in teacher_table.cells.items():
+			if pos[0] == 0: continue
 			cell.config(bind=('<Double-Button-1>', lambda event, pos=pos: fsb(pos)))
-		#except:
-		#	pass
-			#print("cells could not be bound")
 
 #frame initialization
 	w.newFrame("First Frame", (1, 0))
@@ -79,8 +69,8 @@ def main(t, lang, database, markerfile):
 	bward.selfframe.grid(padx=2)
 	blast.selfframe.grid(padx=2)
 
-	w.frames["Second Frame"].addWidget(w.sT, (2, 0))
-	w.sT.canvas.config(width=700, height=480)
+	w.frames["Second Frame"].addWidget(teacher_table, (2, 0))
+	teacher_table.canvas.config(width=700, height=480)
 
 	#sby.rads=[('Barcode', 'bCode'), ('First Name', 'firstName'), \
 	#	('Last Name', 'lastName'), ('Chinese Name', 'chineseName'), \
@@ -115,9 +105,12 @@ def main(t, lang, database, markerfile):
 		for child in w.frames["Second Frame"].winfo_children():
 			child.destroy()
 
-		w.sT.build(headers=stableh, data=sL[p])
-		w.frames["Second Frame"].addWidget(w.sT, (2, 0))
-		w.sT.canvas.config(width=700, height=450)
+		w.frames["Second Frame"].addWidget(teacher_table, (2, 0))
+		teacher_table.canvas.config(width=700, height=450)
+		teacher_table.setData(
+			headers=teacher_table_headers,
+			data=sL[p])
+
 		sTbind(lambda i: edit_salary.main(w.lang, database=database, markerfile=markerfile, top=True, i=i))
 
 	def f():
