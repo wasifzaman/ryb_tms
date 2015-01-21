@@ -17,7 +17,7 @@ from multiline_textbox import LongTextbox
 from master_list import *
 
 
-def main(parent_frame, lang, database, require_confirm, return_to_main):
+def main(parent_frame, lang, database, return_to_main):
 	'''addS3'''
 
 	window_ = AppWindow(parent_frame)
@@ -30,9 +30,9 @@ def main(parent_frame, lang, database, require_confirm, return_to_main):
 	window_.newFrame("Button Frame", (2, 0))
 
 	window_.frames["Image Frame"].grid(sticky=NW)
-	window_.frames["Button Frame"].grid(columnspan=2)
 	#window_.frames["Notes Frame"].grid(rowspan=3)
 	#window_.frames["Notes Frame"].grid(rowspan=2, sticky=E)
+	window_.frames["Button Frame"].grid(columnspan=2)
 
 
 	''' widgets '''
@@ -65,13 +65,13 @@ def main(parent_frame, lang, database, require_confirm, return_to_main):
 	window_.frames["General Info Frame"].addWidget(barcode, (5, 0))
 	window_.frames["General Info Frame"].addWidget(card_print_status, (6, 0)) #card printed
 	window_.frames["Contact Frame"].addWidget(address_header, (0, 0))
-	window_.frames["Contact Frame"].addWidget(address, (1, 0))
-	window_.frames["Contact Frame"].addWidget(city, (2, 0))
-	window_.frames["Contact Frame"].addWidget(state, (3, 0))
-	window_.frames["Contact Frame"].addWidget(zipcode, (4, 0))
-	window_.frames["Contact Frame"].addWidget(email, (5, 0))
-	window_.frames["Contact Frame"].addWidget(cell_phone, (6, 0))
-	window_.frames["Contact Frame"].addWidget(cell_phone_2, (7, 0))
+	window_.frames["Contact Frame"].addWidget(address, (3, 0))
+	window_.frames["Contact Frame"].addWidget(city, (4, 0))
+	window_.frames["Contact Frame"].addWidget(state, (5, 0))
+	window_.frames["Contact Frame"].addWidget(zipcode, (6, 0))
+	window_.frames["Contact Frame"].addWidget(email, (7, 0))
+	window_.frames["Contact Frame"].addWidget(cell_phone, (8, 0))
+	window_.frames["Contact Frame"].addWidget(cell_phone_2, (9, 0))
 	window_.frames["Image Frame"].addWidget(portrait, (0, 0))
 	window_.frames["Notes Frame"].addWidget(notes_header, (0, 0))
 	window_.frames["Notes Frame"].addWidget(notes, (1, 0))
@@ -93,27 +93,31 @@ def main(parent_frame, lang, database, require_confirm, return_to_main):
 	notes_header.widget_frame.grid(columnspan=2, sticky=EW)
 	notes_header.config(bg=header_color, fg='white')
 	notes_header.label.pack(side=LEFT)
-	add_student_button.label.config(height=5, font=('Verdana', '12'))
-	notes.label.pack_forget()
-	notes.config(height=8, width=30)
-	portrait.label.config(bg='#73C1DE')
 
 
 	def collect():
-		if not confirm_teacher_addition(window_.lang):
-			return
-
 		new_student = StudentInfo()
-		new_student.datapoints.update(window_.collect(new_student.datapoints).items())
+		new_student.datapoints = dict(list(new_student.datapoints.items()) + list(window_.collect(new_student.datapoints).items()))
+
+		new_student_id = new_student.datapoints['bCode']
+		if (database.checkCode(new_student_id) and \
+			(not confirm_overwrite_teacher(database.studentList[new_student_id].datapoints['firstName'], window_.lang))) \
+			or not confirm_teacher_addition(window_.lang):
+			return
  
+		new_student.datapoints['attinfo'] = [['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time', 'School'], []]
 		database.addStudent(new_student.datapoints['bCode'], new_student)
 		database.saveData()
 
 		teacher_added(window_.lang)
 
-		require_confirm[0] = False
-		return_to_main()
+		return_to_main(False)
 
+	add_student_button.label.config(height=5, font=('Verdana', '12'))
+	notes.label.pack_forget()
+	notes.config(height=8, width=30)
+	portrait.label.config(bg='#73C1DE')
+	add_student_button.config(cmd=collect)
 
 	'''
 	** alternating textbox colors **
@@ -130,5 +134,4 @@ def main(parent_frame, lang, database, require_confirm, return_to_main):
 
 	database.loadData()
 	barcode.setData(database.formatCode())
-	add_student_button.config(cmd=collect)
 	#translate(window_, lang)

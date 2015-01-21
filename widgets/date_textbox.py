@@ -16,9 +16,8 @@ class Datebox(IntTextbox):
 			self.dEntry.config(textvariable=d)
 			self.yEntry.config(textvariable=y)
 		if 'lang' in kwargs:
-			pass
-			#self.lang = kwargs['lang']
-			#self.label.config(text=self.lang[self.text])
+			self.lang = kwargs['lang']
+			self.label.config(text=self.lang[self.text])
 		if 'bg' in kwargs:
 			self.widget_frame.config(bg=kwargs['bg'])
 			self.label.config(bg=kwargs['bg'])

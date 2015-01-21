@@ -20,8 +20,8 @@ class Buttonbox(Textbox):
 	def config(self, **kwargs):
 		if 'lang' in kwargs:
 			pass
-			#self.lang = kwargs['lang']
-			#self.label.config(text=self.lang[self.text])
+			self.lang = kwargs['lang']
+			self.label.config(text=self.lang[self.text])
 		if 'cmd' in kwargs:
 			self.command = kwargs['cmd']
 			self.label.bind('<Button-1>', lambda event: self.command())

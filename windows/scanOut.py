@@ -1,146 +1,171 @@
-import sys, os
-sys.path.append(os.path.abspath(os.pardir) + '\widgets')
-sys.path.append(os.path.abspath(os.pardir) + '\database')
-sys.path.append(os.path.abspath(os.pardir) + '\miscellaneous')
-sys.path.append(os.path.abspath(os.pardir) + '\messages windows')
+from uiHandler22 import *
+from dataHandler import *
+from preBuilts2 import *
 
-from uiHandler22 import AppWindow
 from master_list import *
 from student_picker import spicker
-from textbox import Textbox, TextboxNoEdit
-from button import Buttonbox
-from simple_label import Labelbox
-from date_textbox import Datebox
-from multiline_textbox import LongTextbox
-from toggle_option import Toggle_option
-from tableWidget2 import Table
 
 
-def main(parent_frame, lang, database):
+def main(t, lang, database):
+
 	database.loadData()
 
-	window_ = AppWindow(parent_frame)
+	window_ = AppWindow(t)
 
-	window_.lang = None
+	window_.lang = lang
 
-	window_.newFrame("Search Frame", (0, 0))
-	window_.newFrame("General Info Frame", (1, 0))
-	window_.newFrame("Notes Frame", (2, 0))
-	window_.newFrame("Button Frame", (3, 0))
-	window_.newFrame("Table Frame", (1, 1))
-
-	window_.frames["Search Frame"].grid(columnspan=2)
-	window_.frames["Button Frame"].grid(columnspan=2)
-	window_.frames["Table Frame"].grid(rowspan=2)
-
+#attendance table
 	attendance_table = Table(repr='attinfox', edit=True)
 	attendance_table_headers = ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time']
-	search_value = Textbox(text="Search", repr=None)
-	search_options = Toggle_option(
-		options=(('Barcode', 'bCode'),('First Name', 'firstName'), \
-		('Last Name', 'lastName'), ('Chinese Name', 'chineseName'), \
-		('Phone Number', 'phoneNumber')), repr=None)
-	general_header = Labelbox(text='General', lang=lang, repr='sinfo')
-	notes_header = Labelbox(text='Notes', lang=lang, repr='ninfo')
-	first_name = Textbox(text="First name", lang=lang, repr='firstName')
-	last_name = Textbox(text="Last name", lang=lang, repr='lastName')
-	chinese_name = Textbox(text="Chinese name", lang=lang, repr='chineseName')
-	date_of_birth = Datebox(text="Date of birth", lang=lang, repr='dob')
-	barcode = TextboxNoEdit(text="Barcode", lang=lang, repr='bCode')
-	notes = LongTextbox(text="Notes", lang=lang, repr='notes')
-	search_button = Buttonbox(text='Search', lang=window_.lang, repr='searchbutton')
-	save_button = Buttonbox(text='Save', lang=window_.lang, repr='save_button')
-	manual_entry_button = Buttonbox(text='Manual Entry', repr='manualentrybutton')
+	attendance_table.clast = '#FF99FF'
 
-	window_.frames["Search Frame"].addWidget(search_value, (0, 0))
-	window_.frames["Search Frame"].addWidget(search_options, (1, 0))
-	window_.frames["Search Frame"].addWidget(search_button, (0, 1))
-	window_.frames["General Info Frame"].addWidget(general_header, (0, 0))
-	window_.frames["General Info Frame"].addWidget(first_name, (1, 0))
-	window_.frames["General Info Frame"].addWidget(last_name, (2, 0))
-	window_.frames["General Info Frame"].addWidget(chinese_name, (3, 0))
-	window_.frames["General Info Frame"].addWidget(date_of_birth, (4, 0))
-	window_.frames["General Info Frame"].addWidget(barcode, (7, 0))
-	window_.frames["Notes Frame"].addWidget(notes_header, (8, 0))
-	window_.frames["Notes Frame"].addWidget(notes, (9, 0))
-	window_.frames["Table Frame"].addWidget(attendance_table, (0, 0))
-	window_.frames["Button Frame"].addWidget(save_button, (0, 0))
-	window_.frames["Button Frame"].addWidget(manual_entry_button, (0, 1))
-	#window_.frames["Fourth Frame"].addWidget(early_checkin, (0, 0))
+#frame initialization
+	window_.newFrame("First Frame", (1, 1))
+	window_.newFrame("Second Frame", (1, 2))
+	window_.newFrame("Third Frame", (2, 2))
+	window_.newFrame("Fourth Frame", (2, 1))
+	window_.newFrame("Fifth Frame", (5, 0))
+	window_.newFrame("Sixth Frame", (4, 2))
+	window_.newFrame("Seventh Frame", (1, 0))
+	window_.newFrame("Eigth Frame", (3, 1))
+	window_.newFrame("Ninth Frame", (3, 2))
+	window_.newFrame("Tenth Frame", (0, 1))
+	window_.newFrame("Eleventh Frame", (1, 3))
 
-	search_options.widget_frame.grid(columnspan=2)
-	notes.label.pack_forget()
-	notes.config(height=6, width=30)
-	search_options.config(width=15, inactive_bg='#AEE239', active_bg='#8FBE00')
+	window_.frames["Fifth Frame"].grid(columnspan=5, sticky=S)
+	window_.frames["Seventh Frame"].grid(rowspan=2)
+	window_.frames["Ninth Frame"].grid(rowspan=2, sticky=E)
+	window_.frames["Tenth Frame"].grid(columnspan=5)
+	window_.frames["Eleventh Frame"].grid(sticky=N)
+	window_.frames["Eigth Frame"].grid(sticky=S, rowspan=2)
+	window_.frames["Eleventh Frame"].columnconfigure(0, weight=5, minsize=420)
+	window_.frames["Eigth Frame"].rowconfigure(0, weight=5, minsize=20)
+
+	window_.portr = portr
+
+	window_.frames["Tenth Frame"].addWidget(sby, (0, 0))
+	window_.frames["First Frame"].addWidget(sinfo, (0, 0))
+	window_.frames["First Frame"].addWidget(firstName, (1, 0))
+	window_.frames["First Frame"].addWidget(lastName, (2, 0))
+	window_.frames["First Frame"].addWidget(chineseName, (3, 0))
+	window_.frames["First Frame"].addWidget(dob, (4, 0))
+	window_.frames["First Frame"].addWidget(bCodeNE, (7, 0))
+	window_.frames["First Frame"].addWidget(ninfo, (8, 0))
+	window_.frames["First Frame"].addWidget(notes, (9, 0))
+	window_.frames["Fourth Frame"].addWidget(early_checkin, (0, 0))
+	window_.frames["Third Frame"].addWidget(window_.portr, (0, 0))
+	window_.frames["Eleventh Frame"].addWidget(attendance_table, (0, 0))
+	window_.frames["Eleventh Frame"].grid(rowspan=4, sticky=W)
+
+#notes widget
+	ninfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
+	ninfo.label.grid(columnspan=2, sticky=E+W, pady=3)
+	notes.label.grid_forget()
+	notes.entry.grid(column=0, columnspan=2)
+	notes.config(height=6, width=32)
+	sinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'), text=window_.lang['Student information'])
+	sinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
+	window_.portr.hide()
+
 	attendance_table.canvas.config(width=695, height=300)
 
+	sby.rads=[('Barcode', 'bCode'), ('First Name', 'firstName'), \
+		('Last Name', 'lastName'), ('Chinese Name', 'chineseName'), \
+		('Phone Number', 'phoneNumber')]
+
+	window_.tdp = dict()
+
 	def search_student():
-		window_.student_id = search_value.getData()
+		window_.student_id = sby.getData()[1]
 
 		if len(window_.student_id) == 0: return
-		if search_options.stringvar.get() == 'bCode' and window_.student_id not in database.studentList:
+		if sby.getData()[0] == 'bCode' and window_.student_id not in database.studentList:
 			student_does_not_exist(window_.lang)
 			return
 
-		if search_options.stringvar.get() != 'bCode':
-			scan_type = search_options.stringvar.get()
-			scan_value = search_value.getData()
-			student_list = []
+		window_.tdp = dict()
 
-			for student in database.studentList:
-				matched_student_data_points = False
+		print(sby.getData())
+
+
+		if sby.getData()[0] != 'bCode':
+			scan_type = sby.getData()[0]
+			scan_value = sby.getData()[1]
+
+			sl = []
+
+			for s in database.studentList:
+				data_points = False
 				if scan_type == 'phoneNumber':
-					if database.studentList[student].datapoints['hPhone'] == scan_value or \
-						database.studentList[student].datapoints['cPhone'] == scan_value or \
-						database.studentList[student].datapoints['cPhone2'] == scan_value:
-						matched_student_data_points = database.studentList[student].datapoints
-				elif database.studentList[student].datapoints[scan_type] == scan_value:
-					matched_student_data_points = database.studentList[student].datapoints
-				
-				if matched_student_data_points:
-					student_list.append([
-						matched_student_data_points['bCode'],
-						matched_student_data_points['firstName'],
-						matched_student_data_points['lastName'],
-						matched_student_data_points['chineseName']])
+					if database.studentList[s].datapoints['hPhone'] == scan_value or \
+						database.studentList[s].datapoints['cPhone'] == scan_value or \
+						database.studentList[s].datapoints['cPhone2'] == scan_value:
+						data_points = database.studentList[s].datapoints
 
-			if len(student_list) == 0:
+				elif database.studentList[s].datapoints[scan_type] == scan_value:
+					data_points = database.studentList[s].datapoints
+				
+				if data_points:
+					sl.append([data_points['bCode'], data_points['firstName'], data_points['lastName'], data_points['chineseName']])
+
+
+			if len(sl) == 0:
 				student_does_not_exist(window_.lang)
 				return
 
-			if len(student_list) > 1:
-				student_list.sort()
-				window_.student_id = spicker(student_list)
+			window_.student_id = sl[0][0]
+			if len(sl) > 1:
+				sl.sort()
+				window_.student_id = spicker(sl)
 				if not window_.student_id: return
-			else:
-				window_.student_id = student_list[0][0]
 
-		search_value.entry.delete(0, END) #reset search
+		#reset portrait
+		window_.portr.setData('monet_sm.jpg')
+		portr2.setData('monet_sm.jpg')
+
+		#temp workaround while table is fixed
+		for child in window_.frames["Eleventh Frame"].winfo_children():
+			child.destroy()
+
+		window_.frames["Eleventh Frame"].addWidget(attendance_table, (0, 0))
+		window_.frames["Eleventh Frame"].grid(rowspan=4, sticky=W)
+
+		attendance_table.editwidget=False
+		attendance_table.canvas.config(width=695, height=300)
 
 		data_points = database.studentList[window_.student_id].datapoints
+
 		window_.populate(data_points)
-		window_.original_data_points = window_.collect(database.studentList[window_.student_id].datapoints)
+		#w2.populate(data_points)
+
+		for cell_id, cell_val in attendance_table.cells.items():
+			if cell_id[0] == 0:
+				cur_text = cell_val.label.cget('text')
+				cell_val.label.config(text=lang[cur_text])
+
+		window_.tdp = dict(window_.collect(database.studentList[window_.student_id].datapoints))
+		sby.entry.delete(0, END)
 
 		dt = datetime.now()
 		date = datetime.strftime(dt, '%m/%d/%Y')
 		time = datetime.strftime(dt, '%I:%M %p')
-		timelot = database.findTimeSlot(dt)
+		timeslot = database.findTimeSlot(dt)
 		overwrite = False
 		data = False
 		for row in data_points['attinfo'][1]:
 			if row[0] == date:
 				data = row
-				break
+				#break
 
 		if not data:
 			no_checkin_today(window_.lang)
-			search_options.config(set_=0) #reset search bar
+			sby.b.set(sby.rads[0][1]) #reset search bar
 			return
 		if len(data[4]) != 0:
 			if confirm_overwrite_checkout(window_.lang):
 				overwrite = True
 			else:
-				search_options.config(set_=0) #reset search bar
+				sby.b.set(sby.rads[0][1]) #reset search bar
 				return
 
 		confirm_status = confirm_check_out_time(window_.lang, database)
@@ -152,14 +177,14 @@ def main(parent_frame, lang, database):
 			data[4] = time_
 		elif confirm_status:
 			data[3] = time
-			data[4] = timelot
+			data[4] = timeslot
 		else:
-			search_options.config(set_=0) #reset search bar
+			sby.b.set(sby.rads[0][1]) #reset search bar
 			return
 
 		if datetime.strptime(date + ' ' + data[4], '%m/%d/%Y %I:%M %p') < datetime.strptime(date + ' ' + data[2], '%m/%d/%Y %I:%M %p'):
 			checkout_earlier_checkin(window_.lang)
-			search_options.config(set_=0) #reset search bar
+			sby.b.set(sby.rads[0][1]) #reset search bar
 			data[3] = ''
 			data[4] = ''
 			return
@@ -168,10 +193,11 @@ def main(parent_frame, lang, database):
 		attendance_table.setData(
 			headers=attendance_table_headers,
 			data=[data[:5]]) #display entry being scanned out
-		search_options.config(set_=0) #reset search bar
+		sby.b.set(sby.rads[0][1]) #reset search bar
 		attendance_table.canvas.yview_moveto(1.0)
 
 	def manual_scan():
+
 		print(bCodeNE.getData())
 		if (len(bCodeNE.getData())) == 0: return
 
@@ -197,25 +223,69 @@ def main(parent_frame, lang, database):
 					attendance_table.setData(
 						headers=attendance_table_headers,
 						data=[data_points['attinfo'][0], [[date, row[1], row[2], row[3], row[4], row[5]]]])
+				return
 
 		entry_not_found(window_.lang, date)
 
+	window_.frames["Tenth Frame"].widgets['sby'].entry.bind("<Return>", lambda x: search_student())
+
+	window_.frames["Tenth Frame"].addWidget(bsearch, (1, 0))
+	bsearch.label.config(width=20)
+	bsearch.config(cmd=search_student)
+
+#collect and check in button
 	def collect():
-		if not altered(): return
-		if not confirm_save_teacher_data(window_.lang): return
-		student = database.studentList[window_.student_id]
-		student.datapoints.update(window_.collect(student.datapoints))
-		window_.original_data_points = window_.collect(student.datapoints)
-		database.saveData()
-		
-	def altered():
-		current_data_points = window_.collect(window_.original_data_points)
-		for key in current_data_points.keys():
-			if current_data_points[key] != window_.original_data_points[key]:
+		try:
+			if not changed(): return
+			s = database.studentList[window_.student_id]
+			if not confirm_save_teacher_data(window_.lang): return
+			s.datapoints = dict(list(s.datapoints.items()) + list(window_.collect(s.datapoints).items()))
+			database.saveData()
+		except:
+			return
+
+	def changed():
+		s = database.studentList[window_.student_id]
+		ctdp = dict(window_.collect(s.datapoints))
+		for key in window_.tdp.keys():
+			if ctdp[key] != window_.tdp[key]:
 				return True
 		return False
 
-	search_button.config(cmd=search_student)
+	sstudent = Buttonbox(text='savestudent', lang=window_.lang, repr='sstudent')
+	window_.frames["Fifth Frame"].addWidget(sstudent, (0, 0))
+	sstudent.config(cmd=collect)
+	sstudent.selfframe.grid(padx=5)
+
+	manual_entry_button = Buttonbox(text='Manual Entry', lang=language, repr='manualentrybutton')
+	window_.frames["Fifth Frame"].addWidget(manual_entry_button, (0, 1))
 	manual_entry_button.config(cmd=lambda: manual_scan())
-	search_value.entry.bind("<Return>", lambda x: search_student())
-	save_button.config(cmd=collect)
+
+	firstName2 = Textbox(text="First Name", lang=language, repr='firstName')
+	lastName2 = Textbox(text="Last Name", lang=language, repr='lastName')
+	#chineseName2 = Textbox(text="Chinese Name", lang=language, repr='chineseName')
+	bCode2 = TextboxNoEdit(text="Barcode", lang=language, repr='bCode')
+	#sid2 = IntTextbox(text="Old Student ID", lang=language, repr='sid')
+	dob2 = Datebox(text="Date of Birth", lang=language, repr='dob')
+	portr2 = Photo(repr='portr', path='monet_sm.jpg')
+
+#special
+	'''
+	#w2.spec2 = Labelbox(text='spec', lang=window_.lang, repr='spec')
+	#w2.frames["Second Frame"].addWidget(#w2.spec2, (4, 0))
+	#w2.spec2.label.config(font=('Verdana', 15), wraplength=200, justify=LEFT)
+	#w2.spec2.label.grid(columnspan=2, sticky=N)
+	'''
+
+#basic info widgets
+	#w2.frames["Second Frame"].addWidget(sinfo, (0, 0))
+	sinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
+	sinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
+
+	attendance_table.canvas.config(width=695, height=300)
+
+#set starting lang
+	for frame in window_.frames.values():
+		for widget in frame.widgets.values():
+			if hasattr(widget, 'config'):
+				widget.config(lang=window_.lang)

@@ -36,6 +36,7 @@ class Table:
 
 	def __init__(self, **kwargs):
 		self.repr = kwargs['repr']
+		self.editwidget = kwargs['edit']
 		self.cells = {}
 		self.data = {}
 		self.clast = False
@@ -55,20 +56,19 @@ class Table:
 
 	def set_width(self, start_column, end_column, width):
 		for column in range(start_column, end_column + 1):
-			row = 0 if not hasattr(self, 'headers') or len(self.data) == 0 else 1
-			self.cells[(row, column)].label.config(width=width)
+			row = 0 if not hasattr(self, 'headers') else 1
+			self.cells[(row, column)].label.config(width=width)		
 		
 	def place(self, **kwargs):
 		self.parent = kwargs['parent']
 		self.row = kwargs['row']
 		self.column = kwargs['column']
 
-		self.widget_frame = Frame(self.parent)
-		self.canvas = Canvas(self.widget_frame, bg='white')
+		self.canvas = Canvas(self.parent, bg='white')
 		self.table_frame = Frame(self.canvas, bg='black')
 
-		self.xscrollbar = Scrollbar(self.widget_frame, orient="horizontal", command=self.canvas.xview)
-		self.yscrollbar = Scrollbar(self.widget_frame, orient="vertical", command=self.canvas.yview)
+		self.xscrollbar = Scrollbar(self.parent, orient="horizontal", command=self.canvas.xview)
+		self.yscrollbar = Scrollbar(self.parent, orient="vertical", command=self.canvas.yview)
 		self.canvas.create_window((0,0), window=self.table_frame, anchor=NW, tags="table_frame")
 		
 		for cell_id, cell in self.cells.items():
@@ -78,12 +78,11 @@ class Table:
 			elif cell_id[1] == 0:
 				cell.label.grid(padx=1, pady=(0, 1))	
 
-		self.widget_frame.grid(row=0, column=0)
 		self.canvas.grid(row=0, column=0)
 		self.yscrollbar.grid(row=0, column=1, sticky=NS)
 		self.xscrollbar.grid(row=1, column=0, sticky=EW)
 		
-		self.widget_frame.bind("<Configure>", self.makeScroll)
+		self.parent.bind("<Configure>", self.makeScroll)
 
 		'''
 		** for custom scroll bar **

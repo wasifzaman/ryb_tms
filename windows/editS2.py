@@ -1,23 +1,12 @@
-import sys, os
-sys.path.append(os.path.abspath(os.pardir) + '\widgets')
-sys.path.append(os.path.abspath(os.pardir) + '\database')
-sys.path.append(os.path.abspath(os.pardir) + '\messages windows')
-
-from master_list import *
-from uiHandler22 import Window, AppWindow
-from textbox import Textbox, TextboxNoEdit, IntTextbox, MoneyTextbox
-from button import Buttonbox
-from simple_label import Labelbox
-from date_textbox import Datebox
-from photoWidget2 import Photo
-from multiline_textbox import LongTextbox
-from tableWidget2 import Table
+from uiHandler22 import *
+from dataHandler import *
+from preBuilts2 import *
 
 
-def main(lang, database, i=0):
+def main(lang, database, top=False, i=0):
 	database.loadData()
 
-	top_window_ = Window(top=True)
+	top_window_ = Window(top=top)
 	top_window_.attributes('-fullscreen', False)
 	top_window_.geometry('1280x740+1+1')
 	top_window_.resizable(0, 0)
@@ -34,70 +23,74 @@ def main(lang, database, i=0):
 	window_2.pack_forget()
 
 	window_1.lang = lang
+	window_1.s = i
 
-	window_1.newFrame("Image Frame", (0, 1))
-	window_1.newFrame("General Info Frame", (0, 0))
-	window_1.newFrame("Contact Frame", (1, 0))
-	window_1.newFrame("Notes Frame", (1, 1))
-	window_1.newFrame("Button Frame", (2, 0))
-	window_1.newFrame("Table Frame", (0, 2))
+	window_main.newFrame("Seventh Frame", (1, 0))
+	window_1.newFrame("First Frame", (1, 1))
+	window_1.newFrame("Second Frame", (1, 2))
+	window_1.newFrame("Third Frame", (2, 1))
+	window_1.newFrame("Fourth Frame", (2, 1))
+	window_1.newFrame("Fifth Frame", (5, 0))
+	window_1.newFrame("Sixth Frame", (4, 2))
+	window_1.newFrame("Eigth Frame", (3, 2))
+	window_1.newFrame("Ninth Frame", (3, 1))
+	window_1.newFrame("Tenth Frame", (0, 1))
+	window_1.newFrame("Twelfth Frame", (3, 0))
+	window_2.newFrame("table_frame", (0, 0))
 
-	window_1.frames["Image Frame"].grid(sticky=NW)
-	window_1.frames["Button Frame"].grid(columnspan=2)
-	window_1.frames["Table Frame"].grid(rowspan=2)
+	sstudent = Buttonbox(text='savestudent', lang=window_1.lang, repr='sstudent')
+	bclose = Buttonbox(text='close', lang=window_1.lang, repr='bclose')
+	window_1.bCode = TextboxNoEdit(text="Barcode", lang=language, repr='bCode')
+	window_1.attinfo = Table(repr='attinfox', edit=False)
+	#switch_frame_button = Buttonbox(text='Attendance Table', lang=window_1.lang, repr='showstudentinfo')
 	
-	general_header = Labelbox(text='General', lang=lang, repr='sinfo')
-	address_header = Labelbox(text="Address", lang=lang, repr='ainfo')
-	notes_header = Labelbox(text='Notes', lang=lang, repr='ninfo')
-	first_name = Textbox(text="First name", lang=lang, repr='firstName')
-	last_name = Textbox(text="Last name", lang=lang, repr='lastName')
-	chinese_name = Textbox(text="Chinese name", lang=lang, repr='chineseName')
-	date_of_birth = Datebox(text="Date of birth", lang=lang, repr='dob')
-	card_print_status = Textbox(text="Card printed", lang=lang, repr='cp')
-	barcode = TextboxNoEdit(text="Barcode", lang=lang, repr='bCode')
-	address = Textbox(text="Address", lang=lang, repr='addr')
-	city = Textbox(text="City", lang=lang, repr='city')
-	state = Textbox(text="State", lang=lang, repr='state')
-	email = Textbox(text="E-mail", lang=lang, repr='email')
-	cell_phone = Textbox(text="Cell phone", lang=lang, repr='cPhone')
-	cell_phone_2 = Textbox(text="Cell phone 2", lang=lang, repr='cPhone2')
-	zipcode = IntTextbox(text="Zipcode", lang=lang, repr='zip')
-	add_student_button = Buttonbox(text='Add Teacher', lang=lang, repr='sadd')
-	portrait = Photo(repr='portr', path=images + 'monet_sm.jpg')
-	notes = LongTextbox(text="Notes", lang=lang, repr='notes')
-	save_teacher_button = Buttonbox(text='Save', lang=window_1.lang, repr='save_teacher_button')
-	close_button = Buttonbox(text='Close', lang=window_1.lang, repr='close_button')
-	attendance_table = Table(repr='attinfox', edit=False)
-	attendance_table_headers = ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time']
-	#switch_frame_button = Buttonbox(text='Attendance', lang=window_1.lang, repr='showstudentinfo')
-	
-	window_1.frames["General Info Frame"].addWidget(general_header, (0, 0))
-	window_1.frames["General Info Frame"].addWidget(first_name, (1, 0))
-	window_1.frames["General Info Frame"].addWidget(last_name, (2, 0))
-	window_1.frames["General Info Frame"].addWidget(chinese_name, (3, 0))
-	window_1.frames["General Info Frame"].addWidget(date_of_birth, (4, 0))
-	window_1.frames["General Info Frame"].addWidget(barcode, (5, 0))
-	window_1.frames["General Info Frame"].addWidget(card_print_status, (6, 0))
-	window_1.frames["Contact Frame"].addWidget(address_header, (0, 0))
-	window_1.frames["Contact Frame"].addWidget(address, (1, 0))
-	window_1.frames["Contact Frame"].addWidget(city, (2, 0))
-	window_1.frames["Contact Frame"].addWidget(state, (3, 0))
-	window_1.frames["Contact Frame"].addWidget(zipcode, (4, 0))
-	window_1.frames["Contact Frame"].addWidget(email, (5, 0))
-	window_1.frames["Contact Frame"].addWidget(cell_phone, (6, 0))
-	window_1.frames["Contact Frame"].addWidget(cell_phone_2, (7, 0))
-	window_1.frames["Image Frame"].addWidget(portrait, (0, 0))
-	window_1.frames["Notes Frame"].addWidget(notes_header, (0, 0))
-	window_1.frames["Notes Frame"].addWidget(notes, (1, 0))
-	window_1.frames["Button Frame"].addWidget(save_teacher_button, (0, 0))
-	window_1.frames["Button Frame"].addWidget(close_button, (0, 1))	
-	#window_1.frames["Table Frame"].addWidget(attendance_table, (0, 0))
-	#window_1.frames["Fourth Frame"].addWidget(early_checkin, (0, 0))
-	#window_1.frames["Button Frame"].addWidget(switch_frame_button, (0, 2))
+	window_main.frames["Seventh Frame"].addWidget(portr, (0, 0))
+	window_1.frames["First Frame"].addWidget(sinfo, (0, 0))
+	window_1.frames["First Frame"].addWidget(firstName, (1, 0))
+	window_1.frames["First Frame"].addWidget(lastName, (2, 0))
+	window_1.frames["First Frame"].addWidget(chineseName, (3, 0))
+	window_1.frames["First Frame"].addWidget(dob, (4, 0))
+	window_1.frames["First Frame"].addWidget(cp, (5, 0))
+	window_1.frames["First Frame"].addWidget(notes, (8, 0))
+	window_1.frames["First Frame"].addWidget(ninfo, (7, 0))
+	window_1.frames["Fourth Frame"].addWidget(early_checkin, (0, 0))
+	window_1.frames["Fifth Frame"].grid(columnspan=5, sticky=S)
+	window_1.frames["Eigth Frame"].rowconfigure(0, weight=5, minsize=20)
+	window_1.frames["Ninth Frame"].grid(rowspan=2, sticky=E)
+	window_1.frames["Tenth Frame"].grid(columnspan=5)
+	window_1.frames["Eigth Frame"].grid(sticky=S, rowspan=2)
+	window_1.frames["Second Frame"].addWidget(ainfo, (0, 3))
+	window_1.frames["Second Frame"].addWidget(city, (1, 3))
+	window_1.frames["Second Frame"].addWidget(state, (2, 3))
+	window_1.frames["Second Frame"].addWidget(zip, (3, 3))
+	window_1.frames["Second Frame"].addWidget(email, (4, 3))
+	window_1.frames["Second Frame"].addWidget(cPhone, (5, 3))
+	window_1.frames["Second Frame"].addWidget(cPhone2, (6, 3))
+	window_1.frames["Second Frame"].addWidget(pinfo, (7, 3))
+	window_1.frames["Second Frame"].addWidget(bCode, (8, 3))
+	window_1.frames["Fifth Frame"].addWidget(sstudent, (0, 0))
+	window_1.frames["Fifth Frame"].addWidget(bclose, (0, 1))	
+	window_2.frames["table_frame"].addWidget(window_1.attinfo, (0, 0))
+	window_2.frames["table_frame"].grid(rowspan=3, sticky=W)
+	#window_main.frames["Seventh Frame"].addWidget(switch_frame_button, (2, 0))
 
-	notes.config(height=8, width=30)
-	notes.label.pack_forget()
-	#attendance_table.canvas.config(width=580, height=300)
+	sinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
+	sinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
+	ainfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
+	ainfo.label.grid(columnspan=2, sticky=E+W, pady=3)
+	pinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
+	pinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
+	ninfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
+	ninfo.label.grid(columnspan=2, sticky=E+W, pady=3)
+	notes.label.grid_forget()
+	notes.entry.grid(column=0, columnspan=2)
+	notes.config(height=8, width=32)
+	window_1.attinfo.config(lang=window_1.lang)
+	window_1.attinfo.canvas.config(width=720)
+	window_1.attinfo.editwidget = False
+	window_1.attinfo.clast = False
+	window_1.attinfo.canvas.config(width=700, height=520)
+	portr.setData('monet_sm.jpg')
 	#switch_frame_button.config(lang=window_1.lang)
 	#switch_frame_button.selfframe.grid_forget()
 
@@ -107,50 +100,55 @@ def main(lang, database, i=0):
 			window_1.pack_forget()
 			window_2.pack(side=LEFT)
 			top_window_.current_shown = 'window_2'
-			switch_frame_button.label.config(text='Teacher info')
+			switch_frame_button.label.config(text='Student Information')
 		elif top_window_.current_shown == 'window_2':
 			window_2.pack_forget()
 			window_1.pack(side=LEFT)
 			top_window_.current_shown = 'window_1'
-			switch_frame_button.label.config(text='Attendance')
+			switch_frame_button.label.config(text='Attendance Table')
 		return
 
-	data_points = database.studentList[i].datapoints
-	window_1.populate(data_points)
-	window_2.populate(data_points)
-	'''
-	attendance_table.setData(
-		headers=attendance_table_headers,
-		data=[row[:5] for row in data_points['attinfo'][1]])
-	'''
+	s = database.studentList[i]
+	window_1.populate(s.datapoints)
+	window_2.populate(s.datapoints)
+
+	tdp = dict(window_1.collect(s.datapoints))
 
 	def collect():
-		if not altered():
+		if not changed():
 			top_window_.destroy()
 			return
 		if not confirm_save_teacher_data(window_1.lang): return
 
-		data_points.update(window_1.collect(data_points))
-		database.studentList[i].datapoints = data_points
+		cbcode = bCode.getData()
+		if s.datapoints['bCode'] != cbcode:
+			if not confirm_overwrite_teacher(database.studentList[cbcode].datapoints['firstName'], window_1.lang):
+				return
+			else:
+				dbcode = s.datapoints['bCode']
+				database.studentList[cbcode] = s
+				del database.studentList[dbcode]
+
+		s.datapoints = dict(list(s.datapoints.items()) + list(window_1.collect(s.datapoints).items()))
 		database.saveData()
 		top_window_.destroy()
 
-	def altered():
-		current_data_points = window_1.collect(data_points)
-		for key in current_data_points.keys():
-			if current_data_points[key] != data_points[key]:
+	def changed():
+		ctdp = dict(window_1.collect(s.datapoints))
+		for key in tdp.keys():
+			if ctdp[key] != tdp[key]:
 				return True
 		return False
 
 	def quit():
-		if not altered():
+		if not changed():
 			top_window_.destroy()
-		elif confirm_return_without_saving(window_1.lang):
+		elif return_to_main_window(window_1.lang):
 			top_window_.destroy()
 	
-	save_teacher_button.config(cmd=collect)
-	save_teacher_button.selfframe.grid(padx=5)
-	close_button.config(cmd=quit)
+	sstudent.config(cmd=collect)
+	sstudent.selfframe.grid(padx=5)
+	bclose.config(cmd=quit)
 	#switch_frame_button.config(cmd=switch_frame)
 
 	for frame in window_1.frames.values():

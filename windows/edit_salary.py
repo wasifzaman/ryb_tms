@@ -1,21 +1,15 @@
 import sys, os
 sys.path.append(os.path.abspath(os.pardir) + '\database')
-sys.path.append(os.path.abspath(os.pardir) + '\widgets')
 sys.path.append(os.path.abspath(os.pardir) + '\miscellaneous')
-sys.path.append(os.path.abspath(os.pardir) + '\messages windows')
 
-from textbox import Textbox, TextboxNoEdit, IntTextbox, MoneyTextbox
-from button import Buttonbox
-from simple_label import Labelbox
-from date_textbox import Datebox
-from multiline_textbox import LongTextbox
-from tableWidget2 import Table
-from uiHandler22 import Window, AppWindow
-from master_list import *
+from uiHandler22 import *
+from dataHandler import *
+from preBuilts2 import *
 import print_reports
 
 
-def start_window(lang, database, student_id, markerfile=False):
+def main(lang, database, markerfile=False, i=0): #i is the id of the student passed in
+
 	database.loadData()
 
 	top_window_ = Window(top=True)
@@ -28,16 +22,20 @@ def start_window(lang, database, student_id, markerfile=False):
 
 	window_ = AppWindow(top_window_.mainFrame)
 	window_.lang = lang
+	window_.student_id = i
 	window_.picked = {}
 
 	marker = pickle.load(open(markerfile, "rb")) if markerfile else False
 
-	window_.newFrame("First Frame", (0, 0))
-	window_.newFrame("Button Frame", (1, 0))
-	window_.newFrame("Table Frame", (0, 1))
+	window_.newFrame("First Frame", (1, 0))
+	window_.newFrame("Ninth Frame", (2, 0)) #notes
+	window_.newFrame("Fifth Frame", (3, 0))
+	window_.newFrame("Eleventh Frame", (1, 2))
 
-	window_.frames["Table Frame"].grid(rowspan=2, sticky=N)
-	#window_.frames["Table Frame"].columnconfigure(0, weight=5, minsize=720)
+	window_.frames["Fifth Frame"].grid(sticky=S)
+	window_.frames["Ninth Frame"].grid(sticky=N+E)
+	window_.frames["Eleventh Frame"].grid(rowspan=2, sticky=N)
+	window_.frames["Eleventh Frame"].columnconfigure(0, weight=5, minsize=720)
 
 	today = TextboxNoEdit(text="today's date", lang=window_.lang, repr='today_date')
 	last_payment = TextboxNoEdit(text="last payment", lang=window_.lang, repr='last_pay_date')
@@ -49,8 +47,7 @@ def start_window(lang, database, student_id, markerfile=False):
 	max_hours = IntTextbox(text="max hours", lang=window_.lang, repr='max_hours')
 	b_print_to_file = Buttonbox(text='print to file', lang=window_.lang, repr='print_to_file')
 	close_button = Buttonbox(text='close', lang=window_.lang, repr='close_button')
-	notes_header = Labelbox(text='Notes', lang=None, repr='notes_header')
-	notes = LongTextbox(text="Notes", lang=lang, repr='notes')
+	notes_header = Labelbox(text='Notes', lang=language, repr='notes_header')
 	attendance_table = Table(repr='attinfox', edit=True)
 	attendance_table_headers = ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time']
 	#b_reset_checkin = Buttonbox(text='resetcheckin', lang=lang, repr='bresetcheckin')
@@ -62,30 +59,38 @@ def start_window(lang, database, student_id, markerfile=False):
 	window_.frames["First Frame"].addWidget(firstName_noedit, (5, 0))
 	window_.frames["First Frame"].addWidget(lastName_noedit, (6, 0))
 	window_.frames["First Frame"].addWidget(chineseName_noedit, (7, 0))
-	window_.frames["First Frame"].addWidget(notes_header, (8, 0))
-	window_.frames["First Frame"].addWidget(notes, (9, 0))
-	window_.frames["Button Frame"].addWidget(b_print_to_file, (0, 0))
-	window_.frames["Button Frame"].addWidget(close_button, (1, 0))
-	window_.frames["Table Frame"].addWidget(attendance_table, (0, 0))
-	window_.frames["Table Frame"].grid(rowspan=3, sticky=W)
+	window_.frames["Fifth Frame"].addWidget(b_print_to_file, (0, 0))
+	window_.frames["Fifth Frame"].addWidget(close_button, (1, 0))
+	window_.frames["Ninth Frame"].addWidget(notes_header, (0, 0))
+	window_.frames["Ninth Frame"].addWidget(notes, (1, 0))
+	window_.frames["Eleventh Frame"].addWidget(attendance_table, (0, 0))
+	window_.frames["Eleventh Frame"].grid(rowspan=3, sticky=W)
 	
 	today.config(text=str(datetime.strftime(datetime.now().date(), '%m/%d/%Y')))
-	notes.label.pack_forget()
-	notes.config(height=8, width=30)
+	general_header.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
+	general_header.label.grid(columnspan=2, sticky=E+W, pady=3)
+	notes_header.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
+	notes_header.label.grid(columnspan=2, sticky=E+W, pady=3)
+	notes.label.grid_forget()
+	notes.config(height=8, width=32)
+	b_print_to_file.selfframe.grid(padx=5)
+	if database.studentList[i].datapoints['last_payment']:
+		last_payment.config(text=datetime.strftime(database.studentList[i].datapoints['last_payment'], '%m/%d/%Y'))
+	
 	attendance_table.canvas.config(width=720, height=500)
-	if database.studentList[student_id].datapoints['last_payment']:
-		last_payment.config(text=datetime.strftime(database.studentList[student_id].datapoints['last_payment'], '%m/%d/%Y'))
+	attendance_table.editwidget = False
+	attendance_table.clast = False
 
-	data_points = database.studentList[student_id].datapoints
-	window_.populate(data_points)
+	student_ = database.studentList[i]
+	window_.populate(student_.datapoints)
 	attendance_table.setData(
 		headers=attendance_table_headers,
-		data=[row[:5] for row in data_points['attinfo'][1]])
+		data=[row[:5] for row in student_.datapoints['attinfo'][1]])
 
-	def pick_cell(p, student_id):
+	def pick_cell(p, i):
 		first_cell = attendance_table.cells[p]
 		if p[0] == 0: return
-		if marker and first_cell.bgcolor in mraker[student_id]['color_set']:
+		if marker and first_cell.bgcolor in marker[i]['color_set']:
 			print('already printed')
 			pickRow(p, True)
 			window_.picked[p[0]] = attendance_table.data[p[0]-1]
@@ -101,9 +106,9 @@ def start_window(lang, database, student_id, markerfile=False):
 			print(window_.picked)
 
 	for pos, cell in attendance_table.cells.items():
-		cell.config(bind=('<Button-1>', lambda event, pos=pos: pick_cell(pos, student_id)))
-		if marker and (pos[0] in mraker[student_id]['paid_set']):
-			cell.config(bgcolor=mraker[student_id]['row_color'][pos[0]])
+		cell.config(bind=('<Button-1>', lambda event, pos=pos: pick_cell(pos, i)))
+		if marker and (pos[0] in marker[i]['paid_set']):
+			cell.config(bgcolor=marker[i]['row_color'][pos[0]])
 
 	def pickRow(entry, printed=False):
 		x, y = entry[0], entry[1]
@@ -128,23 +133,23 @@ def start_window(lang, database, student_id, markerfile=False):
 		date = today.strftime('%m.%d.%y')
 		time = today.strftime('%I.%M.%p')
 		file_name = file_path + '/Salary Report ' + database.school + ' ' + date + ' ' + time + '.xlsx'
-		printed = print_reports.print_pay_entries(database, file_name, student_id, window_.picked, dollar_per_hour.getData(), False) #false is for max_hours
+		printed = print_reports.print_pay_entries(database, file_name, i, window_.picked, dollar_per_hour.getData(), False) #false is for max_hours
 		if markerfile:
-			if student_id not in marker:
-				mraker[student_id] = {}
-				mraker[student_id]['paid_set'] = window_.picked
-				mraker[student_id]['color_set'] = ['tomato', 'cornflowerblue']
-				mraker[student_id]['current_color'] = 0
-				mraker[student_id]['row_color'] = {}
+			if i not in marker:
+				marker[i] = {}
+				marker[i]['paid_set'] = window_.picked
+				marker[i]['color_set'] = ['tomato', 'cornflowerblue']
+				marker[i]['current_color'] = 0
+				marker[i]['row_color'] = {}
 				for row_num in window_.picked:
-					mraker[student_id]['row_color'][row_num] = mraker[student_id]['color_set'][mraker[student_id]['current_color']]
+					marker[i]['row_color'][row_num] = marker[i]['color_set'][marker[i]['current_color']]
 			else:
-				print(student_id, ' in marker file, appending..')
-				mraker[student_id]['current_color'] = (mraker[student_id]['current_color'] + 1) % len(mraker[student_id]['color_set'])
-				print(mraker[student_id]['current_color'])
+				print(i, ' in marker file, appending..')
+				marker[i]['current_color'] = (marker[i]['current_color'] + 1) % len(marker[i]['color_set'])
+				print(marker[i]['current_color'])
 				for row_num in window_.picked:
-					mraker[student_id]['row_color'][row_num] = mraker[student_id]['color_set'][mraker[student_id]['current_color']]
-				mraker[student_id]['paid_set'].update(window_.picked)
+					marker[i]['row_color'][row_num] = marker[i]['color_set'][marker[i]['current_color']]
+				marker[i]['paid_set'].update(window_.picked)
 			print(marker)
 			pickle.dump(marker, open(markerfile, "wb"))
 		if printed:
@@ -157,5 +162,6 @@ def start_window(lang, database, student_id, markerfile=False):
 
 	b_print_to_file.config(cmd=print_to_file)
 	close_button.config(cmd=top_window_.destroy)
+	#b_reset_checkin.config(cmd=reset_checkin)
 	
 	top_window_.mainloop()

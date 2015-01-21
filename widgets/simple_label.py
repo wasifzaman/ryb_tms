@@ -14,9 +14,9 @@ class Labelbox(Textbox):
 			self.text=kwargs['text']
 			self.label.config(text=self.text)
 		if 'lang' in kwargs:
-			pass
-			#self.lang = kwargs['lang']
-			#self.label.config(text=self.lang[self.text])
+			return
+			self.lang = kwargs['lang']
+			self.label.config(text=self.lang[self.text])
 		if 'bg' in kwargs:
 			self.widget_frame.config(bg=kwargs['bg'])
 			self.label.config(bg=kwargs['bg'])

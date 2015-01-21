@@ -62,15 +62,16 @@ class AppWindow(Frame):
 			padx=self.framePadding[0], pady=self.framePadding[1], sticky=N)
 
 
-	def collect(self, keys):
-		collected_data = {}
+	def collect(self, relevant):
+
+		crossed = {}
 
 		for frame in self.frames.values():
 			for widget in frame.widgets.values():
-				if widget.repr in keys:
-					collected_data[widget.repr] = widget.getData()
+				if widget.repr in relevant:
+					crossed[widget.repr] = widget.getData()
 
-		return collected_data
+		return crossed
 
 	def populate(self, info):
 

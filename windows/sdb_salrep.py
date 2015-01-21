@@ -20,7 +20,7 @@ def main(t, lang, database, markerfile):
 
 #sT
 	teacher_table = Table(repr='stable', edit=False)
-	teacher_table_headers = ['Barcode', 'First Name', 'Last Name', 'Chinese Name', 'Date of Birth']
+	teacher_table_headers = [lang[text] for text in ['Barcode', 'First Name', 'Last Name', 'Chinese Name', 'Date of Birth']]
 
 	def sTbind(func_pass):
 		def fsb(p):
@@ -43,7 +43,6 @@ def main(t, lang, database, markerfile):
 	w.frames["Fifth Frame"].grid(columnspan=3)
 
 #widget for scan
-	
 	w.sby = Picker(repr='sby', text=w.lang['Search By'], rads=[(w.lang['Barcode'], 'bCode'), \
 		(w.lang['First Name'], 'firstName'), \
 		(w.lang['Last Name'], 'lastName'), \
@@ -112,7 +111,7 @@ def main(t, lang, database, markerfile):
 			headers=teacher_table_headers,
 			data=sL[p])
 
-		sTbind(lambda student_id: edit_salary.start_window(w.lang, database=database, markerfile=markerfile, student_id=student_id))
+		sTbind(lambda i: edit_salary.main(w.lang, database=database, markerfile=markerfile, i=i))
 
 	def f():
 		if w.pNum == len(sL) - 1: return

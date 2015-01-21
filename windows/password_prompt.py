@@ -5,59 +5,64 @@ sys.path.append(os.path.abspath(os.pardir) + '\widgets')
 from tkinter import *
 import pickle
 
-from textbox import Textbox
+from textbox import Textbox, TextboxNoEdit, IntTextbox, MoneyTextbox
 from mbox2 import Mbox
 from button import Buttonbox
 from simple_label import Labelbox
+from languages import languages
 
+language = languages["english"]
+
+bok = Buttonbox(text='ok', lang=language, repr='bok')
+bsav = Buttonbox(text='Save', lang=language, repr='bsav')
+bcancel = Buttonbox(text='Cancel', lang=language, repr='bcancel')
 
 def password_prompt(lang, reset_pw):
-	def get_return(value):
-		if value == 'pw_mismatch':
+
+	def get_return(z):
+		if z == 'pw_mismatch':
 			return
-		message_box.value = value
-		message_box.dw()
+		t.z = z
+		t.dw()
 
-	message_box = Mbox()
+	t = Mbox()
 
-	message_box.newFrame("Top Frame", (0, 0))
-	message_box.newFrame("First Frame", (1, 0))
-	message_box.newFrame("Second Frame", (2, 0))
+	t.newFrame("Top Frame", (0, 0))
+	t.newFrame("First Frame", (1, 0))
+	t.newFrame("Second Frame", (2, 0))
 
-	no_pw_detected = Labelbox(text="Password must be reset. Please enter the old password followed by the new password", lang=lang, repr='nopwsetpw')
+	no_pw_detected = Labelbox(text="no_pw_set_pw", lang=lang, repr='nopwsetpw')
 	old_pw_textbox = Textbox(text="Old Password", lang={"Old Password": "Old Password"}, repr='oldpwtextbox')
 	new_pw_textbox = Textbox(text="New Password", lang={"New Password": "New Password"}, repr='newpwtextbox')
 	retype_new_pw_textbox = Textbox(text="Retype New Password", lang={"Retype New Password": "Retype New Password"}, repr='retypenewpwtextbox')
 	pw_textbox = Textbox(text="Password", lang={"Password": "Password"}, repr='oldpwtextbox')
-	ok_button = Buttonbox(text='ok', lang=None, repr='ok_button')
-	save_button = Buttonbox(text='Save', lang=None, repr='save_button')
-	cancel_button = Buttonbox(text='Cancel', lang=None, repr='cancel_button')
-
 
 	if reset_pw:
-		message_box.frames["Top Frame"].addWidget(no_pw_detected, (0, 0))
-		message_box.frames["First Frame"].addWidget(old_pw_textbox, (1, 0))
-		message_box.frames["First Frame"].addWidget(new_pw_textbox, (2, 0))
-		message_box.frames["First Frame"].addWidget(retype_new_pw_textbox, (3, 0))
-		message_box.frames["Second Frame"].addWidget(save_button, (0, 1))
-		save_button.config(cmd=lambda: get_return((old_pw_textbox.getData(), new_pw_textbox.getData())) if new_pw_textbox.getData() == retype_new_pw_textbox.getData() else get_return('pw_mismatch'))
-		save_button.label.config(width=10)
+		t.frames["Top Frame"].addWidget(no_pw_detected, (0, 0))
+		t.frames["First Frame"].addWidget(old_pw_textbox, (1, 0))
+		t.frames["First Frame"].addWidget(new_pw_textbox, (2, 0))
+		t.frames["First Frame"].addWidget(retype_new_pw_textbox, (3, 0))
+		t.frames["Second Frame"].addWidget(bsav, (0, 1))
+		bsav.config(cmd=lambda: get_return((old_pw_textbox.getData(), new_pw_textbox.getData())) if new_pw_textbox.getData() == retype_new_pw_textbox.getData() else get_return('pw_mismatch'))
+		bsav.label.config(width=10)
 		old_pw_textbox.label.config(width=19)
 		new_pw_textbox.label.config(width=19)
 		retype_new_pw_textbox.label.config(width=19)
 		no_pw_detected.label.config(wraplength=250, justify=LEFT)
 	else:
-		message_box.frames["First Frame"].addWidget(pw_textbox, (0, 0))
-		message_box.frames["Second Frame"].addWidget(ok_button, (0, 1))
-		ok_button.config(cmd=lambda: get_return(pw_textbox.getData()))
-		ok_button.label.config(width=10)
+		t.frames["First Frame"].addWidget(pw_textbox, (0, 0))
+		t.frames["Second Frame"].addWidget(bok, (0, 1))
+		bok.config(cmd=lambda: get_return(pw_textbox.getData()))
+		bok.label.config(width=10)
 
-	message_box.frames["Second Frame"].addWidget(cancel_button, (0, 0))
+	t.frames["Second Frame"].addWidget(bcancel, (0, 0))
+
 	
-	cancel_button.label.config(width=10)
+	bcancel.label.config(width=10)
 	
-	cancel_button.config(cmd=lambda: get_return('cancel'))
+	bcancel.config(cmd=lambda: get_return('cancel'))
 
-	message_box.root.wait_window()
 
-	return message_box.value
+	t.root.wait_window()
+
+	return t.z

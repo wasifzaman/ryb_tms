@@ -14,7 +14,8 @@ from simple_label import Labelbox
 
 
 def convert_to_encrypted(lang, database):
-	def return_(value):
+
+	def get_return(value):
 		message_box.value = value
 		message_box.to_encrypt_file = to_encrypt_file_textbox.getData()
 		message_box.db_file = db_file_textbox.getData()
@@ -68,8 +69,8 @@ def convert_to_encrypted(lang, database):
 	brw1.config(cmd=lambda: set_file(db_file_textbox))
 	brw2.config(cmd=lambda: set_file(pw_file_textbox))
 	brw3.config(cmd=lambda: open_file(to_encrypt_file_textbox))
-	save_button.config(cmd=lambda: return_('success'))
-	cancel_button.config(cmd=lambda: return_('cancel'), lang=lang)
+	save_button.config(cmd=lambda: get_return('success'))
+	cancel_button.config(cmd=lambda: get_return('cancel'), lang=lang)
 
 	message_box.root.wait_window()
 
