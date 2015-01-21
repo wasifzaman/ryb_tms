@@ -85,7 +85,7 @@ def main(t, lang, d):
 
 		
 	def toPage(p):
-		w.frames["Second Frame"].addWidget(w.sT, (2, 0))
+		#w.frames["Second Frame"].addWidget(w.sT, (2, 0))
 		w.sT.setData(headers=stableh, data=sL[p])
 		w.sT.canvas.config(width=700, height=350)
 		w.sT.set_width(2, 5, 14)

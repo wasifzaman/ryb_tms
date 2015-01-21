@@ -102,10 +102,10 @@ def main(t, lang, database, markerfile):
 		
 	def toPage(p):
 		#temp workaround while table is fixed
-		for child in w.frames["Second Frame"].winfo_children():
-			child.destroy()
+		#for child in w.frames["Second Frame"].winfo_children():
+		#	child.destroy()
 
-		w.frames["Second Frame"].addWidget(teacher_table, (2, 0))
+		#w.frames["Second Frame"].addWidget(teacher_table, (2, 0))
 		teacher_table.canvas.config(width=700, height=450)
 		teacher_table.setData(
 			headers=teacher_table_headers,

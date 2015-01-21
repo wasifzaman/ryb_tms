@@ -36,66 +36,65 @@ class Table:
 
 	def __init__(self, **kwargs):
 		self.repr = kwargs['repr']
-		self.editwidget = kwargs['edit']
 		self.cells = {}
 		self.data = {}
 		self.clast = False
 
 	def config(self, **kwargs):
 		if 'lang' in kwargs:
+			pass
+			'''
 			for cell_id, cell_val in self.cells.items():
 				if cell_id[0] == 0:
 					cur_text = cell_val.label.cget('text')
-					if cur_text in lang:
+					if cur_text in kwargs['lang']:
 						cell_val.label.config(text=lang[cur_text])
+			'''
 		if 'header_color' in kwargs:
 			return
 
 	def set_width(self, start_column, end_column, width):
 		for column in range(start_column, end_column + 1):
-			row = 0 if not hasattr(self, 'headers') else 1
-			self.cells[(row, column)].label.config(width=width)		
+			row = 0 if not hasattr(self, 'headers') or len(self.data) == 0 else 1
+			self.cells[(row, column)].label.config(width=width)
 		
 	def place(self, **kwargs):
 		self.parent = kwargs['parent']
 		self.row = kwargs['row']
 		self.column = kwargs['column']
 
-		self.canvas = Canvas(self.parent, bg='white', confine=True)
-		self.outerframe = Frame(self.canvas, bg='black')
+		self.widget_frame = Frame(self.parent)
+		self.canvas = Canvas(self.widget_frame, bg='white')
+		self.table_frame = Frame(self.canvas, bg='black')
 
-		self.xscrollbar = Scrollbar(self.parent, orient="horizontal", command=self.canvas.xview)
-		self.yscrollbar = Scrollbar(self.parent, orient="vertical", command=self.canvas.yview)
-		self.canvas.create_window((0,0), window=self.outerframe, anchor=NW, tags="table_frame")
+		self.xscrollbar = Scrollbar(self.widget_frame, orient="horizontal", command=self.canvas.xview)
+		self.yscrollbar = Scrollbar(self.widget_frame, orient="vertical", command=self.canvas.yview)
+		self.canvas.create_window((0,0), window=self.table_frame, anchor=NW, tags="table_frame")
 		
 		for cell_id, cell in self.cells.items():
-			cell.place(parent=self.outerframe, pos=cell.pos)
+			cell.place(parent=self.table_frame, pos=cell.pos)
 			if cell_id[0] == 0:
 				cell.label.grid(padx=(0, 1), pady=(1, 0))
 			elif cell_id[1] == 0:
 				cell.label.grid(padx=1, pady=(0, 1))	
 
+		self.widget_frame.grid(row=0, column=0)
 		self.canvas.grid(row=0, column=0)
 		self.yscrollbar.grid(row=0, column=1, sticky=NS)
-		#self.xscrollbar.grid(row=1, column=0, sticky=EW)
+		self.xscrollbar.grid(row=1, column=0, sticky=EW)
 		
-		self.parent.bind("<Configure>", self.makeScroll)
+		self.widget_frame.bind("<Configure>", self.makeScroll)
 
-		#self.scroll_up_button = Button(self.parent, text='Up')
-		#self.scroll_down_button = Button(self.parent, text='Down')
-		#self.scroll_up_button.grid(row=0, column=1)
-		#self.scroll_down_button.grid(row=0, column=2)
-		#self.scroll_down_button.config(command=lambda: self.canvas.yview_scroll(1, UNITS))
-		#self.scroll_up_button.config(command=lambda: self.canvas.yview_scroll(-1, UNITS))
-
-		def print_coords(event):
-			canvas = event.widget
-			x = canvas.canvasx(event.x)
-			y = canvas.canvasy(event.y)
-			print(x,y)
-
-		self.canvas.bind('<Button-1>', print_coords)
-
+		'''
+		** for custom scroll bar **
+		self.scroll_up_button = Button(self.parent, text='Up')
+		self.scroll_down_button = Button(self.parent, text='Down')
+		self.scroll_up_button.grid(row=0, column=1)
+		self.scroll_down_button.grid(row=0, column=2)
+		self.scroll_down_button.config(command=lambda: self.canvas.yview_scroll(1, UNITS))
+		self.scroll_up_button.config(command=lambda: self.canvas.yview_scroll(-1, UNITS))
+		'''
+	
 	def setData(self, **kwargs):
 		olddata = self.data
 		newdata = kwargs['data']
@@ -114,7 +113,7 @@ class Table:
 			for text in row_:
 				if (row, col) not in self.cells:
 					self.cells[(row, col)] = Cell(text=text, pos=(row, col))
-					self.cells[(row, col)].place(parent=self.outerframe, \
+					self.cells[(row, col)].place(parent=self.table_frame, \
 													pos=self.cells[(row, col)].pos)
 					self.cells[(row, col)].label.grid(padx=(0, 1), pady=(0, 1))
 				else:
@@ -124,7 +123,7 @@ class Table:
 
 				#numbering
 				self.cells[(row, 0)] = Cell(text=row, pos=(row, 0))
-				self.cells[(row, 0)].place(parent=self.outerframe, \
+				self.cells[(row, 0)].place(parent=self.table_frame, \
 													pos=self.cells[(row, 0)].pos)
 				self.cells[(row, 0)].label.grid(padx=1, pady=(0, 1))
 			row += 1
@@ -137,20 +136,21 @@ class Table:
 			row, col = 0, 1
 			for data in self.headers:
 				self.cells[(row, col)] = Cell(text=data, pos=(row, col))
-				self.cells[(row, col)].place(parent=self.outerframe, \
+				self.cells[(row, col)].place(parent=self.table_frame, \
 													pos=self.cells[(row, col)].pos)
 				self.cells[(row, col)].label.grid(padx=(0, 1), pady=1)
 				col += 1
 
-		Label(self.outerframe, text='', bg='white', width=3).\
+		Label(self.table_frame, text='', bg='white', width=3).\
 			grid(row=0, column=0, padx=1, pady=1, sticky=E+W)
 
-		self.canvas.coords("table_frame", (0, 0))
-		self.outerframe.update_idletasks()
-		self.canvas.config(scrollregion=self.canvas.bbox("all"))
+		self.table_frame.update_idletasks()
+		self.canvas.config(scrollregion=self.canvas.bbox(ALL))
+		self.canvas.config(xscrollcommand=self.xscrollbar.set)
+		self.canvas.config(yscrollcommand=self.yscrollbar.set)
 
 	def makeScroll(self, event):
-		self.canvas.config(scrollregion=self.canvas.bbox("all"))
+		self.canvas.config(scrollregion=self.canvas.bbox(ALL))
 
 	def getData(self):
 		return self.headers, self.data

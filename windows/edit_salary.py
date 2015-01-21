@@ -84,7 +84,7 @@ def main(lang, database, markerfile=False, top=False, i=0): #i is the id of the 
 	window_.populate(student_.datapoints)
 	attendance_table.setData(
 		headers=attendance_table_headers,
-		data=student.datapoints['attinfo'][1])
+		data=[row[:5] for row in student_.datapoints['attinfo'][1]])
 
 	def pick_cell(p, i):
 		first_cell = attendance_table.cells[p]
