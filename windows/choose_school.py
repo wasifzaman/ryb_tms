@@ -1,6 +1,5 @@
 import sys, os
 sys.path.append(os.path.abspath(os.pardir) + '\widgets')
-sys.path.append(os.path.abspath(os.pardir) + '\miscellaneous')
 sys.path.append(os.path.abspath(os.pardir) + '\messages windows')
 
 from tkinter import *
@@ -8,8 +7,6 @@ from tkinter import *
 from mbox2 import Mbox
 from button import Buttonbox
 from simple_label import Labelbox
-from translations import english_to_chinese, chinese_to_english
-from translate_ import translate
 
 
 def choose_school(lang):
@@ -46,9 +43,6 @@ def choose_school(lang):
 	bcancel.hoverbg = 'crimson'
 	#bcancel.button.config(bg=bcancel.idlebg, fg=bcancel.fg)
 
-	if lang == 'chinese':
-		translate(message_box.root, english_to_chinese)
-		
 	message_box.root.wait_window()
 	
 	return message_box.value

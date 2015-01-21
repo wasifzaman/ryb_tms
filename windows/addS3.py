@@ -4,20 +4,22 @@ sys.path.append(os.path.abspath(os.pardir) + '\database')
 sys.path.append(os.path.abspath(os.pardir) + '\miscellaneous')
 sys.path.append(os.path.abspath(os.pardir) + '\messages windows')
 
-from student import StudentInfo
-from uiHandler22 import AppWindow
+from uiHandler22 import *
+from dataHandler import *
+from translate_ import translate
+
 from textbox import Textbox, TextboxNoEdit, IntTextbox, MoneyTextbox
 from button import Buttonbox
 from simple_label import Labelbox
 from date_textbox import Datebox
 from photoWidget2 import Photo
 from multiline_textbox import LongTextbox
-from translations import english_to_chinese
-from translate_ import translate
 from master_list import *
 
 
 def main(parent_frame, lang, database, require_confirm, return_to_main):
+	'''addS3'''
+
 	window_ = AppWindow(parent_frame)
 	window_.lang = lang
 
@@ -29,6 +31,9 @@ def main(parent_frame, lang, database, require_confirm, return_to_main):
 
 	window_.frames["Image Frame"].grid(sticky=NW)
 	window_.frames["Button Frame"].grid(columnspan=2)
+	#window_.frames["Notes Frame"].grid(rowspan=3)
+	#window_.frames["Notes Frame"].grid(rowspan=2, sticky=E)
+
 
 	''' widgets '''
 	general_header = Labelbox(text='General', lang=lang, repr='sinfo')
@@ -47,7 +52,7 @@ def main(parent_frame, lang, database, require_confirm, return_to_main):
 	cell_phone = Textbox(text="Cell phone", lang=lang, repr='cPhone')
 	cell_phone_2 = Textbox(text="Cell phone 2", lang=lang, repr='cPhone2')
 	zipcode = IntTextbox(text="Zipcode", lang=lang, repr='zip')
-	add_teacher_button = Buttonbox(text='Add teacher', lang=lang, repr='sadd')
+	add_student_button = Buttonbox(text='Add Teacher', lang=lang, repr='sadd')
 	portrait = Photo(repr='portr', path=images + 'monet_sm.jpg')
 	notes = LongTextbox(text="Notes", lang=lang, repr='notes')
 
@@ -70,17 +75,15 @@ def main(parent_frame, lang, database, require_confirm, return_to_main):
 	window_.frames["Image Frame"].addWidget(portrait, (0, 0))
 	window_.frames["Notes Frame"].addWidget(notes_header, (0, 0))
 	window_.frames["Notes Frame"].addWidget(notes, (1, 0))
-	window_.frames["Button Frame"].addWidget(add_teacher_button, (0, 0))
-
-	''' colors '''
-	label_bg = '#4DBCE9'
-	hover_bg = '#26ADE4'
-	header_color = "#26ADE4"
+	window_.frames["Button Frame"].addWidget(add_student_button, (0, 0))
 
 	'''
 	widget settings
 	must be placed after widget has been added
 	'''
+	
+	header_color = "#26ADE4"
+
 	general_header.widget_frame.grid(columnspan=2, sticky=EW)
 	general_header.config(bg=header_color, fg='white')
 	general_header.label.pack(side=LEFT)
@@ -90,13 +93,11 @@ def main(parent_frame, lang, database, require_confirm, return_to_main):
 	notes_header.widget_frame.grid(columnspan=2, sticky=EW)
 	notes_header.config(bg=header_color, fg='white')
 	notes_header.label.pack(side=LEFT)
-	add_teacher_button.label.config(height=5)
-	add_teacher_button.config(label_bg=label_bg, hover_bg=hover_bg, label_fg='black')
+	add_student_button.label.config(height=5, font=('Verdana', '12'))
 	notes.label.pack_forget()
 	notes.config(height=8, width=30)
 	portrait.label.config(bg='#73C1DE')
-	window_.frames["General Info Frame"].grid(padx=(0, 10), pady=(0, 10))
-	window_.frames["Contact Frame"].grid(padx=(0, 10), pady=(0, 10))
+
 
 	def collect():
 		if not confirm_teacher_addition(window_.lang):
@@ -129,7 +130,5 @@ def main(parent_frame, lang, database, require_confirm, return_to_main):
 
 	database.loadData()
 	barcode.setData(database.formatCode())
-	add_teacher_button.config(cmd=collect)
-
-	if lang == 'chinese':
-		translate(window_, english_to_chinese)
+	add_student_button.config(cmd=collect)
+	#translate(window_, lang)

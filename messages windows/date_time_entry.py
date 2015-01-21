@@ -15,9 +15,12 @@ from date_textbox import Datebox
 from button import Buttonbox
 from simple_label import Labelbox
 from photoWidget2 import Photo
-from translations import english_to_chinese, chinese_to_english
-from translate_ import translate
+from languages import languages
 
+language = languages["english"]
+
+hs = Photo(repr='hs', path=images + 'halt_sm.png')
+ws = Photo(repr='ws', path=images + 'ws_sm.png')
 
 def date_time_entry(lang):
 	def return_():
@@ -26,18 +29,18 @@ def date_time_entry(lang):
 			return
 		time_input = hour_input_stringvar.get() + ':' + minute_input_stringvar.get() + ' ' + am_pm_stringvar.get()
 		dt = datetime.strftime(datetime.strptime(time_input, '%I:%M %p'), '%I:%M %p')
-		message_box.time_input_confirmed = dt
-		message_box.date_input = date_input.getData()
-		message_box.root.destroy()
+		confirm_time.time_input_confirmed = dt
+		confirm_time.date_input = date_input.getData()
+		confirm_time.root.destroy()
 
-	message_box = Mbox()
-	message_box.root.resizable(0, 0)
-	message_box.root.grab_set()
-	message_box.root.focus_set()
-	message_box.date_input = False
-	message_box.time_input_confirmed = False
+	confirm_time = Mbox()
+	confirm_time.root.resizable(0, 0)
+	confirm_time.root.grab_set()
+	confirm_time.root.focus_set()
+	confirm_time.date_input = False
+	confirm_time.time_input_confirmed = False
 
-	confirm_window = AppWindow(message_box.mainFrame)
+	confirm_window = AppWindow(confirm_time.mainFrame)
 
 	date_input = Datebox(text='Date', lang=lang, repr='dateinput')
 	hour_input_stringvar = StringVar()
@@ -52,7 +55,7 @@ def date_time_entry(lang):
 	confirm_window.newFrame("First Frame", (0, 0))
 
 	confirm_window.frames["First Frame"].addWidget(date_input, (0, 0))
-	Label(confirm_window.frames["First Frame"], text='Time').grid(row=1, column=0, sticky=E)
+	Label(confirm_window.frames["First Frame"], text=lang['Time']).grid(row=1, column=0, sticky=E)
 	hour_input = ttk.Combobox(
 		confirm_window.frames["First Frame"],
 		textvariable=hour_input_stringvar, width=2, state='readonly')
@@ -72,17 +75,14 @@ def date_time_entry(lang):
 	minute_input['values'] = ('00', '30')
 	am_pm_input['values'] = ('AM', 'PM')
 
-	return_button.widget_frame.grid(columnspan=6, pady=(20, 1))
-	cancel_button.widget_frame.grid(columnspan=6)
-	date_input.label.config(width=6)
+	return_button.selfframe.grid(columnspan=6, pady=(20, 0))
+	cancel_button.selfframe.grid(columnspan=6)
+	date_input.label.config(width=11)
 	date_input.widget_frame.grid(columnspan=7, pady=15)
 
 	return_button.config(cmd=return_)
-	cancel_button.config(cmd=message_box.root.destroy)
+	cancel_button.config(cmd=confirm_time.root.destroy)
 
-	if lang == 'chinese':
-		translate(message_box.root, english_to_chinese)
+	confirm_time.root.wait_window()
 
-	message_box.root.wait_window()
-
-	return message_box.date_input, message_box.time_input_confirmed
+	return confirm_time.date_input, confirm_time.time_input_confirmed

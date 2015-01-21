@@ -46,20 +46,3 @@ class Mbox(AppWindow):
 
 	def dw(self):
 		self.root.destroy()
-
-	def newFrame(self, frameName, gridpos=(0,0)):
-		self.frames[frameName] = AppFrame(self.mainFrame)
-
-		self.frames[frameName].grid(
-			row=gridpos[0], column=gridpos[1], \
-			padx=self.framePadding[0], pady=self.framePadding[1], sticky=N)
-
-	def re_center(self):
-		geometry_ = self.root.geometry().split('+')
-		height = int(geometry_[1]) // 2
-		width = int(geometry_[2]) // 2
-
-		new_height = self.root.winfo_screenheight() // 2 - width
-		new_width = self.root.winfo_screenwidth() // 2 - height
-
-		print(new_width, new_height)

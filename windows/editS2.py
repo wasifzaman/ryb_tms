@@ -1,9 +1,9 @@
 import sys, os
 sys.path.append(os.path.abspath(os.pardir) + '\widgets')
 sys.path.append(os.path.abspath(os.pardir) + '\database')
-sys.path.append(os.path.abspath(os.pardir) + '\miscellaneous')
 sys.path.append(os.path.abspath(os.pardir) + '\messages windows')
 
+from master_list import *
 from uiHandler22 import Window, AppWindow
 from textbox import Textbox, TextboxNoEdit, IntTextbox, MoneyTextbox
 from button import Buttonbox
@@ -11,10 +11,7 @@ from simple_label import Labelbox
 from date_textbox import Datebox
 from photoWidget2 import Photo
 from multiline_textbox import LongTextbox
-from translations import english_to_chinese
-from translate_ import translate
 from tableWidget2 import Table
-from master_list import *
 
 
 def main(lang, database, i=0):
@@ -35,6 +32,8 @@ def main(lang, database, i=0):
 
 	window_main.pack(anchor=N)
 	window_2.pack_forget()
+
+	window_1.lang = lang
 
 	window_1.newFrame("Image Frame", (0, 1))
 	window_1.newFrame("General Info Frame", (0, 0))
@@ -66,11 +65,11 @@ def main(lang, database, i=0):
 	add_student_button = Buttonbox(text='Add Teacher', lang=lang, repr='sadd')
 	portrait = Photo(repr='portr', path=images + 'monet_sm.jpg')
 	notes = LongTextbox(text="Notes", lang=lang, repr='notes')
-	save_teacher_button = Buttonbox(text='Save', lang=lang, repr='save_teacher_button')
-	close_button = Buttonbox(text='Close', lang=lang, repr='close_button')
+	save_teacher_button = Buttonbox(text='Save', lang=window_1.lang, repr='save_teacher_button')
+	close_button = Buttonbox(text='Close', lang=window_1.lang, repr='close_button')
 	attendance_table = Table(repr='attinfox', edit=False)
 	attendance_table_headers = ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time']
-	#switch_frame_button = Buttonbox(text='Attendance', lang=lang, repr='showstudentinfo')
+	#switch_frame_button = Buttonbox(text='Attendance', lang=window_1.lang, repr='showstudentinfo')
 	
 	window_1.frames["General Info Frame"].addWidget(general_header, (0, 0))
 	window_1.frames["General Info Frame"].addWidget(first_name, (1, 0))
@@ -96,33 +95,10 @@ def main(lang, database, i=0):
 	#window_1.frames["Fourth Frame"].addWidget(early_checkin, (0, 0))
 	#window_1.frames["Button Frame"].addWidget(switch_frame_button, (0, 2))
 
-	''' colors '''
-	label_bg = '#4DBCE9'
-	hover_bg = '#26ADE4'
-	header_color = "#26ADE4"
-	
-	'''
-	widget settings
-	must be placed after widget has been added
-	'''
-	general_header.widget_frame.grid(columnspan=2, sticky=EW)
-	general_header.config(bg=header_color, fg='white')
-	general_header.label.pack(side=LEFT)
-	address_header.widget_frame.grid(columnspan=2, sticky=EW)
-	address_header.config(bg=header_color, fg='white')
-	address_header.label.pack(side=LEFT)
-	notes_header.widget_frame.grid(columnspan=2, sticky=EW)
-	notes_header.config(bg=header_color, fg='white')
-	notes_header.label.pack(side=LEFT)
-	notes.label.pack_forget()
 	notes.config(height=8, width=30)
-	portrait.label.config(bg='#73C1DE')
-	window_1.frames["General Info Frame"].grid(padx=10, pady=10)
-	window_1.frames["Contact Frame"].grid(padx=10, pady=(0, 10))
-	window_1.frames["Image Frame"].grid(padx=(0, 10), pady=10)
-	window_1.frames["Notes Frame"].grid(padx=(0, 10), pady=(0, 10))
+	notes.label.pack_forget()
 	#attendance_table.canvas.config(width=580, height=300)
-	#switch_frame_button.config(lang=lang)
+	#switch_frame_button.config(lang=window_1.lang)
 	#switch_frame_button.selfframe.grid_forget()
 
 	top_window_.current_shown = 'window_1'
@@ -152,7 +128,7 @@ def main(lang, database, i=0):
 		if not altered():
 			top_window_.destroy()
 			return
-		if not confirm_save_teacher_data(lang): return
+		if not confirm_save_teacher_data(window_1.lang): return
 
 		data_points.update(window_1.collect(data_points))
 		database.studentList[i].datapoints = data_points
@@ -169,16 +145,16 @@ def main(lang, database, i=0):
 	def quit():
 		if not altered():
 			top_window_.destroy()
-		elif confirm_return_without_saving(lang):
+		elif confirm_return_without_saving(window_1.lang):
 			top_window_.destroy()
 	
-	save_teacher_button.widget_frame.grid(padx=5)
-	close_button.widget_frame.grid(padx=5)
-	
 	save_teacher_button.config(cmd=collect)
+	save_teacher_button.selfframe.grid(padx=5)
 	close_button.config(cmd=quit)
 	#switch_frame_button.config(cmd=switch_frame)
 
 	for frame in window_1.frames.values():
 		for widget in frame.widgets.values():
-			widget.config(lang=lang)
+			widget.config(lang=window_1.lang)
+
+	top_window_.mainloop()

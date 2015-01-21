@@ -11,8 +11,6 @@ from date_textbox import Datebox
 from multiline_textbox import LongTextbox
 from tableWidget2 import Table
 from uiHandler22 import Window, AppWindow
-from translations import english_to_chinese
-from translate_ import translate
 from master_list import *
 import print_reports
 
@@ -41,16 +39,16 @@ def start_window(lang, database, student_id, markerfile=False):
 	window_.frames["Table Frame"].grid(rowspan=2, sticky=N)
 	#window_.frames["Table Frame"].columnconfigure(0, weight=5, minsize=720)
 
-	today = TextboxNoEdit(text="Today's date", lang=window_.lang, repr='today_date')
-	last_payment = TextboxNoEdit(text="Last payment", lang=window_.lang, repr='last_pay_date')
-	dollar_per_hour = MoneyTextbox(text="Dollar per hour", lang=window_.lang, repr='dollar_p_hour')
+	today = TextboxNoEdit(text="today's date", lang=window_.lang, repr='today_date')
+	last_payment = TextboxNoEdit(text="last payment", lang=window_.lang, repr='last_pay_date')
+	dollar_per_hour = MoneyTextbox(text="dollar per hour", lang=window_.lang, repr='dollar_p_hour')
 	general_header = Labelbox(text='Student information', lang=lang, repr='general_header')
-	firstName_noedit = TextboxNoEdit(text="First name", lang=lang, repr='firstName')
-	lastName_noedit = TextboxNoEdit(text="Last name", lang=lang, repr='lastName')
-	chineseName_noedit = TextboxNoEdit(text="Chinese name", lang=lang, repr='chineseName')
-	max_hours = IntTextbox(text="Max hours", lang=window_.lang, repr='max_hours')
-	b_print_to_file = Buttonbox(text='Print to file', lang=window_.lang, repr='print_to_file')
-	close_button = Buttonbox(text='Close', lang=window_.lang, repr='close_button')
+	firstName_noedit = TextboxNoEdit(text="First Name", lang=lang, repr='firstName')
+	lastName_noedit = TextboxNoEdit(text="Last Name", lang=lang, repr='lastName')
+	chineseName_noedit = TextboxNoEdit(text="Chinese Name", lang=lang, repr='chineseName')
+	max_hours = IntTextbox(text="max hours", lang=window_.lang, repr='max_hours')
+	b_print_to_file = Buttonbox(text='print to file', lang=window_.lang, repr='print_to_file')
+	close_button = Buttonbox(text='close', lang=window_.lang, repr='close_button')
 	notes_header = Labelbox(text='Notes', lang=None, repr='notes_header')
 	notes = LongTextbox(text="Notes", lang=lang, repr='notes')
 	attendance_table = Table(repr='attinfox', edit=True)
@@ -71,27 +69,10 @@ def start_window(lang, database, student_id, markerfile=False):
 	window_.frames["Table Frame"].addWidget(attendance_table, (0, 0))
 	window_.frames["Table Frame"].grid(rowspan=3, sticky=W)
 	
-	''' colors '''
-	label_bg = '#4DBCE9'
-	hover_bg = '#26ADE4'
-	header_color = "#26ADE4"
-	
-	'''
-	widget settings
-	must be placed after widget has been added
-	'''
-	general_header.widget_frame.grid(columnspan=2, sticky=EW, pady=(10, 0))
-	general_header.config(bg=header_color, fg='white')
-	general_header.label.pack(side=LEFT)
-	notes_header.widget_frame.grid(columnspan=2, sticky=EW, pady=(10, 0))
-	notes_header.config(bg=header_color, fg='white')
-	notes_header.label.pack(side=LEFT)
 	today.config(text=str(datetime.strftime(datetime.now().date(), '%m/%d/%Y')))
 	notes.label.pack_forget()
 	notes.config(height=8, width=30)
 	attendance_table.canvas.config(width=720, height=500)
-	window_.frames["First Frame"].grid(padx=10, pady=10)
-	window_.frames["Table Frame"].grid(padx=10, pady=10)	
 	if database.studentList[student_id].datapoints['last_payment']:
 		last_payment.config(text=datetime.strftime(database.studentList[student_id].datapoints['last_payment'], '%m/%d/%Y'))
 
@@ -100,8 +81,6 @@ def start_window(lang, database, student_id, markerfile=False):
 	attendance_table.setData(
 		headers=attendance_table_headers,
 		data=[row[:5] for row in data_points['attinfo'][1]])
-	attendance_table.set_width(1, 1, 13)
-	attendance_table.set_width(2, 5, 14)
 
 	def pick_cell(p, student_id):
 		first_cell = attendance_table.cells[p]

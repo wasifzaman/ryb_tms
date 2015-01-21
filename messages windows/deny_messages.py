@@ -9,8 +9,6 @@ from mbox2 import Mbox
 from button import Buttonbox
 from simple_label import Labelbox
 from photoWidget2 import Photo
-from translations import english_to_chinese, chinese_to_english
-from translate_ import translate
 
 
 def student_does_not_exist(lang):
@@ -19,7 +17,7 @@ def student_does_not_exist(lang):
 	message_box.newFrame("First Frame", (0, 0))
 	message_box.newFrame("Second Frame", (1, 0))
 
-	nostext = Labelbox(text='Teacher not found', lang=lang, repr='nostext')
+	nostext = Labelbox(text='No student', lang=lang, repr='nostext')
 	ok_button = Buttonbox(text='ok', lang=lang, repr='ok_button')
 	warning_image = Photo(repr='warning_image', path=images + 'ws_sm.png')
 
@@ -30,9 +28,6 @@ def student_does_not_exist(lang):
 	warning_image.label.config(width=80)
 	nostext.label.config(wraplength=200, justify=LEFT)
 	ok_button.config(cmd=message_box.dw, width=10)
-
-	if lang == 'chinese':
-		translate(message_box.root, english_to_chinese)
 
 	message_box.root.wait_window()
 
@@ -46,7 +41,7 @@ def date_error(lang):
 	message_box.newFrame("First Frame", (0, 0))
 	message_box.newFrame("Second Frame", (1, 0))
 
-	nostext = Labelbox(text='Invalid date', lang=lang, repr='invaliddate')
+	nostext = Labelbox(text='Invalid Date', lang=lang, repr='invaliddate')
 	return_button = Buttonbox(text='Return', lang=lang, repr='ok_')
 	warning_image = Photo(repr='warning_image', path=images + 'ws_sm.png')
 
@@ -57,9 +52,6 @@ def date_error(lang):
 	warning_image.label.config(width=80)
 	nostext.label.config(wraplength=200, justify=LEFT)
 	return_button.config(cmd=lambda: return_(True), width=10)
-
-	if lang == 'chinese':
-		translate(message_box.root, english_to_chinese)
 
 	message_box.root.wait_window()
 
@@ -85,9 +77,6 @@ def invalid_path(lang):
 	nostext.label.config(wraplength=200, justify=LEFT)
 	return_button.config(cmd=lambda: return_(True), width=10)
 
-	if lang == 'chinese':
-		translate(message_box.root, english_to_chinese)
-
 	message_box.root.wait_window()
 
 def checkout_earlier_checkin(lang):
@@ -109,9 +98,6 @@ def checkout_earlier_checkin(lang):
 	warning_image.label.config(width=80)
 	checkout_earlier_checkin_.label.config(wraplength=200, justify=LEFT)
 	ok_button.config(cmd=message_box.dw, width=10)
-
-	if lang == 'chinese':
-		translate(message_box.root, english_to_chinese)
 
 	message_box.root.wait_window()
 
@@ -136,9 +122,6 @@ def entry_not_found(lang, date):
 	entry_not_found_.label.config(text=entry_not_found_.label.cget('text') + ' ' + date)
 	ok_button.config(cmd=message_box.dw, width=10)
 
-	if lang == 'chinese':
-		translate(message_box.root, english_to_chinese)
-
 	message_box.root.wait_window()
 
 def deny_checkout_future(lang, date):
@@ -162,9 +145,6 @@ def deny_checkout_future(lang, date):
 	entry_not_found_.label.config(text=entry_not_found_.label.cget('text') + ' ' + date)
 	ok_button.config(cmd=message_box.dw, width=10)
 
-	if lang == 'chinese':
-		translate(message_box.root, english_to_chinese)
-
 	message_box.root.wait_window()
 
 def wrong_password(lang):
@@ -184,9 +164,6 @@ def wrong_password(lang):
 	warning_image.label.config(width=80)
 	wrong_pw_label.label.config(wraplength=200, justify=LEFT)
 	ok_button.config(cmd=message_box.dw, width=10)
-
-	if lang == 'chinese':
-		translate(message_box.root, english_to_chinese)
 
 	message_box.root.wait_window()
 
@@ -210,9 +187,6 @@ def invalid_file_type(lang):
 	fimport.label.config(wraplength=200, justify=LEFT)
 	ok_button.config(cmd=message_box.dw, width=10)
 
-	if lang == 'chinese':
-		translate(message_box.root, english_to_chinese)
-
 	message_box.root.wait_window()
 
 def no_checkin_today(lang):
@@ -232,8 +206,5 @@ def no_checkin_today(lang):
 	warning_image.label.config(width=80)
 	fimport.label.config(wraplength=200, justify=LEFT)
 	ok_button.config(cmd=message_box.dw, width=10)
-
-	if lang == 'chinese':
-		translate(message_box.root, english_to_chinese)
 
 	message_box.root.wait_window()

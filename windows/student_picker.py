@@ -2,53 +2,52 @@ import sys, os
 sys.path.append(os.path.abspath(os.pardir) + '\widgets')
 sys.path.append(os.path.abspath(os.pardir))
 
-from uiHandler22 import Window, AppWindow
-from button import Buttonbox
+from tkinter import *
+
 from tableWidget2 import Table
 from photoWidget2 import Photo
+from languages import *
 
+language = languages["english"]
 
-def multiple_match(table_data):
-	def set_(student_id):
-		window_.student_id = student_id
-		top_window_.destroy()
+stable = Table(repr='stable', edit=False, dimension=(0, 0, 100, 100))
+portr = Photo(repr='portr', path='monet_sm.jpg')
+stableh = [language['Barcode'], language['First Name'], \
+	language['Last Name'], language['Chinese Name'], language['Date of Birth']]
 
-	def close():
-		window_.student_id = False
-		top_window_.destroy()
+def sbind(f):
+	def fsb(p):
+		i = stable.data[p[0]-1][0]
+		f(i)
+		
+	for pos, cell in stable.cells.items():
+		cell.config(bind=('<Double-Button-1>', lambda event, pos=pos: fsb(pos)))
 
-	top_window_ = Window(top=True)
-	top_window_.attributes('-fullscreen', False)
-	top_window_.geometry('560x460')
-	top_window_.resizable(0, 0)
-	top_window_.grab_set()
-	top_window_.focus_set()
-	top_window_.titleFrame.pack_forget()
+def spicker(d):
+	def sets(i):
+		stable.s = i
+		t.destroy()
 
-	window_ = AppWindow(top_window_.mainFrame)
+	def destroy():
+		stable.s = False
+		t.destroy()
 
-	window_.newFrame("Table Frame", (0, 0))
+	t = Toplevel()
+	frame = Frame(t, padx=10, pady=10)
+	frame.pack()
+	t.grab_set()
+	t.focus_set()
+	t.protocol('WM_DELETE_WINDOW', destroy)
+	t.geometry('570x440')
 
-	teacher_table = Table(repr='teachertable')
-	teacher_table_headers = ['Barcode', 'First name', 'Last name', 'Chinese name']
-	close_button = Buttonbox(text='Close', repr=None)
+	stable.build(headers=stableh, data=d)
+	stable.place(parent=frame, row=0, column=0)
+	stable.canvas.config(widt=530, height=400)
 
-	window_.frames["Table Frame"].addWidget(teacher_table, (0, 0))
-	window_.frames["Table Frame"].addWidget(close_button, (1, 0))
+	sbind(lambda i: sets(i=i))
 
-	teacher_table.canvas.config(widt=530, height=400)
+	t.resizable(0, 0)
 
-	window_.student_id = False
-	teacher_table.setData(
-		headers=teacher_table_headers,
-		data=table_data)
+	t.wait_window()
 
-	for pos, cell in teacher_table.cells.items():
-		cell.config(bind=('<Double-Button-1>', lambda event, pos=pos: set_(teacher_table.data[pos[0]-1][0])))
-	
-	close_button.config(cmd=close)
-	top_window_.protocol('WM_DELETE_WINDOW', close)
-	
-	top_window_.wait_window()
-	
-	return window_.student_id
+	return stable.s
