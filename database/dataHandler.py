@@ -100,8 +100,6 @@ class StudentDB:
         data_points['attinfo'][1][-1][4] = timeslot
         #data_points['attinfo'][0] = ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time', 'School']
 
-        self.studentList[barcode].timesheet.clocktimeout()
-
     def sort_attendance(self, barcode):
         attendance_table = self.studentList[barcode].datapoints['attinfo'][1]
 

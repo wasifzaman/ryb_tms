@@ -13,10 +13,9 @@ def main(t, lang, database):
 	window_.lang = lang
 
 #attendance table
-	window_.attinfo = Table(repr='attinfox', edit=True)
-	window_.attinfoh = [language['Date'], language['Check-In Time'], language['Class Time'], language['Check-Out Time']]
-	window_.attinfo.build(headers=window_.attinfoh, data=[[]])
-	window_.attinfo.clast = '#FF99FF'
+	attendance_table = Table(repr='attinfox', edit=True)
+	attendance_table_headers = [lang[text] for text in ['Date', 'Check-In Time', 'Start Time', 'Check-Out Time', 'Confirm Time']]#, 'School']]
+	attendance_table.clast = '#FF99FF'
 
 #frame initialization
 	window_.newFrame("First Frame", (1, 1))
@@ -67,11 +66,11 @@ def main(t, lang, database):
 	window_.frames["Third Frame"].addWidget(window_.portr, (0, 0))
 	window_.portr.hide()
 
-	window_.frames["Eleventh Frame"].addWidget(window_.attinfo, (0, 0))
+	window_.frames["Eleventh Frame"].addWidget(attendance_table, (0, 0))
 	window_.frames["Eleventh Frame"].grid(rowspan=4, sticky=W)
 
-	window_.attinfo.editwidget=False
-	window_.attinfo.canvas.config(width=695, height=300)
+	attendance_table.editwidget=False
+	attendance_table.canvas.config(width=695, height=300)
 
 	sby.rads=[('Barcode', 'bCode'), ('First Name', 'firstName'), \
 		('Last Name', 'lastName'), ('Chinese Name', 'chineseName'), \
@@ -129,23 +128,14 @@ def main(t, lang, database):
 		window_.portr.setData('monet_sm.jpg')
 		portr2.setData('monet_sm.jpg')
 
-		#temp workaround while table is fixed
-		for child in window_.frames["Eleventh Frame"].winfo_children():
-			child.destroy()
-
-		window_.attinfo.build(headers=window_.attinfoh, data=[[]])
-		window_.frames["Eleventh Frame"].addWidget(window_.attinfo, (0, 0))
-		window_.frames["Eleventh Frame"].grid(rowspan=4, sticky=W)
-
-		window_.attinfo.editwidget=False
-		window_.attinfo.canvas.config(width=695, height=300)
+		attendance_table.editwidget=False
+		attendance_table.canvas.config(width=696, height=300)
 
 		data_points = database.studentList[window_.student_id].datapoints
 
 		window_.populate(data_points)
-		#w2.populate(data_points)
 
-		for cell_id, cell_val in window_.attinfo.cells.items():
+		for cell_id, cell_val in attendance_table.cells.items():
 			if cell_id[0] == 0:
 				cur_text = cell_val.label.cget('text')
 				cell_val.label.config(text=lang[cur_text])
@@ -197,13 +187,14 @@ def main(t, lang, database):
 			return
 
 		database.saveData()
-		window_.attinfo.setData(
-		[data_points['attinfo'][0], [data]]) #display entry being scanned out
+		attendance_table.setData(
+			headers=attendance_table_headers,
+			data=[data_points['attinfo'][1][-1][:5]]) #display last entry
+		attendance_table.set_width(2, 5, 14)
 		sby.b.set(sby.rads[0][1]) #reset search bar
-		window_.attinfo.canvas.yview_moveto(1.0)
+		attendance_table.canvas.yview_moveto(1.0) #scroll to bottom of table
 
 	def manual_scan():
-
 		print(bCodeNE.getData())
 		if (len(bCodeNE.getData())) == 0: return
 
@@ -226,8 +217,11 @@ def main(t, lang, database):
 					row[3] = time_entry
 					row[4] = time
 					database.saveData()
-					window_.attinfo.setData(
-					[data_points['attinfo'][0], [[date, row[1], row[2], row[3], row[4], row[5]]]])
+					database.saveData()
+					attendance_table.setData(
+						headers=attendance_table_headers,
+						data=[[date, row[1], row[2], row[3], row[4]]])
+					attendance_table.set_width(2, 5, 14)
 				return
 
 		entry_not_found(window_.lang, date)
@@ -287,7 +281,7 @@ def main(t, lang, database):
 	sinfo.label.config(bg='#3B5C8D', fg='white', font=('Jumbo', '11', 'bold'))
 	sinfo.label.grid(columnspan=2, sticky=E+W, pady=3)
 
-	window_.attinfo.canvas.config(width=695, height=300)
+	attendance_table.canvas.config(width=695, height=300)
 
 #set starting lang
 	for frame in window_.frames.values():

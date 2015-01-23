@@ -102,4 +102,4 @@ class MoneyTextbox(IntTextbox):
 		if len(entry_) == 0:
 			return 0.0
 		else:
-			return "%.2f" % float(entry_)
+			return float("%.2f" % float(entry_))
