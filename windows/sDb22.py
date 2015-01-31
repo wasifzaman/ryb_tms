@@ -2,53 +2,54 @@ from uiHandler22 import *
 import editS2
 from dataHandler import *
 from preBuilts2 import *
+from student_picker import multiple_match
 
 
-def main(t, lang, d):
-	d.loadData()
+def main(parent_frame, lang, database):
+	database.loadData()
 
-	w = AppWindow(t)
+	window_ = AppWindow(parent_frame)
 
-	w.lang = lang
+	window_.lang = lang
 
-	w.sT = Table(repr='stable', edit=False)
-	stableh = [w.lang['Barcode'], w.lang['First Name'], \
-				w.lang['Last Name'], w.lang['Chinese Name'], w.lang['Date of Birth']]
+	window_.sT = Table(repr='stable', edit=False)
+	stableh = [window_.lang['Barcode'], window_.lang['First Name'], \
+				window_.lang['Last Name'], window_.lang['Chinese Name'], window_.lang['Date of Birth']]
 
 	def sTbind(f):
 		def fsb(p):
-			i = w.sT.data[p[0]-1][0]
+			i = window_.sT.data[p[0]-1][0]
 			f(i)
-		for pos, cell in w.sT.cells.items():
+		for pos, cell in window_.sT.cells.items():
 			if pos[0] == 0: continue
 			cell.config(bind=('<Double-Button-1>', lambda event, pos=pos: fsb(pos)))
 
-	w.newFrame("First Frame", (1, 0))
-	w.newFrame("Second Frame", (2, 0))
-	w.newFrame("Third Frame", (2, 1))
-	w.newFrame("Fourth Frame", (4, 1))
-	w.newFrame("Fifth Frame", (3, 0))
+	window_.newFrame("First Frame", (1, 0))
+	window_.newFrame("Second Frame", (2, 0))
+	window_.newFrame("Third Frame", (2, 1))
+	window_.newFrame("Fourth Frame", (4, 1))
+	window_.newFrame("Fifth Frame", (3, 0))
 
-	w.frames["Second Frame"].rowconfigure(0, weight=5, minsize=350)
-	w.frames["Second Frame"].columnconfigure(0, weight=5, minsize=630)
-	w.frames["Second Frame"].config(bg='red')
+	window_.frames["Second Frame"].rowconfigure(0, weight=5, minsize=350)
+	window_.frames["Second Frame"].columnconfigure(0, weight=5, minsize=630)
+	window_.frames["Second Frame"].config(bg='red')
 
-	w.frames["Fifth Frame"].grid(columnspan=3)
+	window_.frames["Fifth Frame"].grid(columnspan=3)
 
-	w.sby = Picker(repr='sby', text=w.lang['Search By'], rads=[(w.lang['Barcode'], 'bCode'), \
-		(w.lang['First Name'], 'firstName'), \
-		(w.lang['Last Name'], 'lastName'), \
-		(w.lang['Chinese Name'], 'chineseName')])
+	window_.sby = Picker(repr='sby', text=window_.lang['Search By'], rads=[(window_.lang['Barcode'], 'bCode'), \
+		(window_.lang['First Name'], 'firstName'), \
+		(window_.lang['Last Name'], 'lastName'), \
+		(window_.lang['Chinese Name'], 'chineseName')])
 
-	w.frames["First Frame"].addWidget(w.sby, (0, 0))
-	w.frames["First Frame"].addWidget(bsearch, (1, 0))
+	window_.frames["First Frame"].addWidget(window_.sby, (0, 0))
+	window_.frames["First Frame"].addWidget(bsearch, (1, 0))
 	
-	fward = Buttonbox(text='>> Next 30 >>', lang=w.lang, repr='>>')
-	bward = Buttonbox(text='<< Previous 30 <<', lang=w.lang, repr='<<')
-	blast = Buttonbox(text='>>> Last Page >>>', lang=w.lang, repr='>>>')
-	w.frames["Fifth Frame"].addWidget(fward, (1, 1))
-	w.frames["Fifth Frame"].addWidget(bward, (1, 0))
-	w.frames["Fifth Frame"].addWidget(blast, (1, 2))
+	fward = Buttonbox(text='>> Next 30 >>', lang=window_.lang, repr='>>')
+	bward = Buttonbox(text='<< Previous 30 <<', lang=window_.lang, repr='<<')
+	blast = Buttonbox(text='>>> Last Page >>>', lang=window_.lang, repr='>>>')
+	window_.frames["Fifth Frame"].addWidget(fward, (1, 1))
+	window_.frames["Fifth Frame"].addWidget(bward, (1, 0))
+	window_.frames["Fifth Frame"].addWidget(blast, (1, 2))
 
 	fward.config(width=17)
 	bward.config(width=17)
@@ -58,12 +59,12 @@ def main(t, lang, d):
 	bward.selfframe.grid(padx=2)
 	blast.selfframe.grid(padx=2)
 
-	w.frames["Second Frame"].addWidget(w.sT, (2, 0))
+	window_.frames["Second Frame"].addWidget(window_.sT, (2, 0))
 
 	sL = [[]]
-	for s in d.studentList.values():
-		dp = s.datapoints
-		sL[0].append([dp['bCode'], dp['firstName'], dp['lastName'], dp['chineseName'], dp['dob']])
+	for student in database.studentList.values():
+		data_points = student.datapoints
+		sL[0].append([data_points['bCode'], data_points['firstName'], data_points['lastName'], data_points['chineseName'], data_points['dob']])
 
 	sL[0].sort()
 
@@ -71,8 +72,8 @@ def main(t, lang, d):
 	#print(len(sL[0]))
 	if len(sL[0]) > 15:
 		l = []
-		for s in sL[0]:
-			l.append(s)
+		for student in sL[0]:
+			l.append(student)
 			if len(l) >= 15:
 				sL.append(l)
 				l = []
@@ -81,29 +82,29 @@ def main(t, lang, d):
 	#if last page is blank (if num students is multiple of 30)
 	if len(sL[-1]) == 0 and len(sL) != 1: sL.pop()
 
-	w.pNum = 1
+	window_.pNum = 1
 
 		
 	def toPage(p):
-		#w.frames["Second Frame"].addWidget(w.sT, (2, 0))
-		w.sT.setData(headers=stableh, data=sL[p])
-		w.sT.canvas.config(width=700, height=350)
-		w.sT.set_width(2, 5, 14)
-		sTbind(lambda i: editS2.main(w.lang, d, top=True, i=i))
+		#window_.frames["Second Frame"].addWidget(window_.sT, (2, 0))
+		window_.sT.setData(headers=stableh, data=sL[p])
+		window_.sT.canvas.config(width=700, height=350)
+		window_.sT.set_width(2, 5, 14)
+		sTbind(lambda i: editS2.main(window_.lang, database, top=True, i=i))
 
 	def f():
-		if w.pNum == len(sL) - 1: return
-		toPage(w.pNum + 1)
-		w.pNum = w.pNum + 1
+		if window_.pNum == len(sL) - 1: return
+		toPage(window_.pNum + 1)
+		window_.pNum = window_.pNum + 1
 		
 	def b():
-		if w.pNum == 1: return
-		toPage(w.pNum - 1)
-		w.pNum = w.pNum - 1
+		if window_.pNum == 1: return
+		toPage(window_.pNum - 1)
+		window_.pNum = window_.pNum - 1
 
 	def l():
-		w.pNum = len(sL) - 1
-		toPage(w.pNum)	
+		window_.pNum = len(sL) - 1
+		toPage(window_.pNum)	
 
 	if len(sL[0]) > 15:
 		toPage(1)
@@ -113,49 +114,49 @@ def main(t, lang, d):
 	else:
 		toPage(0)
 #
-	def s():
-		try:
-			w.s = w.sby.getData()[1]
+	def search():
+		search_value = window_.sby.getData()[1]
 
-
-			if w.sby.getData()[0] != 'bCode':
-				sty = w.sby.getData()[0]
-				sdp = w.sby.getData()[1]
-
-				sl = []
-
-				for s in d.studentList:
-					dp = False
-					if sty == 'phoneNumber':
-						if d.studentList[s].datapoints['hPhone'] == sdp or \
-							d.studentList[s].datapoints['cPhone'] == sdp or \
-							d.studentList[s].datapoints['cPhone2'] == sdp:
-							dp = d.studentList[s].datapoints
-
-					elif d.studentList[s].datapoints[sty] == sdp:
-						dp = d.studentList[s].datapoints
-					
-					if dp:
-						sl.append([dp['bCode'], dp['firstName'], dp['lastName'], dp['chineseName']])
-
-
-				if len(sl) == 0:
-					student_does_not_exist(w.lang)
-					return
-
-				w.s = sl[0][0]
-				if len(sl) > 1:
-					sl.sort()
-					w.s = spicker(sl)
-					if not w.s: return
-
-			editS2.main(w.lang, d=d, top=True, i=w.s)
-		except:
-			student_does_not_exist(w.lang)
+		if len(search_value) == 0: return
+		if window_.sby.getData()[0] == 'bCode' and search_value not in database.studentList:
+			student_does_not_exist(window_.lang)
 			return
 
+		if window_.sby.getData()[0] != 'bCode':
+			scan_type = window_.sby.getData()[0]
+			scan_value = window_.sby.getData()[1]
 
-	w.frames["First Frame"].widgets['sby'].entry.bind("<Return>", lambda x: s())
+			student_list = []
+
+			for student in database.studentList:
+				data_points = False
+				if scan_type == 'phoneNumber':
+					if database.studentList[student].datapoints['hPhone'] == scan_value or \
+						database.studentList[student].datapoints['cPhone'] == scan_value or \
+						database.studentList[student].datapoints['cPhone2'] == scan_value:
+						data_points = database.studentList[student].datapoints
+
+				elif database.studentList[student].datapoints[scan_type] == scan_value:
+					data_points = database.studentList[student].datapoints
+				
+				if data_points:
+					student_list.append([data_points['bCode'], data_points['firstName'], data_points['lastName'], data_points['chineseName']])
+
+			if len(student_list) == 0:
+				student_does_not_exist(window_.lang)
+				return
+
+			search_value = student_list[0][0]
+
+			if len(student_list) > 1:
+				student_list.sort()
+				search_value = multiple_match(student_list)
+				if not search_value: return
+
+		editS2.main(window_.lang, database, top=True, i=search_value)
+
+
+	window_.sby.entry.bind("<Return>", lambda x: search())
 
 	bsearch.button.config(width=20)
-	bsearch.config(cmd=s)
+	bsearch.config(cmd=search)

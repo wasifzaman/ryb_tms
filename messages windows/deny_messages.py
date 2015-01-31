@@ -55,6 +55,30 @@ def date_error(lang):
 
 	message_box.root.wait_window()
 
+def time_error(lang):
+	def return_(value):
+		message_box.value = value
+		message_box.dw()
+
+	message_box = Mbox()
+	
+	message_box.newFrame("First Frame", (0, 0))
+	message_box.newFrame("Second Frame", (1, 0))
+
+	nostext = Labelbox(text='Invalid time selected', lang=lang, repr='invaliddate')
+	return_button = Buttonbox(text='Return', lang=lang, repr='ok_')
+	warning_image = Photo(repr='warning_image', path=images + 'ws_sm.png')
+
+	message_box.frames["First Frame"].addWidget(nostext, (0, 1))
+	message_box.frames["Second Frame"].addWidget(return_button, (0, 0))
+	message_box.frames["First Frame"].addWidget(warning_image, (0, 0))
+	
+	warning_image.label.config(width=80)
+	nostext.label.config(wraplength=200, justify=LEFT)
+	return_button.config(cmd=lambda: return_(True), width=10)
+
+	message_box.root.wait_window()
+
 def invalid_path(lang):
 	def return_(value):
 		message_box.value = value

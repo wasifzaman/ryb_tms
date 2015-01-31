@@ -1,7 +1,7 @@
 from uiHandler22 import *
 from dataHandler import *
 from preBuilts2 import *
-from student_picker import spicker
+from student_picker import multiple_match
 
 def main(t, lang, database):
 
@@ -90,9 +90,6 @@ def main(t, lang, database):
 
 		window_.tdp = dict()
 
-		print(sby.getData())
-
-
 		if sby.getData()[0] != 'bCode':
 			scan_type = sby.getData()[0]
 			scan_value = sby.getData()[1]
@@ -120,7 +117,7 @@ def main(t, lang, database):
 			window_.student_id = student_list[0][0]
 			if len(student_list) > 1:
 				student_list.sort()
-				window_.student_id = spicker(student_list)
+				window_.student_id = multiple_match(student_list)
 				if not window_.student_id: return
 
 		#reset portrait
@@ -137,7 +134,8 @@ def main(t, lang, database):
 		for cell_id, cell_val in attendance_table.cells.items():
 			if cell_id[0] == 0:
 				cur_text = cell_val.label.cget('text')
-				cell_val.label.config(text=lang[cur_text])
+				if cur_text in lang:
+					cell_val.label.config(text=lang[cur_text])
 
 		window_.tdp = dict(window_.collect(database.studentList[window_.student_id].datapoints))
 		sby.entry.delete(0, END)

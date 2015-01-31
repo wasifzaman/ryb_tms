@@ -1,10 +1,12 @@
 import sys, os
 sys.path.append(os.path.abspath(os.pardir) + '\database')
 sys.path.append(os.path.abspath(os.pardir) + '\miscellaneous')
+sys.path.append(os.path.abspath(os.pardir) + '\messages windows')
 
 from uiHandler22 import *
 from dataHandler import *
 from preBuilts2 import *
+from master_list import *
 import print_reports
 
 
@@ -85,6 +87,7 @@ def main(lang, database, markerfile=False, top=False, i=0): #i is the id of the 
 	attendance_table.setData(
 		headers=attendance_table_headers,
 		data=[row[:5] for row in student_.datapoints['attinfo'][1]])
+	attendance_table.set_width(2, 5, 14)
 
 	def pick_cell(p, i):
 		first_cell = attendance_table.cells[p]
@@ -126,12 +129,22 @@ def main(lang, database, markerfile=False, top=False, i=0): #i is the id of the 
 				cell.config(bgcolor=cell.altbgcolor)
 
 	def print_to_file():
+		for entry in window_.picked.values():
+			try:
+				date = entry[0]
+				checkin = datetime.strptime(date + ' ' + entry[2], '%m/%d/%Y %I:%M %p')
+				checkout = datetime.strptime(date + ' ' + entry[4], '%m/%d/%Y %I:%M %p')
+			except ValueError:
+				time_error(window_.lang)
+				return
+
 		if not confirm_print(window_.lang): return
 		file_path = filedialog.askdirectory()
 		today = datetime.now()
 		date = today.strftime('%m.%d.%y')
 		time = today.strftime('%I.%M.%p')
-		file_name = file_path + '/Salary Report ' + database.school + ' ' + date + ' ' + time + '.xlsx'
+		file_name = file_path + '/Salary Report ' + i + ' ' + database.school + ' ' + date + ' ' + time + '.xlsx'
+
 		printed = print_reports.print_pay_entries(database, file_name, i, window_.picked, dollar_per_hour.getData(), False) #false is for max_hours
 		if markerfile:
 			if i not in marker:

@@ -179,7 +179,8 @@ languages = \
 		"Output File": "Output File",
 		"Source Excel": "Source Excel",
 		"Invalid File Type": "Invalid File Type",
-		"Print Simple Report": "Print Simple Report"
+		"Print Simple Report": "Print Simple Report",
+		"Invalid time selected": "Invalid time selected"
 		},
 
 	"chinese": {
@@ -360,7 +361,8 @@ languages = \
 		"Output File": "Output File",
 		"Source Excel": "Source Excel",
 		"Invalid File Type": "Invalid File Type",
-		"Print Simple Report": "Print Simple Report"
+		"Print Simple Report": "Print Simple Report",
+		"Invalid time selected": "Invalid time selected"
 		}
 		
 }
