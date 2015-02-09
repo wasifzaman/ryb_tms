@@ -10,7 +10,7 @@ from master_list import *
 import print_reports
 
 
-def main(lang, database, markerfile=False, top=False, i=0): #i is the id of the student passed in
+def main(lang, database, markerfile=False, top=False, student_id=0): #student_id is the id of the student passed in
 
 	database.loadData()
 
@@ -24,7 +24,7 @@ def main(lang, database, markerfile=False, top=False, i=0): #i is the id of the 
 
 	window_ = AppWindow(top_window_.mainFrame)
 	window_.lang = lang
-	window_.student_id = i
+	window_.student_id = student_id
 	window_.picked = {}
 
 	marker = pickle.load(open(markerfile, "rb")) if markerfile else False
@@ -75,24 +75,24 @@ def main(lang, database, markerfile=False, top=False, i=0): #i is the id of the 
 	notes.label.grid_forget()
 	notes.config(height=8, width=32)
 	b_print_to_file.selfframe.grid(padx=5)
-	if database.studentList[i].datapoints['last_payment']:
-		last_payment.config(text=datetime.strftime(database.studentList[i].datapoints['last_payment'], '%m/%d/%Y'))
+	if database.studentList[student_id].datapoints['last_payment']:
+		last_payment.config(text=datetime.strftime(database.studentList[student_id].datapoints['last_payment'], '%m/%d/%Y'))
 	
 	attendance_table.canvas.config(width=720, height=500)
 	attendance_table.editwidget = False
 	attendance_table.clast = False
 
-	student_ = database.studentList[i]
+	student_ = database.studentList[student_id]
 	window_.populate(student_.datapoints)
 	attendance_table.setData(
 		headers=attendance_table_headers,
 		data=[row[:5] for row in student_.datapoints['attinfo'][1]])
 	attendance_table.set_width(2, 5, 14)
 
-	def pick_cell(p, i):
+	def pick_cell(p, student_id):
 		first_cell = attendance_table.cells[p]
 		if p[0] == 0: return
-		if marker and first_cell.bgcolor in marker[i]['color_set']:
+		if marker and (student_id in marker) and first_cell.bgcolor in marker[student_id]['color_set']:
 			print('already printed')
 			pickRow(p, True)
 			window_.picked[p[0]] = attendance_table.data[p[0]-1]
@@ -108,9 +108,9 @@ def main(lang, database, markerfile=False, top=False, i=0): #i is the id of the 
 			print(window_.picked)
 
 	for pos, cell in attendance_table.cells.items():
-		cell.config(bind=('<Button-1>', lambda event, pos=pos: pick_cell(pos, i)))
-		if marker and (pos[0] in marker[i]['paid_set']):
-			cell.config(bgcolor=marker[i]['row_color'][pos[0]])
+		cell.config(bind=('<Button-1>', lambda event, pos=pos: pick_cell(pos, student_id)))
+		if marker and (student_id in marker) and (pos[0] in marker[student_id]['paid_set']):
+			cell.config(bgcolor=marker[student_id]['row_color'][pos[0]])
 
 	def pickRow(entry, printed=False):
 		x, y = entry[0], entry[1]
@@ -143,25 +143,25 @@ def main(lang, database, markerfile=False, top=False, i=0): #i is the id of the 
 		today = datetime.now()
 		date = today.strftime('%m.%d.%y')
 		time = today.strftime('%I.%M.%p')
-		file_name = file_path + '/Salary Report ' + i + ' ' + database.school + ' ' + date + ' ' + time + '.xlsx'
+		file_name = file_path + '/Salary Report ' + student_id + ' ' + database.school + ' ' + date + ' ' + time + '.xlsx'
 
-		printed = print_reports.print_pay_entries(database, file_name, i, window_.picked, dollar_per_hour.getData(), False) #false is for max_hours
+		printed = print_reports.print_pay_entries(database, file_name, student_id, window_.picked, dollar_per_hour.getData(), False) #false is for max_hours
 		if markerfile:
-			if i not in marker:
-				marker[i] = {}
-				marker[i]['paid_set'] = window_.picked
-				marker[i]['color_set'] = ['tomato', 'cornflowerblue']
-				marker[i]['current_color'] = 0
-				marker[i]['row_color'] = {}
+			if student_id not in marker:
+				marker[student_id] = {}
+				marker[student_id]['paid_set'] = window_.picked
+				marker[student_id]['color_set'] = ['tomato', 'cornflowerblue']
+				marker[student_id]['current_color'] = 0
+				marker[student_id]['row_color'] = {}
 				for row_num in window_.picked:
-					marker[i]['row_color'][row_num] = marker[i]['color_set'][marker[i]['current_color']]
+					marker[student_id]['row_color'][row_num] = marker[student_id]['color_set'][marker[student_id]['current_color']]
 			else:
-				print(i, ' in marker file, appending..')
-				marker[i]['current_color'] = (marker[i]['current_color'] + 1) % len(marker[i]['color_set'])
-				print(marker[i]['current_color'])
+				print(student_id, ' in marker file, appending..')
+				marker[student_id]['current_color'] = (marker[student_id]['current_color'] + 1) % len(marker[student_id]['color_set'])
+				print(marker[student_id]['current_color'])
 				for row_num in window_.picked:
-					marker[i]['row_color'][row_num] = marker[i]['color_set'][marker[i]['current_color']]
-				marker[i]['paid_set'].update(window_.picked)
+					marker[student_id]['row_color'][row_num] = marker[student_id]['color_set'][marker[student_id]['current_color']]
+				marker[student_id]['paid_set'].update(window_.picked)
 			print(marker)
 			pickle.dump(marker, open(markerfile, "wb"))
 		if printed:

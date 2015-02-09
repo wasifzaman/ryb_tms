@@ -144,7 +144,13 @@ def main():
 	main_window_.wintitle.config(text=window_.lang['RYB Student Management'])
 
 	window_.k = keeper.Keeper('keeper.db')
-	window_.d = StudentDB(file=window_.k.files['cfilepath'], pwfile=window_.k.files['pwfile'], cfile=window_.k.fname)
+
+	try:
+		window_.d = StudentDB(file=window_.k.files['cfilepath'], pwfile=window_.k.files['pwfile'], cfile=window_.k.fname)
+	except ValueError:
+		os.rename(os.path.abspath(os.pardir + '\keeper.db'), os.path.abspath(os.pardir + '\keeper.old.db'))
+		window_.k = keeper.Keeper('keeper.db')
+		window_.d = StudentDB(file=window_.k.files['cfilepath'], pwfile=window_.k.files['pwfile'], cfile=window_.k.fname)
 
 	if 'school' not in window_.k.files:
 		window_.k.files['school'] = choose_school(window_.lang)

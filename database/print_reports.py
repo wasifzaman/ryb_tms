@@ -72,8 +72,9 @@ def print_teacher_attendance(database, dest_path, start_date, end_date):
             if date_.date() >= start_date.date() and date_.date() <= end_date.date():
                 first_name = student.datapoints['firstName']
                 last_name = student.datapoints['lastName']
+                chinese_name = student.datapoints['chineseName']
                 barcode_ = student.datapoints['bCode']
-                rows.append((date_, att[2], att[4], first_name, last_name, barcode_))
+                rows.append((date_, att[2], att[4], first_name, last_name, chinese_name, barcode_))
 
     rows.sort()
 
@@ -89,7 +90,7 @@ def print_teacher_attendance(database, dest_path, start_date, end_date):
     title_format = workbook.add_format({'bold': True})
 
     #to excel
-    worksheet.set_column(0, 5, 15)
+    worksheet.set_column(0, 6, 15)
     worksheet.write(0, 0, 'RYB Teacher Attendance Report', title_format)
     worksheet.write(1, 0, 'Total check-ins: ' + str(len(rows)), title_format)
     worksheet.write(2, 0, 'From: ' + datetime.strftime(start_date, '%m/%d/%Y'), title_format)
@@ -99,7 +100,8 @@ def print_teacher_attendance(database, dest_path, start_date, end_date):
     worksheet.write(5, 2, '注销时间', tformat) #check-out
     worksheet.write(5, 3, '名字', tformat) #first_name
     worksheet.write(5, 4, '姓', tformat) #last_name
-    worksheet.write(5, 5, '条码号', tformat) #barcode
+    worksheet.write(5, 5, '中文名字', tformat) #chinese_name
+    worksheet.write(5, 6, '条码号', tformat) #barcode
 
     r, c = 6, 0
 
@@ -111,6 +113,7 @@ def print_teacher_attendance(database, dest_path, start_date, end_date):
         worksheet.write(r, 3, row[3])
         worksheet.write(r, 4, row[4])
         worksheet.write(r, 5, row[5])
+        worksheet.write(r, 6, row[6])
         r += 1
 
 def print_teacher_attendance_simple(database, dest_path, start_date, end_date):
@@ -124,14 +127,15 @@ def print_teacher_attendance_simple(database, dest_path, start_date, end_date):
             if date_ >= start_date.date() and date_ <= end_date.date():
                 first_name = student.datapoints['firstName']
                 last_name = student.datapoints['lastName']
+                chinese_name = student.datapoints['chineseName']
                 barcode_ = student.datapoints['bCode']
-                to_append = (first_name, last_name, barcode_)
+                to_append = (first_name, last_name, chinese_name, barcode_)
                 if to_append not in rows:
                     rows.append(to_append)
 
     rows.sort()
 
-    workbook = xlsxwriter.Workbook(dest_path + '/Teacher Report - ' + database.school + ' ' + \
+    workbook = xlsxwriter.Workbook(dest_path + '/Teacher Report (simple) - ' + database.school + ' ' + \
                                     datetime.strftime(start_date, '%m.%d.%Y') + ' ' + \
                                     datetime.strftime(end_date, '%m.%d.%Y') + '.xlsx')
     worksheet = workbook.add_worksheet()
@@ -150,7 +154,8 @@ def print_teacher_attendance_simple(database, dest_path, start_date, end_date):
     worksheet.write(3, 0, 'To: ' + datetime.strftime(end_date, '%m/%d/%Y'), title_format)
     worksheet.write(5, 0, '名字', tformat) #first_name
     worksheet.write(5, 1, '姓', tformat) #last_name
-    worksheet.write(5, 2, '条码号', tformat) #barcode
+    worksheet.write(5, 2, '中文名字', tformat) #chinese_name
+    worksheet.write(5, 3, '条码号', tformat) #barcode
 
     r, c = 6, 0
 
@@ -158,6 +163,7 @@ def print_teacher_attendance_simple(database, dest_path, start_date, end_date):
         worksheet.write(r, 0, row[0])
         worksheet.write(r, 1, row[1])
         worksheet.write(r, 2, row[2])
+        worksheet.write(r, 3, row[3])
         r += 1
 
 def print_pay_entries(database, dest_path, employee_id, pay_entries, pay_per_hour=1.00, max_hours=False):
@@ -214,6 +220,9 @@ def print_pay_entries(database, dest_path, employee_id, pay_entries, pay_per_hou
     #total hours
     total_time = 0
 
+    #total pay
+    total_pay = 0.0
+
     r = 4
     for entry in pay_entries.values():
         date = entry[0]
@@ -221,14 +230,16 @@ def print_pay_entries(database, dest_path, employee_id, pay_entries, pay_per_hou
         checkout = datetime.strptime(date + ' ' + entry[4], '%m/%d/%Y %I:%M %p')
         time_clocked = checkout - checkin
         decimal_time = stringtime_to_decimal(str(time_clocked))
+        pay = float("%.2f" % float(decimal_time * pay_per_hour))
         total_time += decimal_time
+        total_pay += pay
         #print()
 
         worksheet.write(r, 0, entry[0])
         worksheet.write(r, 1, entry[2])
         worksheet.write(r, 2, entry[4])
         worksheet.write(r, 3, str(time_clocked))
-        worksheet.write(r, 4, str("%.2f" % float(decimal_time * pay_per_hour)))
+        worksheet.write(r, 4, str(pay))
         #worksheet.write(r, 4, )
 
         r += 1
@@ -245,6 +256,7 @@ def print_pay_entries(database, dest_path, employee_id, pay_entries, pay_per_hou
                             'Elmhurst': '艾姆赫斯特学校'}
 
     worksheet.write(r, 3, school_translation[database.school] + ':', footer_format)
+    worksheet.write(r, 4, str(total_pay), footer_format)
     r += 2
     worksheet.write(r, 3, "现金工资:", footer_format)
     r += 1

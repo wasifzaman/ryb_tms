@@ -25,8 +25,8 @@ def main(parent_frame, lang, database, markerfile):
 
 	def sTbind(func_pass):
 		def fsb(p):
-			i = teacher_table.data[p[0]-1][0]
-			func_pass(i)
+			student_id = teacher_table.data[p[0]-1][0]
+			func_pass(student_id)
 		for pos, cell in teacher_table.cells.items():
 			if pos[0] == 0: continue
 			cell.config(bind=('<Double-Button-1>', lambda event, pos=pos: fsb(pos)))
@@ -106,7 +106,7 @@ def main(parent_frame, lang, database, markerfile):
 			data=sL[p])
 		teacher_table.set_width(2, 5, 14)
 
-		sTbind(lambda i: edit_salary.main(window_.lang, database=database, markerfile=markerfile, top=True, i=i))
+		sTbind(lambda student_id: edit_salary.main(window_.lang, database=database, markerfile=markerfile, top=True, student_id=student_id))
 
 	def f():
 		if window_.pNum == len(sL) - 1: return
@@ -168,7 +168,7 @@ def main(parent_frame, lang, database, markerfile):
 				student_id = multiple_match(student_list)
 				if not student_id: return
 
-		edit_salary.main(window_.lang, database=database, top=True, i=student_id, markerfile=markerfile)
+		edit_salary.main(window_.lang, database=database, top=True, student_id=student_id, markerfile=markerfile)
 
 	window_.sby.entry.bind("<Return>", lambda x: s())
 
